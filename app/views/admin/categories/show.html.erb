@@ -1,0 +1,53 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Category</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Name:</b>
+			  <%=h @category.name %>
+			</p>
+
+						<p>
+			  <b>Description:</b>
+			  <%=h @category.description %>
+			</p>
+
+						<p>
+			  <b>Keywords:</b>
+			  <%=h @category.keywords %>
+			</p>
+
+						<p>
+			  <b>Visible:</b>
+			  <%=h @category.visible %>
+			</p>
+
+						<p>
+			  <b>Display order:</b>
+			  <%=h @category.display_order %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_categories_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_category_path(@category), :class => 'button' %>

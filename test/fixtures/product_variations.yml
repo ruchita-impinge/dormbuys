@@ -1,0 +1,43 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_it: 1
+  title: MyString
+  qty_on_hand: 1
+  qty_on_hold: 1
+  reorder_qty: 1
+  int_wholesale_price: 1
+  int_freight_in_price: 1
+  int_drop_ship_fee: 1
+  int_shipping_in_price: 1
+  markup: 9.99
+  int_list_price: 1
+  variation_group: MyString
+  product_number: MyString
+  manufacturer_number: MyString
+  visible: false
+  wh_row: MyString
+  wh_bay: MyString
+  wh_shelf: MyString
+  wh_product: MyString
+
+two:
+  product_it: 1
+  title: MyString
+  qty_on_hand: 1
+  qty_on_hold: 1
+  reorder_qty: 1
+  int_wholesale_price: 1
+  int_freight_in_price: 1
+  int_drop_ship_fee: 1
+  int_shipping_in_price: 1
+  markup: 9.99
+  int_list_price: 1
+  variation_group: MyString
+  product_number: MyString
+  manufacturer_number: MyString
+  visible: false
+  wh_row: MyString
+  wh_bay: MyString
+  wh_shelf: MyString
+  wh_product: MyString

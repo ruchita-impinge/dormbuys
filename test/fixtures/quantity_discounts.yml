@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  discount_type: 1
+  each_next: 1
+  buy_qty: 1
+  next_qty: 1
+  message: MyString
+  int_value: 1
+
+two:
+  discount_type: 1
+  each_next: 1
+  buy_qty: 1
+  next_qty: 1
+  message: MyString
+  int_value: 1

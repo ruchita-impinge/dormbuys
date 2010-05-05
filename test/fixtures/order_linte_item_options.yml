@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  order_line_item_id: 1
+  option_name: MyString
+  option_value: MyString
+  weight_increase: 9.99
+  int_price_increase: 1
+
+two:
+  order_line_item_id: 1
+  option_name: MyString
+  option_value: MyString
+  weight_increase: 9.99
+  int_price_increase: 1

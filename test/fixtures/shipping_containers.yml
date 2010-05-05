@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  length: 9.99
+  width: 9.99
+  depth: 9.99
+  weight: 9.99
+  qty_onhand: 1
+  demensional_weight: false
+
+two:
+  title: MyString
+  length: 9.99
+  width: 9.99
+  depth: 9.99
+  weight: 9.99
+  qty_onhand: 1
+  demensional_weight: false

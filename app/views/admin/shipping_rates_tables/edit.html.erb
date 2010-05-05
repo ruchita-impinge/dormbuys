@@ -1,0 +1,80 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Editing Shipping Rates Table</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+		<p>
+			The shipping rates table calculations start from a subtotal of $0.00 implicitly, therefore there is
+			no need to make a rate entry for a subtotal of zero.  Likewise they continue on to infinity, so if your
+			last entry is a subtotal of $100.00 and an order with a subtotal of $1,000.00 comes through, the shipping
+			will be calculated based on the the closest rate (which in this example would the rate with the $100.00 subtotal).
+		</p>
+		<p>
+			When shipping is calculated for an order, the rates will be sorted from highest to lowest subtotal.  The calculation
+			will loop through all the rates to find the first one where the order subtotal is greater than (but not equal to) 
+			the rate sub total.  So if you had rates with subtotals of $5.00 and $10.00, the calculation would pick the $5.00 rate
+			for an order with a subtotal of $9.50 because $9.50 falls between $5.00 and $10.00. 
+		</p>
+		
+		</div>
+		
+		
+		<% form_for([:admin, @shipping_rates_table]) do |f| %>
+		  <%= f.error_messages %>
+		
+		<p>
+			<%= submit_tag 'Save', :disable_with => 'Please wait...' %> <b>or</b> <%= link_to_function 'Add a Rate' do |page|
+				page.insert_html :bottom, :rates, :partial => 'shipping_rate', :object => ShippingRate.new
+			end %>
+		</p>
+
+		<div class="field check">
+			<%= f.check_box :enabled, :class => "check" %>
+			<%= f.label :enabled, 'Enable Shipping Rates Table' %>
+		</div>
+		<div class="clear"></div>
+
+
+		<table class="std_box_table">
+			<thead>
+		  <tr>
+			<th class="center">Subtotal</th>
+			<th class="center">Standard Rate</th>
+			<th class="center">Express Rate</th>
+			<th class="center">Overnight Rate</th>
+			<th class="center">Delete</th>
+		  </tr>
+			</thead>
+
+		  	<tbody id="rates">
+				<%= render :partial => 'shipping_rate', :collection => @shipping_rates_table.shipping_rates %>
+			</tbody>
+
+		</table>
+
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+
+
+
+<%= link_to '<span>Update</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Cancel</span>', admin_shipping_rates_tables_path, :class => 'button negative' %>

@@ -1,0 +1,57 @@
+<%% content_for :full_width_top do %>
+	<%%= render "shared/admin_main_nav" %>
+<%% end %>
+
+<%%= will_paginate(@<%= plural_name %>) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading"><%= plural_name.titleize %></h3>
+	
+	<div class="std_box_content">
+		
+		<%% if @<%= plural_name %>.empty? %>
+			
+			<h3>No <%= plural_name %> were found</h3>
+		
+		<%% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+					<% for attribute in attributes -%>
+			    		<th><%= attribute.column.human_name %></th>
+					<% end -%>
+						<th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<%% for <%= singular_name %> in @<%= plural_name %> %>
+			  		<tr>
+					<% for attribute in attributes -%>
+			    		<td><%%=h <%= singular_name %>.<%= attribute.name %> %></td>
+					<% end -%>
+			    		<td class="center"><%%= link_to 'View', admin_<%= singular_name %>_path(<%= singular_name %>), :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%%= link_to 'Edit', edit_admin_<%= singular_name %>_path(<%= singular_name %>), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%%= link_to 'Delete', admin_<%= singular_name %>_path(<%= singular_name %>), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<%% end %>
+
+				</tbody>
+			</table>
+		
+		<%% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%%= link_to '<span>New <%= singular_name.titleize %></span>', new_admin_<%= singular_name %>_path, :class => 'button positive' %>

@@ -1,0 +1,73 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing coupon</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Coupon number:</b>
+			  <%=h @coupon.coupon_number %>
+			</p>
+
+						<p>
+			  <b>Expires:</b>
+			  <%=h @coupon.expires %>
+			</p>
+
+						<p>
+			  <b>Expiration date:</b>
+			  <%=h @coupon.expiration_date %>
+			</p>
+
+						<p>
+			  <b>Reusable:</b>
+			  <%=h @coupon.reusable %>
+			</p>
+
+						<p>
+			  <b>Used:</b>
+			  <%=h @coupon.used %>
+			</p>
+
+						<p>
+			  <b>Description:</b>
+			  <%=h @coupon.description %>
+			</p>
+
+						<p>
+			  <b>Int min purchase:</b>
+			  <%=h @coupon.int_min_purchase %>
+			</p>
+
+						<p>
+			  <b>Int value:</b>
+			  <%=h @coupon.int_value %>
+			</p>
+
+						<p>
+			  <b>Coupon type:</b>
+			  <%=h @coupon.coupon_type_id %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_coupons_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_coupon_path(@coupon), :class => 'button' %>

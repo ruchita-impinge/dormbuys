@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  order_line_item_id: 1
+  discount_message: MyString
+  int_discount_amount: 1
+
+two:
+  order_line_item_id: 1
+  discount_message: MyString
+  int_discount_amount: 1

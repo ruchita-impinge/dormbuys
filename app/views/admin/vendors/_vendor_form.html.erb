@@ -1,0 +1,144 @@
+
+  <div class="field">
+    <%= f.text_field :account_number, :class => 'textfield' %>
+    <%= f.label :account_number %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :phone, :class => 'textfield' %>
+    <%= f.label :phone %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field">
+    <%= f.text_field :company_name, :class => 'textfield' %>
+    <%= f.label :company_name %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :fax, :class => 'textfield' %>
+    <%= f.label :fax %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field">
+    <%= f.text_field :corporate_name, :class => 'textfield' %>
+    <%= f.label :corporate_name %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :website, :class => 'textfield' %>
+    <%= f.label :website %>
+  </div>
+  <div class="clear"></div>
+
+
+	<hr />
+
+
+  <div class="field">
+    <%= f.text_field :address, :class => 'textfield' %>
+    <%= f.label :address %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :billing_address, :class => 'textfield' %>
+    <%= f.label :billing_address %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :address2, :class => 'textfield' %>
+    <%= f.label :address2 %>
+  </div>
+  
+  <div class="field">
+    <%= f.text_field :billing_address2, :class => 'textfield' %>
+    <%= f.label :billing_address2 %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :city, :class => 'textfield' %>
+    <%= f.label :city %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :billing_city, :class => 'textfield' %>
+    <%= f.label :billing_city %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+	<%= f.select :state_id, grouped_options_for_select(State.grouped_options, @vendor.state_id) %>
+    <%= f.label :state_id %>
+  </div>
+  
+
+  <div class="field">
+	<%= f.select :billing_state_id, grouped_options_for_select(State.grouped_options, @vendor.billing_state_id) %>
+    <%= f.label :billing_state_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :zipcode, :class => 'textfield' %>
+    <%= f.label :zipcode %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :billing_zipcode, :class => 'textfield' %>
+    <%= f.label :billing_zipcode %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field">
+	<%= f.select :country_id, Country.all.collect {|c| [c.country_name, c.id]} %>
+    <%= f.label :country_id %>
+  </div>
+  
+  <div class="field">
+	<%= f.select :billing_country_id, Country.all.collect {|c| [c.country_name, c.id]} %>
+    <%= f.label :billing_country_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <hr />
+
+
+  <div class="field check">
+	<%= f.check_box :dropship, :class => 'check' %>
+	<%= f.label :dropship %>
+  </div>
+
+
+  <div class="field check">
+    <%= f.check_box :enabled, :class => 'check' %>
+    <%= f.label :enabled %>
+  </div>
+  <div class="clear"></div>
+
+
+  <fieldset>
+	<legend>Brands</legend>
+
+	<%= link_to_function 'Add A Brand', :class => 'add_brand_link' do |page|
+			page.insert_html :bottom, "vendor_brands", 
+				:partial => "brand_picker.html.erb", 
+				:object => Brand.new	
+		end %>
+
+	<div id="vendor_brands">
+
+		<% for brand in @vendor.brands %>
+			<%= render "brand_picker", :object => brand %>
+		<% end %>
+
+	</div><!-- end #vendor_brands -->
+
+  </fieldset>

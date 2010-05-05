@@ -1,0 +1,98 @@
+<% content_for :head do %>
+	<% javascript_tag do %>
+	$(document).ready(function(){
+		
+		$("#coupon_value_field").hide();
+		
+		init_coupon_value_fields();
+		
+		$("#coupon_coupon_type_id").change(function(){
+			init_coupon_value_fields();
+		}); //end change
+		
+	}); // end ready
+	
+	function init_coupon_value_fields()
+	{
+		var val = $("#coupon_coupon_type_id").val();
+		
+		if(val == <%= CouponType::DOLLAR %>){
+			$("#coupon_value_field").show();
+			$("#coupon_value_field label").text("Dollar Amount");
+			<% if @coupon.new_record? %>
+			$("#coupon_value_field input").val("0.00");
+			<% end %>
+			
+		}else if(val == <%= CouponType::PERCENTAGE %>){
+			$("#coupon_value_field").show();
+			$("#coupon_value_field label").text("Percentage");
+			<% if @coupon.new_record? %>
+			$("#coupon_value_field input").val("0");
+			<% end %>
+		}else{
+			$("#coupon_value_field").hide();
+		}
+		
+	}//end init_coupon_value_fields
+	
+	<% end %>
+<% end %>
+
+
+  <div class="field">
+    <%= f.text_field :coupon_number, :class => 'textfield' %>
+    <%= f.label :coupon_number %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field check">
+	 <%= f.check_box :reusable, :class => 'check' %>
+	 <%= f.label :reusable, 'Reusable&nbsp;&nbsp;' %>
+	
+	<%= f.check_box :used, :class => 'check' %>
+    <%= f.label :used, 'Used&nbsp;&nbsp;' %>
+	
+    <%= f.check_box :expires, :class => 'check' %>
+    <%= f.label :expires %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field shorter">
+    <%= f.date_select :expiration_date, :order => [:month, :day, :year] %>
+    <%= f.label :expiration_date %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :description, :class => 'textfield' %>
+    <%= f.label :description %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :min_purchase, :class => 'textfield' %>
+    <%= f.label :min_purchase, 'Minimum Purchase' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.select :coupon_type_id, CouponType.all.collect {|t| [t.name, t.id]}, :prompt => "Select Coupon Type..." %>
+    <%= f.label :coupon_type_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field" id="coupon_value_field">
+    <%= f.text_field :value, :class => 'textfield' %>
+    <%= f.label :value %>
+  </div>
+  <div class="clear"></div>
+
+
+
+

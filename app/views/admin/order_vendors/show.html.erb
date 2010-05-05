@@ -1,0 +1,73 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Order Vendor</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Name:</b>
+			  <%=h @order_vendor.name %>
+			</p>
+
+						<p>
+			  <b>Address:</b>
+			  <%=h @order_vendor.address %>
+			</p>
+
+						<p>
+			  <b>Address2:</b>
+			  <%=h @order_vendor.address2 %>
+			</p>
+
+						<p>
+			  <b>City:</b>
+			  <%=h @order_vendor.city %>
+			</p>
+
+						<p>
+			  <b>State:</b>
+			  <%=h @order_vendor.state_id %>
+			</p>
+
+						<p>
+			  <b>Zip code:</b>
+			  <%=h @order_vendor.zip_code %>
+			</p>
+
+						<p>
+			  <b>Country:</b>
+			  <%=h @order_vendor.country_id %>
+			</p>
+
+						<p>
+			  <b>Customer service phone:</b>
+			  <%=h @order_vendor.customer_service_phone %>
+			</p>
+
+						<p>
+			  <b>Customer service email:</b>
+			  <%=h @order_vendor.customer_service_email %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_order_vendors_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_order_vendor_path(@order_vendor), :class => 'button' %>

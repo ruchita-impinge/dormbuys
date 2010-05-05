@@ -1,0 +1,41 @@
+  <div class="field">
+    <%= f.text_field :first_name, :class => 'textfield' %>
+	<%= f.label :first_name %>
+  </div>
+
+  <div class="field">
+    <%= f.text_field :last_name, :class => 'textfield' %>
+	<%= f.label :last_name %>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="field">
+    <%= f.text_field :email, :class => 'textfield' %>
+	<%= f.label :email %>
+  </div>
+  
+  
+  <div class="field">
+    <%= f.text_field :phone, :class => 'textfield' %>
+	<%= f.label :phone %>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="field">  
+    <%= f.password_field :password, :class => 'textfield' %>
+	<%= f.label :password %>
+  </div>
+  <div class="field">
+    <%= f.password_field :password_confirmation, :class => 'textfield' %>
+	<%= f.label :password_confirmation %>
+  </div>
+ 
+  <div class="clear"></div>
+
+	
+	<div id="role_holder">
+		<label>User Roles</label><br />
+		<%= habtm_checkbox_list('Role', 'id', 'name', 'user', 'role_ids', @user.roles) %>
+	</div>

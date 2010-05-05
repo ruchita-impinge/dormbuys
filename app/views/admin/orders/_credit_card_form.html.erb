@@ -1,0 +1,44 @@
+<fieldset class="credit_card_form">
+	
+	<legend>Credit Card Information</legend>
+	<div class="clear"></div>
+	
+	<% fields_for "order[credit_card_attributes]", nil, :index => nil do |c| %>
+	
+		<div class="field">
+			<%= c.text_field :name_on_card, :class => 'textfield'%>
+			<%= c.label :name_on_card %>
+		</div>
+	
+		<div class="field">
+			<%= c.text_field :card_number, :class => 'textfield' %>
+			<%= c.label :card_number %>
+		</div>
+		
+		<div class="field">
+			<%= c.select :card_type, 
+					options_for_select([
+						["Visa", "visa"],
+						["MasterCard", "master"],
+						["Discover/Novus", "discover"]
+					]) %>
+			<%= c.label :card_type %>
+		</div>
+		<div class="clear"></div>
+		
+		<div class="field shorter">
+			<%= c.date_select :exp_date, :order => [:month, :day, :year], :discard_day => true %>
+			<%= c.label :exp_date %>
+		</div>
+		
+		<div class="field mini">
+			<%= c.text_field :vcode, :class => 'textfield' %>
+			<%= c.label :vcode %>
+		</div>
+			
+	<% end %>
+	
+	
+<div class="clear"></div>
+</fieldset>
+<!--[eo: credit_card_form]-->

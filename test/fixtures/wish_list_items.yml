@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  wish_list_id: 1
+  product_variation_id: 1
+  wish_qty: 1
+  got_qty: 1
+  comments: MyText
+  product_option_values: MyText
+  product_as_option_values: MyText
+
+two:
+  wish_list_id: 1
+  product_variation_id: 1
+  wish_qty: 1
+  got_qty: 1
+  comments: MyText
+  product_option_values: MyText
+  product_as_option_values: MyText

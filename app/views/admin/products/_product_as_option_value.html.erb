@@ -1,0 +1,40 @@
+<div class="pao_value">
+
+<% fields_for "product[product_as_option_attributes_#{j}][pao_value_attributes][]", product_as_option_value, :index => nil do |option_value| %>
+  
+	
+	<div class="field">
+		<% val = product_as_option_value.product_variation ? product_as_option_value.product_variation.full_title : "" %>
+		<%= unique_text_field_with_auto_complete :product, :product_name, 
+			{
+				:name => "product[product_as_option_attributes_#{j}][pao_value_attributes][][product_variation_name]",
+		 		:value => val, 
+				:class => 'textfield'
+			} %>
+		<label>Product</label>
+	</div>
+
+
+	<div class="field short">
+		<%= option_value.text_field :display_value, :class => 'textfield' %>
+		<%= option_value.label :display_value %>
+	</div>
+
+	<div class="field short">
+		<%= option_value.text_field :price_adjustment, :class => 'textfield' %>
+		<%= option_value.label :price_adjustment, "Price (+/-)" %>
+	</div>
+	
+	<div class="field del_link">
+		<% if product_as_option_value.new_record? %>
+			<%= link_to_function 'delete', "$(this).parents('.pao_value').remove();" %>
+		<% else %>
+			<%= link_to_function 'delete', "mark_for_destroy(this, '.pao_value')" %>
+			<%= option_value.hidden_field :id %>
+			<%= option_value.hidden_field :should_destroy, :class => 'should_destroy' %>
+		<% end %>
+	</div>
+
+<% end %>
+
+</div>

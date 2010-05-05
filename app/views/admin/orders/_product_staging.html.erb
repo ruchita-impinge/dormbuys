@@ -1,0 +1,64 @@
+<div id="product_stage">
+	
+	<div class="col1">
+		<%= image_tag @product.product_image.url(:featured) %>
+	</div><!--end col1 -->
+	
+	<div class="col2">
+		<h3><%=h @product.product_name %></h3>
+		<p><%=h truncate(@product.product_overview, :length => 200) %></p>
+		
+		
+		<div class="field">
+			<input type="text" name="product[quantity]" class="textfield" value="1" />
+			<label>Quantity</label>
+		</div>
+		
+		
+		<!-- Variation selector -->
+		<% if @product.product_variations.size == 1 && @product.product_variations.first.title == "default" %>
+			<input type="hidden" value="<%= @product.product_variations.first.id %>" name="product[variation_id]" />
+		<% else %>
+			<div class="field">
+				<%= select_product_variations(@product, "product[variation_id]", nil) %>
+				<label><%= @product.product_variations.first.variation_group %></label>
+			</div>
+		<% end %>
+		
+		
+		<!-- Product Options Selection -->
+		<% if @product.product_options.size > 0 %>
+			<% for po in @product.product_options %>
+				
+				<div class="field">
+					<%= select_product_options(po, "product[product_option_values][][id]", nil) %>
+					<label><%=h po.option_name %></label>
+				</div>
+				
+			<% end %>
+		<% end %>
+		
+		
+		<!-- Product AS Options Selection -->
+		<% if @product.product_as_options.size > 0 %>
+			<% for pao in @product.product_as_options %>
+				
+				<div class="field">
+					<%= select_product_as_options(pao, "product[product_as_option_values][][id]", nil) %>
+					<label><%=h pao.option_name %></label>
+				</div>
+				
+			<% end %>
+		<% end %>
+		
+		
+	</div><!-- end col2 -->
+	
+	<div class="col3">
+		<h3>$<%= @product.retail_price %></h3>
+		<%= link_to '<span>Add To Order</span>', '#', :class => 'button', :id => "btn_add_to_order" %>
+	</div><!-- end col3 -->
+	
+	<div class="clear"></div>
+	
+</div><!-- end #product_stage -->

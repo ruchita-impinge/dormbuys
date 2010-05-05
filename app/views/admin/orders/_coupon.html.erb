@@ -1,0 +1,24 @@
+<div class="coupon">
+	<p>
+		<b>Coupon: </b>
+		
+		<%= @coupon.coupon_number %> - 
+		<% if coupon.coupon_type_id == CouponType::DOLLAR %>
+			$<%=h @coupon.value %>
+		<% elsif coupon.coupon_type_id == CouponType::PERCENTAGE %>
+			<%=h @coupon.value %> %
+		<% elsif @coupon.coupon_type_id == CouponType::FREE_SHIPPING %>
+			SHIP
+		<% end %>
+		
+		(Min Purchase: $<%= @coupon.min_purchase %>)
+		
+		<%= link_to_function 'Remove', 
+			"$(this).parents('.coupon').remove()",
+			:class => 'remove_coupon' %>
+	</p>
+	<input type="hidden" id="coupon_type" name="coupon_type" value="<%= @coupon.coupon_type_id %>" />
+	<input type="hidden" id="coupon_value" name="coupon_value" value="<%= @coupon.value %>" />
+	<input type="hidden" id="coupon_min_purchase" name="coupon_min_purchase" value="<%= @coupon.min_purchase %>" />
+	
+</div><!-- end .coupon -->

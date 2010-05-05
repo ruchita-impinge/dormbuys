@@ -1,0 +1,94 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Map Subcategories to 3rd Party Categories for integration</h3>
+	
+	<div class="std_box_content">
+		
+		
+		
+		<% if @categories.empty? %>
+			
+			<h3>No categories were found</h3>
+		
+		<% else %>
+		
+		
+			<% form_for(:map, :url => save_map_admin_subcategories_path) do |f| %>
+			  
+				<div class="std_box_content_wrapper">
+
+
+				<div id="cat_mapper_main_cat">
+
+					<h3>Dormbuys</h3>
+
+					<ul class="subcat_mgmt">
+						<% for cat in @categories %>
+						<li>
+							<%= cat.name %>
+							<ul>
+							<% for subcat in cat.subcategories %>
+								<% unless subcat.is_tertiary? %>
+								<li>
+									<span class="sub_cat_mgmt">
+										<span class="image"><%= image_tag subcat.list_image.url %></span>
+										<span class="name"><%= subcat.name %></span>
+										<span class="clear"></span>
+									</span>
+									<ul>
+										<% for third in subcat.all_children %>
+										<li>
+											<span class="sub_cat_mgmt">
+												<span class="image"><%= image_tag third.list_image.url %></span>
+												<span class="name"><%= third.name %></span>
+												<span class="clear"></span>
+											</span>
+										</li>
+										<% end %>
+									</ul>
+								</li>
+								<% end %>
+							<% end %>
+							</ul>
+						</li>
+						<% end %>
+					</ul>
+					<div class="clear"></div>
+
+				</div><!-- end #cat_mapper_main_cat -->
+
+
+
+				<div id="cat_mapper_other_cats">
+
+					<%= render :partial => 'third_party_map', :locals => {:third_party => ThirdPartyCategory::LNT} %>
+
+				</div><!-- end #cat_mapper_other_cats -->
+				<div class="clear"></div>
+
+
+				</div><!-- end #std_box_content_wrapper -->
+			
+			<% end %><!-- end form -->
+		
+			
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Save</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Cancel</span>', admin_subcategories_path, :class => 'button negative' %>

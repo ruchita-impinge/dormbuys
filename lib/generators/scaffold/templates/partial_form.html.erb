@@ -1,0 +1,9 @@
+<% for attribute in attributes -%>
+
+  <div class="field">
+    <%%= f.<%= attribute.field_type %> :<%= attribute.name %><%= ", :class => 'textfield'" if "#{attribute.field_type}" == "text_field" %> %>
+    <%%= f.label :<%= attribute.name %> %>
+  </div>
+  <div class="clear"></div>
+
+<% end -%>

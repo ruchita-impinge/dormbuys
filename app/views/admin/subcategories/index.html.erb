@@ -1,0 +1,78 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Subcategories</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @categories.empty? %>
+			
+			<h3>No categories were found</h3>
+		
+		<% else %>
+		
+			<div class="std_box_content_wrapper">
+
+			<ul id="subcat_mgmt">
+				<% for cat in @categories %>
+				<li>
+					<%= cat.name %>
+					<ul>
+					<% for subcat in cat.subcategories %>
+						<% unless subcat.is_tertiary? %>
+						<li>
+							<span class="sub_cat_mgmt">
+								<span class="image"><%= image_tag subcat.list_image.url %></span>
+								<span class="name"><%= subcat.name %></span>
+								<span class="links">
+									<%= link_to 'View', admin_subcategory_path(subcat) %>
+									<%= link_to 'Edit', edit_admin_subcategory_path(subcat) %>
+									<%= link_to 'Delete', admin_subcategory_path(subcat) %>
+								</span>
+								<span class="clear"></span>
+							</span>
+							<ul>
+								<% for third in subcat.all_children %>
+								<li>
+									<span class="sub_cat_mgmt">
+										<span class="image"><%= image_tag third.list_image.url %></span>
+										<span class="name"><%= third.name %></span>
+										<span class="links">
+											<%= link_to 'View', admin_subcategory_path(third) %>
+											<%= link_to 'Edit', edit_admin_subcategory_path(third) %>
+											<%= link_to 'Delete', admin_subcategory_path(third) %>
+										</span>
+										<span class="clear"></span>
+									</span>
+								</li>
+								<% end %>
+							</ul>
+						</li>
+						<% end %>
+					<% end %>
+					</ul>
+				</li>
+				<% end %>
+			</ul>
+			<div class="clear"></div>
+			
+			</div>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Subcategory</span>', new_admin_subcategory_path, :class => 'button positive' %>

@@ -1,0 +1,29 @@
+<p>Dear <%= @order.billing_first_name %> <%= @order.billing_last_name %>,</p>
+
+
+<p>An order that you recently placed on Dormbuys.com has been canceled and you have been issued a full refund.  Further details of the canceled order can be found below.  We apologize for any inconvenience and hope that you will shop with us again.</p>
+
+
+<p><b>ORDER DATE/TIME:</b><br />
+<%= @order.order_date.strftime("%m/%d/%Y %I:%M %p") %></p>
+
+
+<p><b>YOUR ORDER ID:</b><br />
+<%= @order.order_id %></p>
+
+<p><b>REFUND:</b><br />
+$<%= @order.grand_total %></p>
+
+
+<p><b>YOUR CUSTOMER ID:</b><br />
+<%= @order.email %></p>
+
+
+<p>If you have any further questions regarding your order or our 
+policies, please contact:<br />
+<a href="mailto: help@dormbuys.com">help@dormbuys.com</a></p>
+
+
+<p>Sincerely,<br />
+Dormbuys.com<br />
+http://www.dormbuys.com</p>

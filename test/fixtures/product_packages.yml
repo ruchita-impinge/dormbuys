@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  weight: 9.99
+  length: 9.99
+  width: 9.99
+  depth: 9.99
+  ships_separately: false
+  product_variation_id: 1
+
+two:
+  weight: 9.99
+  length: 9.99
+  width: 9.99
+  depth: 9.99
+  ships_separately: false
+  product_variation_id: 1

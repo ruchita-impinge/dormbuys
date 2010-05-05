@@ -1,0 +1,43 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing User</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+			
+			<p>
+				<b>Name: </b><%=h @user.first_name %> <%=h @user.last_name %>
+			</p>
+			
+				<p>
+		  <b>Email:</b>
+		  <%=h @user.email %>
+		</p>
+
+				<p>
+		  <b>Phone:</b>
+		  <%=h @user.phone %>
+		</p>
+
+		
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>Back</span>', admin_users_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_user_path(@user), :class => 'button' %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_variation_id: 1
+  product_as_option_id: 1
+  display_value: MyString
+  int_price_adjustment: 1
+
+two:
+  product_variation_id: 1
+  product_as_option_id: 1
+  display_value: MyString
+  int_price_adjustment: 1

@@ -1,0 +1,59 @@
+
+  <div class="field">
+    <%= f.text_field :name, :class => 'textfield' %>
+    <%= f.label :name %>
+  </div>
+  <div class="clear"></div>
+
+
+ <div class="field">
+    <%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]}, :class => 'textfield' %>
+    <%= f.label :category_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+	<%= f.select :parent_id, 
+			grouped_options_for_select(Category.primary_subcategory_options, @subcategory.parent_id),
+			{:prompt => "Select parent subcategory..."} %>
+    <%= f.label :parent_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :description %>
+    <%= f.label :description %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :keywords %>
+    <%= f.label :keywords %>
+  </div>
+  <div class="clear"></div>
+
+
+ <div class="field">
+	<% unless @subcategory.new_record? %>
+		<%= image_tag(@subcategory.list_image.url, :class => 'category_featured_preview') %><br />
+	<% end %>
+ 	<%= f.file_field :list_image, :class => 'textfield file_field' %>
+	<%= f.label :list_image %>
+ </div>
+<div class="clear"></div>
+
+  <div class="field check">
+    <%= f.check_box :visible, :class => 'check' %>
+    <%= f.label :visible %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.hidden_field :display_order, :class => 'textfield' %>
+  </div>
+  <div class="clear"></div>
+

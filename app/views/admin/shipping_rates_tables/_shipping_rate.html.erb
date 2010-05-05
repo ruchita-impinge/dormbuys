@@ -1,0 +1,22 @@
+<tr class="shipping_rate">
+	
+  <% fields_for "shipping_rates_table[shipping_rate_attributes][]", shipping_rate do |rate| %>
+	
+	  <td class="center"><%= rate.text_field :subtotal, :size => 6, :index => nil %></td>
+	  <td class="center"><%= rate.text_field :standard_rate, :size => 6, :index => nil %></td>
+	  <td class="center"><%= rate.text_field :express_rate, :size => 6, :index => nil %></td>
+	  <td class="center"><%= rate.text_field :overnight_rate, :size => 6, :index => nil %></td>
+
+	  <td class="center">
+	  	<% if shipping_rate.new_record? %>
+			<%= link_to_function 'delete', "$(this).parents('.shipping_rate').remove(); return false;" %>
+		<% else %>
+			<%= link_to_function 'delete', "mark_for_destroy(this, '.shipping_rate'); return false;" %>
+			<%= rate.hidden_field :id, :index => nil %>
+			<%= rate.hidden_field :should_destroy, :index => nil, :class => "should_destroy" %>
+		<% end %>
+	  </td>
+
+  <% end %>
+
+</tr>

@@ -1,0 +1,58 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@order_vendors) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Order Vendors</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @order_vendors.empty? %>
+			
+			<h3>No order_vendors were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+								    		<th>Name</th>
+								    		<th>Customer service phone</th>
+								    		<th>Customer service email</th>
+											<th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for order_vendor in @order_vendors %>
+			  		<tr>
+								    		<td><%=h order_vendor.name %></td>
+
+								    		<td><%=h order_vendor.customer_service_phone %></td>
+								    		<td><%=h order_vendor.customer_service_email %></td>
+								    		<td class="center"><%= link_to 'View', admin_order_vendor_path(order_vendor), :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%= link_to 'Edit', edit_admin_order_vendor_path(order_vendor), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_order_vendor_path(order_vendor), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Order Vendor</span>', new_admin_order_vendor_path, :class => 'button positive' %>

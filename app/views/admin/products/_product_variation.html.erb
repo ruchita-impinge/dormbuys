@@ -1,0 +1,173 @@
+<div class="variation">
+	
+	<% pre = "product[product_variation_attributes]"%>
+	
+	<% index = rand(99999)%>
+	<% fields_for "#{pre}[#{index}]", product_variation, :index => nil do |v| %>
+	
+
+		<% if product_variation.new_record? %>
+			<%= link_to_function "delete", "$(this).parents('.variation').remove();", 
+				:class => "del_variation_link" %>
+		<% else %>
+			<%= link_to_function "delete", "mark_for_destroy(this, '.variation');",
+			 	:class => "del_variation_link" %>
+			<%= v.hidden_field :id, :index => nil %>
+			<%= v.hidden_field :should_destroy, :index => nil, :class => 'should_destroy' %>
+		<% end %>
+
+		<div class="clear"></div>
+		
+		
+		<h4>General Information</h4>
+		<div class="field shorter">
+			<%= v.text_field :title, :class => 'textfield title' %>
+			<%= v.label :title, nil, :for => "#{pre}__title" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :qty_on_hand, :class => 'textfield qty_on_hand' %>
+			<%= v.label :qty_on_hand, nil, :for => "#{pre}__qty_on_hand" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :qty_on_hold, :class => 'textfield qty_on_hold' %>
+			<%= v.label :qty_on_hold, nil, :for => "#{pre}__qty_on_hold" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :reorder_qty, :class => 'textfield reorder_qty' %>
+			<%= v.label :reorder_qty, nil, :for => "#{pre}__reorder_qty" %>
+		</div>
+		
+		<div class="clear"></div>
+		
+		<div class="field">
+			<%= v.text_field :variation_group, :class => 'textfield variation_group' %>
+			<%= v.label :variation_group, nil, :for => "#{pre}__variation_group" %>
+		</div>
+		
+		<div class="field short">
+			<%= v.text_field :product_number, :class => 'textfield product_number' %>
+			<%= v.label :product_number, nil, :for => "#{pre}__product_number" %>
+		</div>
+		
+		<div class="field short">
+			<%= v.text_field :manufacturer_number, :class => 'textfield manufacturer_number' %>
+			<%= v.label :manufacturer_number, nil, :for => "#{pre}__manufacturer_number" %>
+		</div>
+		
+		
+		<div class="field check">
+			<%= v.check_box :visible, :class => 'check visible' %>
+			<%= v.label :visible %>
+		</div>
+		<div class="clear"></div>
+		
+		<div class="field">
+			<label>Sold Count: <%= product_variation.sold_count %></label>
+		</div>
+		
+
+		<div class="clear"></div>
+		
+		<h4>Prices</h4>
+		<div class="field shorter">
+			<%= v.text_field :wholesale_price, :class => 'textfield wholesale_price' %>
+			<%= v.label :wholesale_price, nil, :for => "#{pre}__wholesale_price" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :freight_in_price, :class => 'textfield freight_in_price' %>
+			<%= v.label :freight_in_price, nil, :for => "#{pre}__freight_in_price" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :drop_ship_fee, :class => 'textfield drop_ship_fee' %>
+			<%= v.label :drop_ship_fee, nil, :for => "#{pre}__drop_ship_fee" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :shipping_in_price, :class => 'textfield shipping_in_price' %>
+			<%= v.label :shipping_in_price, nil, :for => "#{pre}__shipping_in_price" %>
+		</div>
+		
+		<div class="field mini">
+			<%= v.text_field :markup, :class => 'textfield markup' %>
+			<%= v.label :markup, nil, :for => "#{pre}__markup" %>
+		</div>
+		
+		<div class="clear"></div>
+		
+		<div class="field shorter">
+			<%= v.text_field :list_price, :class => 'textfield list_price' %>
+			<%= v.label :list_price, nil, :for => "#{pre}__list_price" %>
+		</div>
+		
+		<div class="field shorter">
+			<h5>Total Wholesale: <%= product_variation.total_wholesale_price %></h5>
+		</div>
+		
+		<div class="field shorter">
+			<h5>Retail Price: <%= product_variation.retail_price %></h5>
+		</div>
+		
+		<div class="field shorter">
+			<h5>Total Retail: <%= product_variation.total_retail_price %></h5>
+		</div>
+		
+		<div class="field shorter">
+			<h5>Rounded Retail: <%= product_variation.rounded_retail_price %></h5>
+		</div>
+		
+		
+		
+		
+		<div class="clear"></div>
+
+		
+		<h4>Warehouse Location</h4>
+		<div class="field shorter">
+			<%= v.text_field :wh_row, :class => "textfield wh_row" %>
+			<%= v.label :wh_row, 'Row', :for => "#{pre}__wh_row" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :wh_bay, :class => 'textfield wh_bay' %>
+			<%= v.label :wh_bay, 'Bay', :for => "#{pre}__wh_bay" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :wh_shelf, :class => 'textfield wh_shelf' %>
+			<%= v.label :wh_shelf, 'Shelf', :for => "#{pre}__wh_shelf" %>
+		</div>
+		
+		<div class="field shorter">
+			<%= v.text_field :wh_product, :class => 'textfield wh_product' %>
+			<%= v.label :wh_product, 'Product', :for => "#{pre}__wh_product" %>
+		</div>
+		
+		<div class="clear"></div>
+		
+		
+		
+
+		<h4>Packaging</h4>
+		
+		<%= link_to_remote "Add Package", 
+			:url => {:action => :add_v_package, :index => index} %>
+		
+			
+		<div id="v_product_packages_<%= index %>" class="v_product_packages">
+	  		<%= render :partial => 'product_package', :collection => product_variation.product_packages, 
+					:locals => {:index => index} %>
+	    </div>
+
+		
+		
+		
+		
+	<% end %>
+	
+</div>
+<!--[eo: variation]-->

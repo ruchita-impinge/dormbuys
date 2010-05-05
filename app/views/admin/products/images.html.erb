@@ -1,0 +1,76 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Images: <%= @product.product_name %></h3>
+	
+	<div class="std_box_content">
+		
+		<%= render "product_menu" %>
+		
+		<% form_for([:admin, @product], :html => {:multipart => true}) do |f| %>
+		  <%= f.error_messages %>
+		
+		<div class="field">
+			<%= image_tag @product.product_image(:list), :class => 'product_image_preview' %>
+			<br />
+			<%= link_to 'large', @product.product_image(:large), :target => "_blank" %>
+			<%= link_to 'main', @product.product_image(:main), :target => "_blank" %>
+			<%= link_to 'featured', @product.product_image(:featured), :target => "_blank" %>
+			<%= link_to 'list', @product.product_image(:list), :target => "_blank" %>
+			<%= link_to 'thumb', @product.product_image(:thumb), :target => "_blank" %>
+		</div>
+		<div class="clear"></div>
+
+		  <div class="field">
+		  	<%= f.file_field :product_image, :class => 'textfield file_field' %>
+			<%= f.label :product_image %>
+		  </div>
+		  <div class="clear"></div>
+		
+		
+		
+		<fieldset class="">
+			<legend>Additional Images</legend>
+
+			<%= link_to_function 'Add An Image', :class => 'fieldset_add_link' do |page|
+					page.insert_html :bottom, "product_additional_images", 
+						:partial => "additional_product_image.html.erb", 
+						:object => AdditionalProductImage.new	
+					page << %(setupFileFields();)
+				end %>
+
+			<div id="product_additional_images">
+
+				<% for img in @product.additional_product_images %>
+					<%= render "additional_product_image", :object => img %>
+				<% end %>
+				
+
+			</div><!-- end #vendor_brands -->
+
+		  </fieldset>
+		
+		
+		
+		
+		<%= hidden_field_tag :end_action, "images" %>
+
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>Update</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Cancel</span>', admin_products_path, :class => 'button negative' %>

@@ -1,0 +1,32 @@
+<div class="product_as_option">
+
+<% fields_for "product[product_as_option_attributes_#{i}]", product_as_option do |pao| %>
+
+	<div class="field">
+		<%= pao.text_field :option_name, :class => 'textfield' %>
+		<%= pao.label :option_name, "Option Name <span>(#{link_to_remote "Add Product", :url => {:action => :add_pao_value, :id => i}})</span>" %>
+	</div>
+
+	<div class="field del_link">
+		<% if product_as_option.new_record? %>
+			<%= link_to_function(
+				'delete', "$(this).parents('.product_option').remove(); $('#pao_count').val($('#pao_count').val()-1);") %>
+		<% else %>
+			<%= link_to_function(
+				'delete', "mark_for_destroy(this, '.product_as_option'); $('#pao_count').val($('#pao_count').val()-1);") %>
+			<%= pao.hidden_field :id %>
+			<%= pao.hidden_field :should_destroy, :class => 'should_destroy' %>
+		<% end %>
+	</div>
+	<div class="clear"></div>
+	
+	
+	<div id="pao_values_<%= i %>">
+		<% product_as_option.product_as_option_values.each do |product_as_option_value| %>
+			<%= render :partial => 'product_as_option_value', :object => product_as_option_value, :locals => {:j => i} %>
+		<% end %>
+	</div>
+
+<% end %>
+
+</div><!-- end .product_as_option -->

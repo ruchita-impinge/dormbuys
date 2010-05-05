@@ -1,0 +1,414 @@
+<% content_for :head do %>
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	<%= javascript_include_tag 'admin-order-builder' %>
+<% end %>
+
+
+  <div class="field">
+    <%= f.text_field :order_id, :class => 'textfield' %>
+    <%= f.label :order_id %>
+  </div>
+
+  <div class="field">
+  	<%= f.select :order_vendor_id, OrderVendor.all.collect {|o| [o.name, o.id]} %>
+	<%= f.label :order_vendor_id %>
+  </div>
+
+  <div class="clear"></div>
+
+
+  <div class="field shorter">
+    <%= f.datetime_select :order_date, :order => [:month, :day, :year] %>
+    <%= f.label :order_date %>
+  </div>
+  <div class="clear"></div>
+
+
+<fieldset>
+	<legend>Customer Information</legend>
+	<div class="clear"></div>
+	
+  <div class="field">
+	<%= unique_text_field_with_auto_complete :user, :email, 
+		{
+			:name => "user_search_term",
+			:class => 'textfield user_search_field', 
+			:value => (params[:order] ? params[:order][:email] : "")
+		} %>
+	<label>User Account <span>(look up via email address)</span></label>
+	<%= f.hidden_field :user_id, :value => (params[:order] ? params[:order][:user_id] : "") %>
+	
+  </div>
+
+
+  <div class="field">
+    <%= f.text_field :email, :class => 'textfield' %>
+    <%= f.label :email, 'Email <span>(for customers with no account)</span>' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+	<%= f.select :whoami, Order::WHO_AM_I_OPTIONS.collect{|o| [o.last, o.first]} %>
+    <%= f.label :whoami, 'Customer is a...' %>
+  </div>
+  <div class="clear"></div>
+  
+
+<div class="field">
+	<%= f.select :how_heard_option_id, Order::HOW_HEARD_OPTIONS.collect{|o| [o.last, o.first]} %>
+    <%= f.label :how_heard_option_id, 'Customer heard about us through...' %>
+  </div>
+
+
+  <div class="field">
+    <%= f.text_field :how_heard_option_value, :class => 'textfield' %>
+    <%= f.label :how_heard_option_value, 'Other - they heard about us from:' %>
+  </div>
+  <div class="clear"></div>
+
+</fieldset>
+
+<br />
+
+<fieldset>
+	<legend>Billing Address</legend>
+	<div class="clear"></div>
+
+  <div class="field">
+    <%= f.text_field :billing_first_name, :class => 'textfield' %>
+    <%= f.label :billing_first_name, 'First Name' %>
+  </div>
+
+
+  <div class="field">
+    <%= f.text_field :billing_last_name, :class => 'textfield' %>
+    <%= f.label :billing_last_name, 'Last Name' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :billing_address, :class => 'textfield' %>
+    <%= f.label :billing_address, "Address" %>
+  </div>
+
+
+  <div class="field">
+    <%= f.text_field :billing_address2, :class => 'textfield' %>
+    <%= f.label :billing_address2, 'Additional Address Info' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :billing_city, :class => 'textfield' %>
+    <%= f.label :billing_city, 'City' %>
+  </div>
+
+
+  <div class="field">
+	<%= f.select :billing_state_id, grouped_options_for_select(State.grouped_options, @order.billing_state_id) %>
+    <%= f.label :billing_state_id, 'State' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :billing_zipcode, :class => 'textfield' %>
+    <%= f.label :billing_zipcode, 'Zip Code' %>
+  </div>
+
+
+  <div class="field">
+	<%= f.select :billing_country_id, Country.all.collect {|c| [c.country_name, c.id]} %>
+    <%= f.label :billing_country_id, 'Country' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :billing_phone, :class => 'textfield' %>
+    <%= f.label :billing_phone, 'Phone' %>
+  </div>
+  <div class="clear"></div>
+
+</fieldset><!-- end billing -->
+
+
+<br />
+
+<div class="field long">
+  <%= f.select :user_profile_type_id, Order::ADDRESS_OPTIONS.collect{|o| [o.last, o.first]} %>
+  <%= f.label :user_profile_type_id %>
+</div>
+<div class="clear"></div>
+
+
+
+<fieldset id="shipping_fieldset">
+	
+	<legend>Shipping Address</legend>
+	<div class="clear"></div>
+	
+	
+  <div class="field">
+    <%= f.text_field :shipping_first_name, :class => 'textfield' %>
+    <%= f.label :shipping_first_name, 'First Name' %>
+  </div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_last_name, :class => 'textfield' %>
+    <%= f.label :shipping_last_name, 'Last Name' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_address, :class => 'textfield' %>
+    <%= f.label :shipping_address, 'Address' %>
+  </div>
+
+
+  <div class="field" id="shipping_address_2_field">
+    <%= f.text_field :shipping_address2, :class => 'textfield' %>
+    <%= f.label :shipping_address2, 'Additional Address Info' %>
+  </div>
+  <div class="clear"></div>
+
+
+<hr class="dormship" />
+
+
+<div class="field dormship">
+   <%= f.select :dorm_ship_time_id, Order::DORM_SHIP_OPTIONS.collect{|o| [o.last, o.first]} %>
+   <%= f.label :dorm_ship_time_id, 'Ship to Dorm...' %>
+ </div>
+
+
+ <div class="field shorter dormship">
+   <%= f.date_select :dorm_ship_ship_date, :order => [:month, :day, :year] %>
+   <%= f.label :dorm_ship_ship_date, 'Ship to Dorm on this date' %>
+ </div>
+ <div class="clear"></div>
+
+
+
+ <div class="field dormship">
+   <%= f.text_field :dorm_ship_college_name, :class => 'textfield' %>
+   <%= f.label :dorm_ship_college_name, 'College Name' %>
+ </div>
+ <div class="clear"></div>
+
+
+  <div class="field dormship" id="dorm_shipping_address_2_field">
+    <%= f.text_field :shipping_address2, :class => 'textfield', :id => 'college_box_building_room' %>
+    <%= f.label :shipping_address2, 'Box # / Building / Room #', :for => 'college_box_building_room' %>
+  </div>
+  <div class="clear"></div>
+
+
+ <div class="field check dormship">
+   <%= f.check_box :dorm_ship_not_assigned, :class => 'check' %>
+   <%= f.label :dorm_ship_not_assigned, 'My Box / Building / Room has not been assigned yet' %>
+ </div>
+ <div class="clear"></div>
+
+
+ <div class="field check dormship">
+   <%= f.check_box :dorm_ship_not_part, :class => 'check' %>
+   <%= f.label :dorm_ship_not_part, 'Box / Building / Room is not part of the address' %>
+ </div>
+ <div class="clear"></div>
+
+
+
+<hr class="dormship" />
+
+
+
+  <div class="field">
+    <%= f.text_field :shipping_city, :class => 'textfield' %>
+    <%= f.label :shipping_city, 'City' %>
+  </div>
+
+
+  <div class="field">
+    <%= f.select :shipping_state_id, grouped_options_for_select(State.grouped_options, @order.shipping_state_id) %>
+    <%= f.label :shipping_state_id, 'State' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_zipcode, :class => 'textfield' %>
+    <%= f.label :shipping_zipcode, 'Zip Code' %>
+  </div>
+
+
+  <div class="field">
+    <%= f.select :shipping_country_id, Country.all.collect {|c| [c.country_name, c.id]} %>
+    <%= f.label :shipping_country_id, 'Country' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_phone, :class => 'textfield' %>
+    <%= f.label :shipping_phone, 'Phone' %>
+  </div>
+  <div class="clear"></div>
+
+
+</fieldset><!-- end shipping information -->
+
+<br />
+
+<fieldset>
+	<legend>Order Items</legend>
+	<div class="clear"></div>
+	
+	<div class="field long">
+		<%= unique_text_field_with_auto_complete :product, :product_name, 
+			{
+				:name => "product_search_term",
+				:class => 'textfield product_search_field'
+			} %>
+		<label>Search for Product</label>
+	</div>
+	<div class="clear"></div>
+	
+	
+	<div id="product_staging">
+
+	</div><!-- end #product_staging -->
+	
+	<div id="order_items">
+		
+	</div><!-- end #order_items -->
+	
+	
+</fieldset>
+
+<fieldset>
+	<legend>Payment Information</legend>
+	<div class="clear"></div>
+
+  <div class="field">
+	<%= f.select :payment_provider_id, Order::PAYMENT_OPTIONS.collect{|o| [o.last, o.first]} %>
+    <%= f.label :payment_provider_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <%= render :partial => 'credit_card_form.html.erb' %>
+
+
+  <div class="field">
+	<input type="text" id="coupon_number" name="coupon_number" class="textfield" />
+    <%= f.hidden_field :coupon_id, :value => "" %>
+    <%= f.label :coupon_id %>
+  </div>
+  <div class="field">
+  	<%= link_to '<span>Add</span>', '#', 
+		  :class => 'button', 
+		  :style => 'margin: -1px 0px 0px 0px;',
+		   :id => 'btn_add_coupon' %>
+  </div>
+
+	<div class="field">
+		<div id="coupon_holder">
+
+		</div><!-- end #coupon_holder -->
+	</div>
+
+  <div class="clear"></div>
+
+
+	
+
+
+  <div class="field">
+  	<input type="text" id="gift_card_number" name="gift_card[number]" class="textfield" />
+	<label>Gift Card Number</label>
+  </div>
+  <div class="field shortest">
+  	<input type="text" id="gift_card_pin" name="gift_card[pin]" class="textfield" />
+	<label>PIN</label>
+  </div>
+  <div class="field">
+  	<%= link_to '<span>Add</span>', '#', 
+			:class => 'button', 
+			:style => 'margin: -1px 0px 0px 0px;',
+			:id => 'btn_add_gift_card' %>
+  </div>
+  <div class="clear"></div>
+
+	<div id="gift_cards_holder">
+		
+	</div><!-- end #gift_cards_holder -->
+
+</fieldset>
+
+<fieldset>
+	<legend>Comments</legend>
+	<div class="clear"></div>
+	
+	<div class="field long">
+		<%= f.text_area :order_comments, :class => 'textfield' %>
+	</div>
+	
+</fieldset>
+
+
+<fieldset>
+	<legend>Totals</legend>
+	<div class="clear"></div>
+
+  <div class="field shortest">
+    <%= f.text_field :subtotal, :class => 'textfield' %>
+    <%= f.label :subtotal %>
+  </div>
+
+
+  <div class="field shortest">
+    <%= f.text_field :tax, :class => 'textfield' %>
+    <%= f.label :tax, "Tax" %>
+  </div>
+
+
+  <div class="field shortest">
+    <%= f.text_field :shipping, :class => 'textfield' %>
+    <%= f.label :shipping, "Shipping <span>#{link_to 'Calc', '#', :id => 'btn_calc_shipping'}</span>" %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field shortest">
+    <%= f.text_field :total_coupon, :class => 'textfield' %>
+    <%= f.label :total_coupon, 'Coupons' %>
+  </div>
+
+
+  <div class="field shortest">
+    <%= f.text_field :total_giftcards, :class => 'textfield' %>
+    <%= f.label :total_giftcards, 'Gift&nbsp;Cards' %>
+  </div>
+
+  <div class="field shortest">
+    <%= f.text_field :total_discounts, :class => 'textfield' %>
+    <%= f.label :total_discounts, 'Discounts' %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field shortest">
+    <%= f.text_field :grand_total, :class => 'textfield' %>
+    <%= f.label :grand_total, 'Grand&nbsp;Total' %>
+  </div>
+  <div class="clear"></div>
+
+ <%= f.hidden_field :admin_created_order, :value => 1 %>
+
+</fieldset>
+

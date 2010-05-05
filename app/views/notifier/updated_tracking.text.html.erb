@@ -1,0 +1,27 @@
+<p>Dear <%= @order.billing_first_name %> <%= @order.billing_last_name %>,</p>
+
+
+<p>Tracking information for one or more items on your order #<%= @order.order_id %> has been updated.  You may view the updated tracking information by logging into your Dormbuys.com account through the link below:</p>
+
+
+
+<p><b>VIEW YOUR ORDER ONLINE:</b><br />
+http://www.dormbuys.com/account</p>
+
+
+<p><b>ORDER DATE/TIME:</b><br />
+<%= @order.order_date.strftime("%m/%d/%Y %I:%M %p") %></p>
+
+
+<p><b>YOUR ORDER ID:</b><br />
+<%= @order.order_id %></p>
+
+
+<p>If you have any further questions regarding your order or our 
+policies, please contact:<br />
+<a href="mailto: help@dormbuys.com">help@dormbuys.com</a></p>
+
+
+<p>Sincerely,<br />
+Dormbuys.com<br />
+http://www.dormbuys.com</p>

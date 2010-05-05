@@ -1,0 +1,97 @@
+<% content_for :head do %>
+	<% javascript_tag do %>
+	$(document).ready(function(){
+		
+		init_qty_discount_form();
+		
+		$("#discount_type_percent, #discount_type_dollar, #discount_next, #discount_each").change(function(){
+			init_qty_discount_form();
+		});
+		
+	}); //end ready
+	
+	function init_qty_discount_form()
+	{
+		
+		if( $("#discount_type_percent").is(":checked") ){
+			
+			$("#dollar_sign").hide();
+			$("#percent_sign").show();
+			
+		}else if( $("#discount_type_dollar").is(":checked") ){
+			
+			$("#dollar_sign").show();
+			$("#percent_sign").hide();
+			
+		}//end if-else on percent-dollar
+		
+		
+		
+		if( $("#discount_next").is(":checked") ){
+			
+			$("#next_qty_indicator").text("off the next");
+			$("#quantity_discount_next_qty").show();
+			
+		}else if( $("#discount_each").is(":checked") ){
+			
+			$("#next_qty_indicator").text("off each");
+			$("#quantity_discount_next_qty").val(0).hide();
+			
+		}//end if-else on next-each
+		
+		
+	}//end function init_qty_discount_form
+	
+	<% end %>
+<% end %>
+
+
+  <div class="field radio">
+    <%= f.radio_button :discount_type, 0, :id => 'discount_type_percent', :class => 'radio' %>
+    <%= f.label :discount_type, 'Percentage', :for => 'discount_type_percent' %>
+
+	<%= f.radio_button :discount_type, 1, :id => 'discount_type_dollar', :class => 'radio' %>
+    <%= f.label :discount_type, 'Dollar', :for => 'discount_type_dollar' %>
+
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field radio">
+	
+	<%= f.radio_button :each_next, 0, :id => 'discount_next', :class => 'radio' %>
+    <%= f.label :each_next, 'Discount on Additional Quantity', :for => 'discount_next' %>
+	
+	
+    <%= f.radio_button :each_next, 1, :id => 'discount_each', :class => 'radio' %>
+    <%= f.label :each_next, 'Discount on Existing Quantity', :for => 'discount_each' %>
+
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field mini" id="qty_discount_builder_text">
+	<span>Buy </span>
+  	<%= f.text_field :buy_qty, :class => 'textfield' %>
+	<span> And Save </span>
+	
+	<span id="dollar_sign">$</span>
+	<%= f.text_field :value, :class => 'textfield' %>
+	<span id="percent_sign">%</span>
+	
+	<span id="next_qty_indicator"> off the next</span>
+	<%= f.text_field :next_qty, :class => 'textfield' %>
+	
+  </div>
+  <div class="clear"></div>
+
+
+
+
+  <div class="field long">
+    <%= f.text_field :message, :class => 'textfield' %>
+    <%= f.label :message %>
+  </div>
+  <div class="clear"></div>
+
+

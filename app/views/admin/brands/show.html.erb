@@ -1,0 +1,82 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Brand: <%=h @brand.name %> | Vendors</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @brand.vendors.empty? %>
+			
+			<h3>No vendors were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th>Account number</th>
+			    		<th>Company name</th>
+			    		<th>Phone</th>
+						<th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for vendor in @brand.vendors %>
+			  		<tr>
+				    	<td><%=h vendor.account_number %></td>
+			    		<td><%=h vendor.company_name %></td>
+			    		<td><%=h vendor.phone %></td>
+			    		<td class="center"><%= link_to 'View', admin_vendor_path(vendor), :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%= link_to 'Edit', edit_admin_vendor_path(vendor), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_vendor_path(vendor), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<br />
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Brand: <%=h @brand.name %> | Products</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+			<h3>Nothing to show here yet</h3>
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+
+<%= link_to '<span>Back</span>', admin_brands_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_brand_path(@brand), :class => 'button' %>

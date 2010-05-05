@@ -1,0 +1,119 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@coupons) %>
+
+<div class="std_box span-16">
+	
+	<h3 class="std_box_heading">coupons</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @coupons.empty? %>
+			
+			<h3>No coupons were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th>Coupon number</th>
+			    		<th class="center">Expiration</th>
+			    		<th class="center">Reusable</th>
+			    		<th class="center">Used</th>
+			    		<th class="center">Min $</th>
+			    		<th class="center">Value</th>
+						<th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for coupon in @coupons %>
+			  		<tr>
+			    		<td>
+							<%=h coupon.coupon_number %><br />
+							<small><%=h coupon.coupon_type.name %></small>
+						</td>
+			    		<td class="center">
+							<% if coupon.expires %>
+								<%= coupon.expiration_date.to_time.to_s(:mdY) %>
+							<% else %>
+								NONE
+							<% end %>
+						</td>
+			    		<td class="center"><%= coupon.reusable ? "YES" : "NO" %></td>
+			    		<td class="center"><%=h coupon.used ? "YES" : "NO" %></td>
+			    		<td class="center"><%=h coupon.min_purchase %></td>
+			    		<td class="center">
+							
+							<% if coupon.coupon_type_id == CouponType::DOLLAR %>
+								<%=h coupon.value %>
+							<% elsif coupon.coupon_type_id == CouponType::PERCENTAGE %>
+								<%=h coupon.value %> %
+							<% elsif coupon.coupon_type_id == CouponType::FREE_SHIPPING %>
+								SHIP
+							<% end %>
+							
+						</td>
+			    		<td class="center"><%= link_to 'View', admin_coupon_path(coupon), :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%= link_to 'Edit', edit_admin_coupon_path(coupon), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_coupon_path(coupon), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+
+
+<div class="span-8 last">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Search</h3>
+	
+	<div class="std_box_content">
+		
+		<% form_for(:search, :url => admin_coupons_search_path, :html => {:method => :get}) do |f| %>
+		
+			<div class="field">
+				<%= f.text_field :search_term, :class => 'textfield', 
+					:value => (params[:search] ? params[:search][:search_term] : "") %>
+				<%= f.label :search_term, 'Coupon Number' %>
+			</div>
+
+			
+			<div class="field">
+				<%= link_to '<span>Search</span>', 'javascript:document.forms[0].submit()', :class => 'button' %>
+			</div>
+			
+			<div class="clear"></div>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>New coupon</span>', new_admin_coupon_path, :class => 'button positive' %>
+</div>

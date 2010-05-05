@@ -1,0 +1,55 @@
+<div class="product_package">
+
+<% fields_for "product_packages[product_variation_package_attributes][#{index}][]", product_package, :index => nil do |pp| %>
+
+	<div class="field shortest">
+		<%= pp.text_field :weight, :class => 'textfield weight' %>
+		<%= pp.label :weight %>
+	</div>
+	
+	<div class="field shortest">
+		<%= pp.text_field :length, :class => 'textfield length' %>
+		<%= pp.label :weight %>
+	</div>
+	
+	<div class="field shortest">
+		<%= pp.text_field :width, :class => 'textfield width' %>
+		<%= pp.label :width %>
+	</div>
+	
+	<div class="field shortest">
+		<%= pp.text_field :depth, :class => 'textfield depth' %>
+		<%= pp.label :depth %>
+	</div>
+	
+
+	<div class="field radio">
+		<label>Ship Separately</label>
+		<%
+		checked = product_package.ships_separately ? 'checked' : ''
+		%>
+		<input 
+			name="ships_separately_not_submitted" 
+			type="checkbox"
+			class="ships_separately_check"
+			value="1" onClick="$(this).next('.hdn_ships_separately').val(((this.checked)? 1 : 0));" <%= checked %> />
+		<%= pp.hidden_field :ships_separately, :value => product_package.ships_separately ? 1 : 0, :class => 'hdn_ships_separately' %>
+		
+	</div>
+
+	<div class="field del_link">
+		<% if product_package.new_record? %>
+			<%= link_to_function 'delete', "$(this).parents('.product_package').remove();" %>
+		<% else %>
+			<%= link_to_function 'delete', "mark_for_destroy(this, '.product_package')" %>
+			<%= pp.hidden_field :id %>
+			<%= pp.hidden_field :should_destroy, :value => 0, :class => 'should_destroy' %>
+		<% end %>
+	</div>
+	<div class="clear"></div>
+	
+
+	
+<% end %>
+
+</div>

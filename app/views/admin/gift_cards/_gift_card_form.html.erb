@@ -1,0 +1,44 @@
+
+  <div class="field">
+    <%= f.text_field :giftcard_number, :class => 'textfield' %>
+    <%= f.label :giftcard_number %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :giftcard_pin, :class => 'textfield' %>
+    <%= f.label :giftcard_pin %>
+  </div>
+  <div class="clear"></div>
+
+
+  <% unless @gift_card.new_record? %>
+  <div class="field">
+    <%= f.text_field :current_amount, :class => 'textfield' %>
+    <%= f.label :current_amount %>
+  </div>
+  <div class="clear"></div>
+  <% end %>
+
+
+  <div class="field">
+    <%= f.text_field :original_amount, :class => 'textfield' %>
+    <%= f.label :original_amount %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field check">
+    <%= f.check_box :expires, :class => 'check' %>
+    <%= f.label :expires %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field shorter">
+    <%= f.date_select :expiration_date, :order => [:month, :day, :year] %>
+    <%= f.label :expiration_date %>
+  </div>
+  <div class="clear"></div>
+

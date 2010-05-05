@@ -1,0 +1,81 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<% content_for :head do %>
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Options: <%= @product.product_name %></h3>
+	
+	<div class="std_box_content">
+		
+		<%= render "product_menu" %>
+		
+		<% form_for([:admin, @product]) do |f| %>
+		  <%= f.error_messages %>
+
+			<fieldset class="" id="required_product_options">
+				<legend>Required Options</legend>
+
+				<%= link_to_remote 'Add An Option', 
+						:url => {:action => :add_option},
+						:html => {:class => 'fieldset_add_link'},
+					 	:with => "'count='+$('#options_count').val()" %>
+					
+				<%= hidden_field_tag "options_count", @product.product_options.size %>
+
+				<div id="product_options">
+
+					<% @product.product_options.each_with_index do |option,i| %>
+						<%= render :partial => "product_option", :object => option, :locals => {:i => i} %>
+					<% end %>
+
+
+				</div><!-- end #product_options -->
+
+			</fieldset><!-- end #required_product_options -->
+			
+			
+			<fieldset class="" id="optional_pao">
+				<legend>Optional Add-On Products</legend>
+
+				<%= link_to_remote 'Add An Option', 
+					:url => {:action => :add_pao},
+					:html => {:class => 'fieldset_add_link'},
+				 	:with => "'count='+$('#pao_count').val()" %>
+
+				<%= hidden_field_tag "pao_count", @product.product_as_options.size %>
+
+
+				<div id="product_as_options">
+					<% @product.product_as_options.each_with_index do |product_as_option, i|%>
+						<%= render :partial => 'product_as_option', :object => product_as_option, :locals => {:i => i} %>
+					<% end %>
+				</div>
+				
+				
+			 </fieldset><!-- end #optional_pao -->
+			
+			
+			<%= hidden_field_tag :end_action, "options" %>
+
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>Update</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Cancel</span>', admin_products_path, :class => 'button negative' %>

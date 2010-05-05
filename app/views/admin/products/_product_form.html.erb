@@ -1,0 +1,131 @@
+
+  <div class="field">
+    <%= f.text_field :product_name, :class => 'textfield' %>
+    <%= f.label :product_name %>
+  </div>
+
+
+  <div class="field">
+    <%= f.text_field :option_text, :class => 'textfield' %>
+    <%= f.label :option_text %>
+  </div>
+  <div class="clear"></div>
+
+
+	<div class="field">
+		<%= f.select :vendor_ids, Vendor.all.collect{|v| [v.company_name, v.id]},
+				{
+					:selected => @product.vendor_ids.first,
+					:prompt => "Select Vendor..."
+				}, 
+				{:name => "product[vendor_ids][]"} %>
+		<%= f.label :vendor_ids, 'Vendor' %>
+	</div>
+	
+	
+	<div class="field">
+		<%= f.select :warehouse_ids, Warehouse.all.collect{|w| [w.name, w.id]},
+				{
+					:selected => @product.warehouse_ids.first,
+					:prompt => "Select Warehouse..."
+				}, 
+				{:name => "product[warehouse_ids][]"} %>
+		<%= f.label :warehouse_ids, 'Warehouse' %>
+	</div>
+	<div class="clear"></div>
+	
+	
+	
+	
+	  <div class="field check">
+	    <%= f.check_box :charge_tax, :class => 'check' %>
+	    <%= f.label :charge_tax %>
+	  </div>
+
+
+	  <div class="field check">
+	    <%= f.check_box :featured_item, :class => 'check' %>
+	    <%= f.label :featured_item %>
+	  </div>
+
+
+	  <div class="field check">
+	    <%= f.check_box :visible, :class => 'check' %>
+	    <%= f.label :visible %>
+	  </div>
+
+
+	  <div class="field check">
+	    <%= f.check_box :charge_shipping, :class => 'check' %>
+	    <%= f.label :charge_shipping %>
+	  </div>
+	<div class="clear"></div>
+
+
+	  <div class="field check">
+	    <%= f.check_box :drop_ship, :class => 'check' %>
+	    <%= f.label :drop_ship %>
+	  </div>
+
+
+	  <div class="field check">
+	    <%= f.check_box :exclude_from_coupons, :class => 'check' %>
+	    <%= f.label :exclude_from_coupons %>
+	  </div>
+
+
+	  <div class="field check">
+	    <%= f.check_box :allow_in_gift_registry, :class => 'check' %>
+	    <%= f.label :allow_in_gift_registry %>
+	  </div>
+	<div class="clear"></div>
+
+	
+	
+	<fieldset class="field_fieldset">
+		<legend>Subcategories</legend>
+
+		<%= link_to_function 'Add A Subcategory', :class => 'add_subcat_link' do |page|
+				page.insert_html :bottom, "product_subcategories", 
+					:partial => "subcategory_picker.html.erb", 
+					:object => Subcategory.new	
+			end %>
+
+		<div id="product_subcategories">
+
+			<% for sub in @product.subcategories %>
+				<%= render "subcategory_picker", :object => sub %>
+			<% end %>
+
+		</div><!-- end #vendor_brands -->
+
+	  </fieldset>
+	
+
+
+  <div class="field long">
+    <%= f.text_area :product_overview %>
+    <%= f.label :product_overview %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :product_details %>
+    <%= f.label :product_details %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :meta_keywords %>
+    <%= f.label :meta_keywords %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :meta_description %>
+    <%= f.label :meta_description %>
+  </div>
+  <div class="clear"></div>

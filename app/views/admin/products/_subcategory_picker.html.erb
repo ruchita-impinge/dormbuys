@@ -1,0 +1,14 @@
+<div class="subcategory_picker">
+
+	<div class="field">
+		<%= subcat_selector(object) %>
+		<label>Subcategory</label>
+	</div>
+
+	<div class="del_link">
+		<%= link_to_function 'delete', "$(this).parents('.subcategory_picker').remove()" %>
+	</div>
+
+
+<div class="clear"></div>
+</div>

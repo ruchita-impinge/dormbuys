@@ -1,0 +1,15 @@
+<div class="gift_card">
+	
+	<p>
+		<b>Gift Card: </b>
+		
+		<%= @gift_card.giftcard_number %> - $<%= @gift_card.current_amount %>
+		
+		<%= link_to_function 'Remove', 
+			"$(this).parents('.gift_card').remove()",
+			:class => 'remove_gift_card' %>
+	</p>
+	
+	<input type="hidden" name="order[gift_card_ids][]" id="gift_card_<%= @gift_card.id %>" value="<%= @gift_card.id %>" />
+	<input type="hidden" name="gift_card[value][]" value="<%= @gift_card.current_amount %>" class="gift_card_value" />
+</div><!-- end .gift_card -->

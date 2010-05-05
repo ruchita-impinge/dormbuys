@@ -1,0 +1,59 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@warehouses) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">warehouses</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @warehouses.empty? %>
+			
+			<h3>No warehouses were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th>Vendor</th>
+			    		<th>Name</th>
+			    		<th>City</th>
+			    		<th>State</th>
+						<th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for warehouse in @warehouses %>
+			  		<tr>
+			    		<td><%=h warehouse.vendor.company_name %></td>
+			    		<td><%=h warehouse.name %></td>
+			    		<td><%=h warehouse.city %></td>
+			    		<td><%=h warehouse.state.abbreviation %></td>
+						<td class="center"><%= link_to 'View', admin_warehouse_path(warehouse), :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%= link_to 'Edit', edit_admin_warehouse_path(warehouse), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_warehouse_path(warehouse), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New warehouse</span>', new_admin_warehouse_path, :class => 'button positive' %>

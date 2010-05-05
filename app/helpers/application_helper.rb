@@ -1,0 +1,171 @@
+# Methods added to this helper will be available to all templates in the application.
+module ApplicationHelper
+  
+  def habtm_checkbox_list(classname, value_field, display_field, object_name, method_name, 
+        checked_collection, cols=4, order_statement=nil)
+    
+    returning String.new do |html|
+    
+      unless order_statement
+        order_statement = %(#{display_field} ASC)
+      end
+    
+    
+      counter = 1
+      
+      html << %(<table class="habtm_table">)
+    
+      @collection = Kernel.const_get(classname).find(:all, :order => order_statement)
+      
+      cols = @collection.size if @collection.size <= cols
+    
+      @collection.in_groups_of(cols, nil) do |row|
+        
+        html << %(<tr>)
+        
+        for obj in row
+        
+          unless obj.blank?
+        
+            html << %(<td><p class="habtm_checkbox">)
+          
+            html << check_box_tag("#{object_name}[#{method_name}][]", 
+              obj.send(value_field), 
+              checked_collection.include?(obj),
+              :id => "#{object_name}_#{method_name}_#{obj.send(value_field)}")
+          
+            html << %(<label for="#{object_name}_#{method_name}_#{obj.send(value_field)}">#{obj.send(display_field)}</label>)
+          
+            html << %(</p></td>\n)
+          
+          else
+            html << %(<td>&nbsp;</td>)
+          end
+        
+        end
+        
+        html << %(</tr>)
+             
+      end #end loop over collection
+      
+      html << %(</table>)
+    
+    
+    end #end returning
+    
+  end #end method habtm_checkbox_list(classname, value_field, display_field, object_name, method_name)
+  
+  
+  
+  # markaby helper method
+  def markaby(&block)
+    Markaby::Builder.new({}, self, &block)
+  end #end method markaby(&block)
+  
+  
+  
+  def unique_text_field_with_auto_complete(object, method, tag_options = {}, completion_options = {})
+ 
+    id      = tag_options[:id] ? tag_options[:id] : "#{object}_#{method}_#{rand(1000000000000)}" 
+    div_id  = "#{id}_auto_complete"
+    name    = tag_options[:name] ? tag_options[:name] : "#{object}[#{method}]" 
+    size    = tag_options[:size] ? tag_options[:size] : "30"
+    value   = tag_options[:value] ? tag_options[:value] : ""
+    style   = tag_options[:style] ? tag_options[:style] : ""
+    klass   = tag_options[:class] ? tag_options[:class] : ""
+    
+    if completion_options[:url]
+      url = completion_options[:url]
+    else
+      url = "#{url_for(:controller => controller.controller_name)}/auto_complete_for_#{object}_#{method}" 
+    end
+    
+    url += "?object=#{object}&method=#{method}"
+    
+    
+    all_options = {:id => id, :name => name, :size => size, :value => value, :style => style, :class => klass}
+    use_options = {}
+    all_options.each do |k,v|
+      unless v.blank?
+        use_options[k] = v
+      end
+    end
+    
+    output = %{<input type="text" }
+    use_options.each do |k,v|
+      output += %{#{k}="#{v}" }
+    end
+    output += " />\n"
+    
+    
+    output += <<-EOJS
+      <div class="auto_complete" id="#{div_id}"></div>
+      <script type="text/javascript">
+        //<![CDATA[
+    				$('##{id}').autocomplete({update:'#{div_id}', url:'#{url}', afterUpdateElement:function(e){
+              if(typeof afterAutoComplete == 'function')
+              {
+                  afterAutoComplete(e);
+              }
+    				}})
+    		//]]>
+      </script>
+    EOJS
+    
+    output
+    
+  end #end unique_text...
+  
+  
+  
+  def select_product_options(po, name, selected)
+    out = %(<select name=#{name}>)
+    out += %(<option value="">Select option...</option>)
+    for value in po.product_option_values
+      out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>
+        #{h value.option_value} #{value.price_increase.cents > 0 ? '(+ $' + value.price_increase.to_s + ')' : ''}
+      </option>)
+    end
+    out += %(</select>)
+    out
+  end #end method select_product_options(object, method_name, selected)
+  
+  
+  
+  def select_product_as_options(pao, name, selected)
+    out = %(<select name=#{name}>)
+    out += %(<option value="">Select Product...</option>)
+    for value in pao.product_as_option_values
+      out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>
+        #{h value.display_value} #{
+        if value.price_adjustment.cents > 0
+          '(+ $' + (value.product_variation.rounded_retail_price + value.price_adjustment).to_s + ')'
+        elsif value.price_adjustment.cents < 0
+          '(+ $' + (value.product_variation.rounded_retail_price - value.price_adjustment).to_s + ')'
+        else
+          '(+ $' + value.product_variation.rounded_retail_price.to_s + ')'
+        end
+        }
+      </option>)
+    end
+    out += %(</select>)
+    out
+  end #end method select_product_as_optoins(pao, name, selected)
+  
+  
+  
+  def select_product_variations(product, name, selected)
+    out = %(<select name="#{name}">)
+    out += %(<option value="">Select #{product.product_variations.first.variation_group}...</option>)
+    for variation in product.product_variations
+      out += %(<option value="#{variation.id}"#{' selected' if variation.id == selected}>
+        #{variation.title}
+      </option>)
+    end
+    out += %(</select>)
+    out
+  end #end method select_product_variations(product)
+  
+  
+  
+end #end module

@@ -1,0 +1,63 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@shipping_containers) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">shipping containers</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @shipping_containers.empty? %>
+			
+			<h3>No shipping containers were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th>Title</th>
+			    		<th class="center">Length</th>
+			    		<th class="center">Width</th>
+			    		<th class="center">Depth</th>
+			    		<th class="center">Weight</th>
+			    		<th class="center">Dim Weight</th>
+						<th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for shipping_container in @shipping_containers %>
+			  		<tr>
+			    		<td><%=h shipping_container.title %></td>
+			    		<td class="center"><%=h shipping_container.length %></td>
+			    		<td class="center"><%=h shipping_container.width %></td>
+			    		<td class="center"><%=h shipping_container.depth %></td>
+			    		<td class="center"><%=h shipping_container.weight %></td>
+			    		<td class="center"><%= shipping_container.demensional_weight ? "YES" : "NO" %></td>
+						<td class="center"><%= link_to 'View', admin_shipping_container_path(shipping_container), :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%= link_to 'Edit', edit_admin_shipping_container_path(shipping_container), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_shipping_container_path(shipping_container), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New shipping container</span>', new_admin_shipping_container_path, :class => 'button positive' %>

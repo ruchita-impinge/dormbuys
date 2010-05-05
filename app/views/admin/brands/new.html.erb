@@ -1,0 +1,31 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">New brand</h3>
+	
+	<div class="std_box_content">
+		
+		<% form_for([:admin, @brand]) do |f| %>
+		  <%= f.error_messages %>
+
+		  <%= render :partial => "brand_form.html.erb", :locals => {:f => f} %>
+
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>Save</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Cancel</span>', admin_brands_path, :class => 'button negative' %>

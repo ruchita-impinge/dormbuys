@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  order_id: 1
+  item_name: MyString
+  quantity: 1
+  vendor_company_name: MyString
+  product_manufacturer_number: MyString
+  product_number: MyString
+  int_unit_price: 1
+  int_total: 1
+  product_drop_ship: false
+  warehouse_location: MyString
+
+two:
+  order_id: 1
+  item_name: MyString
+  quantity: 1
+  vendor_company_name: MyString
+  product_manufacturer_number: MyString
+  product_number: MyString
+  int_unit_price: 1
+  int_total: 1
+  product_drop_ship: false
+  warehouse_location: MyString

@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  order_line_item_id: 1
+  option_name: MyString
+  display_value: MyString
+  int_price: 1
+  product_name: MyString
+  product_number: MyString
+
+two:
+  order_line_item_id: 1
+  option_name: MyString
+  display_value: MyString
+  int_price: 1
+  product_name: MyString
+  product_number: MyString

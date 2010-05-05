@@ -1,0 +1,52 @@
+<div class="cat_mapper_other">
+
+	<h3><%= third_party %></h3>
+
+	<ul class="subcat_mgmt others">
+		<% for cat in @categories %>
+		<li>
+			&nbsp;
+			<ul>
+			<% for subcat in cat.subcategories %>
+				<% unless subcat.is_tertiary? %>
+				<li>
+					<span class="sub_cat_mgmt">
+						<span class="image"></span>
+						<span class="name">
+							<%= hidden_field :subcategory, :id, :value => subcat.id, :name => 'subcategory[id][]' %>
+							<%= select_tag 'subcategory[third_party_category_ids][]',
+								grouped_options_for_select(
+									ThirdPartyCategory.grouped_options(third_party), 
+									subcat.third_party_cat(third_party)
+								) %>
+						</span>
+						<span class="clear"></span>
+					</span>
+					<ul>
+						<% for third in subcat.all_children %>
+						<li>
+							<span class="sub_cat_mgmt">
+								<span class="image"></span>
+								<span class="name">
+									<%= hidden_field :subcategory, :id, :value => third.id, :name => 'subcategory[id][]' %>
+									<%= select_tag 'subcategory[third_party_category_ids][]',
+										grouped_options_for_select(
+											ThirdPartyCategory.grouped_options(third_party), 
+											third.third_party_cat(third_party)
+										) %>
+								</span>
+								<span class="clear"></span>
+							</span>
+						</li>
+						<% end %>
+					</ul>
+				</li>
+				<% end %>
+			<% end %>
+			</ul>
+		</li>
+		<% end %>
+	</ul>
+	<div class="clear"></div>
+
+</div><!-- end #cat_mapper_other -->

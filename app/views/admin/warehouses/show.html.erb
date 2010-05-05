@@ -1,0 +1,68 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing warehouse</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Vendor:</b>
+			  <%=h @warehouse.vendor_id %>
+			</p>
+
+						<p>
+			  <b>Name:</b>
+			  <%=h @warehouse.name %>
+			</p>
+
+						<p>
+			  <b>Adress:</b>
+			  <%=h @warehouse.address %>
+			</p>
+
+						<p>
+			  <b>Address2:</b>
+			  <%=h @warehouse.address2 %>
+			</p>
+
+						<p>
+			  <b>City:</b>
+			  <%=h @warehouse.city %>
+			</p>
+
+						<p>
+			  <b>State:</b>
+			  <%=h @warehouse.state_id %>
+			</p>
+
+						<p>
+			  <b>Zipcode:</b>
+			  <%=h @warehouse.zipcode %>
+			</p>
+
+						<p>
+			  <b>Country:</b>
+			  <%=h @warehouse.country_id %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_warehouses_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_warehouse_path(@warehouse), :class => 'button' %>

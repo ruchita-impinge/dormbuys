@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  coupon_number: MyString
+  expires: false
+  expiration_date: 2010-02-19
+  reusable: false
+  used: false
+  description: MyString
+  int_min_purchase: 1
+  int_value: 1
+
+two:
+  coupon_number: MyString
+  expires: false
+  expiration_date: 2010-02-19
+  reusable: false
+  used: false
+  description: MyString
+  int_min_purchase: 1
+  int_value: 1

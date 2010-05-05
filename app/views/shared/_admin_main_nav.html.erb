@@ -1,0 +1,61 @@
+<div id="admin_nav_container">
+	<div id="admin_nav_wrapper">
+		<h1><%= link_to 'Dormbuys.com', '/' %></h1>
+		<ul id="admin_nav">
+			<li>
+				<%= link_to 'Products', admin_products_path %>
+				<ul>
+					<li><%= link_to 'Manage Products', admin_products_path %></li>
+					<li><%= link_to 'Vendors', admin_vendors_path %></li>
+					<li><%= link_to 'Warehouses', admin_warehouses_path %></li>
+					<li><%= link_to 'Brands', admin_brands_path %></li>
+					<li><%= link_to 'Categories', admin_categories_path %></li>
+					<li><%= link_to 'Sub Categories', admin_subcategories_path %></li>
+					<li><%= link_to 'Integration Map', mapper_admin_subcategories_path %></li>
+				</ul>
+			</li>
+			<li>
+				<%= link_to 'Fulfillment', '#' %>
+				<ul>
+					<li><%= link_to 'Orders', admin_orders_path %></li>
+					<li><%= link_to 'Order Vendors', admin_order_vendors_path %></li>
+					<li><%= link_to 'Shipping Rates', edit_admin_shipping_rates_table_path(ShippingRatesTable.first) %></li>
+					<li><%= link_to 'Shipping Containers', admin_shipping_containers_path %></li>
+				</ul>
+			</li>
+			<li>
+				<%= link_to 'Shopping', admin_coupons_path %>
+				<ul>
+					<li><%= link_to 'Coupons', admin_coupons_path %></li>
+					<li><%= link_to 'Gift Cards', admin_gift_cards_path %></li>
+					<li><%= link_to 'Qty Discounts', admin_quantity_discounts_path %></li>
+				</ul>
+			</li>
+			<li>
+				<%= link_to 'Customers', admin_users_path %>
+				<ul>
+					<li><%= link_to 'Manage Users', admin_users_path %></li>
+					<li><%= link_to 'Gift Registries', '#' %></li>
+					<li><%= link_to 'Wish Lists', '#' %></li>
+				</ul>
+			</li>
+			<li>
+				<%= link_to 'Reports', '#' %>
+				<ul>
+					<li><%= link_to 'One', '#' %></li>
+					<li><%= link_to 'Two', '#' %></li>
+					<li><%= link_to 'Three', '#' %></li>
+				</ul>
+			</li>
+			<li>
+				<%= link_to 'Settings', '#', :class => 'last' %>
+				<ul>
+					<li><%= link_to 'One', '#' %></li>
+					<li><%= link_to 'Two', '#' %></li>
+					<li><%= link_to 'Three', '#' %></li>
+				</ul>
+			</li>
+		</ul>
+	</div><!-- end #admin_nav_wrapper -->
+</div><!-- end #admin_nav_container -->
+<div class="clear"></div>

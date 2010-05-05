@@ -1,0 +1,90 @@
+#
+# [container_item_padding] is the amount of padding space
+# which will be used for packing material surrounding
+# each product in a shipping container
+
+# [shipping_price_buffer] is the percentage by which we will
+# increase the realtime shipping price information
+#
+######
+development: &non_production_settings
+    admin_email: brian@parkersmithsoftware.com
+    supervisor_email: brian@parkersmithsoftware.com
+    blog_location: http://blog.dormbuys.com
+    contact_email: brian@parkersmithsoftware.com
+    dev_email: brian@parkersmithsoftware.com
+    warehouse_admin_email: brian@parkersmithsoftware.com
+    enc_key: zggPDXhXBgA8h2j9X79zx49gdPShxqhbncI9M1lAu73mxB3U0QVEuepu0EHWTdJ
+    enc_salt: z3YcmJdHwUudd3BQZJnArlnYZZnv5dpw7q7Sa6oJi2e0EgN7sJWkSYxgZXAy0Ab
+    base_url: localhost:3000
+    show_mini_cart: false
+    max_prod_qty: 50
+    shipping_settings:
+        container_item_padding: 0.25
+        shipping_price_buffer: 0.00
+        drop_ship_alone: 15
+    authorize_net:
+        login_id: 8wd65QSj
+        transaction_key: 8CP6zJ7uD875J6tY
+    filesystem:
+        local_files_path: /public/files/products
+        web_files_path: /files/products
+        local_labels_path: /public/files/shipping_labels
+        web_labels_path: /files/shipping_labels
+        local_images_path: /public/images/products
+        web_images_path: /images/products
+    fedex:
+        auth_key: hnbs3bHzmVY0ZoIU
+        auth_password: pmdizG6iI0ypnv3EW7V9Opw94 
+        account_number: 510087526
+        meter_number: 1223651
+    googleproducts:
+        host: uploads.google.com
+        user: dormbuys123
+        pass: sellit123
+    channel_advisor:
+        host: partner.channeladvisor.com
+        user: dormby:ftpuser@dormbuys.com
+        pass: shdormby1!ad
+        
+test: 
+    <<: *non_production_settings
+    
+production:
+    admin_email: brian@parkersmithsoftware.com
+    supervisor_email: deryl@dormbuys.com
+    warehouse_admin_email: rusty@dormbuys.com
+    blog_location: http://blog.dormbuys.com
+    contact_email: help@dormbuys.com
+    enc_key: zggPDXhXBgA8h2j9X79zx49gdPShxqhbncI9M1lAu73mxB3U0QVEuepu0EHWTdJ
+    enc_salt: z3YcmJdHwUudd3BQZJnArlnYZZnv5dpw7q7Sa6oJi2e0EgN7sJWkSYxgZXAy0Ab
+    base_url: www.dormbuys.com
+    show_mini_cart: false
+    max_prod_qty: 50
+    shipping_settings:
+        container_item_padding: 0.25
+        shipping_price_buffer: 0.00
+        drop_ship_alone: 15
+    authorize_net:
+        login_id: sosik01
+        transaction_key: 88w6rP42rRC8NYD6
+    filesystem:
+        local_files_path: /files/shared/files/products
+        web_files_path: /files/products
+        local_labels_path: /files/shared/files/shipping_labels
+        web_labels_path: /files/shipping_labels
+        local_images_path: /files/shared/images/products
+        web_images_path: /images/products
+    fedex:
+        auth_key: hnbs3bHzmVY0ZoIU
+        auth_password: pmdizG6iI0ypnv3EW7V9Opw94 
+        account_number: 336114829
+        meter_number: 4283569
+    googleproducts:
+        host: uploads.google.com
+        user: dormbuys123
+        pass: sellit123
+    channel_advisor:
+        host: partner.channeladvisor.com
+        user: dormby:ftpuser@dormbuys.com
+        pass: shdormby1!ad

@@ -1,0 +1,41 @@
+<div class="additional_product_image">
+	
+	<% fields_for "product[additional_product_image_attributes][]", object, :index => nil do |ai| %>
+	
+			<% unless object.new_record? %>
+			<div class="field">
+				<%= link_to image_tag(object.image(:thumb), :class => 'product_image_preview'),
+				 	object.image(:large), :target => "_blank" %>
+			</div>
+			<% end %>
+	
+		
+			<div class="field">
+				<input type="hidden" name="product[additional_product_image_attributes][][image]" value="" />
+				<%= ai.file_field :image, :class => 'textfield file_field' %>
+				<%= ai.label :image %>
+			</div>
+			
+			<div class="field">
+				<%= ai.text_field :description, :class => 'textfield' %>
+				<%= ai.label :description %>
+			</div>
+			
+			
+			<div class="field del_link">
+				<% if object.new_record? %>
+					<%= link_to_function 'delete', "$(this).parents('.additional_product_image').remove()" %>
+				<% else %>
+					<%= link_to_function 'delete', "mark_for_destroy(this, '.additional_product_image')" %>
+					<%= ai.hidden_field :id %>
+					<%= ai.hidden_field :should_destroy, :value => "0", :class => 'should_destroy' %>
+				<% end %>
+			</div>
+			
+			
+	<% end %>
+	
+	
+<div class="clear"></div>
+</div>
+<!--[eo: additional_product_image]-->

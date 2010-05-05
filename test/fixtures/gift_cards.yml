@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  giftcard_number: MyString
+  giftcard_pin: MyString
+  int_current_amount: 1
+  int_original_amount: 1
+  expires: false
+  expiration_date: 2010-02-19
+
+two:
+  giftcard_number: MyString
+  giftcard_pin: MyString
+  int_current_amount: 1
+  int_original_amount: 1
+  expires: false
+  expiration_date: 2010-02-19

@@ -1,0 +1,29 @@
+<div class="product_restriction">
+
+<% fields_for "product[product_restriction_attributes][]", product_restriction, :index => nil do |pr| %>
+	
+	
+	<div class="field">
+		<%= pr.select :state_id, grouped_options_for_select(State.grouped_options, product_restriction.state_id) %>
+		<%= pr.label :state_id %>
+	</div>
+	
+	<div class="field long">
+		<%= pr.text_field :description, :class => 'textfield' %>
+		<%= pr.label :description %>
+	</div>
+	
+	<div class=" del_link">
+		<% if product_restriction.new_record? %>
+			<%= link_to_function 'delete', "$(this).parents('.product_restriction').remove()" %>
+		<% else %>
+			<%= link_to_function 'delete', "mark_for_destroy(this, '.product_restriction')" %>
+			<%= pr.hidden_field :id %>
+			<%= pr.hidden_field :should_destroy, :value => 0, :class => 'should_destroy' %>
+		<% end %>
+	</div>
+	<div class="clear"></div>
+	
+<% end %>
+
+</div>

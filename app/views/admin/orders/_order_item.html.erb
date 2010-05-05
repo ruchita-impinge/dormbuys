@@ -1,0 +1,82 @@
+<div class="order_item">
+	
+	<div class="col1">
+		<%= image_tag @product.product_image.url(:thumb) %>
+	</div><!-- end .col1 -->
+	
+	
+	<div class="col2">
+		<div class="field">
+			<input type="hidden" value="<%= @variation.id %>" name="order[order_line_item_attributes][][variation_id]" />
+			<input type="text" class="textfield" value="<%= @variation.full_title %>" name="order[order_line_item_attributes][][item_name]" />
+			
+			<input type="hidden" class="textfield" value="<%= @product.vendor.company_name %>" name="order[order_line_item_attributes][][vendor_company_name]" />
+			<input type="hidden" class="textfield" value="<%= @variation.product_number %>" name="order[order_line_item_attributes][][product_product_number]" />
+			<input type="hidden" class="textfield" value="<%= @variation.manufacturer_number %>" name="order[order_line_item_attributes][][product_manufacturer_number]" />
+			<input type="hidden" class="textfield" value="<%= @product.drop_ship %>" name="order[order_line_item_attributes][][product_drop_ship]" />
+			<input type="hidden" class="textfield" value="<%= @variation.warehouse_location %>" name="order[order_line_item_attributes][][warehouse_location]" />
+			
+		
+			<label>Product</label>
+		</div>
+		<div class="clear"></div>
+		
+		
+		<p>
+			<b>Qty on hand:</b> <%= @variation.qty_on_hand %> &nbsp;&nbsp;&nbsp;
+			<b>Qty on hold:</b> <%= @variation.qty_on_hold %>
+		</p>
+		
+		
+		<% if @product_option_values.size > 0 || @product_as_option_values.size > 0 %>
+		<ul>
+			<li>Product Price: $<%= @variation.rounded_retail_price %></li>
+			<% @product_option_values.each do |pov| %>
+				<li>
+					<%= pov.product_option.option_name %> => <%= pov.option_value %>: 
+					( + $<%= pov.price_increase %>)
+				</li>
+			<% end %>
+			<input type="hidden" value="<%= @product_option_values.collect(&:id).join(", ") %>" name="order[order_line_item_attributes][][pov_ids]" />
+			
+			
+			<% @product_as_option_values.each do |paov| %>
+				<li>
+					<%= paov.product_as_option.option_name %> => <%= paov.display_value %>: 
+					( + $<%= paov.product_variation.rounded_retail_price + paov.price_adjustment %>)
+				</li>
+			<% end %>
+			<input type="hidden" value="<%= @product_as_option_values.collect(&:id).join(", ") %>" name="order[order_line_item_attributes][][paov_ids]" />
+		</ul>
+		<% end %>
+		
+	</div><!-- end .col2 -->
+	
+	
+	<div class="col3">
+		<div class="field mini">
+			<input type="text" class="textfield product_quantity" value="<%= @qty %>" name="order[order_line_item_attributes][][quantity]" />
+			<label>QTY</label>
+		</div>
+		
+		<div class="field shortest">
+			<input type="text" class="textfield product_unit_price" value="<%= @total_price %>" name="order[order_line_item_attributes][][unit_price]" />
+			<label>Unit Price</label>
+		</div>
+		
+		<div class="field shortest">
+			<input type="text" class="textfield product_total_price" value="<%= @total_price * @qty %>" name="order[order_line_item_attributes][][total]" />
+			<label>Total Price</label>
+		</div>
+		<div class="clear"></div>
+		
+		<%= link_to_function 'Delete Item', 
+			"$(this).parents('.order_item').remove(); updateOrderTotals();",
+			:class => 'remove_item' %>
+		<div class="clear"></div>
+		
+		
+	</div><!-- end .col3 -->
+	
+	<div class="clear"></div>
+</div><!-- end .order_item -->

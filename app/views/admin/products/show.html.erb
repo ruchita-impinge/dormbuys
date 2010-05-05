@@ -1,0 +1,93 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Product</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Product name:</b>
+			  <%=h @product.product_name %>
+			</p>
+
+						<p>
+			  <b>Option text:</b>
+			  <%=h @product.option_text %>
+			</p>
+
+						<p>
+			  <b>Product overview:</b>
+			  <%=h @product.product_overview %>
+			</p>
+
+						<p>
+			  <b>Product details:</b>
+			  <%=h @product.product_details %>
+			</p>
+
+						<p>
+			  <b>Meta keywords:</b>
+			  <%=h @product.meta_keywords %>
+			</p>
+
+						<p>
+			  <b>Meta description:</b>
+			  <%=h @product.meta_description %>
+			</p>
+
+						<p>
+			  <b>Charge tax:</b>
+			  <%=h @product.charge_tax %>
+			</p>
+
+						<p>
+			  <b>Featured item:</b>
+			  <%=h @product.featured_item %>
+			</p>
+
+						<p>
+			  <b>Visible:</b>
+			  <%=h @product.visible %>
+			</p>
+
+						<p>
+			  <b>Charge shipping:</b>
+			  <%=h @product.charge_shipping %>
+			</p>
+
+						<p>
+			  <b>Drop ship:</b>
+			  <%=h @product.drop_ship %>
+			</p>
+
+						<p>
+			  <b>Exclude from coupons:</b>
+			  <%=h @product.exclude_from_coupons %>
+			</p>
+
+						<p>
+			  <b>Allow in gift registry:</b>
+			  <%=h @product.allow_in_gift_registry %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_products_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_product_path(@product), :class => 'button' %>

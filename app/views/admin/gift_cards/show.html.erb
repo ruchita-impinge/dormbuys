@@ -1,0 +1,58 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing gift_card</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Giftcard number:</b>
+			  <%=h @gift_card.giftcard_number %>
+			</p>
+
+						<p>
+			  <b>Giftcard pin:</b>
+			  <%=h @gift_card.giftcard_pin %>
+			</p>
+
+						<p>
+			  <b>Current amount:</b>
+			  <%=h @gift_card.current_amount %>
+			</p>
+
+						<p>
+			  <b>Original amount:</b>
+			  <%=h @gift_card.original_amount %>
+			</p>
+
+						<p>
+			  <b>Expires:</b>
+			  <%=h @gift_card.expires %>
+			</p>
+
+						<p>
+			  <b>Expiration date:</b>
+			  <%=h @gift_card.expiration_date.to_time.to_s(:mdY) %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_gift_cards_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_gift_card_path(@gift_card), :class => 'button' %>

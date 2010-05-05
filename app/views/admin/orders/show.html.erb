@@ -1,0 +1,263 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Order</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Order:</b>
+			  <%=h @order.order_id %>
+			</p>
+
+						<p>
+			  <b>Order date:</b>
+			  <%=h @order.order_date %>
+			</p>
+
+						<p>
+			  <b>User:</b>
+			  <%=h @order.user_id %>
+			</p>
+
+						<p>
+			  <b>User profile type:</b>
+			  <%=h @order.user_profile_type_id %>
+			</p>
+
+						<p>
+			  <b>Billing first name:</b>
+			  <%=h @order.billing_first_name %>
+			</p>
+
+						<p>
+			  <b>Billing last name:</b>
+			  <%=h @order.billing_last_name %>
+			</p>
+
+						<p>
+			  <b>Billing address:</b>
+			  <%=h @order.billing_address %>
+			</p>
+
+						<p>
+			  <b>Billing address2:</b>
+			  <%=h @order.billing_address2 %>
+			</p>
+
+						<p>
+			  <b>Billing city:</b>
+			  <%=h @order.billing_city %>
+			</p>
+
+						<p>
+			  <b>Billing state:</b>
+			  <%=h @order.billing_state_id %>
+			</p>
+
+						<p>
+			  <b>Billing zipcode:</b>
+			  <%=h @order.billing_zipcode %>
+			</p>
+
+						<p>
+			  <b>Billing country:</b>
+			  <%=h @order.billing_country_id %>
+			</p>
+
+						<p>
+			  <b>Shipping first name:</b>
+			  <%=h @order.shipping_first_name %>
+			</p>
+
+						<p>
+			  <b>Shipping last name:</b>
+			  <%=h @order.shipping_last_name %>
+			</p>
+
+						<p>
+			  <b>Shipping address:</b>
+			  <%=h @order.shipping_address %>
+			</p>
+
+						<p>
+			  <b>Shipping address2:</b>
+			  <%=h @order.shipping_address2 %>
+			</p>
+
+						<p>
+			  <b>Shipping city:</b>
+			  <%=h @order.shipping_city %>
+			</p>
+
+						<p>
+			  <b>Shipping state:</b>
+			  <%=h @order.shipping_state_id %>
+			</p>
+
+						<p>
+			  <b>Shipping zipcode:</b>
+			  <%=h @order.shipping_zipcode %>
+			</p>
+
+						<p>
+			  <b>Shipping country:</b>
+			  <%=h @order.shipping_country_id %>
+			</p>
+
+						<p>
+			  <b>Shipping phone:</b>
+			  <%=h @order.shipping_phone %>
+			</p>
+
+						<p>
+			  <b>Dorm ship college name:</b>
+			  <%=h @order.dorm_ship_college_name %>
+			</p>
+
+						<p>
+			  <b>Dorm ship not assigned:</b>
+			  <%=h @order.dorm_ship_not_assigned %>
+			</p>
+
+						<p>
+			  <b>Dorm ship not part:</b>
+			  <%=h @order.dorm_ship_not_part %>
+			</p>
+
+						<p>
+			  <b>Dorm ship time:</b>
+			  <%=h @order.dorm_ship_time_id %>
+			</p>
+
+						<p>
+			  <b>Dorm ship ship date:</b>
+			  <%=h @order.dorm_ship_ship_date %>
+			</p>
+
+						<p>
+			  <b>Order status:</b>
+			  <%=h @order.order_status_id %>
+			</p>
+
+						<p>
+			  <b>Order comments:</b>
+			  <%=h @order.order_comments %>
+			</p>
+
+						<p>
+			  <b>Payment provider:</b>
+			  <%=h @order.payment_provider_id %>
+			</p>
+
+						<p>
+			  <b>Payment transaction number:</b>
+			  <%=h @order.payment_transaction_number %>
+			</p>
+
+						<p>
+			  <b>Client ip address:</b>
+			  <%=h @order.client_ip_address %>
+			</p>
+
+						<p>
+			  <b>Coupon:</b>
+			  <%=h @order.coupon_id %>
+			</p>
+
+						<p>
+			  <b>How heard option:</b>
+			  <%=h @order.how_heard_option_id %>
+			</p>
+
+						<p>
+			  <b>How heard option value:</b>
+			  <%=h @order.how_heard_option_value %>
+			</p>
+
+						<p>
+			  <b>Packing configuration:</b>
+			  <%=h @order.packing_configuration %>
+			</p>
+
+						<p>
+			  <b>Billing phone:</b>
+			  <%=h @order.billing_phone %>
+			</p>
+
+						<p>
+			  <b>Email:</b>
+			  <%=h @order.email %>
+			</p>
+
+						<p>
+			  <b>Processed:</b>
+			  <%=h @order.processed %>
+			</p>
+
+						<p>
+			  <b>Processing:</b>
+			  <%=h @order.processing %>
+			</p>
+
+						<p>
+			  <b>Int total giftcards:</b>
+			  <%=h @order.int_total_giftcards %>
+			</p>
+
+						<p>
+			  <b>Int total coupon:</b>
+			  <%=h @order.int_total_coupon %>
+			</p>
+
+						<p>
+			  <b>Int total discounts:</b>
+			  <%=h @order.int_total_discounts %>
+			</p>
+
+						<p>
+			  <b>Int subtotal:</b>
+			  <%=h @order.int_subtotal %>
+			</p>
+
+						<p>
+			  <b>Int tax:</b>
+			  <%=h @order.int_tax %>
+			</p>
+
+						<p>
+			  <b>Int shipping:</b>
+			  <%=h @order.int_shipping %>
+			</p>
+
+						<p>
+			  <b>Int grand total:</b>
+			  <%=h @order.int_grand_total %>
+			</p>
+
+						<p>
+			  <b>Whoami:</b>
+			  <%=h @order.whoami %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_orders_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_order_path(@order), :class => 'button' %>

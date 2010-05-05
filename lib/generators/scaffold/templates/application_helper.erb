@@ -1,0 +1,11 @@
+module ApplicationHelper
+  
+  def show_left_sidebar(content)
+    content_tag :div, content, :class => 'left_sidebar'
+  end #end method show_left_sidebar(content)
+  
+  def show_right_sidebar(content)
+    content_tag :div, content, :class => 'right_sidebar'
+  end #end method show_right_sidebar(content)
+  
+end

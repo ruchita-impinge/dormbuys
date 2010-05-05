@@ -1,0 +1,178 @@
+<p>Greetings <%= @vendor.company_name %>,</p>
+
+<p>A new drop ship order has been placed at Dormbuys.com.</p>
+
+<p>Click here, <%= link_to "http://www.dormbuys.com/vendor", "http://www.dormbuys.com/vendor" %> , to print packing slips and enter tracking information for this order.</p>
+
+<p>Click <a href="<%= @url %>">HERE</a>, 
+to view and print your packing slip directly.</p>
+
+<p>If the link above does not work, please paste this URL into your browser&rsquo;s address bar:<br /><%= @url %></p>
+
+
+<p><b>DORMBUYS.COM ORDER NUMBER:</b><br />
+<%= @order.order_id %></p>
+
+<p><b>ORDERED ITEMS:</b><br />
+
+	<table>
+
+	    <tr>
+	      <td><strong><center>Quantity</center></strong></th>
+	      <td><strong>Title</strong></th>
+	    </tr>
+
+		<% for order_line_item in @order.order_line_items %>
+		
+			<% if order_line_item.vendor_company_name == @vendor.company_name %>
+
+			<tr>
+			  <td><center><%=h order_line_item.quantity %></center></td>
+			  <td><%=h order_line_item.product_manufacturer_number %> <%=h order_line_item.item_name%></td>
+			</tr>
+
+
+			<% if order_line_item.order_line_item_options.size > 0 || 
+				order_line_item.order_line_item_product_as_options.size > 0 || 
+				order_line_item.order_line_item_custom_options.size > 0 %>
+
+			<tr>
+			  <td colspan="4">
+
+
+			    <% if order_line_item.order_line_item_options.size > 0 || order_line_item.order_line_item_product_as_options.size > 0 %>
+
+			    <!--[table:product_options]-->
+			    <table style="margin-right: 0; width: 40%;">
+
+			        <tr>
+			          <td>Options</td>
+			        </tr>
+
+
+
+			        <!-- product options -->
+			        <% for option_value in order_line_item.order_line_item_options %>
+			        <tr>
+			          <td>
+						  <%= option_value.option_name.capitalize %>: 
+						  <%= option_value.option_value.capitalize %>
+					  </td>
+			        </tr>
+			        <% end %>
+
+			        <!-- products as options -->
+			        <% for paov in order_line_item.order_line_item_product_as_options %>
+			        <tr>
+			          <td><%=paov.option_name.capitalize %>: <%= paov.display_value.capitalize %></td>
+			        </tr>
+			        <% end %>
+
+			    </table>
+			    <!--[eotable:product_options]-->        
+
+			    <% end %>
+
+
+
+
+
+			    <% if order_line_item.order_line_item_custom_options.length > 0 %>
+
+			    <!--[table:product_customizations]-->
+			    <table style="margin-right: 0; width: 40%;">
+
+			        <tr>
+			          <td scope="col">Cusomization</td>
+			        </tr>
+
+			        <!-- custom options -->
+			        <% for custom_option in order_line_item.order_line_item_custom_options %>
+			        <tr>
+			          <td>
+					  	<%= custom_option.custom_field_name.capitalize %>: 
+						<%= custom_option.custom_field_value %></td>
+			        </tr>
+			        <% end %>
+
+			    </table>
+			    <!--[eotable:product_customizations]-->        
+
+			    <% end %>
+
+
+
+			  </td>
+			</tr>
+
+			<% end %>
+			
+			<% end %>
+
+		<% end %>
+
+
+	</table>
+
+</p>
+
+
+
+
+<p><b>CUSTOMER SHIPPING ADDRESS:</b><br />
+
+<% if @order.user_profile_type_id == Order::ADDRESS_SAME %>
+
+	<%= @order.billing_first_name %> <%= @order.billing_last_name %><br />
+	<%= @order.billing_address %><br />
+
+	<% unless @order.billing_address2.blank? %>
+		<%= @order.billing_address2 %><br />
+	<% end %>
+
+	<%= @order.billing_city %>, <%= State.find(@order.billing_state_id).abbreviation %> 
+	<%= @order.billing_zipcode %><br />
+	<%= Country.find(@order.billing_country_id).country_name %><br />
+
+<% elsif @order.user_profile_type_id == Order::ADDRESS_DIFFERENT %>
+
+	<%= @order.shipping_first_name %> <%= @order.shipping_last_name %><br />
+	<%= @order.shipping_address %><br />
+
+	<% unless @order.shipping_address2.blank? %>
+		<%= @order.shipping_address2 %><br />
+	<% end %>
+
+	<%= @order.shipping_city %>, <%= State.find(@order.shipping_state_id).abbreviation %> 
+	<%= @order.shipping_zipcode %><br />
+	<%= Country.find(@order.shipping_country_id).country_name %><br />
+	Phone: <%= @order.shipping_phone %><br />
+
+<% elsif @order.user_profile_type_id == Order::ADDRESS_DORM %>
+
+	<%= @order.shipping_first_name %> <%= @order.shipping_last_name %><br />
+	<%= @order.dorm_ship_college_name %><br />
+	<%= @order.shipping_address %><br />
+
+	<% unless @order.shipping_address2.blank? %>
+
+		<% unless @order.dorm_ship_not_part %>
+
+			<%= @order.shipping_address2 %><br />
+
+		<% end %>
+
+	<% end %>
+
+	<%= @order.shipping_city %>, <%= State.find(@order.shipping_state_id).abbreviation %> 
+	<%= @order.shipping_zipcode %><br />
+	<%= Country.find(@order.shipping_country_id).country_name %><br />
+	Phone: <%= @order.shipping_phone %>
+
+<% end %>
+
+</p>
+
+
+<p>Sincerely,<br />
+Dormbuys.com</p>

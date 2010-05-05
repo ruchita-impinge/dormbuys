@@ -1,0 +1,34 @@
+<div class="option_value">
+
+<% fields_for "product[product_option_attributes_#{j}][option_value_attributes][]", product_option_value, :index => nil do |ov| %>
+         
+
+	<div class="field short">
+		<%= ov.text_field :option_value, :class => 'textfield' %>
+		<%= ov.label :option_value %>
+	</div>
+
+	<div class="field short">
+		<%= ov.text_field :weight_increase, :class => 'textfield' %>
+		<%= ov.label :weight_increase %>
+	</div>
+	
+	<div class="field short">
+		<%= ov.text_field :price_increase, :class => 'textfield' %>
+		<%= ov.label :price_increase %>
+	</div>
+	
+	<div class="field del_link">
+		<% if product_option_value.new_record? %>
+			<%= link_to_function 'delete', "$(this).parents('.option_value').remove();" %>
+		<% else %>
+			<%= link_to_function 'delete', "mark_for_destroy(this, '.option_value')" %>
+			<%= ov.hidden_field :id, :index => nil %>
+			<%= ov.hidden_field :should_destroy, :index => nil, :class => 'should_destroy' %>
+		<% end %>
+	</div>
+	<div class="clear"></div>
+
+<% end %>
+
+</div><!-- end .option_value -->

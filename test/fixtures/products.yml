@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  product_name: MyString
+  option_text: MyString
+  product_overview: MyText
+  product_details: MyText
+  meta_keywords: MyText
+  meta_description: MyText
+  charge_tax: false
+  featured_item: false
+  visible: false
+  charge_shipping: false
+  drop_ship: false
+  exclude_from_coupons: false
+  allow_in_gift_registry: false
+
+two:
+  product_name: MyString
+  option_text: MyString
+  product_overview: MyText
+  product_details: MyText
+  meta_keywords: MyText
+  meta_description: MyText
+  charge_tax: false
+  featured_item: false
+  visible: false
+  charge_shipping: false
+  drop_ship: false
+  exclude_from_coupons: false
+  allow_in_gift_registry: false

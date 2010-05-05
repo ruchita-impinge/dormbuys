@@ -1,0 +1,18 @@
+<ul id="product_menu">
+	<li><%= link_to 'General Information / Vendor / Subcategories', 
+			edit_admin_product_path(@product),
+			:class => ('selected' if request.path =~ /edit/) %></li>
+	<li><%= link_to 'Images',
+	 		images_admin_product_path(@product),
+			:class => ('selected' if request.path =~ /images/)%></li>
+	<li><%= link_to 'Options', 
+	 		options_admin_product_path(@product),
+			:class => ('selected' if request.path =~ /options/)%></li>
+	<li><%= link_to 'Variations', 
+	 		variations_admin_product_path(@product),
+			:class => ('selected' if request.path =~ /variations/)%></li>
+	<li><%= link_to 'Recommendations &amp; Restrictions', 
+	 		restricted_admin_product_path(@product),
+			:class => ('selected' if request.path =~ /restricted/)%></li>
+</ul>
+<div class="clear"></div>
