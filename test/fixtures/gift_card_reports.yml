@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  csv_data: MyText
+  valid_count: 1
+  valid_total: 1
+  all_count: 1
+  all_total: 1
+
+two:
+  csv_data: MyText
+  valid_count: 1
+  valid_total: 1
+  all_count: 1
+  all_total: 1

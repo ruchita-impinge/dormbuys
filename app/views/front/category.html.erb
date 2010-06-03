@@ -1,2 +1,32 @@
-<h1>Front#category</h1>
-<p>Find me in app/views/front/category.html.erb</p>
+<% content_for :tabbed_page_content do %>
+	
+	<div id="tab02" class="tab">
+		<div class="pager gallery-box inner-gall inner2">
+			<div class="quote-box">
+				<ul class="breadcrumbs">
+					<li><h3><%= @category.name %></h3></li>
+				</ul>
+			</div>
+			<div class="product-hold">
+				<ul>
+					<% @category.visible_primary_subcategories.each do |sub| %>
+					
+						<li>
+							<div class="title">
+								<h3><%= sub.name %></h3>
+							</div>
+							<div class="text">
+								<%= link_to image_tag(sub.list_image.url, :alt => sub.name), sub.default_front_url %>
+							</div>
+						</li>
+					
+					<% end %>
+
+					
+				</ul>
+			</div>
+		</div>
+
+	</div>
+	
+<% end %>

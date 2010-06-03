@@ -1,0 +1,264 @@
+<div id="packinglist">
+	
+	
+	
+	<div id="header">
+		
+		<div id="head1" class="left_fifty">
+			<h2><%= @order.order_vendor.name %></h2>
+		</div><!--[eo:left_fifty]-->
+		
+		<div id="head2" class="right_fifty">
+			<h2>Order Number: <%= @order.order_id %></h2>
+		</div><!--[eo:right_fifty]-->
+		
+	</div><!--[eo:header]-->
+	
+	
+	
+	<div id="customer_information">
+		
+		<div class="left_fifty">
+			<div class="wrapper">
+				<b>Bill To:</b><br />
+				<%= print_billing_address_html(@order) %>
+				
+				<br /><br />
+			
+				<b>Ship To:</b><br />
+				<%= print_shipping_address_html(@order) %>
+			</div>
+		</div><!--[eo:left_fifty]-->
+		
+		
+		<div class="right_fifty">
+			<div class="wrapper">
+				<div id="db_address">
+					<%= @order.order_vendor.name %><br />
+					<%= @order.order_vendor.address %><br />
+					<% unless @order.order_vendor.address2.blank? %>
+						<%= @order.order_vendor.address2 %><br />
+					<% end %>
+					<%= @order.order_vendor.city %>, <%= @order.order_vendor.state.abbreviation %> <%= @order.order_vendor.zip_code %><br />
+					<%= @order.order_vendor.country.country_name %>
+				</div>
+			
+				<br />
+			
+				<div id="contact_methods">
+					<%= @order.order_vendor.customer_service_phone %><br />
+					<%= @order.order_vendor.customer_service_email %><br />
+					<%= @order.order_vendor.website %>
+				</div>
+			</div>
+		</div><!--[eo:right_fifty]-->
+		
+	</div><!--[eo:customer_information]-->
+	
+	
+	
+	<div id="order_extra_info">
+		
+		<div class="thirty_three">
+			<b>Email</b><br />
+			<%= @order.email %>
+		</div>
+		
+		<div class="thirty_three">
+			<b>Order Date</b><br />
+			<%= @order.order_date.strftime("%m/%d/%Y") %>
+		</div>
+		
+		<div class="thirty_three">
+			<b>Order Number</b><br />
+			<%= @order.order_id %>
+		</div>
+		
+	</div><!--[eo:order_extra_info]-->
+	
+	
+	
+	<div id="order_items">
+		<table style="margin-left: 0; width: 100%;">
+		    <thead>
+		      <tr>
+			<!--
+				<th scope="col">Product #</th>
+			-->
+				<th scope="col" class="center">MF #</th>
+				<th scope="col" class="center">WH Location</th>
+		        <th scope="col" class="center">QTY</th>
+				<th scope="col" class="center">Notes</th>
+		        <th scope="col">Title</th>
+		        <th scope="col" class="center">Unit Price</th>
+		        <th scope="col" class="center">Quantity Total</th>
+		      </tr>
+		    </thead>
+
+
+		  <tbody>
+
+			
+			<% for completed_order_line_item in @order.order_line_items %>
+				
+				
+				<tr>
+				
+				  <td class="center"><%=h completed_order_line_item.product_manufacturer_number %></td>
+
+				  <td class="center"><%=h completed_order_line_item.warehouse_location %></td>
+
+				  <td class="center"><%=h completed_order_line_item.quantity %></td>
+
+				  <td class="center">
+				  	<% if completed_order_line_item.product_drop_ship %>
+						ships separately
+					<% else %>
+						<!-- show nothing -->
+					<% end %>
+				  </td>
+
+				  <td><strong><%=h completed_order_line_item.item_name %></strong></td>
+				  <td class="center"><strong><%= number_to_currency completed_order_line_item.unit_price %></strong></td>
+				  <td class="center"><strong><%= number_to_currency completed_order_line_item.total %></strong></td>
+				</tr>
+
+
+
+
+				<% if completed_order_line_item.order_line_item_discounts.size > 0 %>
+
+				  <tr>
+					<td colspan="4">
+						&nbsp;&nbsp;&nbsp;&nbsp;Discount: 
+						<%=h completed_order_line_item.order_line_item_discounts.first.discount_message %> @ 
+						<%= number_to_currency completed_order_line_item.order_line_item_discounts.first.discount_amount %>
+					</td>
+				  </tr>
+
+				<% end %>
+
+
+
+
+				<% if completed_order_line_item.order_line_item_options.size > 0 || 
+					completed_order_line_item.order_line_item_product_as_options.size > 0 %>
+
+				<tr>
+				  <td colspan="4">
+
+
+				    <% if completed_order_line_item.order_line_item_options.size > 0 || completed_order_line_item.order_line_item_product_as_options.size > 0 %>
+
+				    <!--[table:product_options]-->
+				    <table style="margin-right: 0; width: 40%; border-width: 1px; border-color: #000;">
+
+				      <thead>
+				        <tr>
+				          <th scope="col" colspan="2">Options</th>
+				        </tr>
+				      </thead>
+
+				      <tbody>
+
+				        <!-- product options -->
+				        <% for option_value in completed_order_line_item.order_line_item_options %>
+				        <tr>
+						  <%
+						  	#po = ProductOption.find(:first, :conditions => {:id => option_value.product_option_id})
+							#show_opt_name  = po ? po.option_name.capitalize : '<span class="error">missing</span>'
+							show_opt_name = option_value.option_name.capitalize
+						  %>
+				          <td><%= show_opt_name %>: <%= option_value.option_value.capitalize %></td>
+				          <td><%= "(#{((option_value.price_increase.cents >= 0)? '+' : '-')} $#{option_value.price_increase})" %></td>
+				        </tr>
+				        <% end %>
+
+				        <!-- products as options -->
+				        <% for paov in completed_order_line_item.order_line_item_product_as_options %>
+				        <tr>
+				          <td><%=paov.option_name.capitalize %>: <%= paov.display_value.capitalize %></td>
+				          <td><%= number_to_currency paov.price  %></td>
+				        </tr>
+				        <% end %>
+
+				      </tbody>
+
+				    </table>
+				    <!--[eotable:product_options]-->        
+
+				    <% end %>
+
+
+
+
+				  </td>
+				</tr>
+
+				<% end %>
+
+
+
+
+
+				
+				
+				
+			<% end %><!-- end for -->
+
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Sub Total</td>
+		      <td class="center" ><%= number_to_currency @order.subtotal  %></td>
+		    </tr>
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Coupons</td>
+		      <td class="center" >(<%= number_to_currency @order.total_coupon  %>)</td>
+		    </tr>
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Discounts</td>
+		      <td class="center" >(<%= number_to_currency @order.total_discounts  %>)</td>
+		    </tr>
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Tax</td>
+		      <td class="center" ><%= number_to_currency @order.tax  %></td>
+		    </tr>
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Shipping</td>
+		      <td class="center" ><%= number_to_currency @order.shipping  %></td>
+		    </tr>
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Gift Cards</td>
+		      <td class="center" >(<%= number_to_currency @order.total_giftcards  %>)</td>
+		    </tr>
+
+		    <tr class="total-line" >
+		      <td colspan="6" >Grand Total</td>
+		      <td class="center" ><%= number_to_currency @order.grand_total  %></td>
+		    </tr>
+
+		  </tbody>
+		</table>
+	</div><!--[eo:order_items]-->
+	
+	
+	
+	<div id="footer">
+		If you have any questions regarding your order please telephone the number at the 
+		top right of this receipt or email <%= @order.order_vendor.customer_service_email %>
+	</div><!--[eo:footer]-->
+	
+	
+	
+</div><!--[eo:packinglist]-->
+
+<script type="text/javascript">
+	window.onload = function(){
+		var t = setTimeout("window.print();", 1000);
+	}
+</script>

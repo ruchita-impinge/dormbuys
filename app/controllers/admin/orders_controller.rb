@@ -2,6 +2,82 @@ class Admin::OrdersController < ApplicationController
   require 'admin_order_builder.rb'
   include AdminOrderBulder
 
+  def packing_list
+    @order = Order.find(params[:id])
+    render :partial => "shared/packing_list.html.erb", :layout => "packing_list"
+  end #end method packing_list
+
+
+
+  def apply_credit
+    
+    @order = Order.find(params[:id])
+    
+    if params[:credit][:credit_amount].to_money.cents <= 0
+      @amount_error = true
+    else
+      @refund = Payment::PaymentManager.make_partial_refund(
+        @order, 
+        params[:credit][:credit_amount].to_money, 
+        params[:credit][:credit_note])
+    end
+    
+    
+    if @amount_error
+      flash[:error] = "Error: please check the amount of your credit"
+    elsif @refund.success
+      flash[:notice] = "Credit was successfully applied"
+    else
+      flash[:error] = "Error applying credit, see the order credit box for more details"
+    end
+    
+    redirect_to edit_admin_order_path(@order)
+    
+  end #end method apply_credit
+
+
+
+  def notify_dropship
+    @order = Order.find(params[:id])
+          
+    if params[:vendor]
+      @vendor = Vendor.find(params[:vendor_id])
+      
+      if @order.send_individual_drop_ship_emails(@vendor)
+        flash[:notice] = "Drop ship emails are now being sent to #{@vendor.company_name}"
+        redirect_to edit_admin_order_path(@order)
+      else
+        flash[:error] = "There was an error sending drop ship emails to #{@vendor.company_name} contact support."
+        redirect_to edit_admin_order_path(@order)
+      end
+      
+    else
+      
+      if @order.send_drop_ship_emails
+        flash[:notice] = "All drop ship emails are now being sent"
+        redirect_to edit_admin_order_path(@order)
+      else
+        flash[:error] = "There was an error sending drop ship emails, contact support."
+        redirect_to edit_admin_order_path(@order)
+      end
+      
+    end
+    
+  end #end method notify_dropship
+
+
+
+  def edit_shipping
+    @order = Order.find(params[:id])
+    
+    @order.send_later(:kill_all_shipping_labels)
+    
+    render :update do |page|
+      page.replace_html "shipping_address", :partial => "edit_shipping_addy"
+    end
+  end #end method edit_shipping
+
+
 
   def search
     
@@ -63,10 +139,9 @@ class Admin::OrdersController < ApplicationController
   end #end method search
 
     
-  # GET /orders
-  # GET /orders.xml
+
   def index
-    @orders = Order.find(:all).paginate :per_page => 10, :page => params[:page]
+    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 10, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb
@@ -74,8 +149,8 @@ class Admin::OrdersController < ApplicationController
     end
   end
 
-  # GET /orders/1
-  # GET /orders/1.xml
+
+
   def show
     @order = Order.find(params[:id])
 
@@ -85,8 +160,8 @@ class Admin::OrdersController < ApplicationController
     end
   end
 
-  # GET /orders/new
-  # GET /orders/new.xml
+
+
   def new
     @order = Order.new
     @order.order_id = Order.generate_uniq_order_id
@@ -97,13 +172,14 @@ class Admin::OrdersController < ApplicationController
     end
   end
 
-  # GET /orders/1/edit
+
+
   def edit
     @order = Order.find(params[:id])
   end
 
-  # POST /orders
-  # POST /orders.xml
+
+
   def create
     
     #params[:order][:credit_card_attributes] = params[:credit_card_attributes]
@@ -127,15 +203,24 @@ class Admin::OrdersController < ApplicationController
     end
   end
 
-  # PUT /orders/1
-  # PUT /orders/1.xml
+
+
   def update
+        
     @order = Order.find(params[:id])
 
     respond_to do |format|
       if @order.update_attributes(params[:order])
-        flash[:notice] = 'Order was successfully updated.'
-        format.html { redirect_to(admin_orders_path) }
+        
+        if @order.canceled?
+          flash[:notice] = "Order has been queued for cancelation"
+          format.html { redirect_to(admin_orders_path) }
+        else
+          flash[:notice] = 'Order was successfully updated.'
+          format.html { redirect_to(edit_admin_order_path(@order)) }
+        end
+        
+        
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -144,8 +229,8 @@ class Admin::OrdersController < ApplicationController
     end
   end
 
-  # DELETE /orders/1
-  # DELETE /orders/1.xml
+
+
   def destroy
     @order = Order.find(params[:id])
     @order.destroy
@@ -155,4 +240,6 @@ class Admin::OrdersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+
 end

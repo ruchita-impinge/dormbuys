@@ -1,0 +1,181 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-checkout">Checkout</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-stuff active"><img src="/images/text-mystuff.png" alt="image description" class="png" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						
+						<%= render :partial => 'checkout_tab_nav' %>
+						
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<!-- info-hold -->
+									<div class="info-hold">
+										<h3>Your order was successfully placed! (Sah Weet!)</h3>
+										<div class="hold">
+											<address>
+												<strong>Billing:</strong>
+												<span><%= @order.billing_first_name %> <%= @order.billing_last_name %></span>
+												<span><%= @order.billing_address %></span>
+												<% if @order.billing_address2 %>
+													<span><%= @order.billing_address2 %></span>
+												<% end %>
+												<span><%= @order.billing_city %>, <%= @order.billing_state.abbreviation %> <%= @order.billing_zipcode %></span>
+												<span><%= @order.billing_country.country_name %></span>
+												<span><%= @order.billing_phone %></span>
+												<span><%= @order.email %></span>
+											</address>
+											<address>
+												<strong>Shipping:</strong>
+												<% if @order.user_profile_type_id == Order::ADDRESS_DORM %>
+													<span><%= @order.shipping_first_name %> <%= @order.shipping_last_name %></span>
+													<span><%= @order.dorm_ship_college_name %></span>
+													<span><%= @order.shipping_address %></span>
+													<% if @order.shipping_address2 %>
+														<% unless @order.dorm_ship_not_part %>
+															<span><%= @order.shipping_address2 %></span>
+														<% end %>
+													<% end %>
+													<span><%= @order.shipping_city %>, <%= @order.shipping_state.abbreviation %> <%= @order.shipping_zipcode %></span>
+													<span><%= @order.shipping_country.country_name %></span>
+													<span><%= @order.shipping_phone %></span>
+													<span>Ship: #{order.when_to_dorm_ship</span>
+												<% else %>
+													<span><%= @order.shipping_first_name %> <%= @order.shipping_last_name %></span>
+													<span><%= @order.shipping_address %></span>
+													<% if @order.shipping_address2 %>
+														<span><%= @order.shipping_address2 %></span>
+													<% end %>
+													<span><%= @order.shipping_city %>, <%= @order.shipping_state.abbreviation %> <%= @order.shipping_zipcode %></span>
+													<span><%= @order.shipping_country.country_name %></span>
+													<span><%= @order.shipping_phone %></span>
+												<% end %>
+											</address>
+											<div class="box">
+												<strong class="order">Order # <%= @order.order_id %></strong>
+												<strong>Print:</strong>
+												<p>Please print this page for your records.</p>
+												<%= link_to 'Printer-friendly version', cart_print_path, :target => '_blank' %>
+											</div>
+										</div>
+										<img class="ball png" src="/images/img-ball.png" alt="" />
+									</div>
+									<!-- table-box -->
+									<div class="table-box shopping-holder">
+										<div class="table-head">
+											<strong class="item">ITEM</strong>
+											<strong class="align-c qty2">QTY</strong>
+											<strong class="align-c total">TOTAL</strong>
+										</div>
+										<table class="table-body table-body2">
+											<% for order_item in @order.order_line_items %>
+											<tr>
+												<td class="item">
+													<div class="item-info">
+														<%= link_to image_tag(order_item.variation.product.product_image(:thumb)), order_item.variation.product.default_front_url %>
+														<div class="description">
+															<strong class="item-title"><%= order_item.variation.full_title %></strong>
+															<span class="item-desc">#<%= order_item.variation.product_number %></span>
+															<span class="item-desc"><%= truncate(order_item.variation.product.product_overview, :length => 40) %></span>
+															
+															<% order_item.order_line_item_options.group_by(&:option_name).each do |option, values| %>
+																<span class="item-desc"><%= option %>: <%= values.collect(&:option_value) %></span>
+															<% end %>
+
+															<% order_item.order_line_item_product_as_options.group_by(&:option_name).each do |option, values| %>
+																<span class="item-desc"><%= option %>: <%= values.collect(&:display_value) %></span>
+															<% end %>
+														</div>
+													</div>
+												</td>
+												<td class="qty2">
+													<%= order_item.quantity %>
+												</td>
+												<td class="total">
+													$<%= order_item.total %>
+												</td>
+											</tr>
+											<% end %>
+										</table>
+										<div class="price-box">
+											<div>
+												<ul>
+													<li><span>$<%= @order.subtotal %></span> SUBTOTAL:</li>
+													<li><span>$<%= @order.shipping %></span> SHIPPING:</li>
+													<li><span>$<%= @order.tax %></span> TAX:</li>
+													<li><span>-$<%= @order.total_coupon %></span> COUPONS:</li>
+													<li><span>-$<%= @order.total_giftcards %></span> GIFT&nbsp;CARDS:</li>
+												</ul>
+											</div>
+										</div>
+										<div class="total-box">
+											<em>TOTAL: <span>$<%= @order.grand_total %></span></em>
+										</div>
+										<%= link_to 'Continue Shopping', root_path, :class => 'btn-submit' %>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="text-hold">
+										<strong>Order submission complete. Your order number is <%= @order.order_id %></strong>
+										<p>Your order has been processed with great success! By the time you’ve finished reading this, you’ll find an electronic piece of mail in your inbox, containing the digits of your confirmation/receipt. That message also contains the rest of the info on this very page, as well as some other important order notes.</p>
+										<p>If you’ve got any Q’s about your order, feel free to contact us at <a href="mailto:help@dormbuys.com">help@dormbuys.com</a>. You can also track the status of your order by logging into your account and selecting “View Order History.” Easy-peasy, right? That’s how we do it.</p>
+										<p>Thanks for hanging out with us!<br /> – The DB Crew</p>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<!-- product side boxes -->
+					<div class="product-sboxes">
+						<strong class="slogan share">Share the Dorm Love</strong>
+						<div class="p-box">
+							<div class="heading">
+								<strong class="giftistry">GIFTISTRY</strong>
+							</div>
+							<div class="body">
+								<p>Now that you’ve sampled our dormtastic offers, might we suggest you share the wealth? Grab a gift card [or 6] and let the rest of Dorm Nation in on your little secret. ‘Cause you can’t keep a good thing to yourself!</p>
+								<ul class="banner-list">
+									<li><%= link_to image_tag("/images/img68.jpg"), buy_gift_card_path %></li>
+									<li><%= link_to image_tag("/images/img69.jpg"), buy_gift_card_path %></li>
+									<li><%= link_to image_tag("/images/img70.jpg"), buy_gift_card_path %></li>
+								</ul>
+								<%= link_to 'Grab a gift card', buy_gift_card_path, :class => 'link' %>
+							</div>
+						</div>
+						<div class="banner">
+							<img src="/images/img67.gif" alt="image description" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<%= yield :front_footer_gift_blog %>
+
+</div>

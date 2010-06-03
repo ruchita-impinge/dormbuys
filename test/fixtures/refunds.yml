@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  order_id: 1
+  transaction_id: MyString
+  user_id: 1
+  response_data: MyString
+  message: MyString
+  success: false
+  int_amount: 1
+
+two:
+  order_id: 1
+  transaction_id: MyString
+  user_id: 1
+  response_data: MyString
+  message: MyString
+  success: false
+  int_amount: 1

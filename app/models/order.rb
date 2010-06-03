@@ -1,19 +1,26 @@
 class Order < ActiveRecord::Base
   
-  attr_accessor :admin_created_order
+  attr_accessor :admin_created_order, :add_hoc_label_errors, :skip_all_callbacks
   
   before_validation :set_shipping_address
-  before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory
+  before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors
   
   after_create :run_followup_tasks
-  after_update :save_order_line_items, :save_shipping_labels
+  after_update :save_order_line_items, :save_shipping_labels, :cancel_if_necessary
   
   belongs_to :order_vendor
   belongs_to :user
   belongs_to :coupon
+  belongs_to :billing_state, :class_name => "State", :foreign_key => "billing_state_id"
+  belongs_to :billing_country, :class_name => "Country", :foreign_key => "billing_country_id"
+  belongs_to :shipping_state, :class_name => "State", :foreign_key => "shipping_state_id"
+  belongs_to :shipping_country, :class_name => "Country", :foreign_key => "shipping_country_id"
   has_many :order_line_items
   has_many :shipping_labels
+  has_many :order_drop_ship_emails
+  has_many :refunds
   has_and_belongs_to_many :gift_cards
+  has_and_belongs_to_many :vendors
   
   
   validates_presence_of :order_id, :order_date, :user_profile_type_id, :billing_first_name, :billing_last_name, 
@@ -22,6 +29,7 @@ class Order < ActiveRecord::Base
     :order_status_id, :payment_provider_id, :client_ip_address, :how_heard_option_id, :whoami
   
   validates_associated :order_line_items
+  validates_associated :shipping_labels
   
   
   DORM_SHIP_DATE  = 1
@@ -65,6 +73,7 @@ class Order < ActiveRecord::Base
     [9, 'Repeat Customer'],
     [10,'Email']
   ]
+  HOW_HEARD_INPUT_REQUIRED = [6,8]
   
   WHO_AM_I_OPTIONS = [
     ["College Student", "College Student"],
@@ -118,8 +127,38 @@ class Order < ActiveRecord::Base
     :mapping => %w(int_grand_total cents),
     :converter => Proc.new {|amount| amount.to_money }
 
+ 
+  def validate
+    unless self.add_hoc_label_errors.blank?
+      self.add_hoc_label_errors.each do |err|
+        self.errors.add_to_base(err)
+      end
+    end
+  end #end method validate
+ 
+ 
+  def cancel_if_necessary
+    return if self.skip_all_callbacks
+    if self.order_status_id == Order::ORDER_STATUS_CANCELED
+      self.send_later(:cancel_order)
+    end
+  end
+ 
+  
+  def how_heard_txt
+    heard = nil
+    Order::HOW_HEARD_OPTIONS.each {|o| heard = o if o.first == self.how_heard_option_id }
+    if HOW_HEARD_INPUT_REQUIRED.include?(heard.first)
+      self.how_heard_option_value
+    else
+      heard.last
+    end
+  end #end method how_heard_txt
+
+
 
   def run_followup_tasks
+    return if self.skip_all_callbacks
     self.send_later(:setup_order_shipping)
     self.send_later(:track_item_sold_counts)
     self.send_later(:update_gift_registry_wish_list)
@@ -216,6 +255,7 @@ class Order < ActiveRecord::Base
 
 
   def set_order_user
+    return if self.skip_all_callbacks
     
     #look at order email, and if that email is assoc w/ a user account
     #we will attach the user_account to the order
@@ -229,6 +269,7 @@ class Order < ActiveRecord::Base
 
 
   def run_final_qty_checks
+    return if self.skip_all_callbacks
 
     return true if admin_created_order
     
@@ -249,7 +290,9 @@ class Order < ActiveRecord::Base
   end #end method run_final_qty_checks
 
 
+
   def save_order_payment
+    return if self.skip_all_callbacks
     
     pass = true
     
@@ -309,6 +352,7 @@ class Order < ActiveRecord::Base
   
   
   def adj_item_inventory
+    return if self.skip_all_callbacks
     
     #alter the inventory of the order items & on_hold qty
     for item in self.order_line_items
@@ -341,6 +385,12 @@ class Order < ActiveRecord::Base
     end #end for item in @order.order_line_items
     
   end #end method adj_item_inventory
+  
+  
+  
+  def set_vendors
+    self.vendors = self.all_vendors_from_line_items
+  end #end method set_vendors
   
   
   
@@ -429,6 +479,7 @@ class Order < ActiveRecord::Base
   
   
   def save_order_line_items
+    return if self.skip_all_callbacks
     order_line_items.each do |oli|
       if oli.should_destroy?
         oli.destroy
@@ -441,6 +492,7 @@ class Order < ActiveRecord::Base
   
   
   def save_shipping_labels
+    return if self.skip_all_callbacks
     shipping_labels.each do |sl|
       if sl.should_destroy?
         sl.destroy
@@ -503,6 +555,7 @@ class Order < ActiveRecord::Base
   end #end method get_payment_billing_address
   
   
+  
   def get_payment_shipping_address
     shipping_address = { 
       :name     => "#{self.shipping_first_name} #{self.shipping_last_name}",
@@ -543,6 +596,9 @@ class Order < ActiveRecord::Base
 
 
   def set_shipping_address
+    return if self.skip_all_callbacks
+    
+    return unless self.new_record?
     
     case self.user_profile_type_id
       
@@ -563,6 +619,7 @@ class Order < ActiveRecord::Base
     end #end case statement
     
   end #end method set_shipping_address
+  
   
   
   def status_text
@@ -593,10 +650,10 @@ class Order < ActiveRecord::Base
 
 
 
-
   def credit_card_attributes=(credit_card_attributes)
     self.payment_info = credit_card_attributes
   end #end method credit_card_attributes=(credit_card_attributes)
+
 
 
   def payment_info
@@ -608,12 +665,13 @@ class Order < ActiveRecord::Base
   end #end method store_payment_info(values)
   
   
+    
   def payment_info=(values)
     @payment_values = values
   end #end method
   
-
-
+  
+  
   def shippments
     if @shippments.blank?
       @shippments = ShipManager.calculate_shippments(self.order_line_items, self.shipping_zipcode)
@@ -621,6 +679,581 @@ class Order < ActiveRecord::Base
       @shippments
     end
   end #end method shippments
+  
+  
+  
+  def unsent_dropships?
+    
+    line_item_vendors = [] #array of vendor IDs that have line items
+    emailed_vendors = [] #array of vendors that were emailed
+    
+    #get an array of vendor ids for drop_ship items on this order
+    self.order_line_items.each do |line_item| 
+        if line_item.product_drop_ship
+          v = Vendor.find_by_company_name(line_item.vendor_company_name) unless line_item.vendor_company_name.blank?
+          line_item_vendors << v.id if v
+        end
+    end
+    
+    #get a list of vendor ids that were sent drop_ship emails for this order
+    self.order_drop_ship_emails.each {|email| emailed_vendors << email.vendor_id}
+    
+    #sort & compare the lists
+    line_item_vendors.sort! {|x,y| x <=> y}
+    emailed_vendors.sort! {|x,y| x <=> y}
+    
+    #return the comparison
+    pass = false
+    line_item_vendors.each {|vend| pass = true unless emailed_vendors.include? vend}
+    pass
+  end #end method unsent_dropships?
+  
+  
+
+  def dorm_w_unsent_dropships?
+    
+    if self.user_profile_type_id == Order::ADDRESS_DORM
+      unsent_dropships?
+    else
+      false
+    end
+    
+  end #end method dorm_w_unsent_dropships?
+  
+  
+  
+  def dorm_ship?
+    self.user_profile_type_id == Order::ADDRESS_DORM
+  end #end method dorm_ship?
+  
+  
+
+  def shipped_complete?
+    self.order_status_id == Order::ORDER_STATUS_SHIPPED
+  end #end method shipped_complete?
+  
+  
+  
+  def has_usps?
+    missing_non_dropship_tracking? && shipping_labels.empty?
+  end #end method has_usps?
+  
+  
+  
+  def dropship_only?
+    ds_only = true
+    self.order_line_items.each do |line_item|
+
+      if line_item.product_drop_ship
+        ds_only = false
+        return ds_only
+      end
+    end
+    ds_only
+  end #end method dropship_only?
+  
+  
+  
+  def is_processing?
+    self.processing
+  end #end method is_processing?
+  
+  
+  
+  def is_processed?
+    self.processed
+  end #end method is_processed?
+  
+  
+
+  def has_dropship?
+    ds = false
+    
+    self.order_line_items.each do |line_item|
+        if line_item.product_drop_ship
+          ds = true
+          return ds
+        end
+    end
+    ds
+  end #end has_dropship?
+  
+  
+
+  def invalid_address_alert?
+    alert = false
+    keywords = ["AFO", "Box", "BOX", "PO", "P.O.", "PO Box", "APO", "AFO", "AP"]
+    keywords.each {|k| alert = true if self.shipping_address.rindex(k)}
+    keywords.each {|k| alert = true if self.shipping_city.rindex(k)}
+    alert
+  end #end method invalid_address_alert?
+  
+  
+
+  def missing_non_dropship_tracking?
+    missing = false
+    self.order_line_items.each do |line_item|
+
+        unless line_item.product_drop_ship
+          line_item.shipping_numbers.each do |number| 
+            missing = true if number.tracking_number.blank?
+          end
+        end
+
+    end
+    missing
+  end #end method missing_non_dropship_tracking?
+
+
+
+  def canceled?
+    self.order_status_id == Order::ORDER_STATUS_CANCELED || self.order_status_id == Order::ORDER_STATUS_REFUNDED
+  end
+  
+  
+  
+  def has_comments?
+    !self.order_comments.blank?
+  end #end method has_comments?
+  
+  
+  
+  def full_refund
+    
+    # HACK for bad auth.net result after ruby 1.8.7 upgrade
+    if RAILS_ENV == 'development'
+      result = self.refunds.create(
+        :transaction_id   => "123456", 
+        :amount           => grand_total,
+        :user_id          => User.current_user.id, 
+        :response_data    => "full_refund", 
+        :message          => "Refunded full total", 
+        :success          => true)
+    else
+        result = Payment::PaymentManager.make_full_refund(self, grand_total)
+    end
+    
+  end #end method full_refund
+  
+  
+  
+  def cancel_order
+    
+    #refund the full order amount
+    @refund = full_refund
+    
+    if @refund.success
+    
+      #del the order's shipping labels
+      kill_all_shipping_labels
+    
+      #update inventory levels
+      order_line_items.each do |line_item|
+        
+        variation = line_item.variation
+        
+        unless line_item.product_drop_ship
+          
+          if variation
+            
+            new_onhold = variation.qty_on_hold - line_item.quantity
+            new_onhand = variation.qty_on_hand + line_item.quantity
+            variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
+            
+          end #end if
+        
+        end #end unless
+        
+        
+        for ov in line_item.order_line_item_product_as_options
+
+          optional_variation = ProductVariation.find_by_product_number(ov.product_number)
+
+          unless optional_variation.product.drop_ship
+            new_onhand = optional_variation.qty_on_hand + line_item.quantity #credit on-hand
+            new_onhold = optional_variation.qty_on_hold - line_item.quantity #debit on-hold
+            optional_variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
+          end
+
+        end #end for product_optional_variations
+        
+        
+      end #end order_line_items.each
+    
+      Notifier.deliver_order_canceled(self)
+    
+    end #end if refund success
+    
+    return @refund.success
+    
+  end #end method cancel_order
+  
+  
+  
+  def kill_all_shipping_labels
+    
+    self.shipping_labels.each do |label|
+      
+      #void the label with the courier
+      begin
+        ShipManager.void_shipping_label(label)
+      rescue
+      end
+      
+      #del any tracking #s filled from this label
+      order_line_items.each do |line_item|
+        line_item.shipping_numbers.each do |shipping_number|
+          
+          if shipping_number.tracking_number == label.tracking_number
+            shipping_number.courier_id = nil
+            shipping_number.tracking_number = nil
+            shipping_number.save
+          end
+          
+        end
+      end
+      
+      
+      #del the label itself
+      label.destroy
+      
+    end #end labels.each
+    
+    update_order_ship_status
+    
+  end #end method kill_all_shipping_labels
+  
+  
+  
+  def update_order_ship_status
+    
+    unless self.canceled?
+    
+      num_shipped = 0
+      num_total = 0
+
+      self.order_line_items.each do |line_item|
+      
+        line_item.shipping_numbers.each do |shipping_number|
+        
+          #add the shipping number to the total
+          num_total += 1
+        
+          #add to the number shipped unless the tracking
+          # number is missing
+          unless shipping_number.tracking_number.blank?
+            num_shipped += 1
+          end
+        
+        end #end shipping_numbers
+      
+      end #end line_items
+    
+    
+      set_status = Proc.new do
+        
+        if num_shipped == 0
+          self.order_status_id = Order::ORDER_STATUS_WAITING
+        elsif num_shipped < num_total
+          self.order_status_id = Order::ORDER_STATUS_PARTIAL
+        elsif num_shipped == num_total
+          self.order_status_id = Order::ORDER_STATUS_SHIPPED
+        end
+        
+      end #end proc
+      
+      
+      if User.current_user.is_admin?
+        
+        #do whatever you want
+        set_status.call
+        
+      else
+        
+        if self.dropship_only?
+          
+          set_status.call
+          
+        else
+          
+          #if it is NOT going to be shipped complete
+          if num_shipped != num_total
+            
+            set_status.call
+            
+          else
+            
+            #this IS going to mark it as SHIPPED COMPLETE
+            
+            if is_processed?
+              set_status.call
+            else
+              self.order_status_id = Order::ORDER_STATUS_SHIPPED
+            end
+            
+          end
+          
+        end #end if dropship_only?
+        
+      end #end is_admin?
+  
+      
+      #save any status change
+      self.save
+    
+    end #end unless canceled?
+      
+  end #end method update_order_ship_status
+  
+  
+  
+  def drop_ship_vendors
+    ds_vendors = []
+    
+    #get an array of vendors for drop_ship items on this order
+    order_line_items.each do |line_item| 
+        if line_item.product_drop_ship
+          ds_vendors << Vendor.find_by_company_name(line_item.vendor_company_name) unless line_item.vendor_company_name.blank?
+        end
+    end
+    
+    #kill any duplicates
+    ds_vendors.uniq!
+    
+    ds_vendors
+  end #end method drop_ship_vendors
+  
+  
+  
+  def all_vendors_from_line_items
+    all_vendors = []
+    
+    #get an array of vendors for drop_ship items on this order
+    order_line_items.each do |line_item| 
+      all_vendors << Vendor.find_by_company_name(line_item.vendor_company_name) unless line_item.vendor_company_name.blank?
+    end
+    
+    #kill any duplicates
+    all_vendors.uniq!
+    
+    all_vendors
+  end #end method all_vendors_from_line_items
+  
+  
+  
+  def send_drop_ship_emails
+
+    begin
+
+      #loop over all the vendors that have items on the order
+      self.drop_ship_vendors.each do |vendor|
+      
+        #look up all vendor managers for a vendor
+        vendor.vendor_managers.each do |manager|
+        
+          if manager.email
+            
+            #send the email
+            Notifier.send_later(:deliver_vendor_dropship_notification, manager, vendor, self)
+
+            #create a drop_ship_email
+            self.order_drop_ship_emails.create(
+              :vendor_id => vendor.id,
+              :email => manager.email)
+            
+          end #end if manager.user.email
+        
+        end #end vendor_managers.each
+      
+      end #end vendors.each
+      
+      
+    rescue
+      return false
+    end
+    
+    return true
+    
+  end #end method send_drop_ship_emails
+  
+  
+  
+  def send_individual_drop_ship_emails(vendor)
+    
+    begin
+
+      send_to = [] #array of users to email
+
+      #look up all vendor managers for a vendor
+      vendor.vendor_managers.each do |manager|
+      
+        send_to << manager if manager.email
+        
+      end #end vendor_managers.each
+      
+      #now that we have an error free list of emails to send
+      # lets do it
+      send_to.each do |user|
+        
+        #send the email
+        Notifier.send_later(:deliver_vendor_dropship_notification, user, vendor, self)
+    
+        #create a drop_ship_email
+        self.order_drop_ship_emails.create(
+          :vendor_id => vendor.id,
+          :email => user.email)
+          
+      end #end send_to.each
+      
+
+    rescue
+      return false
+    end
+    
+    return true
+  end #end method send_individual_drop_ship_emails
+  
+  
+
+  def updated_shipping_number_attributes=(shipping_num_attributes)
+    attributes = shipping_num_attributes.first
+    attributes[:id].each do |shipping_number_id|
+      num = ShippingNumber.find(shipping_number_id)
+      if num
+        num.update_attributes(:courier_id => attributes[:courier_id], :tracking_number => attributes[:tracking_number])
+      end
+    end
+    
+    Notifier.send_later(:updated_tracking, self)
+    
+  end #end method updated_shipping_number_attributes(shipping_num_attributes)
+
+
+
+  def ad_hoc_shipping_label_attributes=(form_data)
+    
+    #raise "#{attributes.first[:name]}"
+    attributes = form_data.first
+    
+    self.add_hoc_label_errors = []
+    
+    
+    begin
+      
+      shipping_address = { 
+        :name     => attributes[:name],
+        :address1 => attributes[:address],
+        :address2 => attributes[:address2],
+        :city     => attributes[:city],
+        :state    => State.find(attributes[:state_id]).abbreviation,
+        :country  => Country.find(attributes[:country_id]).abbreviation,
+        :zip      => attributes[:zip],
+        :phone    => attributes[:phone]
+      }
+      shipping_address[:company_name] = attributes[:company_name] if attributes[:company_name]
+    
+      length = attributes[:length].to_f
+      width = attributes[:width].to_f
+      depth = attributes[:depth].to_f
+      weight = attributes[:weight].to_f
+    
+    
+      price, label, tracking_number = ShipManager.courier_ship_request(
+        shipping_address, 
+        length,
+        width,
+        depth,
+        weight, 
+        1, 
+        self.order_id)
+    
+    
+      #write out the shipping label image
+      label_path = Files::FileManager.save_shipping_label(label.path)
+    
+      self.shipping_labels.create(:label => label_path, :tracking_number => tracking_number)
+      
+    rescue Exception => e
+      self.add_hoc_label_errors << "ERROR CALCULATING SHIPPING - " + e.message
+    end
+    
+    
+  end #end method ad_hoc_shipping_label_attributes=(label_attributes)
+
+
+  def when_to_dorm_ship
+    
+    case self.dorm_ship_time_id
+  		when Order::DORM_SHIP_DATE
+  			self.dorm_ship_ship_date.strftime("%m/%d/%Y")
+  		when Order::DORM_SHIP_PRIOR
+  			"Prior to customer's arrival at their dorm"
+  		when Order::DORM_SHIP_ASAP
+  			"ASAP"
+			else
+			  "Error"
+  	end
+  end #end method when_to_dorm_ship
+
+
+  def self.new_from_cart(cart)
+    
+    #setup a new order
+    order                 = Order.new
+    order.order_date      = Time.now
+    order.order_status_id = Order::ORDER_STATUS_WAITING
+    order.order_id        = Order.generate_uniq_order_id
+    order.order_vendor_id = OrderVendor::DORMBUYS
+    
+    #remove non-relevant cart attributes
+    cart_attributes = cart.attributes
+    cart_attributes.delete("id")
+    cart_attributes.delete("salt")
+    cart_attributes.delete("payment_data")
+    cart_attributes.delete("created_at")
+    cart_attributes.delete("updated_at")
+    
+    #now set the order attributes from the cart
+    order.attributes = cart_attributes
+    
+    
+    #create order line items from cart items
+    cart.cart_items.each do |cart_item|
+    
+      #create the order line item
+      oli                               = order.order_line_items.build
+      oli.item_name                     = cart_item.product_variation.full_title
+      oli.quantity                      = cart_item.quantity
+      oli.vendor_company_name           = cart_item.product_variation.product.vendor.company_name
+      oli.product_manufacturer_number   = cart_item.product_variation.manufacturer_number
+      oli.product_number                = cart_item.product_variation.product_number
+      oli.unit_price                    = cart_item.unit_price
+      oli.total                         = cart_item.total_price
+      oli.product_drop_ship             = cart_item.product_variation.product.drop_ship
+      oli.warehouse_location            = cart_item.product_variation.warehouse_location
+      
+      #set produc options, and poducts as options
+      oli.pov_ids                       = cart_item.pov_ids
+      oli.paov_ids                      = cart_item.paov_ids
+            
+    end #end cart_items
+    
+    
+    #set payment data
+    order.payment_info    = cart.grand_total.cents == 0 ? "" : cart.order_payment
+    
+    
+    #set totals
+    order.subtotal        = cart.subtotal
+    order.tax             = cart.tax
+    order.shipping        = cart.shipping
+    order.total_giftcards = cart.total_gift_cards
+    order.total_coupon    = cart.total_coupons
+    order.total_discounts = Money.new(0)
+    order.grand_total     = cart.grand_total
+    
+    return order
+  end #end method new_from_cart(params)
 
 
 end #end class

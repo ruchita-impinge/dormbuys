@@ -23,6 +23,14 @@ class ProductAsOptionValue < ActiveRecord::Base
   end #end method product
   
   
+  def full_display_value
+    out = "#{display_value} "
+    new_price = self.product_variation.rounded_retail_price + price_adjustment
+    out += "(+#{new_price}) "
+    out
+  end #end method full_display_value
+  
+  
   def product_variation_name=(product_variation_name)
     
     rind = product_variation_name.rindex("-")

@@ -1,5 +1,10 @@
 class Product < ActiveRecord::Base
   
+  attr_accessor :skip_all_callbacks
+  
+  before_create :save_permalink_handle
+  before_save :set_attachment_filenames
+  
   after_update :save_additional_product_images, :save_product_options, :save_product_restrictions,
     :save_product_variations, :save_product_as_options
   
@@ -20,24 +25,44 @@ class Product < ActiveRecord::Base
   
   has_attached_file :product_image, 
     :styles => {
-      :large => "500x500#",
-      :main => "250x250#",
-      :featured => "100x100#",
-      :list => "175x175#",
-      :thumb => "50x50#"
+      :large => ["500x500#", :jpg],
+      :main => ["277x277#", :jpg],
+      :list => ["130x132#", :jpg],
+      :recommended => ["131x104#", :jpg],
+      :home_thumb => ["75x75#", :jpg],
+      :home_popup => ["250x250#", :jpg],
+      :thumb => ["51x51#", :jpg]
     },
     :default_style => :list,
-    :url => "/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/images/:class/:attachment/:id/:style_:basename.:extension"
+    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   # validates_attachment_presence :product_image
-  validates_attachment_content_type :product_image, 
-    :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png'],
-    :if => :has_product_image?
+  #validates_attachment_content_type :product_image, 
+  #  :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png'],
+  #  :if => :has_product_image?
     
   validates_attachment_size :product_image, 
     :less_than => 1.megabytes, :message => "can't be more than 1MB",
     :if => :has_product_image?
+  
+  
+  def default_front_url
+    @handle ||= "/college/#{self.subcategories.first.category.permalink_handle}/#{self.subcategories.first.permalink_handle}/#{self.permalink_handle}"
+    @handle
+  end #end method default_front_url
+  
+  def save_permalink_handle
+    hand = self.product_name.downcase.gsub(/[^\w\.\_]/,'-').gsub(".", "-").gsub("/","-")
+    found = Product.find(:all, :conditions => ['permalink_handle LIKE ?', hand])
+    self.permalink_handle = (found.size > 0 ? "#{hand}-#{found.size + 1}" : hand)
+  end #end method save_permalink_handle
+    
+    
+  def set_attachment_filenames
+    self.product_image.instance_write(:file_name, "product_image.jpg") if self.product_image.dirty?
+  end #end method set_attachment_filenames
+    
     
   def vendor
     vendors.first
@@ -77,6 +102,8 @@ class Product < ActiveRecord::Base
 
   # method to handle update of association objects
   def save_additional_product_images
+    return if self.skip_all_callbacks
+    
     additional_product_images.each do |x| 
       if x.should_destroy?
         x.destroy
@@ -89,6 +116,8 @@ class Product < ActiveRecord::Base
   
   # method to handle update of association objects, the setter for this is dynamically created
   def save_product_options
+    return if self.skip_all_callbacks
+    
     product_options.each do |o| 
       if o.should_destroy?
         o.destroy
@@ -101,6 +130,8 @@ class Product < ActiveRecord::Base
   
   # method to handle update of association objects, the setter for this is dynamically created
   def save_product_as_options
+    return if self.skip_all_callbacks
+    
     product_as_options.each do |o| 
       if o.should_destroy?
         o.destroy
@@ -126,6 +157,8 @@ class Product < ActiveRecord::Base
   
   # method to handle update of association objects
   def save_product_restrictions
+    return if self.skip_all_callbacks
+    
     product_restrictions.each do |pr| 
       if pr.should_destroy?
         pr.destroy
@@ -155,6 +188,8 @@ class Product < ActiveRecord::Base
   
   
   def save_product_variations
+    return if self.skip_all_callbacks
+    
     product_variations.each do |pv|
       if pv.should_destroy?
         pv.destroy
@@ -164,6 +199,111 @@ class Product < ActiveRecord::Base
     end
   end #end method save_product_variations
   
+  
+  
+  ##
+  # method to see if the product has any product_options, product_as_options, or 
+  # custom_options.
+  ##
+  def has_options?
+    result = false
+    
+    if product_options.size > 0
+      result = true if product_options.first.product_option_values.size > 0
+    end
+    
+    if product_as_options.size > 0
+      result = true if product_as_options.first.product_as_option_values.size > 0
+    end
+    
+    result = true if product_variations.size > 1
+    
+    result
+  end #end method has_options?
+  
+  
+  
+  def default_variation?
+    self.product_variations.size == 1 && self.product_variations.first.title.downcase == "default"
+  end #end method default_variation?
+  
+  
+  #product variations that are currently available for sale
+  def available_variations
+    self.product_variations.find(:all, :conditions => ["visible = ? AND qty_on_hand >= ?", true, 1])
+  end #end method available_variations
+  
+  
+  
+  def recommended_products
+    sub = self.subcategories.first
+    cat = sub.category
+    
+    subs_group = cat.subcategories.reject {|s| s if s == sub}
+    subs_group << sub if subs_group.empty? #do this if the cat only has 1 sub anyway
+    
+    products = subs_group.collect {|s| s.products }.flatten
+    
+    #bw hack
+    products = Product.all if RAILS_ENV == 'development' && products.size <= 5
+    
+    #start w/ 1 initial random number
+    randoms = [rand(products.size)]
+    
+    #loop until we have 3
+    while randoms.size < 3
+      num = rand(products.size)
+      unless randoms.include? num
+        randoms << num
+      end
+    end
+    
+    recommended = []
+    randoms.each {|i| recommended << products[i] }
+    recommended
+    
+  end #end method recommended_products
+  
+  
+  
+  def self.random_featured_products(nums = 4)
+    
+    #bw hack
+    if RAILS_ENV == "development"
+      return Product.find(:all, :limit => nums)
+    end
+    
+    randoms = []
+
+      sql_str = %(
+      SELECT
+        p.*
+      FROM
+        products p, 
+        product_variations pv
+      WHERE
+        pv.qty_on_hand > 0
+        AND p.featured_item = 1
+        AND pv.product_id = p.id
+      )
+      
+      products = Product.find_by_sql(sql_str)
+      
+      nums.times do
+        
+        r = rand(products.size)
+      
+        while randoms.include? products[r] || products[r].featured_image == ""
+          r = rand(products.size)
+        end
+        
+        randoms << products[r]
+        
+      end #end nums.times
+      
+      randoms
+    
+  end #end method self.random_featured_products()
   
   
   

@@ -17,11 +17,44 @@ class Coupon < ActiveRecord::Base
   
   validates_presence_of :coupon_number, :description, :coupon_type_id
   validates_uniqueness_of :coupon_number, :case_sensitive => false, :message => ' already exists in the system'
+  validates_presence_of :tier_rules, :if => :is_tiered_coupon?
   
   composed_of :min_purchase, 
     :class_name => "Money", 
     :mapping => %w(int_min_purchase cents),
     :converter => Proc.new {|amount|amount.to_money }
+  
+  
+  def is_tiered_coupon?
+    coupon_type_id == CouponType::TIERED_DOLLAR || coupon_type_id == CouponType::TIERED_PERCENTAGE
+  end #end method is_tiered_coupon?
+  
+  
+  def get_tiered_value(int_dollar_value)
+    return 0 unless self.is_tiered_coupon?
+    
+    #0-10=10, 11-20=20, 21-30=30
+    self.tier_rules.split(",").collect {|x| x.rstrip.reverse.rstrip.reverse }.each do |rule|
+      range, val = rule.split("=")
+      low = range[0,range.index("-")].to_i
+      high = range[range.index("-")+1, range.length].to_i
+      
+      if high == -1 && int_dollar_value >= low
+        
+        return val.to_i
+        
+      elsif low <= int_dollar_value && int_dollar_value <= high
+        
+        return val.to_i
+        
+      end
+      
+    end #end loop
+    
+    #if we are here then the int_dollar_value didn't fall into the range
+    return 0
+    
+  end #end method get_tiered_value
   
   
   def value

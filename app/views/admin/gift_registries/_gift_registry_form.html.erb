@@ -1,0 +1,163 @@
+<% content_for :head do %>
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	<% javascript_tag do %>
+		var last_auto_var_id;
+		function beforeAutoComplete(e)
+		{
+			last_auto_var_id = jQuery(e).attr("id");
+	
+		}//end 
+		
+		function afterAutoComplete(e)
+		{
+			jQuery(e).parents(".field").children(".product_variation_id").attr("value", last_auto_var_id);
+			
+		}//end
+		
+	<% end %>
+<% end %>
+
+
+  <div class="field">
+    <%= f.text_field :user_email, :class => 'textfield' %>
+    <%= f.label :user_email %>
+  </div>
+
+  <% unless @gift_registry.new_record? %>
+  <div class="field">
+    <%= f.text_field :registry_number, :class => 'textfield' %>
+    <%= f.label :registry_number %>
+  </div>
+ <% end %>
+
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.select :registry_reason_id, GiftRegistry::REGISTRY_REASONS.collect {|x| [x.last, x.first]} %>
+    <%= f.label :registry_reason_id %>
+  </div>
+
+
+
+  <div class="field">
+    <%= f.select :registry_for_id, GiftRegistry::REGISTRY_FOR.collect {|x| [x.last, x.first]} %>
+    <%= f.label :registry_for_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_field :title, :class => 'textfield' %>
+    <%= f.label :title %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :message %>
+    <%= f.label :message %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field shorter">
+    <%= f.date_select :event_date, :order => [:month, :day, :year] %>
+    <%= f.label :event_date %>
+  </div>
+  <div class="clear"></div>
+
+
+<hr />
+
+
+  <div class="field">
+    <%= f.text_field :shipping_address, :class => 'textfield' %>
+    <%= f.label :shipping_address %>
+  </div>
+
+
+
+  <div class="field">
+    <%= f.text_field :shipping_address2, :class => 'textfield' %>
+    <%= f.label :shipping_address2 %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_city, :class => 'textfield' %>
+    <%= f.label :shipping_city %>
+  </div>
+
+
+  <div class="field">
+ 	<%= f.select :shipping_state_id, grouped_options_for_select(State.grouped_options, @gift_registry.shipping_state_id) %>
+    <%= f.label :shipping_state_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_zip_code, :class => 'textfield' %>
+    <%= f.label :shipping_zip_code %>
+  </div>
+
+
+  <div class="field">
+	<%= f.select :shipping_country_id, Country.all.collect {|c| [c.country_name, c.id]} %>
+    <%= f.label :shipping_country_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :shipping_phone, :class => 'textfield' %>
+    <%= f.label :shipping_phone %>
+  </div>
+  <div class="clear"></div>
+
+<hr />
+
+  <div class="field check">
+    <%= f.check_box :show_in_search_by_name, :class => 'check' %>
+    <%= f.label :show_in_search_by_name %>
+  </div>
+
+
+
+  <div class="field check">
+    <%= f.check_box :show_in_search_by_number, :class => 'check' %>
+    <%= f.label :show_in_search_by_number %>
+  </div>
+  <div class="clear"></div>
+
+<hr />
+<h2 class="header_w_link">
+	Names 
+	<%= link_to_function 'Add Name' do |page|
+			page.insert_html :top, 
+				"gift_registry_names", 
+				:partial => "gift_registry_name.html.erb",
+				:object => GiftRegistryName.new
+		end %>
+</h2>
+<div id="gift_registry_names">
+	<%= render :partial => 'gift_registry_name', :collection => @gift_registry.gift_registry_names.reverse %>
+</div>
+
+
+<hr />
+
+<h2 class="header_w_link">
+	Items 
+	<%= link_to_function 'Add Item' do |page|
+			page.insert_html :top, 
+				"gift_registry_items", 
+				:partial => "gift_registry_item.html.erb",
+				:object => GiftRegistryItem.new
+		end %>
+</h2>
+<div id="gift_registry_items">
+	<%= render :partial => 'gift_registry_item', :collection => @gift_registry.items %>
+</div>

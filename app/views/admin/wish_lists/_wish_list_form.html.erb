@@ -1,0 +1,39 @@
+<% content_for :head do %>
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	<% javascript_tag do %>
+		var last_auto_var_id;
+		function beforeAutoComplete(e)
+		{
+			last_auto_var_id = jQuery(e).attr("id");
+	
+		}//end 
+		
+		function afterAutoComplete(e)
+		{
+			jQuery(e).parents(".field").children(".product_variation_id").attr("value", last_auto_var_id);
+			
+		}//end
+		
+	<% end %>
+<% end %>
+
+  <div class="field">
+    <%= f.text_field :user_email, :class => 'textfield' %>
+    <%= f.label :user_email %>
+  </div>
+  <div class="clear"></div>
+
+<hr />
+
+<h2 class="header_w_link">
+	Items 
+	<%= link_to_function 'Add Item' do |page|
+			page.insert_html :top, 
+				"wish_list_items", 
+				:partial => "wish_list_item.html.erb",
+				:object => WishListItem.new
+		end %>
+</h2>
+<div id="wish_list_items">
+	<%= render :partial => 'wish_list_item', :collection => @wish_list.items %>
+</div>

@@ -1,2 +1,9 @@
-<h1>Front#subcategory</h1>
-<p>Find me in app/views/front/subcategory.html.erb</p>
+<% content_for :tabbed_page_content do %>
+	
+	<% if @subcategory.has_visible_children? %>
+		<%= render :partial => "shared/front_subcat_child_sub_view" %>
+	<% else %>
+		<%= render :partial => "shared/front_subcat_prod_view" %>
+	<% end %>
+	
+<% end %>

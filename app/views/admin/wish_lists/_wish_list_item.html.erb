@@ -1,0 +1,49 @@
+<div class="wish_list_item">
+	
+	<% fields_for "wish_list[wish_list_item_attributes][]", wish_list_item, :index => nil do |x| %>
+	
+		<div class="field long">
+			<%= unique_text_field_with_auto_complete :product, :product_name, 
+				{
+					:name => "product_variation_search_term",
+			 		:value => wish_list_item.product_variation_name, 
+					:class => 'textfield'
+				} %>
+			<%= x.hidden_field :product_variation_id, :value => "#{wish_list_item.product_variation_id}", :class => 'product_variation_id' %>
+			<%= x.label :product_variation_id %>
+		</div>
+		
+		<div class="field shortest">
+			<%= x.text_field :wish_qty, :class => 'textfield' %>
+			<%= x.label :wish_qty %>
+		</div>
+		
+		<div class="field shortest">
+			<%= x.text_field :got_qty, :class => 'textfield' %>
+			<%= x.label :got_qty %>
+		</div>
+		<div class="clear"></div>
+		
+		<div class="field long">
+			<%= x.text_area :comments, :class => 'textfield' %>
+			<%= x.label :comments %>
+		</div>
+			
+	
+		<div class="field del_link">
+			<% if wish_list_item.new_record? %>
+				<%= link_to_function 'delete', "$(this).parents('.wish_list_item').remove()" %>
+			<% else %>
+				<%= link_to_function 'delete', "mark_for_destroy(this, '.wish_list_item')" %>
+				<%= x.hidden_field :id %>
+				<%= x.hidden_field :should_destroy, :value => "0", :class => 'should_destroy' %>
+			<% end %>
+		</div>
+		
+			
+	<% end %>
+	
+	
+<div class="clear"></div>
+</div>
+<!--[eo: wish_list_item]-->

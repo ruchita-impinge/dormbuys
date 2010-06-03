@@ -1,0 +1,30 @@
+
+<div class="shippment_list">
+	<% for shippment in @order.shippments %>
+		<div class="shippment">
+			
+			<div class="summary_line">
+				Origin: <%= shippment.origin %>
+				<% if shippment.drop_ship %>
+				<b class="dropship">DROPSHIP</b>
+				<% end %>
+			</div>
+			
+			<div class="summary_line">Total Weight: <%= shippment.items.sum {|p| p.weight} %></div>
+			<div class="summary_line">Parcels: <%= shippment.items.length %></div>
+			<div class="summary_line">Courier: <%= Courier.find(shippment.courier).courier_name %></div>
+			<ul class="suippment_items">
+				<% for p in shippment.items %>
+					<li class="parcel">
+						<%= "#{p.length}(l) x #{p.width}(w) x #{p.depth}(d) @ #{p.weight} lbs, contains #{p.items.length} product(s) #{((p.ship_alone)? '-- product ships alone' : '')}" %>
+						<ul class="products">
+							<% for pp in p.items %>
+								<li class="product_name"><%= pp.product_variation.full_title %></li>
+							<% end %>
+						</ul>
+					</li>
+				<% end %>
+			</ul><!-- end .shippment_items -->
+		</div><!-- end .shippment -->
+	<% end %>
+</div><!-- end .shippment_list -->

@@ -15,4 +15,8 @@ class Warehouse < ActiveRecord::Base
   validates_presence_of :zipcode
   validates_presence_of :country_id
   
+  def vendor_name
+    self.vendor ? self.vendor.company_name : "UNKNOWN VENDOR"
+  end #end method vendor_name
+  
 end

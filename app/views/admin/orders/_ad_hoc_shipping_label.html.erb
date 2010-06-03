@@ -1,0 +1,106 @@
+<!-- AD-HOC SHIPPING LABEL -->
+<div class="std_box span-24 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">
+		Add A Shipping Label
+	</h3>
+	
+	<div class="std_box_content">
+	
+		<% form_for([:admin,@order], :html => {:id => 'ad-hoc-label-form'}) do |frm| %>
+			<% fields_for "order[ad_hoc_shipping_label_attributes]", nil, :index => nil do |f| %>
+			
+				<div class="field">
+					<%= f.text_field :name, :class => 'textfield', :value => "#{@order.shipping_first_name} #{@order.shipping_last_name}" %>
+					<%= f.label :name, "" %>
+				</div>
+				
+				
+				<div class="field">
+					<%= f.text_field :company_name, :class => 'textfield', :value => @order.dorm_ship_college_name %>
+					<%= f.label :company_name, "School <span>(if dorm ship)</span>" %>
+				</div>
+
+				
+				<div class="clear"></div>
+				
+				<div class="field">
+					<%= f.text_field :address, :class => 'textfield', :value => @order.shipping_address %>
+					<%= f.label :address %>
+				</div>
+				
+				<div class="field">
+					<%= f.text_field :address2, :class => 'textfield', :value => @order.shipping_address2 %>
+					<%= f.label :address2 %>
+				</div>
+				<div class="clear"></div>
+				
+				<div class="field">
+					<%= f.text_field :city, :class => 'textfield', :value => @order.shipping_city %>
+					<%= f.label :city %>
+				</div>
+				
+				<div class="field">
+					<%= f.select :state_id, grouped_options_for_select(State.grouped_options, @order.shipping_state_id) %>
+					<%= f.label :state_id %>
+				</div>
+				
+				<div class="field">
+					<%= f.text_field :zip, :class => 'textfield', :value => @order.shipping_zipcode %>
+					<%= f.label :zip %>
+				</div>
+				<div class="clear"></div>
+				
+				<div class="field">
+					<%= f.select :country_id, Country.all.collect {|c| [c.country_name, c.id]}, :selected => @order.shipping_country_id %>
+					<%= f.label :country_id %>
+				</div>
+
+				
+				<div class="field">
+					<%= f.text_field :phone, :class => 'textfield', :value => @order.shipping_phone %>
+					<%= f.label :phone %>
+				</div>
+				<div class="clear"></div>
+				
+				<hr />
+				
+				<div class="field shorter">
+					<%= f.text_field :length, :class => 'textfield' %>
+					<%= f.label :length %>
+				</div>
+				
+				<div class="field shorter">
+					<%= f.text_field :width, :class => 'textfield' %>
+					<%= f.label :width %>
+				</div>
+				
+				<div class="field shorter">
+					<%= f.text_field :depth, :class => 'textfield' %>
+					<%= f.label :depth %>
+				</div>
+				
+				<div class="field shorter">
+					<%= f.text_field :weight, :class => 'textfield' %>
+					<%= f.label :weight %>
+				</div>
+				<div class="clear"></div>
+				
+				
+				<%= f.submit "Create Label", :disable_with => "Please wait, this could take a minute...." %>
+				
+			
+				<div class="clear"></div>
+			<% end %>	
+		<% end %>
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>

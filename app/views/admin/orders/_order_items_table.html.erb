@@ -1,0 +1,137 @@
+<table class="<%= table_css_class %>">
+	<thead>
+  		<tr>
+    		<th class="center">MF #</th>
+    		<th class="center">WH Location</th>
+    		<th class="center">Qty</th>
+    		<th class="center">Notes</th>
+			<th class="left">Title</th>
+			<th class="right">Unit $</th>
+			<th class="right">Total $</th>
+  		</tr>
+	</thead>
+	<tbody>
+
+	<% for item in @order.order_line_items %>
+		<tr>
+			<td class="center"><%= item.product_manufacturer_number.blank? ? '----' : item.product_manufacturer_number %></td>
+    		<td class="center"><%= item.warehouse_location %></td>
+    		<td class="center"><%= item.quantity %></td>
+    		<td class="center">
+    			<% if item.product_drop_ship %>
+					ships separately
+				<% else %>
+					----
+				<% end %>
+    		</td>
+			<td class="left"><b><%= item.item_name %></b></td>
+			<td class="right"><b>$<%= item.unit_price %></b></td>
+			<td class="right"><b>$<%= item.total %><b/></td>
+		</tr>
+		
+		<!-- ############ DISCOUNTS ############# -->
+		<% if item.order_line_item_discounts.size > 0 %>
+			<tr>
+				<% 4.times do %>
+					<td class="center">-----</td>
+				<% end %>
+				<td>
+					Discounts:
+					<%= item.order_line_item_discounts.collect {|d| 
+							"#{d.discount_message}"
+						}.join("<br />") %>
+				</td>
+				<td class="right">
+					<%= item.order_line_item_discounts.collect {|d| 
+							"$#{d.discount_amount}"
+						}.join("<br />") %>
+				</td>
+			</tr>
+		<% end %>
+		
+		
+		<!-- ############## OPTIONS ########## -->
+		<% if item.order_line_item_options.size > 0 %>
+			<tr>
+				<% 4.times do %>
+					<td class="center">-----</td>
+				<% end %>
+				<td>
+					Options:
+					<%= item.order_line_item_options.collect {|o|
+							o.description_no_price
+						}.join("<br />") %>
+				</td>
+				<td class="right">
+					<%= item.order_line_item_options.collect {|o|
+							o.price_adjustment_text
+						}.join("<br />") %>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+		<% end %>
+		
+		
+		<!-- ############## PRODUCTS AS OPTIONS ########## -->
+		<% if item.order_line_item_product_as_options.size > 0 %>
+			<tr>
+				<% 4.times do %>
+					<td class="center">-----</td>
+				<% end %>
+				<td>
+					Products As Options:
+					<%= item.order_line_item_product_as_options.collect {|o|
+							o.description
+						}.join("<br />") %>
+				</td>
+				<td class="right">
+					<%= item.order_line_item_product_as_options.collect {|o|
+							"$#{o.price}"
+						}.join("<br />") %>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+		<% end %>
+		
+		
+	<% end %>
+	<!-- end order items -->
+	
+	<!-- ############## TOTALS #################### -->
+	<tr class="total_row">
+		<td class="left" colspan="6">Subtotal</td>
+		<td class="right">$<%= @order.subtotal %></td>
+	</tr>
+
+	<tr class="total_row">
+		<td class="left" colspan="6">Coupons</td>
+		<td class="right">($<%= @order.total_coupon %>)</td>
+	</tr>
+	
+	<tr class="total_row">
+		<td class="left" colspan="6">Discount</td>
+		<td class="right">($<%= @order.total_discounts %>)</td>
+	</tr>
+	
+	<tr class="total_row">
+		<td class="left" colspan="6">Tax</td>
+		<td class="right">$<%= @order.tax %></td>
+	</tr>
+	
+	<tr class="total_row">
+		<td class="left" colspan="6">Shipping</td>
+		<td class="right">$<%= @order.shipping %></td>
+	</tr>
+	
+	<tr class="total_row">
+		<td class="left" colspan="6">Gift Cards</td>
+		<td class="right">($<%= @order.total_giftcards %>)</td>
+	</tr>
+	
+	<tr class="total_row">
+		<td class="left" colspan="6">Grand Total</td>
+		<td class="right">$<%= @order.grand_total %></td>
+	</tr>
+
+	</tbody>
+</table>

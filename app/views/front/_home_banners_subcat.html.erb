@@ -1,0 +1,126 @@
+<% cat2 = Category.find(Category::BEDDING) %>
+<div class="tab" id="tab2">
+	<img src="/images/img08.jpg" alt="image description" />
+	<div class="list">
+		<strong><span><%= cat2.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat2.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat2.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+	<span class="tab-line line2"></span>
+</div>
+
+
+
+<% cat3 = Category.find(Category::BATH) %>
+<div class="tab" id="tab3">
+	<span class="tab-line line3"></span>
+	<div class="list">
+		<strong><span><%= cat3.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat3.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat3.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+</div>
+
+
+
+<% cat4 = Category.find(Category::LAUNDRY) %>
+<div class="tab" id="tab4">
+	<span class="tab-line line4"></span>
+	<div class="list">
+		<strong><span><%= cat4.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat4.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat4.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+</div>
+
+
+
+<% cat5 = Category.find(Category::APPLIANCES) %>
+<div class="tab" id="tab5">
+	<span class="tab-line line5"></span>
+	<div class="list">
+		<strong><span><%= cat5.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat5.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat5.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+</div>
+
+
+
+<% cat6 = Category.find(Category::FURNITURE) %>
+<div class="tab" id="tab6">
+	<span class="tab-line line6"></span>
+	<div class="list">
+		<strong><span><%= cat6.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat6.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat6.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+</div>
+
+
+
+<% cat7 = Category.find(Category::DECOR) %>
+<div class="tab" id="tab7">
+	<img src="/images/img09.jpg" alt="image description" />
+	<div class="list">
+		<strong><span><%= cat7.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat7.visible_primary_subcategories(13).each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat7.visible_primary_subcategories(13).size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+	<span class="tab-line line7"></span>
+</div>
+
+
+
+<% cat8 = Category.find(Category::TECH) %>
+<div class="tab" id="tab8">
+	<span class="tab-line line8"></span>
+	<div class="list">
+		<strong><span><%= cat8.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat8.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat8.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+</div>
+
+
+<% cat9 = Category.find(Category::SPACE_SAVERS) %>
+<div class="tab" id="tab9">
+	<span class="tab-line line9"></span>
+	<div class="list">
+		<strong><span><%= cat9.name %></span><em>&nbsp;</em></strong>
+		<ul>
+			<% cat9.visible_primary_subcategories.each_with_index do |sub,i| %>
+				<% css_class = (i == 0 ? 'first' : (i == cat9.visible_primary_subcategories.size-1 ? 'last' : '')) %>
+				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+			<% end %>
+		</ul>
+	</div>
+</div>

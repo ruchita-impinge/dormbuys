@@ -7,6 +7,8 @@ class Vendor < ActiveRecord::Base
   has_many :warehouses
   has_and_belongs_to_many :brands
   has_and_belongs_to_many :products
+  has_and_belongs_to_many :vendor_managers, :join_table => "users_vendors", :foreign_key => "user_id"
+  has_and_belongs_to_many :orders
   
   validates_presence_of :account_number, :company_name, :address, :city, :state_id, :zipcode, :country_id,
     :phone

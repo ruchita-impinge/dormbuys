@@ -22,18 +22,22 @@
 			    		<th>Order #</th>
 			    		<th class="center">Date</th>
 			    		<th class="center">Status</th>
-			    		<th class="center">Total</th>
+			    		<th class="right">Total</th>
+						<th class="center">Notes</th>
 						<th colspan="2" class="center">Manage</th>
 			  		</tr>
 				</thead>
 				<tbody>
 
 				<% for order in @orders %>
-			  		<tr>
+			  		<tr class="<%= order_row_css(order) %>">
 			    		<td><%=h order.order_id %></td>
 			    		<td class="center"><%=h order.order_date.to_time.to_s(:friendly) %></td>
 			    		<td class="center"><%=h order.status_text %></td>
-			    		<td class="center"><%=h order.grand_total %></td>
+			    		<td class="right"><%=h order.grand_total %></td>
+						<td class="center">
+							<%= get_note_icons(order) %>
+						</td>
 						<td class="center"><%= link_to 'View', admin_order_path(order), :class => "tbl_lnk_show" %></td>
 			    		<td class="center"><%= link_to 'Edit', edit_admin_order_path(order), :class => "tbl_lnk_edit" %></td>
 			  		</tr>
@@ -56,7 +60,48 @@
 
 
 
+
+
 <div class="span-8 last">
+	
+	
+<div class="std_box std_box_satcked_top">
+
+	<h3 class="std_box_heading">Order Key</h3>
+
+	<div class="std_box_content">
+
+		<div class="std_box_content_wrapper">
+			
+			<p>
+				<span class="order_status_unsent_dropship">Unsent Dropship Emails</span>, 
+				<span class="order_status_dorm_ship">Dorm-Ship Order</span>, 
+				<span class="order_status_ds_sent_waiting_ship">Any Drop-Ship emails sent, items awaiting shipment</span>, 
+				<span class="order_status_complete">Order is shipped &amp; complete</span>, 
+				<span class="order_status_canceled">Order was canceled or refunded</span>
+			</p>
+			
+			<p>
+				<img src="/images/css/lorry.png" /> Drop-Ship items only <br />
+				<img src="/images/css/email.png" /> Order has USPS items <br />
+				<img src="/images/css/exclamation.png" /> PO / APO Suspect order <br />
+				<img src="/images/css/package_green.png" /> Order has been processed <br />
+				<img src="/images/css/comment.png" /> Order has comments
+			</p>
+			
+		</div><!-- end .std_box_content_wrapper -->
+
+	</div><!-- end .std_box_content -->
+
+
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+
+</div><!-- end .std_box -->
+<div class="clear"></div>
+	
 <div class="std_box">
 	
 	<h3 class="std_box_heading">Search</h3>

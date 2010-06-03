@@ -160,6 +160,7 @@
             return this.getEntry(this.index);
         },
         selectEntry: function() {
+			if (this.options.beforeUpdateElement) this.options.beforeUpdateElement(this.getCurrentEntry());
             this.active = false;
             this.updateElement(this.getCurrentEntry());
         },

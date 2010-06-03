@@ -1,0 +1,37 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  first_name: MyString
+  last_name: MyString
+  address: MyString
+  address2: MyString
+  city: MyString
+  state_id: 1
+  zip: MyString
+  country_id: 1
+  phone: MyString
+  dorm_ship_college_name: MyString
+  dorm_ship_not_assigned: false
+  dorm_ship_not_part: false
+  address_type_id: 1
+  default_billing: false
+  default_shipping: false
+
+two:
+  user_id: 1
+  first_name: MyString
+  last_name: MyString
+  address: MyString
+  address2: MyString
+  city: MyString
+  state_id: 1
+  zip: MyString
+  country_id: 1
+  phone: MyString
+  dorm_ship_college_name: MyString
+  dorm_ship_not_assigned: false
+  dorm_ship_not_part: false
+  address_type_id: 1
+  default_billing: false
+  default_shipping: false

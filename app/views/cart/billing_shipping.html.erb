@@ -1,0 +1,313 @@
+<% content_for :head do %>
+	<% javascript_tag do %>
+	
+		$(document).ready(function(){
+			
+			initShippingSelector();
+			setupHowHeardBox();
+			
+		});//end ready
+		
+		
+		
+		function initShippingSelector()
+		{
+			if($("#same").is(":checked")){
+				
+				shippingAddressPicker("same");
+				
+			}else if($("#ship").is(":checked")){
+				
+				shippingAddressPicker("ship");
+				
+			}else if($("#ship2").is(":checked")){
+				
+				shippingAddressPicker("ship2");
+				
+			}
+			
+		}//end function
+		
+		
+		function setupHowHeardBox()
+		{
+			var val = Number($("#how_heard").val());
+			
+			if(val == 6 || val == 8)
+			{
+				$("#how_heard_other_box").show();
+			
+			} else {
+				
+				$("#how_heard_other_box").hide();
+			}
+			
+		}//end function
+
+
+
+		function shippingAddressPicker(id)
+		{
+			var val = $("#"+id).attr("value");
+
+			if(val == 1){	//bill and ship are same
+
+				$("#shipping_fieldset").hide();
+
+			}else if(val == 2){ //bill and ship are different
+
+				$("#shipping_fieldset").show();
+				$("#shipping_address_2_field").show();
+				$("#dorm_shipping_address_2_field").hide();
+				$(".dormship").hide();
+
+			}else if(val == 3){ //dorm shipping
+
+				$("#shipping_fieldset").show();
+				$(".dormship").show();
+				$("#shipping_address_2_field").hide();
+				$("#dorm_shipping_address_2_field").show();
+
+			}//end else-if
+
+		}//end function shippingAddressPicker
+		
+	<% end %>
+<% end %>
+
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-checkout">Checkout</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-stuff active"><img src="/images/text-mystuff.png" alt="image description" class="png" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						
+						<%= render :partial => 'checkout_tab_nav' %>
+						
+						<% form_for @cart, :url => cart_save_billing_shipping_path, :html => {:id => 'billing_shipping'} do |f| %>
+						
+						<%= f.hidden_field :should_validate, :value => 0, :id => 'should_validate' %>
+						
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									
+									<%= f.error_messages :header_message => "Oops, please see #{pluralize @cart.errors.size, "error"} below" %>
+									
+									<div class="table-box card-holder">
+										
+										
+										<div class="table-head table-head2">
+											<div>
+												<strong>BILLING INFORMATION</strong>
+											</div>
+											<div>
+												<strong>SHIPPING INFORMATION</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<em class="top-text">Enter your billing information as it appears on your credit card statement. <strong>*Required Field</strong></em>
+													<%= render :partial => 'billing_form', :locals => {:f => f} %>
+												</td>
+												<td>
+													<%= render :partial => 'shipping_method_selector', :locals => {:f => f} %>
+													<%= render :partial => 'shipping_form', :locals => {:f => f} %>
+												</td>
+											</tr>
+										</table>
+
+										<div class="text-box">
+											<div class="table-head table-head2">
+												<strong>WHAT’S YOUR STATUS?</strong>
+											</div>
+											<table class="table-body table-body2">
+												<tr>
+													<td>
+														<%= render :partial => 'whoami_form', :locals => {:f => f} %>
+													</td>
+													<td>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div class="holder">
+											<fieldset>
+												<div class="table-head table-head2">
+													<div>
+														<strong>COUPON CODE</strong>
+													</div>
+													<div>
+														<strong>GIFT CARD</strong>
+													</div>
+												</div>
+												<table class="table-body table-body2">
+													<tr>
+														<td>
+															<%= render :partial => "coupon_form", :locals => {:f => f} %>
+														</td>
+														<td>
+															<%= render :partial => "gift_card_form", :locals => {:f => f} %>
+														</td>
+													</tr>
+												</table>
+												
+											</fieldset>
+										</div>
+										<div class="holder holder2">
+											<div class="table-head table-head2">
+												<strong>PAYMENT INFORMATION</strong>
+											</div>
+											<table class="table-body table-body2">
+												<tr>
+													<td>
+														<%= render :partial => 'credit_card_form', :locals => {:f => f} %>
+													</td>
+													<td>
+														<div class="banner-box">
+															<img src="/images/img71.jpg" alt="image description" />
+															<div class="learn">
+																<div>
+																	<a href="#">Learn more</a>
+																</div>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div class="bottom-box">
+											
+											<%= link_to_function 'Review Your Order' do |page|
+													page << '$("#should_validate").val("1");'
+													page << '$("#billing_shipping").submit();'
+												end %>
+												
+											<em>Your credit card will not be charged at this time.</em>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<% end %>
+						
+						
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>SECURITY &amp; PRIVACY</strong>
+										</div>
+										<table class="table-body">
+											<tr>
+												<td>
+													<%= render :partial => 'shared/secure_logo_block' %>
+												</td>
+												<td>
+													<p>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <a href="#">Privacy Policy</a></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<div class="order-summary order-summary2">
+						<div class="box-t">
+							<div class="box-area">
+								<div class="title-box">
+									<strong class="t-order-sum">Order Summary:</strong>
+								</div>
+								<div class="body-box">
+									<div class="sep-box">
+										<div class="item-subtotal">
+											<strong class="price">$<%= @cart.subtotal %></strong>
+											<span>Subtotal:</span>
+										</div>
+										<div class="item-subtotal">
+											<strong class="price">$<%= @cart.shipping %></strong>
+											<span>Shipping:</span>
+										</div>
+										<div class="item-subtotal">
+											<strong class="price">$<%= @cart.tax %></strong>
+											<span>Tax:</span>
+										</div>
+									</div>
+									<div class="sep-box sep-box2">
+										<div class="item-subtotal">
+											<strong class="price">-$<%= @cart.total_gift_cards %></strong>
+											<span>Gift Cards:</span>
+										</div>
+										<div class="item-subtotal">
+											<strong class="price">-$<%= @cart.total_coupons %></strong>
+											<span>Coupon:</span>
+										</div>
+									</div>
+									<div class="sep-box">
+										<div class="item-subtotal coloured-box">
+											<strong class="price">$<%= @cart.grand_total %></strong>
+											<strong>TOTAL</strong>
+										</div>
+										<ul class="link-list">
+											<li><%= link_to 'Edit Order', cart_path %></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="box-b"></div>
+					</div>
+					<!-- product side boxes -->
+					<div class="product-sboxes">
+						<strong class="slogan t-might-like">You might also like...</strong>
+						<% rproducts = @cart.recommended_products(2) %>
+						
+						<% rproducts.each do |rec_prod| %>
+						<div class="p-box">
+							<div class="heading">
+								<strong><%= truncate(rec_prod.product_name, :limit => 25) %></strong>
+							</div>
+							<div class="body">
+								<%= link_to image_tag(rec_prod.product_image(:recommended)), rec_prod.default_front_url %>
+								<p><%= truncate(rec_prod.product_overview, :length => 130) %></p>
+								<strong class="price"><em>our price:</em> $<%= rec_prod.retail_price %></strong>
+								<span class="see-more">
+									<%= link_to 'See more like this', rec_prod.subcategories.first.default_front_url %>
+								</span>
+							</div>
+						</div>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<%= yield :front_footer_gift_blog %>
+
+</div>

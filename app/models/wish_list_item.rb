@@ -7,6 +7,15 @@ class WishListItem < ActiveRecord::Base
   belongs_to :product_variation
   validates_presence_of :product_variation_id, :wish_qty, :got_qty
   
+  attr_accessor :should_destroy
+  
+  def should_destroy?
+    should_destroy.to_i == 1
+  end #end method should_destroy?
+  
+  def product_variation_name
+    self.product_variation ? self.product_variation.full_title : ""
+  end #end method product_variation_name
   
   def product_options
     self.product_option_values ? self.product_option_values.split(FIELD_DIVIDER) : nil

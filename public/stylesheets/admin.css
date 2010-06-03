@@ -7,6 +7,9 @@ body{
 .std_box{
 	position: relative;
 }
+.std_box_satcked_top{
+	margin-bottom: 5px;
+}
 h3.std_box_heading{
 	padding: 15px 0px 0px 10px;
 	color: #487051;
@@ -15,6 +18,10 @@ h3.std_box_heading{
 	margin: 0px 5px 0px 5px;
 	font-family: Arial;
 	text-transform: capitalize;
+}
+.container h3.std_box_heading a{
+	font-weight: normal;
+	font-style: italic;
 }
 .std_box_content{
 	background: #fff;
@@ -107,6 +114,11 @@ table.std_box_table,
 	background: #cfefd6;
 	color: #36404a;
 	border-bottom: 2px solid #d6d5d5;
+}
+.std_box_table tr.total_row td{
+	background: #efe;
+	font-weight: bold;
+	border-bottom: 1px solid #ddd;
 }
 .container .std_box_table td a,
 .container .std_box_table th a{
@@ -755,4 +767,55 @@ div.auto_complete ul strong.highlight {
 }
 #coupon_holder{
 	margin-top: 5px;
+}
+
+.order_status_unsent_dropship{
+	background: #338811;
+	color: #fff;
+}
+.order_status_dorm_ship{
+	background: #3377bb;
+	color: #fff;
+}
+.order_status_ds_sent_waiting_ship{
+	background: #ffdd00;
+	color: #333;
+}
+.order_status_complete{
+	background: #fff;
+	color: #ccc;
+}
+.order_status_canceled{
+	background: #ff2200;
+	color: #fff;
+}
+p .order_status_unsent_dropship,
+p .order_status_dorm_ship,
+p .order_status_ds_sent_waiting_ship,
+p .order_status_complete,
+p .order_status_canceled{
+	padding: 1px 3px;
+}
+h1.order_heading_callout{
+	margin: 0px 0px 13px 0px;
+	font-size: 25px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+h3.order_heading_callout{
+	padding: 0px;
+	margin: 0px 0px 5px 0px;
+}
+textarea#order_order_comments{
+	width: 905px;
+}
+ul#admin_shipping_labels_list{
+	margin: 5px 0px 10px 10px;
+}
+.header_w_link{
+	color: #555;
+}
+.container .header_w_link a{
+	font-style: italic;
+	font-weight: normal;
 }

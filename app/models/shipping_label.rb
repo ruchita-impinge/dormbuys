@@ -10,9 +10,9 @@ class ShippingLabel < ActiveRecord::Base
   end #end method should_destroy?
   
   
-  def label_path
+  def label_url
     "#{APP_CONFIG['filesystem']['web_labels_path']}/#{self.label}"
-  end #end method label_path
+  end #end method label_url
   
   ##
   # Function to handle the deletion of the physical file from the filesystem before deleting the 

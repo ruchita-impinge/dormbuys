@@ -10,8 +10,23 @@ ActionController::Routing::Routes.draw do |map|
     :conditions => {:method => :get},
     :controller => 'admin/products',
     :action => 'auto_complete_for_product_product_name'
+    
+  map.gift_registry_auto_complete_product_name '/admin/gift_registries/auto_complete_for_product_product_name',
+    :conditions => {:method => :get},
+    :controller => 'admin/gift_registries',
+    :action => 'auto_complete_for_product_product_name'
+    
+  map.wish_list_auto_complete_product_name '/admin/wish_lists/auto_complete_for_product_product_name',
+    :conditions => {:method => :get},
+    :controller => 'admin/wish_lists',
+    :action => 'auto_complete_for_product_product_name'
+    
+  map.quantity_discount_auto_complete_product_name '/admin/quantity_discounts/auto_complete_for_product_product_name',
+    :conditions => {:method => :get},
+    :controller => 'admin/quantity_discounts',
+    :action => 'auto_complete_for_product_product_name'
 
-#--------------
+#-------order builder-------
   map.order_auto_complete_product_name '/admin/orders/auto_complete_for_product_product_name',
     :conditions => {:method => :get},
     :controller => 'admin/orders',
@@ -31,10 +46,43 @@ ActionController::Routing::Routes.draw do |map|
 
   map.admin_users_search '/admin/users/search', :controller => 'admin/users', :action => 'search'
   map.admin_orders_search '/admin/orders/search', :controller => 'admin/orders', :action => 'search'
+  map.edit_shipping_admin_order '/admin/orders/:id/edit_shipping', :controller => 'admin/orders', :action => 'edit_shipping'
+  map.notify_dropship_admin_order '/admin/orders/:id/notify_dropship', :controller => 'admin/orders', :action => 'notify_dropship'
+  map.apply_credit_admin_order '/admin/orders/:id/apply_credit', :controller => 'admin/orders', :action => 'apply_credit'
+  map.packing_list_admin_order '/admin/orders/:id/packing_list', :controller => 'admin/orders', :action => 'packing_list'
+  
   map.admin_vendors_search '/admin/vendors/search', :controller => 'admin/vendors', :action => 'search'
   map.admin_giftcard_search '/admin/gift_cards/search', :controller => 'admin/gift_cards', :action => 'search'
   map.admin_coupons_search '/admin/coupons/search', :controller => 'admin/coupons', :action => 'search'
   map.admin_products_search '/admin/products/search', :controller => 'admin/products', :action => 'search'
+
+
+  # Product, Cat & Subcat URLs
+  map.front_product '/college/:category_permalink_handle/:subcategory_permalink_handle/:product_permalink_handle', 
+    :controller => 'front', :action => 'product'
+    
+  map.front_subcategory '/college/:category_permalink_handle/:subcategory_permalink_handle',
+    :controller => 'front', :action => 'subcategory'
+    
+  map.front_category '/college/:category_permalink_handle',
+    :controller => 'front', :action => 'category'
+    
+  #HARD CODED URLS
+  map.buy_gift_card '/college/REPLACE/REPLACE/REPLACE', :controller => 'front', :action => 'product'
+  map.main_gift_registry '/college/REPLACE', :controller => 'front', :action => 'gift_registry'
+  map.cart '/cart', :controller => 'cart', :action => 'index'
+  map.add_to_cart '/cart/add', :controller => 'cart', :action => 'add'
+  map.update_cart '/cart/update/:cart_item_id', :controller => 'cart', :action => 'update'
+  map.remove_from_cart '/cart/remove/:cart_item_id', :controller => 'cart', :action => 'remove'
+  map.cart_add_coupon '/cart/add_coupon', :controller => 'cart', :action => 'add_coupon'
+  map.cart_login '/cart/login', :controller => 'cart', :action => 'login'
+  map.cart_submit_login '/cart/submit_login', :controller => 'cart', :action => 'submit_login'
+  map.cart_user_signup '/cart/user_signup', :controller => 'cart', :action => 'user_signup'
+  map.cart_billing_shipping '/cart/billing_shipping', :controller => 'cart', :action => 'billing_shipping'
+  map.cart_save_billing_shipping '/cart/save_billing_shipping', :controller => 'cart', :action => 'save_billing_shipping'
+  map.cart_review '/cart/review', :controller => 'cart', :action => 'review'
+  map.cart_confirm '/cart/confirm', :controller => 'cart', :action => 'confirm'
+  map.cart_print '/cart/print', :controller => 'cart', :action => 'print'
 
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
@@ -92,11 +140,13 @@ ActionController::Routing::Routes.draw do |map|
       }
     admin.resources :orders
     admin.resources :order_vendors
+    admin.resources :wish_lists
+    admin.resources :gift_registries
   end
   
   
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => "welcome"
+  map.root :controller => "front", :action => "index"
 
   # See how all your routes lay out with "rake routes"
   

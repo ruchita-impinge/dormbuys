@@ -14,6 +14,21 @@ class Security::SecurityManager
     key.decrypt(cypher_text)
   end #end method decrypt(cypher_text)
   
+  
+  
+  def self.encrypt_with_salt(plain_text, salt) 
+    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], salt, :algorithm => 'aes256')
+    key.encrypt64(plain_text)
+  end #end method encrypt(plain_text)
+  
+  
+  def self.decrypt_with_salt(cypher_text, salt)
+    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], salt, :algorithm => 'aes256')
+    key.decrypt64(cypher_text)
+  end #end method decrypt(cypher_text)
+  
+  
+  
   #encrypt text which will be passed in a url
   def self.encrypt_url(plain_text_url)
     CGI.escape(self.encrypt(plain_text_url))

@@ -102,11 +102,18 @@ module ApplicationHelper
       <div class="auto_complete" id="#{div_id}"></div>
       <script type="text/javascript">
         //<![CDATA[
-    				$('##{id}').autocomplete({update:'#{div_id}', url:'#{url}', afterUpdateElement:function(e){
+    				$('##{id}').autocomplete({update:'#{div_id}', url:'#{url}', 
+    				afterUpdateElement:function(e){
               if(typeof afterAutoComplete == 'function')
               {
                   afterAutoComplete(e);
               }
+    				},
+    				beforeUpdateElement:function(e){
+    				  if(typeof beforeAutoComplete == 'function')
+    				  {
+    				      beforeAutoComplete(e);
+    				  }
     				}})
     		//]]>
       </script>
@@ -119,7 +126,7 @@ module ApplicationHelper
   
   
   def select_product_options(po, name, selected)
-    out = %(<select name=#{name}>)
+    out = %(<select name=#{name} class="inner-select2" title="select">)
     out += %(<option value="">Select option...</option>)
     for value in po.product_option_values
       out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>
@@ -133,7 +140,7 @@ module ApplicationHelper
   
   
   def select_product_as_options(pao, name, selected)
-    out = %(<select name=#{name}>)
+    out = %(<select name=#{name} class="inner-select2" title="select">)
     out += %(<option value="">Select Product...</option>)
     for value in pao.product_as_option_values
       out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>
@@ -166,6 +173,57 @@ module ApplicationHelper
     out
   end #end method select_product_variations(product)
   
+  
+  
+  #helper to get a pluralized name
+  def pluralized_name(count, word)
+    chunks = word.split(" ")
+    if chunks.size > 1
+      parts = word.gsub(/\?/, "").split(" ")
+      parts[parts.length-1] = parts.last.pluralize
+      parts.join(" ")
+    else
+      word.pluralize.gsub(" ", "")
+    end
+  end #end pluralized_name
+  
+  
+  
+  #creates options_for_select for product variations of a product.
+  def product_variations_for_select(product)
+    
+    variations = []
+    product.available_variations.each do |v| 
+      
+      var = {:title => v.title, :id => v.id}
+      
+      if v.rounded_retail_price > v.product.retail_price
+        var[:increase] = (v.rounded_retail_price - v.product.retail_price).cents
+      else
+        var[:increase] = 0
+      end
+      
+      variations << var
+      
+    end #end collect
+    
+    
+   #sort by price, increasing
+   variations.sort! { |x,y| [x[:increase], x[:title]] <=> [y[:increase], y[:title]] }
+   
+   #loop to setup title & inner array
+   variations.collect do |v|
+     title = v[:title]
+     
+     if v[:increase] > 0
+       title += " (+ $#{Money.new(v[:increase])})"
+     end
+     
+     [title, v[:id]]
+     
+   end #end collect
+
+  end #end method product_variations_for_select
   
   
 end #end module

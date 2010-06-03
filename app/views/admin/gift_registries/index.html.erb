@@ -1,0 +1,67 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@gift_registries) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Gift Registries</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @gift_registries.empty? %>
+			
+			<h3>No gift registries were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+						<th class="center">Registry number</th>
+			    		<th>User</th>
+						<th class="center">Items</th>
+			    		<th>Title</th>
+			    		<th class="center">Event Date</th>
+			    		<th class="center">State</th>
+			    		<th class="center">Zip</th>
+						<th colspan="2" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for gift_registry in @gift_registries %>
+			  		<tr>
+				 		<td class="center"><%=h gift_registry.registry_number %></td>
+			    		<td><%=h gift_registry.user_email %></td>
+						<td class="center"><%= gift_registry.items.size %></td>
+			    		<td><%=h truncate(gift_registry.title, :length => 20) %></td>
+			    		<td class="center"><%=h gift_registry.event_date.to_time.to_s(:friendly) %></td>
+			    		<td class="center"><%=h gift_registry.shipping_state.abbreviation %></td>
+			    		<td class="center"><%=h gift_registry.shipping_zip_code %></td>
+						<!--
+						<td class="center"><%= link_to 'View', admin_gift_registry_path(gift_registry), :class => "tbl_lnk_show" %></td>
+						-->
+			    		<td class="center"><%= link_to 'Edit', edit_admin_gift_registry_path(gift_registry), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_gift_registry_path(gift_registry), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Gift Registry</span>', new_admin_gift_registry_path, :class => 'button positive' %>

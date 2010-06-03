@@ -1,0 +1,108 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Gift Registry</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>User:</b>
+			  <%=h @gift_registry.user_id %>
+			</p>
+
+						<p>
+			  <b>Registry reason:</b>
+			  <%=h @gift_registry.registry_reason_id %>
+			</p>
+
+						<p>
+			  <b>Registry for:</b>
+			  <%=h @gift_registry.registry_for_id %>
+			</p>
+
+						<p>
+			  <b>Title:</b>
+			  <%=h @gift_registry.title %>
+			</p>
+
+						<p>
+			  <b>Message:</b>
+			  <%=h @gift_registry.message %>
+			</p>
+
+						<p>
+			  <b>Event date:</b>
+			  <%=h @gift_registry.event_date %>
+			</p>
+
+						<p>
+			  <b>Shipping address:</b>
+			  <%=h @gift_registry.shipping_address %>
+			</p>
+
+						<p>
+			  <b>Shipping address2:</b>
+			  <%=h @gift_registry.shipping_address2 %>
+			</p>
+
+						<p>
+			  <b>Shipping city:</b>
+			  <%=h @gift_registry.shipping_city %>
+			</p>
+
+						<p>
+			  <b>Shipping state:</b>
+			  <%=h @gift_registry.shipping_state_id %>
+			</p>
+
+						<p>
+			  <b>Shipping zip code:</b>
+			  <%=h @gift_registry.shipping_zip_code %>
+			</p>
+
+						<p>
+			  <b>Shipping country:</b>
+			  <%=h @gift_registry.shipping_country_id %>
+			</p>
+
+						<p>
+			  <b>Shipping phone:</b>
+			  <%=h @gift_registry.shipping_phone %>
+			</p>
+
+						<p>
+			  <b>Registry number:</b>
+			  <%=h @gift_registry.registry_number %>
+			</p>
+
+						<p>
+			  <b>Show in search by name:</b>
+			  <%=h @gift_registry.show_in_search_by_name %>
+			</p>
+
+						<p>
+			  <b>Show in search by number:</b>
+			  <%=h @gift_registry.show_in_search_by_number %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_gift_registries_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_gift_registry_path(@gift_registry), :class => 'button' %>

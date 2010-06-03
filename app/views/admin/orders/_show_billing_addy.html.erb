@@ -1,0 +1,7 @@
+<p><%= print_billing_address_html @order %></p>
+<p>Phone: <%= @order.billing_phone %></p>
+<p>
+	<%= link_to_function 'Edit Billing Address' do |page|
+			page.replace_html "billing_address", :partial => "edit_billing_addy"
+		end %>
+</p>

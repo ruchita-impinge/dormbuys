@@ -1,0 +1,21 @@
+<div class="tabset">
+	<ul>
+		<li>
+			<%= link_to "<span>1. Log In</span><em>&nbsp;</em>", cart_login_path, 
+			 		:class => "tab #{'active' if request.path == cart_login_path}" %>
+		</li>
+		<li>
+			<%= link_to "<span>2. Billing &amp; Shipping</span><em>&nbsp;</em>", cart_billing_shipping_path, 
+			 		:class => "tab #{'active' if request.path == cart_billing_shipping_path}" %>
+		</li>
+		<li>
+			<%= link_to "<span>3. Review Order</span><em>&nbsp;</em>", cart_review_path, 
+			 		:class => "tab #{'active' if request.path == cart_review_path}" %>
+		</li>
+		<li>
+			<%= link_to "<span>4. Confirmation</span><em>&nbsp;</em>", cart_review_path,
+			 		:class => "tab #{'active' if request.path == cart_confirm_path}" %>
+		</li>
+	</ul>
+	<a class="continue" href="#">Continue Shopping</a>
+</div>

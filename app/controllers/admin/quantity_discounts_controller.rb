@@ -1,4 +1,22 @@
 class Admin::QuantityDiscountsController < ApplicationController
+  
+  
+  def auto_complete_for_product_product_name
+
+    product_name = params[:product_variation_search_term]
+
+    @products = Product.find(:all, 
+      :conditions => [ "LOWER(#{params[:method]}) LIKE ?",
+      '%' + product_name.downcase + '%'], 
+      :order => "#{params[:method]} ASC",
+      :limit => 10)
+    @variations = @products.collect {|p| p.product_variations }.flatten
+
+    render :partial => 'auto_complete_list', :object => @variations
+  end
+  
+  
+  
   # GET /quantity_discounts
   # GET /quantity_discounts.xml
   def index

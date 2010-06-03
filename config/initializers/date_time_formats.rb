@@ -1,4 +1,11 @@
 Time::DATE_FORMATS.merge!(
+  :detail => lambda {|time|
+    if time.year == Time.now.year
+      time.strftime "%a %B #{time.day.ordinalize} at %I:%M %p"
+    else
+      time.strftime "%a %B #{time.day.ordinalize}, %Y at %I:%M %p"
+    end
+  },
   :full => '%B %d, %Y at %I:%M %p',
   :full_short => '%m/%d/%Y at %I:%M %p',
   :md => '%m/%d',

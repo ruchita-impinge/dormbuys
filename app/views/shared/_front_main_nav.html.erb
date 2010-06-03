@@ -1,0 +1,45 @@
+<div class="nav">
+	<h2>2EAST</h2>
+	<!-- nav -->
+	<ul id="nav">
+		
+		<% Category.available.each do |c| %>
+		
+			<li class="<%= @category == c ? 'active' : '' %>">
+				
+				<% if @category == c %>
+					<%= link_to "<span class=\"l\"></span><em>#{c.name}</em><span class=\"r\"></span>", c.default_front_url  %>
+				<% else %>
+					<%= link_to "<span><em>#{c.name}</em></span>", c.default_front_url %>
+				<% end %>
+				
+				
+				<% unless c.visible_primary_subcategories.empty? %>
+					<div class="drop-box">
+						<div class="box-t">
+							<div class="box-area">
+								<ul>
+									<% for sub in c.visible_primary_subcategories %>
+										<li>
+											<%= link_to sub.name, sub.default_front_url %>
+											<% if sub.has_children? %>
+												<ul>
+													<% sub.visible_children.each_with_index do |subsub, i| %>
+													<li><%= link_to subsub.name, subsub.default_front_url %></li>
+													<% end %>
+												</ul>
+											<% end %>
+										</li>
+									<% end %>
+								</ul>
+							</div>
+						</div>
+						<div class="box-b"></div>
+					</div>
+				<% end %>
+				
+			<li>
+		<% end %>
+		
+	</ul>
+</div>

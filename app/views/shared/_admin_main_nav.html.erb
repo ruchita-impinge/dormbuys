@@ -24,7 +24,7 @@
 				</ul>
 			</li>
 			<li>
-				<%= link_to 'Shopping', admin_coupons_path %>
+				<%= link_to 'Savings', admin_coupons_path %>
 				<ul>
 					<li><%= link_to 'Coupons', admin_coupons_path %></li>
 					<li><%= link_to 'Gift Cards', admin_gift_cards_path %></li>
@@ -35,8 +35,8 @@
 				<%= link_to 'Customers', admin_users_path %>
 				<ul>
 					<li><%= link_to 'Manage Users', admin_users_path %></li>
-					<li><%= link_to 'Gift Registries', '#' %></li>
-					<li><%= link_to 'Wish Lists', '#' %></li>
+					<li><%= link_to 'Gift Registries', admin_gift_registries_path %></li>
+					<li><%= link_to 'Wish Lists', admin_wish_lists_path %></li>
 				</ul>
 			</li>
 			<li>
@@ -50,6 +50,7 @@
 			<li>
 				<%= link_to 'Settings', '#', :class => 'last' %>
 				<ul>
+					<li><%= link_to 'Logout', logout_path %></li>
 					<li><%= link_to 'One', '#' %></li>
 					<li><%= link_to 'Two', '#' %></li>
 					<li><%= link_to 'Three', '#' %></li>

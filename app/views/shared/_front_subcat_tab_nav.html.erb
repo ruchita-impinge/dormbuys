@@ -1,0 +1,47 @@
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first">
+					<a class="tab" href="#">
+						<img src="/images/text-bedology.png" alt="image description" class="png inner-png" />
+					</a>
+				</li>
+			</ul>
+			<ul class="sub-tabs">
+								
+				<% @category.visible_primary_subcategories.each_with_index do |subcat,i| %>
+				
+					<% if i <= 5 %>
+					
+						<% unless @subcategory.blank? %>
+					
+							<% if @subcategory.is_tertiary? && @subcategory.parent == subcat %>
+								<% active_css = "active" %>
+							<% elsif @subcategory == subcat %>
+								<% active_css = "active" %>
+							<% else %>
+								<% active_css = "" %>
+							<% end %>
+							
+						<% else %>
+							<% active_css = "" %>
+						<% end %>
+					
+						<li>
+							<%= link_to "<em>#{subcat.name}</em><span></span>", subcat.default_front_url,
+							 		:class => "tab #{active_css}" %>
+						</li>
+					<% end %>
+				
+				<% end %>
+				
+				<% if @category.visible_primary_subcategories.size > 5 %>
+					<li><a title="more-1" class="more" href="#">more</a></li>
+				<% end %>
+				
+			</ul>
+		</div>
+		
+		<%= yield :tabbed_page_content %>
+		
+	</div>

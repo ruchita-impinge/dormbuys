@@ -4,6 +4,44 @@ class Payment::PaymentManager
 
   include ActiveMerchant::Billing
   
+  # creates an ActiveMerchant credit card object from the given data
+  def self.credit_card(type, number, exp_date, vcode, first_name='blank', last_name='blank')
+    defaults = {
+      :number => number,
+      :month => exp_date.month,
+      :year => exp_date.year,
+      :first_name => first_name,
+      :last_name => last_name,
+      :verification_value => vcode,
+      :type => type
+    }
+    CreditCard.new(defaults)
+  end #end method self.credit_card
+  
+  
+  
+  # creates a hash of address data.  notable fields are:
+  #
+  # {
+  #  :name => 'john smith', :address1 => '1234 some street', :city => 'Louisville', 
+  #  :state => 'KY', :zip => '40202', :country => 'US'
+  # }
+  def self.billing_address(options = {})
+    { 
+      :first_name => '',
+      :last_name  => '',
+      :address1   => '',
+      :address2   => '',
+      :company    => '',
+      :city       => '',
+      :state      => '',
+      :zip        => '',
+      :country    => 'US',
+      :phone      => '',
+      :fax        => ''
+    }.update(options)
+  end #end method self.billing_address()
+  
 
   ##
   # method to bill a customer's payment account.  returns a hash of result info
@@ -40,7 +78,6 @@ class Payment::PaymentManager
       
       #sets active merchant into test mode if we aren't in production mode
       ActiveMerchant::Billing::Base.mode = :test if RAILS_ENV != "production"
-
       
       #create the payment info for a credit card
       payment_info = {
@@ -127,7 +164,7 @@ class Payment::PaymentManager
     
     #we need to see if there were any gift cards on the order, and if so
     #we need to put money back on the gift cards first
-    giftcards = order.gift_cards.find(:all, :order => "original_amount ASC, current_amount ASC")
+    giftcards = order.gift_cards.find(:all, :order => "int_original_amount ASC, int_current_amount ASC")
     
     #get the total that was on gift cards
     gc_amount = order.total_giftcards

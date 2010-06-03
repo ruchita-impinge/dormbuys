@@ -6,11 +6,18 @@ class User < ActiveRecord::Base
   include Authentication::ByPassword
   include Authentication::ByCookieToken
 
+  cattr_accessor :current_user
   
   before_create :setup_roles
     
   
   has_and_belongs_to_many :roles
+  has_and_belongs_to_many :vendors
+  has_many :orders
+  has_many :gift_registries
+  has_many :wish_lists
+  has_many :addresses
+  has_many :carts
 
  
   validates_format_of       :first_name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
@@ -35,6 +42,11 @@ class User < ActiveRecord::Base
     return true if @_list.include?("admin")
     (@_list.include?(role_in_question.to_s) )
   end
+  
+  
+  def is_admin?
+    self.has_role?("admin")
+  end #end method is_admin?
 
 
   def setup_roles

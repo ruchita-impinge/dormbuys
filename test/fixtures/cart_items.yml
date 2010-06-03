@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cart_id: 1
+  product_variation_id: 1
+  quantity: 1
+  product_option_values: MyString
+  product_as_option_values: MyString
+  int_unit_price: 1
+  int_total_price: 1
+
+two:
+  cart_id: 1
+  product_variation_id: 1
+  quantity: 1
+  product_option_values: MyString
+  product_as_option_values: MyString
+  int_unit_price: 1
+  int_total_price: 1

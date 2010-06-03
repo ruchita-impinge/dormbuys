@@ -12,6 +12,12 @@ class QuantityDiscount < ActiveRecord::Base
   
   validates_presence_of :discount_type, :each_next, :buy_qty, :next_qty, :message
   
+  has_and_belongs_to_many :product_variations
+  
+  def validate
+    self.errors.add_to_base("Must have at least 1 discounted product variation") if self.product_variations.empty?
+  end #end method validate
+  
   
   def logic_string
     

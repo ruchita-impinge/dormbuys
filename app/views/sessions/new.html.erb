@@ -1,16 +1,47 @@
-<h1>Log In</h1>
+<br />
+<div class="span-8 prefix-8 suffix-8">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Login</h3>
+	
+	<div class="std_box_content">
+		
+		<% form_tag session_path do -%>
+		
+			<div class="field">
+				<%= text_field_tag 'email', @email, :class => 'textfield' %>
+				<%= label_tag 'email' %>
+			</div>		
+			<div class="clear"></div>
+		
+		
+			<div class="field">
+				<%= password_field_tag 'password', nil, :class => 'textfield' %>
+				<%= label_tag 'password' %>
+			</div>
+			<div class="clear"></div>
+		
+		
+			<!--
+			<div class="field check">
+				<%= label_tag 'remember_me', 'Remember me' %>
+				<%= check_box_tag 'remember_me', '1', @remember_me, :class => 'check' %>
+			</div>
+			<div class="clear"></div>
+			-->
+			
+		<% end -%>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
 
-<% form_tag session_path do -%>
-<p><%= label_tag 'login' %><br />
-<%= text_field_tag 'login', @login %></p>
 
-<p><%= label_tag 'password' %><br/>
-<%= password_field_tag 'password', nil %></p>
-
-<!-- Uncomment this if you want this functionality
-<p><%= label_tag 'remember_me', 'Remember me' %>
-<%= check_box_tag 'remember_me', '1', @remember_me %></p>
--->
-
-<p><%= submit_tag 'Log in' %></p>
-<% end -%>
+<%= link_to '<span>Login</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+</div>

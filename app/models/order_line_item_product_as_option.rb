@@ -8,5 +8,9 @@ class OrderLineItemProductAsOption < ActiveRecord::Base
     :class_name => "Money", 
     :mapping => %w(int_price cents),
     :converter => Proc.new {|amount| amount.to_money }
+
+  def description
+    "#{option_name}: #{display_value}"
+  end #end method description
   
 end

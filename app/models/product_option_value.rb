@@ -14,5 +14,15 @@ class ProductOptionValue < ActiveRecord::Base
   def should_destroy?
     should_destroy.to_i == 1
   end #end method should_destroy?
+  
+  def option_value_display
+    out = "#{option_value} "
+    if price_increase.cents > 0
+      out += "(+#{price_increase}) "
+    elsif price_increase.cents < 0
+      out += "(-#{price_increase}) "
+    end
+    out
+  end #end method option_value_display
     
 end

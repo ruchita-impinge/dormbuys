@@ -1,0 +1,65 @@
+<% form_for([:admin, @order], :html => {:id => 'billing_addy_form'}) do |f| %>
+	
+	<div class="field">
+		<%= f.text_field :billing_first_name, :class => 'textfield' %>
+		<%= f.label :billing_first_name %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.text_field :billing_last_name, :class => 'textfield' %>
+		<%= f.label :billing_last_name %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.text_field :billing_address, :class => 'textfield' %>
+		<%= f.label :billing_address %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.text_field :billing_address2, :class => 'textfield' %>
+		<%= f.label :billing_address2 %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.text_field :billing_city, :class => 'textfield' %>
+		<%= f.label :billing_city %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.select :billing_state_id, State.all.collect {|s| [s.full_name, s.id]} %>
+		<%= f.label :billing_state_id %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.text_field :billing_zipcode, :class => 'textfield' %>
+		<%= f.label :billing_zipcode %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.select :billing_country_id, Country.all.collect {|c| [c.country_name, c.id]} %>
+		<%= f.label :billing_country_id %>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="field">
+		<%= f.text_field :billing_phone, :class => 'textfield' %>
+		<%= f.label :billing_phone %>
+	</div>
+	<div class="clear"></div>
+	
+	
+	<div class="field">
+		<%= link_to '<span>Update</span>', "javascript:document.forms['billing_addy_form'].submit();", 
+				:class => 'button positive', 
+				:style => 'margin: 0px;' %>
+	</div>
+	<div class="clear"></div>
+	
+<% end %>

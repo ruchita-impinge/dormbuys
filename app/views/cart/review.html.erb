@@ -1,0 +1,196 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-checkout">Checkout</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-stuff active"><img src="/images/text-mystuff.png" alt="image description" class="png" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						
+						<%= render :partial => 'checkout_tab_nav' %>
+						
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box shopping-holder">
+										<div class="title-box2">
+											<strong class="review">Review your order</strong>
+											<em>Your order is not complete until you hit “submit your order.”</em>
+										</div>
+										<div class="table-head">
+											<strong class="item">ITEM</strong>
+											<strong class="align-c qty2">QTY</strong>
+											<strong class="align-c total">TOTAL</strong>
+										</div>
+										<table class="table-body table-body2">
+											
+											<% for cart_item in @cart.cart_items %>
+											<tr>
+												<td class="item">
+													<div class="item-info">
+														<%= link_to image_tag(cart_item.thumbnail_url, :alt => cart_item.title), cart_item.product_link %>
+														<div class="description">
+															<strong class="item-title"><%= cart_item.title %></strong>
+															<span class="item-desc">#<%= cart_item.product_number %></span>
+															<span class="item-desc"><%= truncate(cart_item.product_description, :length => 40) %></span>
+															<% cart_item.product_options.group_by(&:product_option).each do |option, values| %>
+																<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:option_value_display) %></span>
+															<% end %>
+															
+															<% cart_item.product_as_options.group_by(&:product_as_option).each do |option, values| %>
+																<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:full_display_value) %></span>
+															<% end %>
+														</div>
+													</div>
+												</td>
+												<td class="qty2">
+													<%= cart_item.quantity %>
+												</td>
+												<td class="total">
+													$<%= cart_item.total_price %>
+												</td>
+											</tr>
+											<% end %>
+				
+										</table>
+										<div class="price-box">
+											<div>
+												<ul>
+													<li><span>$<%= @cart.subtotal %></span> SUBTOTAL:</li>
+													<li><span>$<%= @cart.shipping %></span> SHIPPING:</li>
+													<li><span>$<%= @cart.tax %></span> TAX:</li>
+													<li><span>-$<%= @cart.total_coupons %></span> COUPONS:</li>
+													<li><span>-$<%= @cart.total_gift_cards %></span> GIFT&nbsp;CARDS:</li>
+												</ul>
+											</div>
+										</div>
+										<div class="total-box">
+											<em>TOTAL: <span>$<%= @cart.grand_total %></span></em>
+										</div>
+										
+										<%= link_to '<span>Submit Your Order</span><em>&nbsp;</em>', cart_confirm_path, :class => 'box-submit',
+										 		:disable_with => "Please wait..." %>
+
+										
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>SECURITY &amp; PRIVACY</strong>
+										</div>
+										<table class="table-body">
+											<tr>
+												<td>
+													<%= render :partial => 'shared/secure_logo_block' %>
+												</td>
+												<td>
+													<p>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <a href="#">Privacy Policy</a></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<!-- product side boxes -->
+					<div class="product-sboxes">
+						<strong class="slogan your-order">Your order details:</strong>
+						<div class="p-box">
+							<div class="heading">
+								<strong>BILLING</strong>
+							</div>
+							<div class="body">
+								<address>
+									<span><%= @cart.billing_first_name %> <%= @cart.billing_last_name %></span>
+									<span><%= @cart.billing_address %></span>
+									<% if @cart.billing_address2 %>
+										<span><%= @cart.billing_address2 %></span>
+									<% end %>
+									<span><%= @cart.billing_city %>, <%= @cart.billing_state.abbreviation %> <%= @cart.billing_zipcode %></span>
+									<span><%= @cart.billing_country.country_name %></span>
+									<span><%= @cart.billing_phone %></span>
+									<span><%= @cart.email %></span>
+								</address>
+								<strong class="edit"><%= link_to 'Edit', cart_billing_shipping_path %></strong>
+							</div>
+						</div>
+						<div class="p-box">
+							<div class="heading">
+								<strong>SHIPPING</strong>
+							</div>
+							<div class="body">
+								<address>
+									<% if @cart.user_profile_type_id == Order::ADDRESS_DORM %>
+										<span><%= @cart.shipping_first_name %> <%= @cart.shipping_last_name %></span>
+										<span><%= @cart.dorm_ship_college_name %></span>
+										<span><%= @cart.shipping_address %></span>
+										<% if @cart.shipping_address2 %>
+											<% unless @cart.dorm_ship_not_part %>
+												<span><%= @cart.shipping_address2 %></span>
+											<% end %>
+										<% end %>
+										<span><%= @cart.shipping_city %>, <%= @cart.shipping_state.abbreviation %> <%= @cart.shipping_zipcode %></span>
+										<span><%= @cart.shipping_country.country_name %></span>
+										<span><%= @cart.shipping_phone %></span>
+										<span>Ship: #{order.when_to_dorm_ship</span>
+									<% else %>
+										<span><%= @cart.shipping_first_name %> <%= @cart.shipping_last_name %></span>
+										<span><%= @cart.shipping_address %></span>
+										<% if @cart.shipping_address2 %>
+											<span><%= @cart.shipping_address2 %></span>
+										<% end %>
+										<span><%= @cart.shipping_city %>, <%= @cart.shipping_state.abbreviation %> <%= @cart.shipping_zipcode %></span>
+										<span><%= @cart.shipping_country.country_name %></span>
+										<span><%= @cart.shipping_phone %></span>
+									<% end %>
+
+								</address>
+								<strong class="edit"><%= link_to 'Edit', cart_billing_shipping_path %></strong>
+							</div>
+						</div>
+						<div class="p-box">
+							<div class="heading">
+								<strong>PAYMENT</strong>
+							</div>
+							<div class="body">
+								<address>
+									<% @cart.display_payment_info.each do |x| %>
+										<span><%= x.upcase %></span>
+									<% end %>
+								</address>
+								<strong class="edit"><%= link_to 'Edit', cart_billing_shipping_path %></strong>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<%= yield :front_footer_gift_blog %>
+	
+</div>

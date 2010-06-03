@@ -1,0 +1,52 @@
+<fieldset>
+	<div class="input-box">
+		<%= f.text_field :billing_first_name, :class => 'text text2', :id => 't1', :title => 'First Name' %>
+		<%= f.label :billing_first_name, '*First Name:', :for => 't1' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :billing_last_name, :class => 'text text2', :id => 't2', :title => 'Last Name' %>
+		<%= f.label :billing_last_name, '*Last Name:', :for => 't2' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :billing_address, :class => 'text text2', :id => 't3', :title => 'Address' %>
+		<%= f.label :billing_address, '*Address 1:', :for => 't3' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :billing_address2, :class => 'text text2', :id => 't4', :title => 'Address 2' %>
+		<%= f.label :billing_address2, 'Address 2:', :for => 't4' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :billing_city, :class => 'text text2', :id => 't5', :title => 'City' %>
+		<%= f.label :billing_city, '*City:', :for => 'billing_city' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :billing_zipcode, :class => 'text zip', :id => 'zip', :title => 'zip' %>
+		<%= f.label :billing_zipcode, '*Zip:', :for => 'zip' %>
+
+		<%= f.select :billing_state_id, State.us_states.collect {|s| [s.abbreviation, s.id]}, {:include_blank => true}, :class => 'select-t4', :id => 'state' %>
+		<%= f.label :billing_state_id, '*State:', :for => 'state' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :billing_phone, :class => 'text text2', :id => 't6', :title => 'Phone' %>
+		<%= f.label :billing_phone, '*Phone:', :for => 't6' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :email, :class => 'text text2', :id => 't7', :title => 'Email' %>
+		<%= f.label :email, '*Email:', :for => 't7' %>
+	</div>
+	<div class="input-box input-box2">
+		<%= f.select :billing_country_id, Country.find(:all, :conditions => {:id => 1}).collect {|c| [c.abbreviation, c.id]},
+		 	{}, :class => 'select-t4', :id => 'country' %>
+		<%= f.label :billing_country_id, '*Country:', :for => 'country' %>
+	</div>
+	<div class="input-box input-box3">
+		<%= f.label :how_heard_option_id, '*How did you hear about us? <em>(required)</em>:', :for => 'how_heard' %>
+		<%= f.select :how_heard_option_id, Order::HOW_HEARD_OPTIONS.collect {|c| [c.last, c.first]},
+		 	{}, :class => 't6', :id => 'how_heard', :onchange => "setupHowHeardBox();" %>
+	</div>
+	<div class="input-box" id="how_heard_other_box">
+		<%= f.text_field :how_heard_option_value, :class => 'text text2', :id => 't8', :title => 'Other' %>
+		<%= f.label :how_heard_option_value, '*Other:', :for => 't8' %>
+	</div>
+
+</fieldset>

@@ -3,7 +3,8 @@ class Admin::GiftCardsController < ApplicationController
   def search
     
     @gift_cards = GiftCard.find(:all, 
-      :conditions => ["giftcard_number LIKE ?", "%#{params[:search][:search_term]}%"]
+      :conditions => ["giftcard_number LIKE ?", "%#{params[:search][:search_term]}%"],
+      :order => 'created_at DESC'
       ).paginate :per_page => 10, :page => params[:page]
     
     render :action => :index
@@ -14,7 +15,7 @@ class Admin::GiftCardsController < ApplicationController
   # GET /gift_cards
   # GET /gift_cards.xml
   def index
-    @gift_cards = GiftCard.find(:all).paginate :per_page => 10, :page => params[:page]
+    @gift_cards = GiftCard.find(:all, :order => 'created_at DESC').paginate :per_page => 10, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,0 +1,8 @@
+<fieldset>
+	<div class="row">
+		<%= f.label :whoami, '*Currently I am a' %>
+		<%= f.select :whoami, Order::WHO_AM_I_OPTIONS.collect{|o| [o.last, o.first]}, 
+				{:include_blank => true},
+		 		:class => 'accountification-select' %>
+	</div>
+</fieldset>

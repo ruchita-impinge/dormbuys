@@ -2,17 +2,19 @@ class AdditionalProductImage < ActiveRecord::Base
   
   attr_accessor :should_destroy
   
+  before_save :set_attachment_filenames
+  
   belongs_to :product
   
   has_attached_file :image, 
     :styles => {
-      :large => "500x500#",
-      :main => "250x250#",
-      :thumb => "50x50#"
+      :large => ["500x500#", :jpg],
+      :main => ["250x250#", :jpg],
+      :thumb => ["50x50#", :jpg]
     },
     :default_style => :thumb,
-    :url => "/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/images/:class/:attachment/:id/:style_:basename.:extension"
+    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   validates_attachment_presence :image
   validates_attachment_content_type :image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']
@@ -22,6 +24,10 @@ class AdditionalProductImage < ActiveRecord::Base
   def should_destroy?
     should_destroy.to_i == 1
   end #end method should_destroy?
+  
+  def set_attachment_filenames
+    self.image.instance_write(:file_name, "additional.jpg") if self.image.dirty?
+  end #end method set_attachment_filenames
   
   
 end

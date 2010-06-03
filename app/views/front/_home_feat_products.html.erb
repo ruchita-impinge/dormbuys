@@ -1,0 +1,5 @@
+<ul>
+	<% for product in @featured_products %>
+		<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
+	<% end %>
+</ul>

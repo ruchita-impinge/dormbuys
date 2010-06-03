@@ -1,4 +1,7 @@
 <% content_for :head do %>
+
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	
 	<% javascript_tag do %>
 	$(document).ready(function(){
 		
@@ -7,6 +10,8 @@
 		$("#discount_type_percent, #discount_type_dollar, #discount_next, #discount_each").change(function(){
 			init_qty_discount_form();
 		});
+		
+		setupDeleteLinks();
 		
 	}); //end ready
 	
@@ -41,6 +46,43 @@
 		
 		
 	}//end function init_qty_discount_form
+	
+	
+	
+	var last_auto_var_id;
+	function beforeAutoComplete(e)
+	{
+		last_auto_var_id = jQuery(e).attr("id");
+
+	}//end 
+	
+	function afterAutoComplete(e)
+	{
+		var vname = jQuery(e).val();
+		
+		var html = '<div class="discounted_variation">';
+		html += '<h4>' + vname + ' - <a href="#">delete</a></h4>';
+		html += '<input type="hidden" name="quantity_discount[product_variation_ids][]" value="' + last_auto_var_id + '" />';
+		html += '</div>';
+		
+		jQuery("#discounted_variations").prepend(html);
+		
+		jQuery(".autocompletebox").val("").focus();
+		setupDeleteLinks();
+		
+	}//end
+	
+	
+	function setupDeleteLinks()
+	{
+		jQuery("#discounted_variations a").unbind("click");
+		jQuery("#discounted_variations a").click(function(e){
+			e.preventDefault();
+			jQuery(this).parents(".discounted_variation").remove();
+		});
+		
+	}//end function
+	
 	
 	<% end %>
 <% end %>
@@ -94,4 +136,31 @@
   </div>
   <div class="clear"></div>
 
+
+	<div class="field long">
+		<%= unique_text_field_with_auto_complete :product, :product_name, 
+			{
+				:name => "product_variation_search_term",
+				:class => 'textfield autocompletebox'
+			} %>
+		<label>Add A Product Variation</label>
+	</div>
+	<div class="clear"></div>
+
+   <fieldset>
+   		<legend>Products</legend>
+		<div class="clear"></div>
+		
+		<div id="discounted_variations">
+			<% @quantity_discount.product_variations.each do |var| %>
+				<div class="discounted_variation">
+					<h4><%= var.full_title %> - <%= link_to 'delete', '#' %></h4>
+					<input type="hidden" name="quantity_discount[product_variation_ids][]" value="<%= var.id %>" />
+				</div>
+			<% end %>
+		</div>
+		
+   </fieldset>
+
+   <div class="clear"></div>
 

@@ -1,0 +1,28 @@
+<div id="tab02" class="tab">
+	<div class="pager gallery-box inner-gall inner2">
+		<div class="quote-box">
+			<ul class="breadcrumbs">
+				<li><h3><%= @subcategory.name %></h3></li>
+			</ul>
+		</div>
+		<div class="product-hold">
+			<ul>
+				<% @subcategory.visible_children.each do |sub| %>
+				
+					<li>
+						<div class="title">
+							<h3><%= sub.name %></h3>
+						</div>
+						<div class="text">
+							<%= link_to image_tag(sub.list_image.url, :alt => sub.name), sub.default_front_url %>
+						</div>
+					</li>
+				
+				<% end %>
+
+				
+			</ul>
+		</div>
+	</div>
+
+</div>

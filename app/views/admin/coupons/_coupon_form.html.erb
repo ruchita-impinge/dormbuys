@@ -17,6 +17,7 @@
 		var val = $("#coupon_coupon_type_id").val();
 		
 		if(val == <%= CouponType::DOLLAR %>){
+			$("#coupon_tier_field").hide();
 			$("#coupon_value_field").show();
 			$("#coupon_value_field label").text("Dollar Amount");
 			<% if @coupon.new_record? %>
@@ -24,12 +25,18 @@
 			<% end %>
 			
 		}else if(val == <%= CouponType::PERCENTAGE %>){
+			$("#coupon_tier_field").hide();
 			$("#coupon_value_field").show();
 			$("#coupon_value_field label").text("Percentage");
 			<% if @coupon.new_record? %>
 			$("#coupon_value_field input").val("0");
 			<% end %>
+		}else if(val == <%= CouponType::TIERED_DOLLAR %> || val == <%= CouponType::TIERED_PERCENTAGE %>){
+			$("#coupon_tier_field").show();
+			$("#coupon_value_field").hide();
+			$("#coupon_value_field input").val("0");
 		}else{
+			$("#coupon_tier_field").hide();
 			$("#coupon_value_field").hide();
 		}
 		
@@ -90,6 +97,43 @@
   <div class="field" id="coupon_value_field">
     <%= f.text_field :value, :class => 'textfield' %>
     <%= f.label :value %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field long" id="coupon_tier_field">
+	
+	<p>
+		<strong>Directions:</strong><br />
+		To create a tiered coupon you must enter the tier rules below.  Regardless of wether the discount is 
+		for a dollar or percentage <span style="text-decoration: underline;">
+		the discount amounts and order value ranges must be entered in whole numbers</span>. 
+	</p>
+	<p>
+		<b>% Example: 0-10=10, 11-20=20, 21-30=30</b><br />  
+		If this is marked as a percentage discount it would translate to: 
+		<br />Tier 1: For an order with a total of $0.00 to $10.00 apply a 10% discount to the order.  
+		<br />Tier 2: For an order with a total of $11.00 to $20.00 apply a 20% discount to the order.
+		<br />Tier 3: For an order with a total of $21.00 to $30.00 apply a 30% discount to the order.
+		<br />In this example $30.00 is the top end of the top tier, so a $40.00 order would get no discount at all.
+		If you want the top tier to extend infinitely, the top end number should be -1. I.E 21--1=30 in this example.
+	</p>
+	
+	<p>
+		<b>$ Example: 0-10=1, 11-20=5, 21-30=10</b><br />  
+		If this is marked as a dollar discount it would translate to: 
+		<br />Tier 1: For an order with a total of $0.00 to $10.00 apply a $1.00 discount to the order.  
+		<br />Tier 2: For an order with a total of $11.00 to $20.00 apply a $5.00 discount to the order.
+		<br />Tier 3: For an order with a total of $21.00 to $30.00 apply a $10.00 discount to the order.
+		<br />In this example $30.00 is the top end of the top tier, so a $40.00 order would get no discount at all.
+		If you want the top tier to extend infinitely, the top end number should be -1. I.E 21--1=10 in this example.
+	</p>
+	
+	<p>
+		<b>Make sure the low end of your base tier is above any min-purchase price for the coupon.</b>
+	</p>
+	
+  	<%= f.text_field :tier_rules, :class => 'textfield' %>
+	<%= f.label :tier_rules %>
   </div>
   <div class="clear"></div>
 

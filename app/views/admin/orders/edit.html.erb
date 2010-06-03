@@ -2,20 +2,235 @@
 	<%= render "shared/admin_main_nav" %>
 <% end %>
 
+<%= error_messages_for :order %>
 
-<div class="std_box">
+<div class="span-24 last std_box_satcked_top">
 	
-	<h3 class="std_box_heading">Editing Order</h3>
+	
+	<!-- ORDER GENERAL INFO -->
+	<div class="std_box span-8">
+	
+		<h3 class="std_box_heading">General Information</h3>
+	
+		<div class="std_box_content">
+		
+			<div class="std_box_content_wrapper">
+			
+				<h1 class="order_heading_callout"><%= @order.status_text %></h1>
+			
+				<h3 class="order_heading_callout">Vendor: <%= @order.order_vendor.name %></h3>
+			
+				<p>
+					<b>Order ID:</b> <%= @order.order_id %><br />
+					<b>Order Date:</b> <%= @order.order_date.to_time.to_s(:detail) %><br />
+					<b>Customer is a: </b><%= @order.whoami %><br />
+					<b>Heard about DB from: </b><%= @order.how_heard_txt %><br />
+					<b>IP Address: </b><%= @order.client_ip_address %><br />
+				</p>
+				
+			</div><!-- end .std_box_content -->
+		
+		</div><!-- end .std_box_content -->
+	
+	
+		<div class="std_box_header_left"></div>
+		<div class="std_box_header_right"></div>
+		<div class="std_box_footer_left"></div>
+		<div class="std_box_footer_right"></div>
+	
+	</div><!-- end .std_box -->
+	
+	
+	
+	<!-- BILLING ADDRESS -->
+	<div class="std_box span-8">
+	
+		<h3 class="std_box_heading">Billing Address</h3>
+	
+		<div class="std_box_content">
+		
+			<div class="std_box_content_wrapper">
+				
+				<div id="billing_address">
+				
+					<%= render :partial => "show_billing_addy" %>
+				
+				</div><!-- end #billing_address -->
+			
+			</div><!-- end .std_box_content -->
+		
+		</div><!-- end .std_box_content -->
+	
+	
+		<div class="std_box_header_left"></div>
+		<div class="std_box_header_right"></div>
+		<div class="std_box_footer_left"></div>
+		<div class="std_box_footer_right"></div>
+	
+	</div><!-- end .std_box -->
+	
+	
+	
+	<!-- SHIPPING ADDRESS -->
+	<div class="std_box span-8 last">
+	
+		<h3 class="std_box_heading">Shipping Address</h3>
+	
+		<div class="std_box_content">
+		
+			<div class="std_box_content_wrapper">
+			
+				<div id="shipping_address">
+					
+					<%= render :partial => "show_shipping_addy" %>
+					
+				</div><!-- end #shipping_address -->
+				
+			</div><!-- end .std_box_content -->
+		
+		</div><!-- end .std_box_content -->
+	
+	
+		<div class="std_box_header_left"></div>
+		<div class="std_box_header_right"></div>
+		<div class="std_box_footer_left"></div>
+		<div class="std_box_footer_right"></div>
+	
+	</div><!-- end .std_box -->
+	
+	
+	
+</div><!-- end span-24 -->
+<div class="clear"></div>
+
+
+<!-- ORDER ITEMS -->
+<div class="std_box span-24 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">Purchased Items - <%= link_to 'Print Packing List', packing_list_admin_order_path(@order) %></h3>
+	
+	<div class="std_box_content">
+	
+		<%= render :partial => "order_items_table", :object => @order, :locals => {:table_css_class => 'std_box_table'} %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+
+
+<!-- ORDER COMMENTS -->
+<div class="std_box span-24 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">Order Comments</h3>
 	
 	<div class="std_box_content">
 		
-		<% form_for([:admin, @order]) do |f| %>
-		  <%= f.error_messages %>
+		<% form_for([:admin, @order], :html => {:id => 'comment_form'}) do |f| %>
 
-		  <%= render :partial => "order_form.html.erb", :locals => {:f => f} %>
+			<div class="field long">
+				<%= f.text_area :order_comments %>
+			</div>
+			
+			<div class="field">
+				<% content_for :head do %>
+					<% javascript_tag do %>
+						var currentTime = new Date();
+						var month = currentTime.getMonth() + 1;
+						var day = currentTime.getDate();
+						var year = currentTime.getFullYear();
+						var hour = currentTime.getHours();
+						var minute = currentTime.getMinutes()
+
+						if(minute < 10)
+							minute = "0" + minute;
+
+						var ampm = "";
+						if(hour > 11)
+							ampm = "PM";
+						else
+							ampm = "AM";
+
+						var dateStr = month + "/" + day + "/" + year;
+						var timeStr = hour + ":" + minute + " " + ampm;
+						var dateTimeStr = dateStr + ' ' + timeStr;
+					<% end %>
+				<% end %>
+				
+				<%= link_to '<span>Insert Date</span>', '#', 
+					:onclick => "insertAtCursor('order_order_comments', dateStr); return false;", :class => 'button' %>
+				
+				<%= link_to '<span>Insert Time</span>', '#',
+				 	:onclick => "insertAtCursor('order_order_comments', timeStr); return false;", :class => 'button' %>
+				
+				<%= link_to '<span>Insert Date &amp; Time</span>', '#', 
+				 	:onclick => "insertAtCursor('order_order_comments', dateTimeStr); return false;", :class => 'button' %>
+				
+				<%= link_to '<span>Update Comments</span>', "#", :class => 'button positive',
+				 	:onclick => '$("#comment_form").submit(); return false;'%>
+				
+			</div>
+			<div class="clear"></div>
 
 		<% end %>
+		<!-- END COMMENT FORM UPDATE -->
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+
+
+
+<div id="ad_hoc_shipping_label"></div>
+
+
+
+<!-- SHIPPING DOCS -->
+<div class="span-24 last std_box_satcked_top">
+<div class="std_box span-8">
+	
+	<h3 class="std_box_heading">
+		Shipping Docs - 
 		
+		<%= link_to_function 'Add Label' do |page| 
+				page.replace_html "ad_hoc_shipping_label", 
+					:partial => "ad_hoc_shipping_label.html.erb", 
+					:object => @order
+			end %>
+		
+	</h3>
+	
+	<div class="std_box_content">
+	
+		<div class="std_box_content_wrapper">
+			
+			<div><b>Shipping Labels:</b></div>
+			<ul id="admin_shipping_labels_list">
+				<% for shipping_label in @order.shipping_labels %>
+					<li><%= link_to shipping_label.tracking_number, shipping_label.label_url %></li>
+				<% end %>
+			</ul>
+			
+			<div><b>Packing Docs:</b></div>
+			<ul id="admin_shipping_labels_list">
+				<li><%= link_to 'Packing List', packing_list_admin_order_path(@order) %></li>
+			</ul>
+			
+		</div><!-- end .std_box_content_wrapper -->
+
 	</div><!-- end .std_box_content -->
 	
 	
@@ -27,5 +242,302 @@
 </div><!-- end .std_box -->
 
 
-<%= link_to '<span>Update</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
-<%= link_to '<span>Cancel</span>', admin_orders_path, :class => 'button negative' %>
+
+<!-- PACKING CONFIG -->
+<div class="std_box span-16 last">
+	
+	<h3 class="std_box_heading">Packing Configuration</h3>
+	
+	<div class="std_box_content">
+	
+		<div class="std_box_content_wrapper">
+			
+			<%= render :partial => 'packing_config', :object => @order %>
+			
+		</div><!-- end .std_box_content_wrapper -->
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+
+
+<!-- TRACKING NUMBERS -->
+<div class="std_box span-24 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">Tracking Numbers</h3>
+	
+	<div class="std_box_content">
+	
+			
+		<% content_for :head do %>
+			<% javascript_tag do %>
+			
+			function trackingSelectAll(box)
+			{
+				if($(box).is(":checked"))
+				{
+
+					$("input.tracking_checkbox").attr("checked", "true");
+				
+				}else{
+
+					$("input.tracking_checkbox").removeAttr("checked");
+				}
+				
+			}//end trackingSelectAll
+			
+			
+			function selectVendors(css_class)
+			{
+				$("input." + css_class).attr("checked", "true");
+				
+			}//end selectVendors
+			
+			<% end %>
+		<% end %>
+		
+		<% form_for([:admin,@order], :html => {:id => 'shipping_num_form'}) do |frm| %>
+		
+		<% fields_for "order[updated_shipping_number_attributes]", ShippingNumber.new, :index => nil do |f| %>
+		
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th class="center">
+			    			<%= check_box_tag :select_all_vendors, nil, {}, {:onclick => "trackingSelectAll(this);"} %>
+			    		</th>
+						<th class="left">Vendor</th>
+						<th class="left">Product</th>
+						<th class="left">QTY Description</th>
+						<th class="left">Courier</th>
+						<th class="left">Tracking #</th>
+						<th class="left">Last Updated</th>
+			  		</tr>
+				</thead>
+				<tbody>
+					<% for item in @order.order_line_items %>
+						<% for tracking in item.shipping_numbers %>
+							<tr>
+								<td class="center">
+									<% vendor_class = item.vendor_company_name.gsub(" ", "_").downcase %>
+									<%= check_box_tag(
+										"order[updated_shipping_number_attributes][][id][]", 
+										tracking.id, 
+										false,
+										:class => "tracking_checkbox #{vendor_class}") %>
+								</td>
+								<td>
+									<%= link_to(
+											item.vendor_company_name,
+											"javascript: selectVendors('#{vendor_class}');") %>
+								</td>
+								<td>
+									<%= item.item_name %>
+								</td>
+								<td><%= tracking.qty_description %></td>
+								<td><%= tracking.courier.courier_name unless tracking.tracking_number.blank?%></td>
+								<td><%= link_to(
+											tracking.tracking_number, 
+											tracking.tracking_url, :target => '_blank') unless tracking.tracking_number.blank? %></td>
+								<td><%= tracking.updated_at.to_s(:detail) unless tracking.tracking_number.blank? %></td>
+							</tr>
+						<% end %>
+					<% end %>
+				</tbody>
+			</table>
+		
+		
+			
+			<div class="field">
+				<%= f.text_field :tracking_number, :class => 'textfield' %>
+				<%= f.label :tracking_number %>
+			</div>
+			
+			<div class="field">
+				<%= f.select :courier_id, Courier.all.collect {|c| [c.courier_name, c.id]} %>
+				<%= f.label :courier_id %>
+			</div>
+			
+			<div class="field">
+				<%= link_to '<span>Update</span>', 'javascript:document.forms["shipping_num_form"].submit();', 
+					:class => 'button positive', :style => 'margin: 0px;' %>
+			</div>
+			<div class="clear"></div>
+			
+		<% end %>
+		<% end %>
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+
+
+
+<div class="span-24 last std_box_satcked_top">
+	
+<!-- ORDER STATUS -->
+<div class="std_box span-12">
+	
+	<h3 class="std_box_heading">Update Order Status</h3>
+	
+	<div class="std_box_content">
+		
+		<% content_for :head do %>
+			<% javascript_tag do %>
+				function checkCancel()
+				{
+					var val = $("#order_order_status_id").val();
+					var cancelId = <%= Order::ORDER_STATUS_CANCELED %>;
+					
+					if(val == cancelId)
+					{
+						if(confirm("Are you sure you want to cancel?  This cannot be undone!"))
+							document.forms["status_form"].submit();
+						else
+							return false;
+						
+					}else {
+						document.forms["status_form"].submit();
+					}
+				
+				}//end check cancel
+			<% end %>
+		<% end %>
+		
+		<% form_for([:admin, @order], :html => {:id => 'status_form'}) do |f| %>
+			
+			
+			<div class="field">
+				<%= f.select :order_status_id, Order::ORDER_STATUS_OPTIONS.collect {|s| [s.last, s.first]} %>
+				<%= f.label :order_status_id %>
+			</div>
+			
+			<div class="field">
+				<%= link_to '<span>Update</span>', 
+						'#', 
+						:class => 'button positive', 
+						:style => 'margin: 0px;',
+ 						:onclick => 'checkCancel(); return false;'%>
+			</div>
+			<div class="clear"></div>
+			
+		<% end %>
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<!-- VENDOR_NOTIFICATION -->
+<div class="std_box span-12 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">Vendor Notification</h3>
+	
+	<div class="std_box_content">
+	
+		<div class="std_box_content_wrapper">
+			
+			<p><%= link_to '<span>Send *ALL* Drop Ship Emails</span>', notify_dropship_admin_order_path(@order), 
+				:class => 'button positive' %></p>
+			
+			<% for vendor in @order.drop_ship_vendors %>
+				<p><%= link_to "<span>Send #{vendor.company_name} Emails</span>", 
+					notify_dropship_admin_order_path(@order, :vendor_id => vendor.id), :class => 'button' %></p>
+			<% end %>
+			
+			<div class="clear"></div>
+		</div><!-- end std_box_content_wrapper -->
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+
+<!-- ORDER CREDITS -->
+<div class="std_box span-24 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">Order Credits</h3>
+	
+	<div class="std_box_content">
+	
+		<% form_for(:credit, :url => apply_credit_admin_order_path(@order), :html => {:id => 'credit_frm'}) do |f| %>
+			
+			<p>To apply a credit to this order simply enter the amount to be credited below. Note: A credit or the sum of all credits can not be greater than the original total order value. </p>
+			
+			<div class="field shorter">
+				<%= f.text_field :credit_amount, :class => 'textfield' %>
+				<%= f.label :credit_amount %>
+			</div>
+			
+			<div class="field long">
+				<%= f.text_field :credit_note, :class => 'textfield' %>
+				<%= f.label :credit_note %>
+			</div>
+			
+			<div class="field">
+				<%= link_to '<span>Apply Credit</span>', 'javascript:document.forms["credit_frm"].submit();', 
+					:class => 'button positive', 
+					:style => 'margin: 0px;' %>
+			</div>
+			<div class="clear"></div>
+			
+			<% if @order.refunds.size > 0 %>
+			<ul>
+				<% @order.refunds.each do |refund| %>
+				<% css = refund.success ? "" : %( class="error" ) %>
+				<li<%= css %>>
+					Amount:	$<%= refund.amount %>,&nbsp;&nbsp;&nbsp; 
+					Message: <%= refund.message %>&nbsp;&nbsp;&nbsp;
+					Authorized By: <%= refund.user.first_name rescue "ERR FIRST NAME" %> <%= refund.user.last_name rescue "ERR LAST NAME" %>
+					At <%= refund.created_at.strftime("%m/%d/%Y %I:%M %p") %>
+				</li>
+				<% end %>
+			</ul>
+			<% end %>
+			
+		<% end %>
+		
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+
+
+<%= link_to '<span>Back</span>', 'javascript:history.go(-1);', :class => 'button positive' %>

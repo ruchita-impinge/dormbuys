@@ -7,10 +7,18 @@ class ApplicationController < ActionController::Base
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
 
+  before_filter :set_current_user
+
 
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+  
+  
+  def set_current_user
+    User.current_user = self.current_user
+  end #end method set_current_user
+  
 end

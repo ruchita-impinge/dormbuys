@@ -7,6 +7,9 @@ class ProductVariation < ActiveRecord::Base
   belongs_to :product
   has_many :product_packages
   has_many :product_as_option_values
+  has_many :gift_registry_items
+  has_many :wish_list_items
+  has_and_belongs_to_many :quantity_discounts
   
   validates_uniqueness_of :product_number
   validates_presence_of :title, :qty_on_hand, :qty_on_hold, :reorder_qty, :product_number,

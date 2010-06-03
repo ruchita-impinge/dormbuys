@@ -42,6 +42,12 @@ class OrderLineItem < ActiveRecord::Base
   end #end method save_shipping_numbers
   
   
+  def link_object_id
+    v = self.get_product_variation
+    v ? v.product.id : 0
+  end #end method link_object
+  
+  
   def product_product_number=(value)
     self.product_number = value
   end #end method product_product_number

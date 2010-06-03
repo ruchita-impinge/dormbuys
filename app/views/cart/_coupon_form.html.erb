@@ -1,0 +1,11 @@
+<div class="box">
+	<p>Enter Coupon Code:</p>
+	<div>
+		<%= f.text_field :coupon_code %>
+	</div>
+	<em>*Only one coupon code can be applied to each purchase</em>
+	<%= link_to_function 'Apply', :class => 'btn' do |page|
+			page << '$("#billing_shipping").submit();'
+		end %>
+</div>
+<p>If you have a coupon code please type it in the box below, then click the apply button. If your code is valid, your new total will appear in the Order Summary above.</p>

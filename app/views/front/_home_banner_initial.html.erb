@@ -1,0 +1,42 @@
+<div class="tab" id="tab1">
+	<img src="/images/img04.jpg" alt="image description" />
+	<ul class="product-ico">
+		<li class="col1 popup-holder">
+			<a href="#popup1" class="open"><img src="/images/img12.jpg" alt="image description" /></a>
+		</li>
+		<li class="col2 popup-holder">
+			<a href="#popup2" class="open"><img src="/images/img13.jpg" alt="image description" /></a>
+		</li>
+		<li class="col3 popup-holder">
+			<a href="#popup3" class="open"><img src="/images/img14.jpg" alt="image description" /></a>
+		</li>
+	</ul>
+	<span class="number"></span>
+</div>
+
+<% content_for :home_banner_product_popups do %>
+	<div class="popup" id="popup1">
+		<div class="bg">
+			<img src="images/img15.jpg" alt="image description" />
+			<strong><a href="#">PRODUCT NAME</a></strong>
+			<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted. This is not to be read.</p>
+			<em>our price:<span>$59.99</span></em>
+		</div>
+	</div>
+	<div class="popup" id="popup3">
+		<div class="bg">
+			<img src="images/img17.jpg" alt="image description" />
+			<strong><a href="#">PRODUCT NAME</a></strong>
+			<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted. This is not to be read.</p>
+			<em>our price:<span>$59.99</span></em>
+		</div>
+	</div>
+	<div class="popup" id="popup2">
+		<div class="bg">
+			<img src="images/img16.jpg" alt="image description" />
+			<strong><a href="#">PRODUCT NAME</a></strong>
+			<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted. This is not to be read.</p>
+			<em>our price:<span>$59.99</span></em>
+		</div>
+	</div>
+<% end %>

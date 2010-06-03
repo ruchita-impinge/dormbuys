@@ -1,0 +1,51 @@
+<fieldset>
+	<div class="card-box">
+		<%= f.radio_button :payment_provider_id, Order::PAYMENT_CREDIT_CARD, :id => 'card' %>
+		<label for="card">Credit Card</label>
+		<ul>
+			<li><a href="#"><img src="/images/icon02.jpg" alt="image description" /></a></li>
+			<li><a href="#"><img src="/images/icon03.jpg" alt="image description" /></a></li>
+			<li><a href="#"><img src="/images/icon04.jpg" alt="image description" /></a></li>
+			<li><a href="#"><img src="/images/icon05.jpg" alt="image description" /></a></li>
+		</ul>
+	</div>
+	
+
+	<% fields_for "cart[credit_card_attributes]", nil, :index => nil do |c| %>
+	
+	<div class="input-box">
+		<%= c.text_field :name_on_card, :class => 'text text3' %>
+		<%= c.label :name_on_card, '*Name on Card:' %>
+	</div>
+	<div class="input-box">
+		<%= c.text_field :card_number, :class => 'text text3' %>
+		<%= c.label :card_number, '*Card Number:' %>
+	</div>
+	<div class="input-box">
+		<%= c.date_select :exp_date, 
+				{
+					:order => [:year, :month, :day], 
+					:discard_day => true,
+					:start_year => Date.today.year
+				}, 
+				{:class => 'select-t4 t5'} %>
+		<%= c.label :exp_date, '*Exp. Date:' %>
+	</div>
+	<div class="input-box">
+		<%= c.select :card_type, 
+				options_for_select([
+					["Visa", "visa"],
+					["MasterCard", "master"],
+					["Discover/Novus", "discover"]
+				]), {}, :class => 't6' %>
+		<%= c.label :card_type, '*Card Type:' %>
+	</div>
+	<div class="input-box">
+		<a href="#" class="what">What is this?</a>
+		<%= c.text_field :vcode, :class => 'text text4' %>
+		<%= c.label :vcode, '*Verification Code:' %>
+	</div>
+	
+	<% end %>
+	
+</fieldset>

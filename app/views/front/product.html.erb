@@ -1,2 +1,195 @@
-<h1>Front#product</h1>
-<p>Find me in app/views/front/product.html.erb</p>
+<div class="main-content">
+	<div class="mcontent-b">
+
+		<div class="columns-holder">
+			<!-- main column -->
+			<div id="m-column">
+				<!-- main box -->
+				<div class="mbox detail">
+					<div class="tabset">
+						<ul>
+							<li><a class="tab active" href="#"><span>DESCRIPTION</span><em>&nbsp;</em></a></li>
+							<!--
+							<li><a class="tab" href="#"><span>DIMENSIONS</span><em>&nbsp;</em></a></li>
+							-->
+						</ul>
+					</div>
+					<div class="mbox-body">
+						<div class="mbox-t">
+							<div class="mbox-area">
+						
+								<!-- <a href="#" class="close">close detail</a> -->
+						
+								<div class="column">
+							
+							
+							
+									<div class="image-holder">
+										<%= image_tag @product.product_image.url(:main), :alt => @product.product_name %>
+									</div>
+									<span>Enlarge Image</span>
+							
+							
+							
+									<!--
+									<span class="stars">stars</span>
+									<p>(based on <a href="#">305 reviews</a>)</p>
+									<ul>
+										<li><a href="#">write a review</a></li>
+										<li><a href="#">see all</a></li>
+									</ul>
+									-->
+							
+									<div class="link-box">
+										<a href="#">save to my Wish LIst</a>
+										<a href="#">add to my Registry</a>
+									</div>
+							
+							
+								</div><!-- end left column -->
+						
+						
+						
+								<div class="text">
+							
+							
+									<h3><%=h @product.product_name %></h3>
+							
+									<p><%=h(@product.product_overview).gsub("\n", "<br />") %></p>
+							
+									<% unless @product.product_details.blank? %>
+										<strong>Description:</strong>
+										<p><%= h(@product.product_details).gsub("\n", "<br />") %></p>
+									<% end %>
+							
+							
+							
+									<!-- text print of options -->
+									<% if @product.has_options? %>
+										<strong>Available <%=h @product.product_name %> Options: 
+									
+									
+
+										<!-- variations text display -->
+										<% unless @product.default_variation? %>
+
+												<% variation = @product.product_variations.first %>
+
+												<% if @product.product_variations.size > 10 %>
+													<br />
+													<span><%= pluralize(@product.product_variations.size, variation.variation_group) %>:
+														Choose from <%= @product.product_variations.size %> selections</span>
+												<% else %>
+													<br />
+													<span>
+													  <%= pluralized_name(@product.product_variations.size, variation.variation_group) %>:
+													  <%= @product.product_variations.collect{|v| v.title }.join(", ") %>
+													</span>
+												<% end %>
+
+										<% end %>
+
+										<!-- pao text display -->
+										<% unless @product.product_options.empty? %>
+											<% @product.product_options.each do |po| %>
+
+												<% if po.product_option_values.size > 10 %>
+													<br />
+													<span>Choose from <%= po.product_option_values.size %> different 
+													<%= pluralized_name(po.product_option_values.size, po.option_name) %></span>
+												<% else %>
+													<br />
+													<span>
+													  <%= pluralized_name(po.product_option_values.size, po.option_name) %>:
+													  <%= po.product_option_values.map{|pov| pov.option_value }.join(", ") %>
+													</span>
+												<% end %>
+											<% end %>
+										<% end %>
+
+										<br />
+										<em>(Options not shown in the drop down list below are out of stock or on backorder.)</em></strong>
+									<% end %>
+							
+							
+							
+							
+							
+							
+									<div class="form-box">
+										<em>our price: <span>$<%= @product.retail_price %></span></em>
+										<% form_for :cart_item, :url => add_to_cart_path, :html => {:id => 'cart_form'} do |f| %>
+											<fieldset>
+										
+												<% if @product.default_variation? %>
+													<%= f.hidden_field :variation_id, :value => @product.product_variations.first.id %>
+												<% else %>
+										
+													<div class="select-row">
+														<%= f.select :variation_id, product_variations_for_select(@product),
+														 		{:prompt => "Select #{@product.product_variations.first.variation_group}"},
+																{:class => 'inner-select2 required', :title => 'select'} %>
+		
+														<span class="arrow">arrow</span>
+													</div>
+										
+												<% end %>
+										
+										
+												<!-- Product Options Selection -->
+												<% if @product.product_options.size > 0 %>
+													<% for po in @product.product_options %>
+
+														<div class="select-row">
+															<%= select_product_options(po, "cart_item[product_option_values][][id]", nil) %>
+															<span class="arrow">arrow</span>
+														</div>
+
+													<% end %>
+												<% end %>
+
+
+												<!-- Product AS Options Selection -->
+												<% if @product.product_as_options.size > 0 %>
+													<% for pao in @product.product_as_options %>
+
+														<div class="select-row">
+															<%= select_product_as_options(pao, "cart_item[product_as_option_values][][id]", nil) %>
+															<span class="arrow">arrow</span>
+														</div>
+
+													<% end %>
+												<% end %>
+
+										
+										
+										
+												<div class="input-row">
+													<label for="qty">Qty:</label>
+											
+													<%= f.text_field :qty, :id => 'qty', :class => 'required' %>
+											
+													<a href="javascript:document.forms['cart_form'].submit();" class="btn">Shopping Cart</a>
+													<span class="arrow">arrow</span>
+												</div>
+												<input type="submit" value="Submit" class="hidden" />
+											</fieldset>
+										<% end %>
+									</div>
+									<a href="javascript:history.go(-1);" class="back">Back</a>
+								</div><!-- end text column -->
+						
+						
+							</div>
+						</div>
+						<div class="mbox-b"></div>
+					</div>
+				</div>
+			</div>
+	
+			<%= render :partial => "shared/product_pg_rt_sidebar", :object => @recommended_products %>
+
+		</div><!-- end .columns-holder -->
+
+	</div><!-- end .mcontent-b -->
+</div><!-- end .main-content -->

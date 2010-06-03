@@ -23,6 +23,12 @@ class GiftCard < ActiveRecord::Base
     current_amount
   end #end method current
   
+  #alias
+  def original
+    original_amount
+  end #end method original
+  
+  
   def set_current_amount
     self.current_amount = self.original_amount
   end #end method set_current_amount

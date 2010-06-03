@@ -1,5 +1,7 @@
 class OrderVendor < ActiveRecord::Base
   
+  DORMBUYS = 1
+  
   has_many :orders
   
   belongs_to :state
@@ -13,8 +15,8 @@ class OrderVendor < ActiveRecord::Base
       :large => "200x125>"
     },
     :default_style => :large,
-    :url => "/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/images/:class/:attachment/:id/:style_:basename.:extension"
+    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
 
   validates_attachment_presence :logo
   validates_attachment_content_type :logo, 

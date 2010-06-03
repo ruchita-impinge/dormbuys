@@ -1,0 +1,59 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@wish_lists) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Wish Lists</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @wish_lists.empty? %>
+			
+			<h3>No wish lists were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th>User</th>
+						<th class="center">Items</th>
+						<th class="center">Created</th>
+						<th colspan="2" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for wish_list in @wish_lists %>
+			  		<tr>
+						<td><%=h wish_list.user_email %></td
+						<td class="center"><%= wish_list.items.size %></td>
+						<td class="center"><%= wish_list.created_at.to_s(:friendly) %></td>
+						<!--
+						<td class="center"><%= link_to 'View', admin_wish_list_path(wish_list), :class => "tbl_lnk_show" %></td>
+						-->
+			    		<td class="center"><%= link_to 'Edit', edit_admin_wish_list_path(wish_list), :class => "tbl_lnk_edit" %></td>
+			    		<td class="center"><%= link_to 'Delete', admin_wish_list_path(wish_list), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Wish List</span>', new_admin_wish_list_path, :class => 'button positive' %>

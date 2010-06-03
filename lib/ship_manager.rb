@@ -8,14 +8,12 @@ class ShipManager
     
   end #end method self.get_rate
   
-  
-  
+    
   def self.courier_quote(sender_zip, to_zip, length, width, height, weight, num_packages)
     self.fedex_quick_quote(sender_zip, to_zip, length, width, height, weight, num_packages)
   end #end method self.courier_quote
 
 
-  
   def self.calculate_shippments(item_list, ship_to_zip_code)
     
     ship_packages = [] #array to hold product packages that will be shipped for the order
@@ -221,6 +219,28 @@ class ShipManager
       num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
       
   end #end courier_ship_request
+  
+  
+  def self.void_shipping_label(shipping_label)
+    ShipManager.void_fedex_ship_request(shipping_label.tracking_number)
+  end #end void_shipping_label
+  
+  
+  def self.state_from_zip(zip)
+
+  		destination = Destination.find_by_postal_code("#{zip}")
+  		
+  		#if destination wasn't found, return nil
+  		destination ? destination.state_province : nil
+
+  end #end method self.state_from_sip(zip)
+  
+  
+  
+  
+#-------------------------- CARRIER SPECIFIC BELOW -------------------------------------
+
+
   
   
   ##
@@ -512,20 +532,7 @@ class ShipManager
   end #end self.usps_quick_quote
   
   
-  ##
-  # method to get a state from a zipcode
-  #
-  # * @param String or Int - zip code to lookup the state for
-  # * @return String - 2 letter state code for the zip code passed in
-  ##
-  def self.state_from_zip(zip)
-
-  		destination = Destination.find_by_postal_code("#{zip}")
-  		
-  		#if destination wasn't found, return nil
-  		destination ? destination.state_province : nil
-
-  end #end method self.state_from_sip(zip)
+  
   
   
 end #end class

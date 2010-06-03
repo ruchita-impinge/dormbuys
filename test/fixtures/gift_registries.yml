@@ -1,0 +1,37 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  registry_reason_id: 1
+  registry_for_id: 1
+  title: MyString
+  message: MyText
+  event_date: 2010-05-13
+  shipping_address: MyString
+  shipping_address2: MyString
+  shipping_city: MyString
+  shipping_state_id: 1
+  shipping_zip_code: MyString
+  shipping_country_id: 1
+  shipping_phone: MyString
+  registry_number: MyString
+  show_in_search_by_name: false
+  show_in_search_by_number: 
+
+two:
+  user_id: 1
+  registry_reason_id: 1
+  registry_for_id: 1
+  title: MyString
+  message: MyText
+  event_date: 2010-05-13
+  shipping_address: MyString
+  shipping_address2: MyString
+  shipping_city: MyString
+  shipping_state_id: 1
+  shipping_zip_code: MyString
+  shipping_country_id: 1
+  shipping_phone: MyString
+  registry_number: MyString
+  show_in_search_by_name: false
+  show_in_search_by_number: 

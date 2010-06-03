@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100504201651) do
+ActiveRecord::Schema.define(:version => 20100602175930) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -20,6 +20,35 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+  end
+
+  create_table "addresses", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "address"
+    t.string   "address2"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zip"
+    t.integer  "country_id"
+    t.string   "phone"
+    t.string   "dorm_ship_college_name"
+    t.boolean  "dorm_ship_not_assigned"
+    t.boolean  "dorm_ship_not_part"
+    t.integer  "address_type_id"
+    t.boolean  "default_billing",        :default => false
+    t.boolean  "default_shipping",       :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "blog_scrapes", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "link"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "brands", :force => true do |t|
@@ -44,6 +73,65 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
   add_index "brands_vendors", ["brand_id"], :name => "index_brands_vendors_on_brand_id"
   add_index "brands_vendors", ["vendor_id"], :name => "index_brands_vendors_on_vendor_id"
 
+  create_table "cart_items", :force => true do |t|
+    t.integer  "cart_id"
+    t.integer  "product_variation_id"
+    t.integer  "quantity"
+    t.string   "product_option_values"
+    t.string   "product_as_option_values"
+    t.integer  "int_unit_price",           :default => 0
+    t.integer  "int_total_price",          :default => 0
+    t.boolean  "is_gift_registry_item",    :default => false
+    t.boolean  "is_wish_list_item",        :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "int_discount_value",       :default => 0
+  end
+
+  create_table "carts", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "user_profile_type_id",   :default => 1
+    t.string   "billing_first_name"
+    t.string   "billing_last_name"
+    t.string   "billing_address"
+    t.string   "billing_address2"
+    t.string   "billing_city"
+    t.integer  "billing_state_id"
+    t.string   "billing_zipcode"
+    t.integer  "billing_country_id"
+    t.string   "shipping_first_name"
+    t.string   "shipping_last_name"
+    t.string   "shipping_address"
+    t.string   "shipping_address2"
+    t.string   "shipping_city"
+    t.integer  "shipping_state_id"
+    t.string   "shipping_zipcode"
+    t.integer  "shipping_country_id"
+    t.string   "shipping_phone"
+    t.string   "dorm_ship_college_name"
+    t.boolean  "dorm_ship_not_assigned"
+    t.boolean  "dorm_ship_not_part"
+    t.integer  "dorm_ship_time_id"
+    t.date     "dorm_ship_ship_date"
+    t.integer  "payment_provider_id",    :default => 1
+    t.string   "client_ip_address"
+    t.integer  "coupon_id"
+    t.integer  "how_heard_option_id"
+    t.string   "how_heard_option_value"
+    t.string   "billing_phone"
+    t.string   "email"
+    t.string   "whoami"
+    t.binary   "payment_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "salt"
+  end
+
+  create_table "carts_gift_cards", :id => false, :force => true do |t|
+    t.integer "cart_id"
+    t.integer "gift_card_id"
+  end
+
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.text     "description"
@@ -60,7 +148,10 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.string   "featured_image_content_type"
     t.integer  "featured_image_file_size"
     t.datetime "featured_image_updated_at"
+    t.string   "permalink_handle"
   end
+
+  add_index "categories", ["permalink_handle"], :name => "index_categories_on_permalink_handle"
 
   create_table "countries", :force => true do |t|
     t.string   "country_name"
@@ -89,6 +180,7 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.boolean  "is_free_shipping", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "tier_rules"
   end
 
   create_table "couriers", :force => true do |t|
@@ -118,6 +210,28 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.datetime "updated_at"
   end
 
+  create_table "dorm_bucks_email_list_clients", :force => true do |t|
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "email_list_clients", :force => true do |t|
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "gift_card_reports", :force => true do |t|
+    t.text     "csv_data"
+    t.integer  "valid_count"
+    t.integer  "valid_total"
+    t.integer  "all_count"
+    t.integer  "all_total"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "gift_cards", :force => true do |t|
     t.string   "giftcard_number"
     t.string   "giftcard_pin"
@@ -134,25 +248,64 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.integer "order_id"
   end
 
+  add_index "gift_cards_orders", ["gift_card_id"], :name => "index_gift_cards_orders_on_gift_card_id"
+  add_index "gift_cards_orders", ["order_id"], :name => "index_gift_cards_orders_on_order_id"
+
+  create_table "gift_registries", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "registry_reason_id"
+    t.integer  "registry_for_id"
+    t.string   "title"
+    t.text     "message"
+    t.date     "event_date"
+    t.string   "shipping_address"
+    t.string   "shipping_address2"
+    t.string   "shipping_city"
+    t.integer  "shipping_state_id"
+    t.string   "shipping_zip_code"
+    t.integer  "shipping_country_id"
+    t.string   "shipping_phone"
+    t.string   "registry_number"
+    t.boolean  "show_in_search_by_name",   :default => true
+    t.boolean  "show_in_search_by_number", :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "gift_registry_items", :force => true do |t|
-    t.integer  "gift_registry_id"
-    t.integer  "product_variation_id"
-    t.integer  "desired_qty"
-    t.integer  "received_qty"
-    t.text     "comments"
-    t.string   "product_option_values"
-    t.string   "product_as_option_values"
+    t.integer "gift_registry_id"
+    t.integer "product_variation_id"
+    t.integer "desired_qty"
+    t.integer "received_qty"
+    t.text    "comments"
+    t.string  "product_option_values"
+    t.string  "product_as_option_values"
+    t.text    "product_custom_option_values"
+  end
+
+  create_table "gift_registry_names", :force => true do |t|
+    t.integer "gift_registry_id"
+    t.string  "first_name"
+    t.string  "last_name"
+    t.string  "email"
+  end
+
+  create_table "order_drop_ship_emails", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "vendor_id"
+    t.string   "email"
+    t.string   "vendor_company_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "order_line_item_discounts", :force => true do |t|
-    t.integer  "order_line_item_id"
-    t.string   "discount_message"
-    t.integer  "int_discount_amount", :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "order_line_item_id",                                :null => false
+    t.string  "discount_message",    :limit => 100
+    t.integer "int_discount_amount",                :default => 0
   end
+
+  add_index "order_line_item_discounts", ["order_line_item_id"], :name => "index_order_line_item_discounts_on_order_line_item_id"
 
   create_table "order_line_item_options", :force => true do |t|
     t.integer  "order_line_item_id"
@@ -208,6 +361,7 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.string   "website"
   end
 
   create_table "orders", :force => true do |t|
@@ -264,6 +418,11 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.text     "payment_transaction_data"
   end
 
+  create_table "orders_vendors", :id => false, :force => true do |t|
+    t.integer "order_id"
+    t.integer "vendor_id"
+  end
+
   create_table "product_as_option_values", :force => true do |t|
     t.integer  "product_variation_id"
     t.integer  "product_as_option_id"
@@ -274,28 +433,28 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
   end
 
   create_table "product_as_options", :force => true do |t|
-    t.integer  "product_id"
-    t.string   "option_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "product_id",                :null => false
+    t.string  "option_name", :limit => 50, :null => false
   end
+
+  add_index "product_as_options", ["product_id"], :name => "index_product_as_options_on_product_id"
 
   create_table "product_option_values", :force => true do |t|
-    t.integer  "product_option_id"
-    t.string   "option_value"
-    t.decimal  "weight_increase",    :precision => 5, :scale => 3, :default => 0.0
-    t.integer  "display_order",                                    :default => 0
-    t.integer  "int_price_increase",                               :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "product_option_id",                                 :null => false
+    t.string  "option_value",       :limit => 50,                  :null => false
+    t.float   "weight_increase",                  :default => 0.0, :null => false
+    t.integer "display_order",                    :default => 0,   :null => false
+    t.integer "int_price_increase",               :default => 0
   end
 
+  add_index "product_option_values", ["product_option_id"], :name => "index_product_option_values_on_product_option_id"
+
   create_table "product_options", :force => true do |t|
-    t.integer  "product_id"
-    t.string   "option_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "product_id",                :null => false
+    t.string  "option_name", :limit => 50, :null => false
   end
+
+  add_index "product_options", ["product_id"], :name => "index_product_options_on_product_id"
 
   create_table "product_packages", :force => true do |t|
     t.decimal  "weight",               :precision => 6, :scale => 3
@@ -309,11 +468,9 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
   end
 
   create_table "product_restrictions", :force => true do |t|
-    t.integer  "product_id"
-    t.integer  "state_id"
-    t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "product_id"
+    t.integer "state_id"
+    t.string  "description"
   end
 
   create_table "product_variations", :force => true do |t|
@@ -341,6 +498,11 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.integer  "sold_count",                                                       :default => 0
   end
 
+  create_table "product_variations_quantity_discounts", :id => false, :force => true do |t|
+    t.integer "product_variation_id"
+    t.integer "quantity_discount_id"
+  end
+
   create_table "products", :force => true do |t|
     t.string   "product_name"
     t.string   "option_text"
@@ -361,12 +523,18 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.string   "product_image_content_type"
     t.integer  "product_image_file_size"
     t.datetime "product_image_updated_at"
+    t.string   "permalink_handle"
   end
+
+  add_index "products", ["permalink_handle"], :name => "index_products_on_permalink_handle"
 
   create_table "products_subcategories", :id => false, :force => true do |t|
     t.integer "product_id"
     t.integer "subcategory_id"
   end
+
+  add_index "products_subcategories", ["product_id"], :name => "index_products_subcategories_on_product_id"
+  add_index "products_subcategories", ["subcategory_id"], :name => "index_products_subcategories_on_subcategory_id"
 
   create_table "products_vendors", :id => false, :force => true do |t|
     t.integer "product_id"
@@ -389,6 +557,17 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.datetime "updated_at"
   end
 
+  create_table "refunds", :force => true do |t|
+    t.integer  "order_id",                      :null => false
+    t.string   "transaction_id",                :null => false
+    t.integer  "user_id",                       :null => false
+    t.string   "response_data",                 :null => false
+    t.string   "message",                       :null => false
+    t.boolean  "success",                       :null => false
+    t.datetime "created_at"
+    t.integer  "int_amount",     :default => 0
+  end
+
   create_table "roles", :force => true do |t|
     t.string "name"
   end
@@ -402,48 +581,42 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
 
   create_table "shipping_containers", :force => true do |t|
-    t.string   "title"
-    t.decimal  "length",             :precision => 5, :scale => 3
-    t.decimal  "width",              :precision => 5, :scale => 3
-    t.decimal  "depth",              :precision => 5, :scale => 3
-    t.decimal  "weight",             :precision => 5, :scale => 3
-    t.integer  "qty_onhand"
-    t.boolean  "demensional_weight",                               :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "title",              :limit => 100,                    :null => false
+    t.float   "length",                                               :null => false
+    t.float   "width",                                                :null => false
+    t.float   "depth",                                                :null => false
+    t.float   "weight",                                               :null => false
+    t.integer "qty_onhand",                                           :null => false
+    t.boolean "dimensional_weight",                :default => false, :null => false
   end
 
   create_table "shipping_labels", :force => true do |t|
-    t.integer  "order_id"
-    t.string   "label"
-    t.string   "tracking_number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "order_id",                       :null => false
+    t.string  "tracking_number", :limit => 100, :null => false
+    t.string  "label",                          :null => false
   end
 
+  add_index "shipping_labels", ["order_id"], :name => "index_shipping_labels_on_order_id"
+
   create_table "shipping_numbers", :force => true do |t|
-    t.integer  "order_line_item_id"
-    t.string   "qty_description"
-    t.string   "tracking_number"
+    t.string   "qty_description",    :limit => 25, :null => false
+    t.string   "tracking_number",    :limit => 50
     t.integer  "courier_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "order_line_item_id",               :null => false
   end
 
   create_table "shipping_rates", :force => true do |t|
-    t.integer  "int_subtotal",            :default => 0
-    t.integer  "int_standard_rate",       :default => 0
-    t.integer  "int_express_rate",        :default => 0
-    t.integer  "int_overnight_rate",      :default => 0
-    t.integer  "shipping_rates_table_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "int_subtotal",            :default => 0
+    t.integer "int_standard_rate",       :default => 0
+    t.integer "int_express_rate",        :default => 0
+    t.integer "int_overnight_rate",      :default => 0
+    t.integer "shipping_rates_table_id"
   end
 
   create_table "shipping_rates_tables", :force => true do |t|
-    t.boolean  "enabled"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean "enabled", :default => false
   end
 
   create_table "states", :force => true do |t|
@@ -467,7 +640,10 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.string   "list_image_content_type"
     t.integer  "list_image_file_size"
     t.datetime "list_image_updated_at"
+    t.string   "permalink_handle"
   end
+
+  add_index "subcategories", ["permalink_handle"], :name => "index_subcategories_on_permalink_handle"
 
   create_table "subcategories_third_party_categories", :id => false, :force => true do |t|
     t.integer "subcategory_id"
@@ -493,44 +669,49 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone"
+    t.integer  "user_shipping_type_id",                    :default => 0
+  end
+
+  create_table "users_vendors", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "vendor_id"
   end
 
   create_table "vendors", :force => true do |t|
-    t.string   "account_number"
-    t.string   "company_name"
-    t.string   "address"
-    t.string   "address2"
-    t.string   "city"
-    t.integer  "state_id"
-    t.string   "zipcode"
-    t.integer  "country_id"
-    t.string   "phone"
-    t.boolean  "dropship"
-    t.boolean  "enabled"
-    t.string   "corporate_name"
-    t.string   "fax"
-    t.string   "website"
-    t.string   "billing_address"
-    t.string   "billing_address2"
-    t.string   "billing_city"
-    t.integer  "billing_state_id"
-    t.string   "billing_zipcode"
-    t.integer  "billing_country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "account_number",     :limit => 30,                   :null => false
+    t.string  "company_name",       :limit => 30,                   :null => false
+    t.string  "address",            :limit => 60,                   :null => false
+    t.string  "address2",           :limit => 60
+    t.string  "city",               :limit => 30,                   :null => false
+    t.integer "state_id",                                           :null => false
+    t.string  "zipcode",            :limit => 20,                   :null => false
+    t.integer "country_id",                                         :null => false
+    t.string  "phone",              :limit => 20,                   :null => false
+    t.boolean "dropship",                         :default => true, :null => false
+    t.boolean "enabled",                          :default => true, :null => false
+    t.string  "corporate_name",     :limit => 75
+    t.string  "fax",                :limit => 20
+    t.string  "website"
+    t.string  "billing_address",    :limit => 75
+    t.string  "billing_address2",   :limit => 75
+    t.string  "billing_city",       :limit => 50
+    t.integer "billing_state_id"
+    t.string  "billing_zipcode",    :limit => 15
+    t.integer "billing_country_id"
   end
 
+  add_index "vendors", ["account_number"], :name => "index_vendors_on_account_number"
+  add_index "vendors", ["company_name"], :name => "index_vendors_on_company_name"
+
   create_table "warehouses", :force => true do |t|
-    t.integer  "vendor_id"
-    t.string   "name"
-    t.string   "address"
-    t.string   "address2"
-    t.string   "city"
-    t.integer  "state_id"
-    t.string   "zipcode"
-    t.integer  "country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "vendor_id",                :null => false
+    t.string  "name",       :limit => 75, :null => false
+    t.string  "address",    :limit => 50, :null => false
+    t.string  "address2",   :limit => 50
+    t.string  "city",       :limit => 50, :null => false
+    t.integer "state_id",                 :null => false
+    t.string  "zipcode",    :limit => 20, :null => false
+    t.integer "country_id",               :null => false
   end
 
   create_table "wish_list_items", :force => true do |t|
@@ -541,8 +722,15 @@ ActiveRecord::Schema.define(:version => 20100504201651) do
     t.text     "comments"
     t.text     "product_option_values"
     t.text     "product_as_option_values"
+    t.text     "product_custom_option_values"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "wish_lists", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
 end
