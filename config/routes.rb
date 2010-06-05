@@ -56,6 +56,16 @@ ActionController::Routing::Routes.draw do |map|
   map.admin_coupons_search '/admin/coupons/search', :controller => 'admin/coupons', :action => 'search'
   map.admin_products_search '/admin/products/search', :controller => 'admin/products', :action => 'search'
 
+  #HARD CODED URLS
+  map.buy_gift_card '/college/REPLACE/REPLACE/REPLACE', :controller => 'front', :action => 'product'
+  map.main_gift_registry '/college/gift_registry', :controller => 'front', :action => 'registry'
+  map.main_registry_search '/college/gift_registry/search', :controller => 'front', :action => 'registry_search'
+  map.main_view_registry '/college/gift_registry/view/:id', :controller => "front", :action => "registry_view"
+  map.main_registry_add_to_cart '/collect/gift_registry/:id/add_to_cart', :controller => "front", :action => "registry_add_to_cart"
+  
+  # Search URL
+  map.product_search '/search', :controller => "front", :action => "search"
+
 
   # Product, Cat & Subcat URLs
   map.front_product '/college/:category_permalink_handle/:subcategory_permalink_handle/:product_permalink_handle', 
@@ -66,10 +76,9 @@ ActionController::Routing::Routes.draw do |map|
     
   map.front_category '/college/:category_permalink_handle',
     :controller => 'front', :action => 'category'
-    
-  #HARD CODED URLS
-  map.buy_gift_card '/college/REPLACE/REPLACE/REPLACE', :controller => 'front', :action => 'product'
-  map.main_gift_registry '/college/REPLACE', :controller => 'front', :action => 'gift_registry'
+
+  
+  #cart urls
   map.cart '/cart', :controller => 'cart', :action => 'index'
   map.add_to_cart '/cart/add', :controller => 'cart', :action => 'add'
   map.update_cart '/cart/update/:cart_item_id', :controller => 'cart', :action => 'update'
@@ -83,9 +92,62 @@ ActionController::Routing::Routes.draw do |map|
   map.cart_review '/cart/review', :controller => 'cart', :action => 'review'
   map.cart_confirm '/cart/confirm', :controller => 'cart', :action => 'confirm'
   map.cart_print '/cart/print', :controller => 'cart', :action => 'print'
+  map.cart_add_wish_list_item "/cart/add_wish_list_item/:wish_list_item_id", :controller => "cart", :action => "add_wish_list_item"
 
-  map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  map.login '/login', :controller => 'sessions', :action => 'new'
+  #static page urls
+  map.affiliates '/affiliates', :controller => 'front', :action => 'affiliates'
+  map.links '/links', :controller => 'front', :action => 'links'
+  map.news '/news', :controller => 'front', :action => 'news'
+  map.privacy_policy '/privacy', :controller => 'front', :action => 'privacy'
+  map.blog '/2east', :controller => 'front', :action => 'blog'
+  map.twitter '/twitter', :controller => 'front', :action => 'twitter'
+  map.facebook '/facebook', :controller => 'front', :action => 'facebook'
+  map.contact '/contact', :controller => 'front', :action => 'contact'
+  map.contact_submit '/contact_submit', :controller => 'front', :action => 'contact_submit'
+  map.returns '/returns', :controller => 'front', :action => 'returns'
+  map.scholarships '/scholarships', :controller => 'front', :action => 'scholarships'
+  map.security '/security', :controller => 'front', :action => 'security'
+  map.shipping '/shipping', :controller => 'front', :action => 'shipping'
+  map.faq '/faq', :controller => 'front', :action => 'faq'
+  
+  #account urls
+  map.account '/account', :controller => 'account', :action => 'index'
+  map.account_login '/account/login', :controller => 'account', :action => 'login'
+  map.account_submit_login '/account/submit_login', :controller => 'account', :action => 'submit_login'
+  map.account_logout '/account/logout', :controller => 'account', :action => 'logout'
+  map.account_user_signup '/account/user_signup', :controller => 'account', :action => 'user_signup'
+  map.account_gift_card '/account/gift_card', :controller => 'account', :action => 'gift_card'
+  map.account_gift_card_submit '/account/gift_card_submit', :controller => 'account', :action => 'gift_card_submit'
+  map.account_password '/account/password', :controller => 'account', :action => 'password'
+  map.account_update_password '/account/update_password', :controller => 'account', :action => 'update_password'
+  map.account_email '/account/email', :controller => 'account', :action => 'email'
+  map.account_email_edit '/account/email_edit', :controller => 'account', :action => 'email_edit'
+  map.account_email_subscribe '/account/email_subscribe', :controller => 'account', :action => 'email_subscribe'
+  map.account_billing '/account/billing', :controller => 'account', :action => 'billing'
+  map.account_billing_edit '/account/billing_edit', :controller => 'account', :action => 'billing_edit'
+  map.account_billing_update '/account/billing_update', :controller => 'account', :action => 'billing_update'
+  map.account_orders '/account/orders', :controller => 'account', :action => 'orders'
+  map.account_view_order '/account/order/:order_id', :controller => 'account', :action => 'view_order'
+  map.account_view_order_invoice '/account/order_invoice/:order_id', :controller => 'account', :action => 'order_invoice'
+  map.account_all_orders '/account/all_orders', :controller => 'account', :action => 'all_orders'
+  map.account_wish_list '/account/wish_list', :controller => 'account', :action => 'wish_list'
+  map.account_update_wish_list '/account/update_wish_list', :controller => 'account', :action => 'update_wish_list'
+  
+  map.account_gift_registries '/account/gift_registries', :controller => 'account', :action => 'gift_registries'
+  map.account_select_registry '/account/gift_registries/add_to', :controller => 'account', :action => 'select_registry_to_add_to'
+  map.account_add_to_registry '/account/gift_registries/add_to/:id', :controller => 'account', :action => 'add_to_registry'
+  map.account_new_gift_registry '/account/gift_registry/new', :controller => 'account', :action => 'new_gift_registry'
+  map.account_create_gift_registry '/account/gift_registry/create', :controller => 'account', :action => 'create_gift_registry'
+  map.account_edit_gift_registry '/account/gift_registry/:id/edit', :controller => 'account', :action => 'edit_gift_registry'
+  map.account_update_gift_registry '/account/gift_registry/:id/update', :controller => 'account', :action => 'update_gift_registry'
+  map.account_destroy_gift_registry '/account/gift_registry/:id/destroy', :controller => 'account', :action => 'destroy_gift_registry'
+  map.account_add_registry_name '/account/gift_registry/add_registry_name', :controller => 'account', :action => 'add_registry_name'
+  map.account_view_gift_registry '/account/gift_registry/:id', :controller => 'account', :action => "view_gift_registry"
+
+  #map.logout '/logout', :controller => 'sessions', :action => 'destroy'
+  #map.login '/login', :controller => 'sessions', :action => 'new'
+  map.logout '/logout', :controller => 'account', :action => 'logout'
+  map.login '/login', :controller => 'account', :action => 'login'
 
   map.resource :session
 
@@ -142,6 +204,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :order_vendors
     admin.resources :wish_lists
     admin.resources :gift_registries
+    admin.resources :state_shipping_rates
   end
   
   

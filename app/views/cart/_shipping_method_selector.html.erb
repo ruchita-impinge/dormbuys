@@ -4,7 +4,7 @@
 		<div class="input-box">
 			<!--
 			<input type="checkbox" name="cart[user_profile_type_id]" class="shipping_type_check"
-				id="same" value="<%= Order::ADDRESS_SAME %>" <%= 'checked="checked"' if @cart.user_profile_type_id == Order::ADDRESS_SAME %> />
+				id="same" value="<%= Order::ADDRESS_SAME %>" <%= 'checked="checked"' if obj.user_profile_type_id == Order::ADDRESS_SAME %> />
 			<label for="same">Same as billing address</label>
 			-->
 			<%= f.radio_button :user_profile_type_id, Order::ADDRESS_SAME, :id => 'same', :class => 'ship_meth', :onchange => 'shippingAddressPicker("same");' %>
@@ -13,7 +13,7 @@
 		<div class="input-box">
 			<!--
 			<input type="checkbox" name="cart[user_profile_type_id]" class="shipping_type_check" 
-				id="ship" value="<%= Order::ADDRESS_DIFFERENT %>" <%= 'checked="checked"' if @cart.user_profile_type_id == Order::ADDRESS_DIFFERENT %> />
+				id="ship" value="<%= Order::ADDRESS_DIFFERENT %>" <%= 'checked="checked"' if obj.user_profile_type_id == Order::ADDRESS_DIFFERENT %> />
 			<label for="ship">Ship to a different address</label>
 			-->
 			<%= f.radio_button :user_profile_type_id, Order::ADDRESS_DIFFERENT, :id => 'ship', :class => 'ship_meth', :onchange => 'shippingAddressPicker("ship");' %>
@@ -22,7 +22,7 @@
 		<div class="input-box">
 			<!--
 			<input type="checkbox" name="cart[user_profile_type_id]" class="shipping_type_check" 
-				id="ship2" value="<%= Order::ADDRESS_DORM %>" <%= 'checked="checked"' if @cart.user_profile_type_id == Order::ADDRESS_DORM %> />
+				id="ship2" value="<%= Order::ADDRESS_DORM %>" <%= 'checked="checked"' if obj.user_profile_type_id == Order::ADDRESS_DORM %> />
 			<label for="ship2">Ship to my college dorm or college box<br /> <a href="#">Learn more about this option</a></label>
 			-->
 			<%= f.radio_button :user_profile_type_id, Order::ADDRESS_DORM, :id => 'ship2', :class => 'ship_meth', :onchange => 'shippingAddressPicker("ship2");' %>

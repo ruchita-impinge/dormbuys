@@ -41,8 +41,15 @@
 									-->
 							
 									<div class="link-box">
-										<a href="#">save to my Wish LIst</a>
-										<a href="#">add to my Registry</a>
+										<%= link_to_function "save to my Wish List" do |page|
+												page << '$("#is_wish_list_item").val("1");'
+												page << "document.forms['cart_form'].submit();"
+											end %>
+											
+										<%= link_to_function "add to my Registry" do |page|
+												page << '$("#is_gift_registry_item").val("1");'
+												page << "document.forms['cart_form'].submit();"
+											end %>
 									</div>
 							
 							
@@ -168,6 +175,8 @@
 													<label for="qty">Qty:</label>
 											
 													<%= f.text_field :qty, :id => 'qty', :class => 'required' %>
+													<%= f.hidden_field :is_gift_registry_item, :value => 0, :id => "is_gift_registry_item" %>
+													<%= f.hidden_field :is_wish_list_item, :value => 0, :id => "is_wish_list_item" %>
 											
 													<a href="javascript:document.forms['cart_form'].submit();" class="btn">Shopping Cart</a>
 													<span class="arrow">arrow</span>

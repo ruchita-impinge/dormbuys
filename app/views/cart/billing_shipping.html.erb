@@ -1,79 +1,4 @@
-<% content_for :head do %>
-	<% javascript_tag do %>
-	
-		$(document).ready(function(){
-			
-			initShippingSelector();
-			setupHowHeardBox();
-			
-		});//end ready
-		
-		
-		
-		function initShippingSelector()
-		{
-			if($("#same").is(":checked")){
-				
-				shippingAddressPicker("same");
-				
-			}else if($("#ship").is(":checked")){
-				
-				shippingAddressPicker("ship");
-				
-			}else if($("#ship2").is(":checked")){
-				
-				shippingAddressPicker("ship2");
-				
-			}
-			
-		}//end function
-		
-		
-		function setupHowHeardBox()
-		{
-			var val = Number($("#how_heard").val());
-			
-			if(val == 6 || val == 8)
-			{
-				$("#how_heard_other_box").show();
-			
-			} else {
-				
-				$("#how_heard_other_box").hide();
-			}
-			
-		}//end function
-
-
-
-		function shippingAddressPicker(id)
-		{
-			var val = $("#"+id).attr("value");
-
-			if(val == 1){	//bill and ship are same
-
-				$("#shipping_fieldset").hide();
-
-			}else if(val == 2){ //bill and ship are different
-
-				$("#shipping_fieldset").show();
-				$("#shipping_address_2_field").show();
-				$("#dorm_shipping_address_2_field").hide();
-				$(".dormship").hide();
-
-			}else if(val == 3){ //dorm shipping
-
-				$("#shipping_fieldset").show();
-				$(".dormship").show();
-				$("#shipping_address_2_field").hide();
-				$("#dorm_shipping_address_2_field").show();
-
-			}//end else-if
-
-		}//end function shippingAddressPicker
-		
-	<% end %>
-<% end %>
+<%= render :partial => "shipping_addy_selector" %>
 
 <!-- main title -->
 <div class="main-title">
@@ -128,7 +53,7 @@
 													<%= render :partial => 'billing_form', :locals => {:f => f} %>
 												</td>
 												<td>
-													<%= render :partial => 'shipping_method_selector', :locals => {:f => f} %>
+													<%= render :partial => 'shipping_method_selector', :locals => {:f => f, :obj => @cart} %>
 													<%= render :partial => 'shipping_form', :locals => {:f => f} %>
 												</td>
 											</tr>
@@ -308,6 +233,8 @@
 	</div>
 
 
-	<%= yield :front_footer_gift_blog %>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
 
 </div>

@@ -1,0 +1,76 @@
+<% content_for :head do %>
+	<% javascript_tag do %>
+	
+		$(document).ready(function(){
+			
+			initShippingSelector();
+			setupHowHeardBox();
+			
+		});//end ready
+		
+		
+		
+		function initShippingSelector()
+		{
+			if($("#same").is(":checked")){
+				
+				shippingAddressPicker("same");
+				
+			}else if($("#ship").is(":checked")){
+				
+				shippingAddressPicker("ship");
+				
+			}else if($("#ship2").is(":checked")){
+				
+				shippingAddressPicker("ship2");
+				
+			}
+			
+		}//end function
+		
+		
+		function setupHowHeardBox()
+		{
+			var val = Number($("#how_heard").val());
+			
+			if(val == 6 || val == 8)
+			{
+				$("#how_heard_other_box").show();
+			
+			} else {
+				
+				$("#how_heard_other_box").hide();
+			}
+			
+		}//end function
+
+
+
+		function shippingAddressPicker(id)
+		{
+			var val = $("#"+id).attr("value");
+
+			if(val == 1){	//bill and ship are same
+
+				$("#shipping_fieldset").hide();
+
+			}else if(val == 2){ //bill and ship are different
+
+				$("#shipping_fieldset").show();
+				$("#shipping_address_2_field").show();
+				$("#dorm_shipping_address_2_field").hide();
+				$(".dormship").hide();
+
+			}else if(val == 3){ //dorm shipping
+
+				$("#shipping_fieldset").show();
+				$(".dormship").show();
+				$("#shipping_address_2_field").hide();
+				$("#dorm_shipping_address_2_field").show();
+
+			}//end else-if
+
+		}//end function shippingAddressPicker
+		
+	<% end %>
+<% end %>

@@ -1,0 +1,148 @@
+<div class="mbox-area">
+	
+	<div class="table-box card-holder">
+		
+		<%= f.error_messages %>
+		
+		<div class="title-box2">
+			<strong class="create2">Created New Gift Registries:</strong>
+		</div>
+		<div class="table-head table-head2">
+			<strong>BASIC INFORMATION</strong>
+			<span class="number"><em class="num1">1</em></span>
+		</div>
+		<table class="table-body table-body4">
+			<tr>
+				<td>
+					<p><strong>The 411:</strong> Let’s cut to the chase. The best thing about signing up for the gift registry is that you can find something you like on our site, add it to your personal page, and then send the link to your parents or friends whenever they want to buy you something [read: high school graduation]. That way, you can save money and still get the stuff you want. Sound easy, right? Good. Because signing up is even easier!</p>
+				</td>
+				<td>
+					<fieldset>
+						<div class="input-box">
+							<%= f.text_field :title, :class => 'text text2' %>
+							<%= f.label :title, '*Title:' %>
+						</div>
+						<div class="input-box">
+							<%= f.text_area :message, :cols => 20, :rows => 20 %>
+							<%= f.label :message, "*Message:" %>
+						</div>
+						<div class="input-box">
+							<%= f.select :registry_for_id, GiftRegistry::REGISTRY_FOR.collect{|o| [o.last, o.first]}, {}, :class => "t7" %>
+							<%= f.label :registry_for_id, '*For Whom:' %>
+						</div>
+						<div class="input-box">
+							<%= f.select :registry_reason_id, GiftRegistry::REGISTRY_REASONS.collect{|o| [o.last, o.first]}, {}, :class => "t7" %>
+							<%= f.label :registry_reason_id, '*Occassion:' %>
+						</div>
+						<div class="input-box">
+							<%= f.date_select :event_date, 
+									{
+										:order => [:year, :day, :month],
+										:start_year => Time.now.year,
+										:use_month_numbers => true
+									},
+									{
+										:class => "t8"
+									} %>
+							<%= f.label :event_date, "*Event Date:" %>
+						</div>
+					</fieldset>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="table-box card-holder">
+		<div class="table-head table-head2">
+			<div>
+				<strong>REGISTERED NAMES</strong>
+			</div>
+			<div>
+				<strong>ADD A NEW NAME</strong>
+			</div>
+			<span class="number"><em class="num2">2</em></span>
+		</div>
+		<table class="table-body table-body4">
+			<tr>
+				<td id="registry_names_box">
+					
+					<p><strong>Table for 2 (or more):</strong> Here’s a thought: Once you’ve registered yourself on our site, register your roommate[s] too. Even though they won’t be able to upload their DB faves without your help, you can team up to get everything you want without getting two of something.</p>
+					
+					<%= render :partial => "gift_registry_name", :collection => @gift_registry.gift_registry_names %>
+
+				</td>
+				<td>
+					<fieldset>
+						<div class="input-box">
+							<input type="text" class="text text2" id="name_fname" title="First Name" />
+							<label for="name_fname">First Name:</label>
+						</div>
+						<div class="input-box">
+							<input type="text" class="text text2" id="name_lname" title="Last Name" />
+							<label for="name_lname">Last Name:</label>
+						</div>
+						<div class="input-box">
+							<input type="text" class="text text2" id="name_email" title="Email" />
+							<label for="name_email">Email:</label>
+						</div>
+						<%= link_to_remote "Add", 
+								:url => account_add_registry_name_path, 
+								:html => {:class => "add"},
+								:with => "'fname=' + escape($('#name_fname').val()) + '&lname=' + escape($('#name_lname').val()) + '&email=' + escape($('#name_email').val()) + '&id=' + $('#gift_registry_id').val()" %>
+					</fieldset>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="table-box card-holder">
+		<div class="table-head table-head2">
+			<strong>SHIPPING ADDRESS</strong>
+			<span class="number"><em class="num3">3</em></span>
+		</div>
+		<table class="table-body table-body4">
+			<tr>
+				<td>
+					<p><strong>Digit Check:</strong> Wrong shipping address? No worries. This would be the right place to make any changes needed.</p>
+				</td>
+				<td>
+					<fieldset>
+						<div class="input-box">
+							<%= f.text_field :shipping_address, :class => 'text text2' %>
+							<%= f.label :shipping_address, 'Address 1:' %>
+						</div>
+						<div class="input-box">
+							<%= f.text_field :shipping_address2, :class => 'text text2' %>
+							<%= f.label :shipping_address2, 'Address 2:' %>
+						</div>
+						<div class="input-box">
+							<%= f.text_field :shipping_city, :class => 'text text2' %>
+							<%= f.label :shipping_city, '*City:' %>
+						</div>
+						<div class="input-box">
+							<%= f.text_field :shipping_zip_code, :class => 'text zip' %>
+							<%= f.label "*Zip:" %>
+							
+							<%= f.select :shipping_state_id, State.us_states.collect {|s| [s.abbreviation, s.id]}, {:include_blank => true}, :class => 'select-t4' %>
+							<%= f.label :shipping_state_id, "*State:" %>
+						</div>
+						<div class="input-box">
+							<%= f.text_field :shipping_phone, :class => 'text text2' %>
+							<%= f.label :shipping_phone, "*Phone:" %>
+						</div>
+						
+						<%= f.hidden_field :shipping_country_id, :value => 1 %>
+						
+					</fieldset>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="table-box card-holder">
+		<div class="table-head table-head2">
+			<strong>LOCK &amp; LOAD</strong>
+			<span class="number"><em class="num4">4</em></span>
+		</div>
+		<div class="bottom-box bottom-box2">
+			<%= link_to "Save Gift Registry", 'javascript:document.forms["gift_reg_form"].submit();' %>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,85 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox create">
+						<div class="tabset" id="tabset">
+							
+							<%= render :partial => "gift_registry_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="title-box2">
+											<%= link_to "New Gift Registry", account_new_gift_registry_path, :class => 'btn' %>
+											<strong class="create">Created Gift Registries:</strong>
+										</div>
+										<div class="table-head">
+											<strong class="title2">TITLE</strong>
+											<strong class="event">EVENT DATE</strong>
+											<strong class="reg">REGISTRY NUMBER</strong>
+											<strong class="action">ACTION</strong>
+										</div>
+										<div class="table-body table-body3">
+											<table>
+												<% if @gift_registries.empty? %>
+													<tr>
+														<td colspan="4">
+															<h2>You haven't created any Gift Registries yet.</h2>
+														</td>
+													</tr>
+												<% else %>
+													<% @gift_registries.each do |registry| %>
+														<tr>
+															<td class="title2"><%=h registry.title %></td>
+															<td class="event"><%=h registry.event_date.to_s("%m/%d%Y") %></td>
+															<td class="reg"><%=h registry.registry_number %></td>
+															<td class="action">
+																<ul>
+																	<li><%= link_to "items", account_view_gift_registry_path(registry) %></li>
+																	<li><%= link_to "edit", account_edit_gift_registry_path(registry) %></li>
+																	<li><%= link_to "delete", account_destroy_gift_registry_path(registry), :confirm => "Are you sure?" %></li>
+																</ul>
+															</td>
+														</tr>
+													<% end %>
+												<% end %>
+												
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

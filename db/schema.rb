@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100602175930) do
+ActiveRecord::Schema.define(:version => 20100604202044) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(:version => 20100602175930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "int_discount_value",       :default => 0
+    t.integer  "wish_list_item_id"
+    t.integer  "gift_registry_item_id"
   end
 
   create_table "carts", :force => true do |t|
@@ -152,6 +154,15 @@ ActiveRecord::Schema.define(:version => 20100602175930) do
   end
 
   add_index "categories", ["permalink_handle"], :name => "index_categories_on_permalink_handle"
+
+  create_table "contact_messages", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "subject"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "countries", :force => true do |t|
     t.string   "country_name"
@@ -619,6 +630,13 @@ ActiveRecord::Schema.define(:version => 20100602175930) do
     t.boolean "enabled", :default => false
   end
 
+  create_table "state_shipping_rates", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "int_additional_cost", :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "states", :force => true do |t|
     t.string   "abbreviation"
     t.string   "full_name"
@@ -669,7 +687,29 @@ ActiveRecord::Schema.define(:version => 20100602175930) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone"
-    t.integer  "user_shipping_type_id",                    :default => 0
+    t.integer  "user_profile_type_id",                     :default => 1
+    t.string   "billing_first_name"
+    t.string   "billing_last_name"
+    t.string   "billing_address"
+    t.string   "billing_address2"
+    t.string   "billing_city"
+    t.integer  "billing_state_id"
+    t.string   "billing_zipcode"
+    t.integer  "billing_country_id"
+    t.string   "shipping_first_name"
+    t.string   "shipping_last_name"
+    t.string   "shipping_address"
+    t.string   "shipping_address2"
+    t.string   "shipping_city"
+    t.integer  "shipping_state_id"
+    t.string   "shipping_zipcode"
+    t.integer  "shipping_country_id"
+    t.string   "shipping_phone"
+    t.string   "dorm_ship_college_name"
+    t.boolean  "dorm_ship_not_assigned"
+    t.boolean  "dorm_ship_not_part"
+    t.string   "billing_phone"
+    t.string   "whoami"
   end
 
   create_table "users_vendors", :id => false, :force => true do |t|

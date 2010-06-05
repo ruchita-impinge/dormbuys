@@ -104,7 +104,7 @@
 													<td>
 														<strong class="proceed">PROCEED DIRECTLY TO CHECKOUT</strong>
 														<p>By choosing this option none of your user information will be saved in our records. You will not be able to review your order status or track your shipments.</p>
-														<a href="#" class="continue-btn">Continue</a>
+														<%= link_to 'Continue', cart_billing_shipping_path, :class => 'continue-btn' %>
 													</td>
 												</tr>
 											</table>
@@ -140,39 +140,16 @@
 				</div>
 				<!-- side column -->
 				<div id="s-column">
-					<!-- product side boxes -->
-					<div class="product-sboxes">
-						<strong class="slogan t-might-like">You might also like...</strong>
-						<div class="p-box">
-							<div class="heading">
-								<strong>PRODUCT NAME</strong>
-							</div>
-							<div class="body">
-								<a href="#"><img alt="image description" src="/images/p-img01.jpg" /></a>
-								<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted. This is not to be read, thoug you’re reading it anyway.</p>
-								<strong class="price"><em>our price:</em> $6.99</strong>
-								<span class="see-more"><a href="#">See more like this</a></span>
-							</div>
-						</div>
-						<div class="p-box">
-							<div class="heading">
-								<strong>PRODUCT NAME</strong>
-							</div>
-							<div class="body">
-								<a href="#"><img alt="image description" src="/images/p-img01.jpg" /></a>
-								<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted. This is not to be read, thoug you’re reading it anyway.</p>
-								<strong class="price"><em>our price:</em> $6.99</strong>
-								<span class="see-more"><a href="#">See more like this</a></span>
-							</div>
-						</div>
-					</div>
+					<%= render :partial => "shared/products_side_box", :locals => {:num_products => 2} %>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	
-	<%= yield :front_footer_gift_blog %>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
 	
 	
 </div>

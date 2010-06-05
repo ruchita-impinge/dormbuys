@@ -1,0 +1,11 @@
+<ul>
+	<li>
+		<%= link_to "<span>Find a Registry</span><em>&nbsp;</em>", main_gift_registry_path, 
+				:class => "tab #{'active' unless request.path =~ /gift_registry\/view/}" %>
+	</li>
+	<li>
+		<%= link_to "<span>Edit my Registry</span><em>&nbsp;</em>", account_gift_registries_path, :class => "tab" %>
+	</li>
+	<%= yield :extra_front_gift_reg_tab %>
+</ul>
+<%= link_to "Continue Shopping", root_path, :class => "continue" %>

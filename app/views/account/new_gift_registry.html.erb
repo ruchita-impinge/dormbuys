@@ -1,0 +1,49 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox create">
+						<div class="tabset" id="tabset">
+							
+							<%= render :partial => "gift_registry_tabs" %>
+							
+						</div>
+						<div class="mbox-body login">
+							<div class="mbox-t">
+								<% form_for @gift_registry, :url => account_create_gift_registry_path, :html => {:id => "gift_reg_form"} do |f| %>
+
+									<%= render :partial => "gift_registry_form", :locals => {:f => f} %>
+								
+								<% end %>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

@@ -1,0 +1,197 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-gift-registry">Gift Registry</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link t-tis-better active" href="#"><strong><img src="/images/text-tis-better.png" alt="Tis better to give..." class="png" width="229" height="32" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							
+							<% content_for :extra_front_gift_reg_tab do %>
+								<li><%= link_to @gift_registry.registry_number, main_view_registry_path(@gift_registry), :class => "tab-big active" %></li>
+							<% end %>
+							<%= render :partial => "gift_registry_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="registry-view">
+										<div class="search-again">
+											<%= link_to "Search Again", main_gift_registry_path %>
+										</div>
+										<div class="view-title">
+											<strong class="title"><%=h @gift_registry.title %></strong>
+											<p>
+												Date: <strong><%= @gift_registry.event_date.to_time.strftime("%m/%d/%Y") %></strong>   
+												State: <strong><%= @gift_registry.shipping_state.abbreviation %></strong>
+											</p>
+										</div>
+										<div class="box-title">
+											
+											<% form_for :options, :url => main_view_registry_path(@gift_registry), :html => {:id => "sort_reg", :method => "get"} do |f| %>
+												<fieldset>
+													
+													<%= link_to "refresh", 'javascript:document.forms["sort_reg"].submit();', :class => 'btn' %>
+													
+													<%= f.select :sort, 
+															options_for_select([
+																["Product Name", "product_name"],
+																["Product Name", "product_name"],
+																["Price", "price"]
+															], params[:options] ? params[:options][:sort] : nil), {}, :class => 't10' %>
+													<%= f.label :sort, 'Sort By:' %>
+													
+													
+													<%= f.select :show_cat, 
+															options_for_select(@sort_cats, params[:options] ? params[:options][:show_cat] : nil), {}, :class => 't10' %>
+													
+													
+													<%= f.select :show_price, 
+															options_for_select([
+																["All Prices", "all"],
+																["All Prices", "all"],
+																["$1 - $20", "1-20"],
+																["$21 - $50", "21-50"],
+																["$51 - $100", "51-100"],
+																["$101 - $200", "101-200"],
+																["$200+", "200-10000"]
+															], params[:options] ? params[:options][:show_price] : nil), {}, :class => 't10' %>
+													<%= f.label :show_price, 'Show:' %>
+													
+													
+
+													<input type="submit" value="Submit" class="hidden" />
+												</fieldset>
+											<% end %>
+											
+										</div>
+										
+										<% form_for :gift_registry_purchase, :url => main_registry_add_to_cart_path(@gift_registry), :html => {:id => "reg_add_to_cart"} do |f| %>
+											<fieldset>
+												<table class="table-body" summary="table body">
+													<thead>
+														<tr>
+															<th class="item">ITEM</th>
+															<th class="price">PRICE</th>
+															<th class="need-qty">NEED QTY</th>
+															<th class="got-qty">GOT QTY</th>
+															<th class="buy-qty">BUY QTY</th>
+														</tr>
+													</thead>
+													<tbody>
+														
+														<% if @items.empty? %>
+															<tr>
+																<td colspan="5">
+																	<div class="row">
+																		<h2 style="width: 100%; text-align: center;">There are no items in this registry</h2>
+																	</div>
+																</td>
+															</tr>
+														<% else %>
+															<%= render :partial => "gift_registry_item", :collection => @items %>
+														<% end %>
+														
+													</tbody>
+												</table>
+												
+												<!--
+												<% if 1 == 2 %>
+												<div class="gift-cards-holder">
+													<div class="table-head table-head2">
+														<strong>GIFT CARDS</strong>
+													</div>
+													<div class="price-holder">
+														<div class="item-info">
+															<a href="#"><img alt="image description" class="png" src="/images/img106.png" width="119" height="83" /></a>
+															<div class="description">
+																<strong class="item-title"><a href="#">Add a Dormbuys Gift Card</a></strong>
+															</div>
+														</div>
+														<div class="prices-box">
+															<div class="radio2">
+																<input type="radio" name="radio" id="radio1" />
+																<label for="radio1">$10</label>
+															</div>
+															<div class="radio2">
+																<input type="radio" name="radio" id="radio2" />
+																<label for="radio2">$25</label>
+															</div>
+															<div class="radio2">
+																<input type="radio" name="radio" id="radio3" checked="checked" />
+																<label for="radio3">$50</label>
+															</div>
+															<div class="radio2">
+																<input type="radio" name="radio" id="radio4" />
+																<label for="radio4">$100</label>
+															</div>
+															<div class="radio2">
+																<input type="radio" name="radio" id="radio5" />
+																<label for="radio5">$250</label>
+															</div>
+															<div class="radio2">
+																<input type="radio" name="radio" id="radio6" />
+																<label for="radio6">$500</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<% end %>
+												-->
+												
+												<div class="add-to-cart-button" id="pub_reg_view_add_to_cart_btn">
+													<%= link_to "<span>Add to Cart</span><em>&nbsp;</em>", 'javascript:document.forms["reg_add_to_cart"].submit();', :class => "table-btn tb-t2" %>
+													<input type="submit" value="Submit" class="hidden" />
+												</div>
+												
+											</fieldset>
+										<% end %>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<!-- product side boxes -->
+					<div class="product-sboxes">
+						<strong class="slogan share">Share the Dorm Love</strong>
+						<div class="p-box">
+							<div class="heading">
+								<strong class="giftistry">GIFTISTRY</strong>
+							</div>
+							<div class="body">
+								<%= render :partial => "shared/gift_card_sidebar" %>
+							</div>
+						</div>
+						<!--
+						<div class="banner">
+							<img src="/images/img67.gif" alt="image description" />
+						</div>
+						-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

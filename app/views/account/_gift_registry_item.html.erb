@@ -1,0 +1,47 @@
+<% if gift_registry_item.product_variation %>
+
+<% fields_for "gift_registry[gift_registry_item_attributes][]", gift_registry_item, :index => nil do |x| %>
+<tr class="main_row">
+	
+	<%= x.hidden_field :id %>
+	
+	<td class="item">
+		<div class="item-info">
+			<%= link_to image_tag(object.product_variation.product.product_image(:thumb)), 
+			 		object.product_variation.product.default_front_url %>
+			<div class="description">
+				<strong class="item-title">
+					<%= link_to truncate(object.product_variation.product.product_name, :length => 20),
+					 		object.product_variation.product.default_front_url %>
+				</strong>
+			</div>
+		</div>
+	</td>
+	
+	<td class="price">
+		<em class="price">$<%= gift_registry_item.price %></em>
+	</td>
+	<td class="need-qty align-c">
+		<%= x.text_field :desired_qty, :class => 'text' %>
+	</td>
+	<td class="got-qty">
+		<em class="price"><%= gift_registry_item.received_qty %></em>
+	</td>
+	<td class="got-qty">
+		
+		<input id="wl_rem_<%= gift_registry_item.id %>" type="checkbox" name="gift_registry[gift_registry_item_attributes][][should_destroy]" value="1" />
+		<label class="hidden" for="wl_rem_<%= gift_registry_item.id %>">&nbsp;</label>
+
+	</td>
+</tr>
+<tr class="comment-row">
+	<td colspan="6" class="comment-area">
+		<div class="row">
+			<%= x.text_field :comments, :class => 'text' %>
+			<%= x.label :comments %>
+		</div>
+	</td>
+</tr>
+<% end %>
+
+<% end %>

@@ -1,0 +1,87 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-customer-service">Customer Service</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link active" href="#"><strong><img src="/images/text-how-can-you-help.png" alt="How Can We Help?" class="png" width="192" height="23" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							<%= render :partial => "customer_service_tabs" %>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>POLICY</strong>
+											</div>
+											<div>
+												<strong>PROCESS</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<div class="text-holder">
+														<strong class="title">Returns &amp; Exchanges</strong>
+														<p>Dormbuys offers a 90-day money-back guarantee on all of our products. If you are not completely satisfied, you may return your item(s) for a full refund of the purchase price. </p>
+														<p>All returned items must be in new, unused condition and contain all original packaging and accessories. </p>
+														<p>Simply follow the directions to the right to complete your return. Once we receive your unused, undamaged item(s), we’ll process your return and refund your credit card within 2-5 business days. The customer is responsible for return shipping charges and the original shipping charge is nonrefundable. </p>
+														<p>If you have any questions, contact us at <br />1-866-502-DORM (3676) and we’ll be happy to help you out!</p>
+													</div>
+												</td>
+												<td>
+													<dl class="process-steps">
+														<dt>Step 1:</dt>
+														<dd>
+															Download, print and fill out our Merchandise Return Form using the link below.
+															<a href="#" class="btn">Download Form</a>
+														</dd>
+														<dt>Step 2:</dt>
+														<dd>
+															Pack up the items you’d like to return, including your completed Merchandise Return Form.  Make sure the box is closed and taped securely. 
+														</dd>
+														<dt>Step 3:</dt>
+														<dd>
+															Return the package to Dormbuys at the following address using a carrier of your choosing (Fed-Ex, UPS, USPS, etc.):
+															<address>Dormbuys, LLC <br />Attn: Returns Department <br />1100 Avoca Station Court <br />Louisville, KY 40245</address>
+														</dd>
+														<dt>Step 4:</dt>
+														<dd>
+															Be on the lookout for the refund to hit the credit card used for your order within 2-5 business days.
+														</dd>
+													</dl>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<%= render :partial => "customer_service_contact" %>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

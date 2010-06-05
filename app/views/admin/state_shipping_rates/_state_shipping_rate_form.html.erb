@@ -1,0 +1,14 @@
+
+  <div class="field">
+    <%= f.select :state_id, grouped_options_for_select(State.grouped_options, @state_shipping_rate.state_id) %>
+    <%= f.label :state_id %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.text_field :additional_cost, :class => 'textfield' %>
+    <%= f.label :additional_cost %>
+  </div>
+  <div class="clear"></div>
+

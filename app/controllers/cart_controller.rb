@@ -4,16 +4,58 @@ class CartController < ApplicationController
   
   #view cart
   def index
+    @page_title = "View Cart"
     find_cart
   end
   
   
   #add item to cart
   def add
+    if params[:cart_item][:variation_id].blank?
+      flash[:error] = "Use the first drop down list to select the product variation"
+      redirect_to request.referrer and return
+    end
+    
+    if params[:cart_item][:qty].blank?
+      flash[:error] = "You must specify a quantity"
+      redirect_to request.referrer and return
+    end
+    
     find_cart
     @cart.add(params[:cart_item])
-    redirect_to cart_path
+    
+    
+    if params[:cart_item][:is_wish_list_item].to_i == 1
+      
+      if logged_in?
+        flash[:notice] = "The item was successfully added to your wish list"
+      else
+        flash[:notice] = "Login or create an account to add the product to your wish list"
+      end
+      redirect_to account_wish_list_path and return
+      
+    elsif params[:cart_item][:is_gift_registry_item].to_i == 1
+      
+      unless logged_in?
+        flash[:notice] = "Login or create an account to add the product to your gift registry"
+      end
+      redirect_to account_select_registry_path and return
+      
+    else
+      redirect_to cart_path and return
+    end
+    
   end #end method add
+  
+  
+  def add_wish_list_item
+    find_cart
+    wl_item = WishListItem.find(params[:wish_list_item_id])
+    @cart.add(wl_item.to_cart_item_params)
+    redirect_to cart_path and return
+  end #end method add_wish_list_item
+
+  
   
   
   #remove item from cart
@@ -40,6 +82,7 @@ class CartController < ApplicationController
   
   #add a coupon to cart
   def add_coupon
+    @page_title = "Add Coupon"
     find_cart
     @coupon = Coupon.find_by_coupon_number(params[:coupon_number])
     
@@ -61,11 +104,20 @@ class CartController < ApplicationController
   
   
   def login
+    
+    if logged_in?
+      find_cart
+      @cart.load_user_data(current_user)
+      redirect_to cart_billing_shipping_path and return
+    end
+    
+    @page_title = "Login"
     @user = User.new
   end #end method login
   
   
   def submit_login
+    @page_title = "Login"
     logout_keeping_session!
     user = User.authenticate(params[:login][:email], params[:login][:password])
     if user
@@ -76,6 +128,9 @@ class CartController < ApplicationController
       self.current_user = user
       new_cookie_flag = (params[:login][:remember] == "1")
       handle_remember_cookie! new_cookie_flag
+      
+      find_cart
+      @cart.load_user_data(current_user)
       
       if user.has_role?("admin")
         redirect_back_or_default(admin_products_path)
@@ -94,6 +149,7 @@ class CartController < ApplicationController
   
   
   def user_signup
+    @page_title = "Login"
     @user = User.new(params[:user])
     @user.role_ids = [1]
     
@@ -101,8 +157,11 @@ class CartController < ApplicationController
       logout_keeping_session!
       self.current_user = @user
       
+      find_cart
+      @cart.load_user_data(current_user)
+      
       flash[:notice] = "Thanks for signing up!"
-      redirect_to cart_billing_shipping_path
+      redirect_back_or_default(cart_billing_shipping_path)
     else
       render :action => 'login'
     end
@@ -112,8 +171,9 @@ class CartController < ApplicationController
   
   
   def billing_shipping
+    @page_title = "Order Billing and Shipping"
     find_cart
-    if @cart.cart_items.empty?
+    if @cart.items.empty?
       flash[:error] = "Your cart is empty"
       redirect_to cart_path
     end
@@ -121,6 +181,7 @@ class CartController < ApplicationController
   
   
   def save_billing_shipping
+    @page_title = "Order Billing and Shipping"
     unless request.post? || request.put?
       redirect_to cart_billing_shipping_path
     end
@@ -140,18 +201,27 @@ class CartController < ApplicationController
   
   
   def review
+    @page_title = "Review Order"
     find_cart
-    if @cart.cart_items.empty?
+    if @cart.items.empty?
       flash[:error] = "Your cart is empty"
-      redirect_to cart_path
+      redirect_to cart_path and return
     end
+    
+    @cart.should_validate = 1
+    unless @cart.valid?
+      flash[:error] = "Please complete the billing / shipping section"
+      redirect_to cart_billing_shipping_path and return
+    end
+    
   end #end method review
   
   
   
   def confirm
+    @page_title = "Order Confirmation"
     find_cart
-    if @cart.cart_items.empty?
+    if @cart.items.empty?
       flash[:error] = "Your cart is empty"
       redirect_to cart_path and return
     end
@@ -191,39 +261,5 @@ class CartController < ApplicationController
     
   end #end method print
   
-  
-  
-  protected
-  
-    # Track failed login attempts
-    def note_failed_signin
-      flash[:error] = "Couldn't log you in as '#{params[:login][:email]}'"
-      logger.warn "Failed login for '#{params[:login][:email]}' from #{request.remote_ip} at #{Time.now.utc}"
-    end
-
-  private
-  
-    def find_cart
-      return @cart unless @cart.blank?
-    
-    
-      if session[:cart_id]
-        @cart = Cart.find(session[:cart_id])
-      elsif logged_in?
-      
-        if current_user.carts.first
-          @cart = current_user.carts.first
-        else
-          @cart = current_user.carts.create
-        end
-      
-      else
-        @cart = Cart.create
-      end
-    
-      session[:cart_id] = @cart.id
-      return @cart
-    
-    end #end method find_cart
 
 end

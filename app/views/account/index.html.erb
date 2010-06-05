@@ -1,0 +1,69 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder  mheight-700">
+				<!-- tabcatalog -->
+				<div class="tab-catalog">
+					<div class="tab-catalog-b">
+						<div class="tab-catalog-t">
+							<div class="left-tabset-bg">
+								<div class="left-tabset-bg-t">
+									<div class="tabset left-tabset">
+										
+										<%= render :partial => "account_nav" %>
+										
+									</div>
+								</div>
+								<div class="left-tabset-bg-b"></div>
+							</div>
+							<a href="#"><img class="png settings" alt="Settings" src="/images/img-settings.png" /></a>
+						</div>
+					</div>
+				</div>
+				<!-- accountification -->
+				<div class="accountification">
+					<div class="status">
+						
+						<!--
+						<form action="#">
+							<fieldset>
+								<strong class="heading">WHAT’S YOUR STATUS?</strong>
+								<div class="row">
+									<label for="currently">Currently I am a</label>
+									<select class="accountification-select" title="select" id="currently">
+										<option>&nbsp;</option>
+										<option>Option 2</option>
+										<option>Option 3</option>
+									</select>
+									<input type="submit" value="Submit" class="hidden" />
+								</div>
+							</fieldset>
+						</form>
+						-->
+						
+					</div>
+					<div class="text-area">
+						<strong class="order-status"><img class="png" alt="Order status, billing &amp; shipping, and everything in-between." src="/images/text-order-status.png" /></strong>
+						<p><strong>Accountification</strong> - <em>n. the act of accounting for<br/>one’s Dormbuys identity.</em></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

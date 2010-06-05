@@ -1,0 +1,45 @@
+<!-- side column -->
+<div id="s-column">
+	<div class="order-summary order-summary2 order-summary3">
+		<div class="box-t">
+			<div class="box-area">
+				<div class="title-box">
+					<strong class="text-connect-with-us">connect with us</strong>
+				</div>
+				<div class="body-box">
+					<p>We're here if you need us. No automated answering machines, just real live people ready to help you in any way possible (M-R 9-5 EST of course). There are four ways you can connect with us:</p>
+					<ul class="number-list">
+						<li>
+							<span class="number">1.</span>
+							Call us at: <br />
+							<strong>Local:</strong> 502-254-4324 <br />
+							<strong>Toll Free:</strong> <br />1-866-502-DORM (3676)
+						</li>
+						<li>
+							<span class="number">2.</span>
+							Email us at: <br />
+							<a href="mailto:&#104;&#101;&#108;&#112;&#109;&#101;&#064;&#100;&#111;&#114;&#109;&#098;&#117;&#121;&#115;&#046;&#099;&#111;&#109;">&#104;&#101;&#108;&#112;&#109;&#101;&#064;&#100;&#111;&#114;&#109;&#098;&#117;&#121;&#115;&#046;&#099;&#111;&#109;</a>
+						</li>
+						<li>
+							<span class="number">3.</span>
+							Snail mail us at: <br />
+							Dormbuys.com <br />
+							1110 Avoca Station Court <br />Louisville, KY 40245
+						</li>
+						<li>
+							<span class="number">4.</span>
+							Drop us a customized message <%= link_to "<strong>here</strong>", contact_path, :class => 'more' %>
+						</li>
+					</ul>
+					<p>Plus, you can always follow us on <%= link_to "<strong>Twitter</strong>", twitter_path, :target => "_blank" %> or friend us up on <%= link_to "<strong>Facebook</strong>", facebook_path, :target => "_blank" %> to stay on top of us. 24/7.</p>
+					<ul class="social-links">
+						<li><%= link_to 'tweets', twitter_path, :class => 'tweets', :target => "_blank" %></li>
+						<li><%= link_to 'fbook', facebook_path, :class => 'fbook', :target => "_blank" %></li>
+						<li><%= link_to 'blog', blog_path, :class => 'blog', :target => "_blank" %></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="box-b"></div>
+	</div>
+</div>

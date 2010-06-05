@@ -7,7 +7,7 @@ class GiftRegistryItem < ActiveRecord::Base
   belongs_to :product_variation
   validates_presence_of :product_variation_id, :desired_qty, :received_qty
   
-  attr_accessor :should_destroy
+  attr_accessor :should_destroy, :buy_qty
   
   def should_destroy?
     should_destroy.to_i == 1
@@ -23,7 +23,7 @@ class GiftRegistryItem < ActiveRecord::Base
   end #end method product_options
   
   def product_options=(arr)
-    self.product_option_values = arr.join(FIELD_DIVIDER) unless arr.blank?
+    self.product_option_values = arr.join(FIELD_DIVIDER) unless arr.blank? || arr.empty?
   end #end method product_options=(arr)
   
   
@@ -33,7 +33,7 @@ class GiftRegistryItem < ActiveRecord::Base
   end #end method product_as_options
   
   def product_as_options=(arr)
-    self.product_as_option_values = arr.join(FIELD_DIVIDER) unless arr.blank?
+    self.product_as_option_values = arr.join(FIELD_DIVIDER) unless arr.blank? || arr.empty?
   end #end method product_as_options=(arr)
   
   
@@ -72,5 +72,40 @@ class GiftRegistryItem < ActiveRecord::Base
     self.product_variation.product.subcategories.collect{|sub| cats << sub.category}
     cats.uniq
   end #end method categories
+  
+  
+  def price
+    tmp_price = self.product_variation.rounded_retail_price
+    
+    unless self.product_options.blank?
+      self.product_options.each do |pov_id|
+        pov = ProductOptionValue.find(pov_id)
+        if pov
+          tmp_price += pov.price_increase
+        end
+      end
+    end
+      
+    unless self.product_as_options.blank?
+      self.product_as_options.each do |paov_id|
+        paov = ProductAsOptionValue.find(paov_id)
+        if paov
+          tmp_price += (paov.product_variation.rounded_retail_price + paov.price_adjustment)
+        end
+      end
+    end
+    
+    return tmp_price
+  end #end method price
+  
+  
+  def to_cart_item_params
+    params = {:qty => (self.buy_qty || 1), :variation_id => self.product_variation_id}
+    params[:product_option_values] = self.product_options unless self.product_options.blank?
+    params[:product_as_option_values] = self.product_as_options unless self.product_as_options.blank?
+    params[:gift_registry_item_id] = self.id
+    return params
+  end #end method to_cart_item_params
+  
   
 end

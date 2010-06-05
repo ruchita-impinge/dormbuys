@@ -1,0 +1,113 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-customer-service">Customer Service</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link active" href="#"><strong><img src="/images/text-how-can-you-help.png" alt="How Can We Help?" class="png" width="192" height="23" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							<%= render :partial => "customer_service_tabs" %>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>CONTACT US</strong>
+										</div>
+										<table class="table-body table-body2 contact-table">
+											<tr>
+												<td>
+													<!-- contact-box -->
+													<div class="contact-box">
+														<ul class="social-links">
+															<li><%= link_to 'tweets', twitter_path, :class => 'tweets', :target => "_blank" %></li>
+															<li><%= link_to 'facebook', facebook_path, :class => 'fbook', :target => "_blank" %></li>
+															<li><%= link_to 'blog', blog_path, :class => 'blog', :target => "_blank" %></li>
+														</ul>
+														<strong class="title">Customer Service is King.</strong>
+														<p>Here at Dormbuys, we like happy customers. Actually, we love happy customers. Our Customer Experience Staff is committed to making sure you get the rock-star service you deserve. So talk to us! Questions? Comments? We'd love to hear them and we're here to help!</p>
+														<dl>
+															<dt>Hours:</dt>
+															<dd><p>Monday-Friday 9:00AM to 5:00PM EST If you reach us outside our normal business hours, make sure to leave us a message and we'll get back to you on the next business day.</p></dd>
+															<dt>Phone:</dt>
+															<dd>Local: 502-254-4324 <br />Toll Free: 1-866-502-DORM (3676)</dd>
+															<dt>Email:</dt>
+															<dd><a href="mailto:&#104;&#101;&#108;&#112;&#109;&#101;&#064;&#100;&#111;&#114;&#109;&#098;&#117;&#121;&#115;&#046;&#099;&#111;&#109;">&#104;&#101;&#108;&#112;&#109;&#101;&#064;&#100;&#111;&#114;&#109;&#098;&#117;&#121;&#115;&#046;&#099;&#111;&#109;</a></dd>
+															<dt>Snail mail:</dt>
+															<dd><address>Dormbuys.com <br />1110 Avoca Station Court <br />Louisville, KY 40245</address></dd>
+														</dl>
+													</div>
+												</td>
+												<td>
+													<em class="top-text">Feel free to drop us a note here and we’ll get back to 
+you within a business day, probably sooner. <br />(All fields are required.)</em>
+													<% form_for @contact_message, :url => contact_submit_path, :html => {:id => 'contact_form'} do |f| %>
+														
+														<%= f.error_messages %>
+														
+														<fieldset>
+															<div class="input-box">
+																<%= f.text_field :name, :class => 'text text2' %>
+																<%= f.label :nane, 'Name:' %>
+															</div>
+															<div class="input-box">
+																<%= f.text_field :email, :class => 'text text2' %>
+																<%= f.label :email, 'Email:' %>
+															</div>
+															<div class="input-box">
+																<%= f.text_field :subject, :class => 'text text2' %>
+																<%= f.label :subject, 'Subject:' %>
+															</div>
+															<div class="input-box">
+																<div class="wrap-textarea">
+																	<%= f.text_area :message, :class => 'textarea2', :cols => 20 %>
+																</div>
+																<%= f.label :message, 'Message:' %>
+															</div>
+															<div class="input-box">
+																<%
+																	a = rand(10)
+																	b = rand(10)
+																	c = a + b
+																%>
+																<%= f.hidden_field :spam_question, :value => c %>
+																<%= f.text_field :spam_answer, :class => 'text text2' %>
+																<%= f.label :spam_answer, "#{a} + #{b} =" %>
+															</div>
+															<%= link_to 'Submit', 'javascript:document.forms["contact_form"].submit();', :class => 'btn' %>
+															<input type="submit" value="Submit" class="hidden" />
+														</fieldset>
+													<% end %>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<%= render :partial => "customer_service_contact" %>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

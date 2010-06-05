@@ -1,0 +1,91 @@
+<%= render :partial => "cart/shipping_addy_selector" %>
+
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						<div class="tabset" id="tabset">
+							
+							<%= render :partial => "billing_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>BILLING INFORMATION</strong>
+											</div>
+											<div>
+												<strong>SHIPPING INFORMATION</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<% form_for @user, :url => account_billing_update_path, :html => {:id => 'billing_frm'} do |f| %>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<em class="top-text">Enter your billing information as it appears on your credit card statement. <strong>*Required Field</strong></em>
+													<%= render :partial => "billing_form", :locals => {:f => f} %>
+												</td>
+												<td>
+													
+													<%= render :partial => "cart/shipping_method_selector", :locals => {:f => f, :obj => @user} %>
+													
+													<%= render :partial => 'shipping_form', :locals => {:f => f} %>
+													
+													<!-- popup-box -->
+													<div class="popup-box">
+														<div class="top-bg">
+															<div class="btm-bg">
+																<a href="#" class="close">close</a>
+																<div>
+																	<strong>Shipping to your Dorm:</strong>
+																	<p>Everybody loves efficiency. Which is why we’d be more than happy to ship your summer order directly to your school. That is, as long as you get the OK from your university first. But if your school can store it, we’ll ship it. And you’ll have less to pack.</p>
+																</div>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</table>
+										<div class="bottom-box bottom-inner">
+											<%= link_to "Save Info", "javascript:document.forms['billing_frm'].submit();" %>
+										</div>
+										<% end %>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

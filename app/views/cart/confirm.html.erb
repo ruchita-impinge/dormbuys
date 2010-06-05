@@ -158,13 +158,7 @@
 								<strong class="giftistry">GIFTISTRY</strong>
 							</div>
 							<div class="body">
-								<p>Now that you’ve sampled our dormtastic offers, might we suggest you share the wealth? Grab a gift card [or 6] and let the rest of Dorm Nation in on your little secret. ‘Cause you can’t keep a good thing to yourself!</p>
-								<ul class="banner-list">
-									<li><%= link_to image_tag("/images/img68.jpg"), buy_gift_card_path %></li>
-									<li><%= link_to image_tag("/images/img69.jpg"), buy_gift_card_path %></li>
-									<li><%= link_to image_tag("/images/img70.jpg"), buy_gift_card_path %></li>
-								</ul>
-								<%= link_to 'Grab a gift card', buy_gift_card_path, :class => 'link' %>
+								<%= render :partial => "shared/gift_card_sidebar" %>
 							</div>
 						</div>
 						<div class="banner">
@@ -176,6 +170,8 @@
 		</div>
 	</div>
 
-	<%= yield :front_footer_gift_blog %>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
 
 </div>

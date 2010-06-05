@@ -1,0 +1,73 @@
+<fieldset id="shipping_fieldset">
+	<div class="input-box">
+		<%= f.text_field :shipping_first_name, :class => 'text text2', :id => 'st1', :title => 'First Name' %>
+		<%= f.label :shipping_first_name, '*First Name:', :for => 'st1' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :shipping_last_name, :class => 'text text2', :id => 'st2', :title => 'Last Name' %>
+		<%= f.label :shipping_last_name, '*Last Name:', :for => 'st2' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :shipping_address, :class => 'text text2', :id => 'st3', :title => 'Address' %>
+		<%= f.label :shipping_address, '*Address 1:', :for => 'st3' %>
+	</div>
+	<div class="input-box" id="shipping_address_2_field">
+		<%= f.text_field :shipping_address2, :class => 'text text2', :id => 'st4', :title => 'Address 2' %>
+		<%= f.label :shipping_address2, 'Address 2:', :for => 'st4' %>
+	</div>
+	
+	
+	<!-- -->
+	
+	 <div class="input-box dormship">
+		<%= f.label :dorm_ship_college_name, '&nbsp;&nbsp;&nbsp;*College Name' %>
+	   <%= f.text_field :dorm_ship_college_name, :class => 'text text2' %>
+	 </div>
+
+
+	  <div class="input-box dormship" id="dorm_shipping_address_2_field">
+		<%= f.label :shipping_address2, '*Box # / Building / Room #', :for => 'college_box_building_room' %>
+	    <%= f.text_field :shipping_address2, :class => 'text text2', :id => 'college_box_building_room' %>
+	  </div>
+
+
+	 <div class="input-box dormship">
+	   <%= f.check_box :dorm_ship_not_assigned %>
+	   <%= f.label :dorm_ship_not_assigned, 'My Box / Building / Room has not been assigned yet: ' %>
+	 </div>
+	 <div class="clear"></div>
+
+
+	 <div class="input-box dormship">
+	   <%= f.check_box :dorm_ship_not_part %>
+	   <%= f.label :dorm_ship_not_part, 'Box / Building / Room is not part of the address: ' %>
+	 </div>
+	 <div class="clear"></div>
+	
+	
+	<!-- -->
+	
+	
+	
+	<div class="input-box">
+		<%= f.text_field :shipping_city, :class => 'text text2', :id => 'st5', :title => 'City' %>
+		<%= f.label :shipping_city, '*City:', :for => 'st5' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :shipping_zipcode, :class => 'text zip', :id => 'szip', :title => 'zip' %>
+		<%= f.label :shipping_zipcode, '*Zip:', :for => 'szip' %>
+
+		<%= f.select :shipping_state_id, State.us_states.collect {|s| [s.abbreviation, s.id]}, {:include_blank => true}, :class => 'select-t4', :id => 'sstate' %>
+		<%= f.label :shipping_state_id, '*State:', :for => 'sstate' %>
+	</div>
+	<div class="input-box">
+		<%= f.text_field :shipping_phone, :class => 'text text2', :id => 'st6', :title => 'Phone' %>
+		<%= f.label :shipping_phone, '*Phone:', :for => 'st6' %>
+	</div>
+	<div class="input-box input-box2">
+		<%= f.select :shipping_country_id, Country.find(:all, :conditions => {:id => 1}).collect {|c| [c.abbreviation, c.id]},
+		 	{}, :class => 'select-t4', :id => 'scountry' %>
+		<%= f.label :shipping_country_id, '*Country:', :for => 'scountry' %>
+	</div>
+
+</fieldset>

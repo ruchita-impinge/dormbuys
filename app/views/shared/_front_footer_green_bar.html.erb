@@ -2,10 +2,10 @@
 <div class="prefooter">
 	<div class="join">
 		<ul class="btn-list">
-			<li><a class="scholarship" href="#">scholarship tips</a></li>
-			<li><a class="survival" href="#">survival 101</a></li>
-			<li><a class="how" href="#">how 2 affiliatize</a></li>
-			<li><a class="help" href="#">how can we help?</a></li>
+			<li><%= link_to 'scholarship tips', scholarships_path, :class => 'scholarship' %></li>
+			<li><%= link_to 'survival 101', links_path, :class => 'survival' %></li>
+			<li><%= link_to 'how 2 affiliatize', affiliates_path, :class => 'how' %></li>
+			<li><%= link_to 'how can we help?', faq_path, :class => 'help' %></li>
 		</ul>
 		<form action="#">
 			<fieldset>

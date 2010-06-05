@@ -35,8 +35,8 @@ class GiftRegistry < ActiveRecord::Base
   belongs_to :user
   belongs_to :shipping_state, :class_name => "State", :foreign_key => "shipping_state_id"
   belongs_to :shipping_country, :class_name => "Country", :foreign_key => "shipping_country_id"
-  has_many :gift_registry_items
-  has_many :gift_registry_names
+  has_many :gift_registry_items, :dependent => :destroy
+  has_many :gift_registry_names, :dependent => :destroy
   
   validates_presence_of :registry_reason_id, :registry_for_id, :title, :event_date, :shipping_address, :shipping_city, 
     :shipping_state_id, :shipping_zip_code, :shipping_country_id, :user_id
@@ -49,6 +49,14 @@ class GiftRegistry < ActiveRecord::Base
     local_items = self.gift_registry_items.reject {|x| x if x.product_variation.blank? }
     local_items.sort{|x,y| x.product_variation.full_title <=> y.product_variation.full_title}
   end #end method items
+  
+  def event_type_description
+    REGISTRY_REASONS.each do |reason|
+      if reason.first == self.registry_reason_id
+        return reason.last
+      end
+    end
+  end #end method event_type_description
   
   
   def user_email
@@ -180,6 +188,17 @@ class GiftRegistry < ActiveRecord::Base
     "#{n.first_name} #{n.last_name}"
   end #end method first_owner
   
+  
+  def add_cart_item(cart_item)
+    item                        = self.gift_registry_items.build
+    item.product_variation_id   = cart_item.product_variation_id
+    item.desired_qty            = cart_item.quantity
+    item.received_qty           = 0
+    item.product_options        = cart_item.pov_ids
+    item.product_as_options     = cart_item.paov_ids
+    item.save
+    cart_item.destroy
+  end #end method add_cart_item(cart_item)
   
   
 end #end class

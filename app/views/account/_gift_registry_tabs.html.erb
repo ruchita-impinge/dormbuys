@@ -1,0 +1,13 @@
+<ul>
+	<li>
+		<%= link_to "<span>My Gift Registries</span><em>&nbsp;</em>", account_gift_registries_path,
+		 		:class => "tab #{'active' if (controller.action_name != "view_gift_registry" && request.path != account_new_gift_registry_path && request.path != account_create_gift_registry_path) && request.path =~ /gift_registr/ }"%>
+	</li>
+	<li>
+		<%= link_to "<span>Create New Registry</span><em>&nbsp;</em>", account_new_gift_registry_path, 
+		 		:class => "tab #{'active' if request.path == account_new_gift_registry_path || request.path == account_create_gift_registry_path}" %>
+	</li>
+	
+	<%= yield :extra_gift_reg_tab %>
+	
+</ul>

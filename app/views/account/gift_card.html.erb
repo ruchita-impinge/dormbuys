@@ -1,0 +1,142 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						<div class="tabset" id="tabset">
+							<ul>
+								<li><a class="tab active" href="#"><span>Check a Gift Card</span><em>&nbsp;</em></a></li>
+							</ul>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder card-holder2">
+										<div class="table-head table-head2">
+											<div>
+												<strong>GIFT CARD CODE</strong>
+											</div>
+											<div>
+												<strong>ENTER YOUR CODE</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<p>Trying to figure out how much is left on your gift card? Just enter your code and pin number from the back of your gift card into the boxes to the right, press Submit, and voila! Your remaining balance will magically appear in seconds, and you'll be ready to shop. It's gift card mind reading at its absolute finest!</p>
+												</td>
+												<td>
+													<% form_for @gift_card, :url => account_gift_card_submit_path, :html => {:id => 'gc_form'} do |f| %>
+														<fieldset>
+															<div class="input-box pass">
+																<%= f.text_field :giftcard_number, :class => 'text text2' %>
+																<%= f.label :giftcard_number, "Gift Card:" %>
+															</div>
+															<div class="input-box pass">
+																<%= f.text_field :giftcard_pin, :class => 'text text2' %>
+																<%= f.label :giftcard_pin, 'Pin:' %>
+															</div>
+															<div class="input-box">
+																<%= link_to "<span>&nbsp;Submit</span><em>&nbsp;</em>", 'javascript:document.forms["gc_form"].submit();', :class => 'table-btn tb-t2' %>
+															</div>
+															<div class="input-box balance">
+																<%= f.text_field :current_amount, :class => 'text text2' %>
+																<%= f.label :current_amount, 'Balance:' %>
+															</div>
+															<input type="submit" value="Submit" class="hidden" />
+														</fieldset>
+													<% end %>
+												</td>
+											</tr>
+										</table>
+										<div class="bottom-box">
+											<em class="gift">"Gift Cards are to dormdwellers as water is to fish. Except, technically you can`t swim a gift card"</em>
+											<p>You can also check the balance remaining on your gift card by calling our Toll Free Customer Service Department <br /> at <strong>1–866–502–DORM (3676)</strong>. When you call, be sure to have your gift card code in front of you.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>GRAB A GIFT CARD</strong>
+										</div>
+										<div class="card-box2">
+											<p>Need a gift card? No worries, we've got you covered... <a href="#" title="link">Click here</a></p>
+											<ul>
+												<li><%= link_to image_tag("/images/img72.jpg"), buy_gift_card_path %></li>
+												<li><%= link_to image_tag("/images/img73.jpg"), buy_gift_card_path %></li>
+												<li><%= link_to image_tag("/images/img74.jpg"), buy_gift_card_path %></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>RULES &amp; REGULATIONS FOR GIFT CARDS</strong>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<ul class="list2">
+														<li><em>1.</em> <span>Dormbuys.com gift cards may only be reddemed at www.dormbuys.com</span></li>
+														<li><em>2.</em> <span>If the amount of your gift card does NOT cover the total purchase amount, you will need to pay for the remainder of the purchase with a valid form of payment.</span></li>
+														<li><em>3.</em> <span>If the amount of your gift card is MORE than the total order amount, the balance amount of your gift card will be stored on your gift card for future use.</span></li>
+													</ul>
+												</td>
+												<td>
+													<ul class="list2">
+														<li><em>4.</em> <span>Gift cards are non-trasferable, non-refundable and are not redeemable for cash.</span></li>
+														<li><em>5.</em> <span>We cannot replace lost or stolen gift cards.</span></li>
+														<li><em>6.</em> <span>We do not charge sales tax on the purchase of gift cards: however, items paid for with a gift card will be charged applicable sales tax (KY residents only)</span></li>
+													</ul>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+	
+</div>

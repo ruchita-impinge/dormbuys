@@ -1,0 +1,134 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						<div class="tabset" id="tabset">
+							
+							<%= render :partial => "billing_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>BILLING ADDRESS</strong>
+											</div>
+											<div>
+												<strong>SHIPPING ADDRESS</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<em class="top-text top-text2">
+														<% if @user.billing_address %>
+															This is your current billing address. To change it, click on the “Edit My Information” tab above.
+														<% else %>
+															You have no billing address on file.  To add it, click on the "Edit My Information" tab above.
+														<% end %>
+													</em>
+													
+													<% if @user.billing_address %>
+													<dl class="info">
+														<dt>Name:</dt>
+														<dd><%= @user.billing_first_name %> <%= @user.billing_last_name %></dd>
+														
+														<dt>Address:</dt>
+														<dd>
+															<%= @user.billing_address %> <br />
+															<% if @user.billing_address2 %>
+																<%= @user.billing_address2 %><br />
+															<% end %>
+															<%= @user.billing_city %>, <%= @user.billing_state.abbreviation %> <%= @user.billing_zipcode %><br />
+															<%= @user.billing_country.abbreviation %>
+														</dd>
+														
+														<dt>Phone:</dt>
+														<dd><%= @user.billing_phone %></dd>
+														
+													</dl>
+													<% end %>
+												</td>
+												<td>
+													<em class="top-text top-text2">
+														<% if @user.shipping_address %>
+															<% if @user.user_profile_type_id == Order::ADDRESS_SAME %>
+																Currently set to “Same as billing address.”
+															<% elsif @user.user_profile_type_id == Order::ADDRESS_DIFFERENT %>
+																Currently set to "Ship to a different address"
+															<% elsif @user.user_profile_type_id == Order::ADDRESS_DORM %>
+																Currently set to "Ship to my college dorm or college box"
+															<% end %>
+														<% else %>
+															You have no shipping address on file.  To add it, click on the "Edit My Information" tab above.
+														<% end %>
+													</em>
+													<% if @user.shipping_address %>
+													<dl class="info">
+														<dt>Name:</dt>
+														<dd><%= @user.shipping_first_name %> <%= @user.shipping_last_name %></dd>
+														
+														<dt>Address:</dt>
+														<dd>
+															<% if @user.user_profile_type_id == Order::ADDRESS_DORM %>
+																<%= @user.dorm_ship_college_name %><br />
+															<% end %>
+															<%= @user.shipping_address %> <br />
+															<% if @user.shipping_address2 %>
+																<% unless @user.dorm_ship_not_part %>
+																	<%= @user.shipping_address2 %><br />
+																<% end %>
+															<% end %>
+															<%= @user.shipping_city %>, <%= @user.shipping_state.abbreviation %> <%= @user.shipping_zipcode %><br />
+															<%= @user.shipping_country.abbreviation %>
+														</dd>
+														
+														<dt>Phone:</dt>
+														<dd><%= @user.shipping_phone %></dd>
+														
+													</dl>
+													<% end %>
+												</td>
+											</tr>
+										</table>
+										<div class="bottom-box bottom-inner">
+											<%= link_to "Edit Info", account_billing_edit_path %>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

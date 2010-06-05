@@ -1,0 +1,10 @@
+<ul>
+	<li>
+		<%= link_to "<span>Open Orders</span><em>&nbsp;</em>", account_orders_path,
+		 		:class => "tab #{'active' if request.path == account_orders_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>View All Orders</span><em>&nbsp;</em>", account_all_orders_path,
+		 		:class => "tab #{'active' if request.path == account_all_orders_path}" %>
+	</li>
+</ul>

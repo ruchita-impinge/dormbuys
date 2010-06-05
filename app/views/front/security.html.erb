@@ -1,0 +1,68 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-customer-service">Customer Service</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link active" href="#"><strong><img src="/images/text-how-can-you-help.png" alt="How Can We Help?" class="png" width="192" height="23" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							<%= render :partial => "customer_service_tabs" %>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>&nbsp;</strong>
+											</div>
+											<div>
+												<strong>&nbsp;</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<div class="text-holder">
+														<strong class="title">Online Ordering Security</strong>
+														<p>We take the security of your online transactions very seriously. Our secure credit card processor encrypts (scrambles) your credit card information with state of the art technology that prevents anyone else (even us!) from reading it. Your credit card transaction is cleared in seconds through our secure server. Thanks to encryption, we believe that online ordering is now safer than giving your card number to a telephone operator or handing your card to a waiter in a restaurant—there is no safer way to make an online purchase.</p>
+													</div>
+												</td>
+												<td>
+													<div class="banner-box">
+														<img alt="image description" src="/images/img71.jpg" width="307" height="208" />
+													</div>
+													<%= render :partial => 'shared/secure_logo_block' %>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<%= render :partial => "customer_service_contact" %>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

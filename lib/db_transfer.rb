@@ -1004,7 +1004,7 @@ class DBTransfer
       new_record.first_name         = row["first_name"]
       new_record.last_name          = row["last_name"]
       new_record.phone              = row["phone"]
-      new_record.user_shipping_type_id = row["user_profile_type_id"].to_i
+      new_record.user_profile_type_id = row["user_profile_type_id"].to_i
       new_record.save(false)
       
     end #end each_hash
@@ -1489,23 +1489,17 @@ class DBTransfer
       
       if u
         
-        new_record = Address.new 
-      
-        new_record.user_id                 = row["user_id"].to_i
-        new_record.first_name              = row["first_name"]
-        new_record.last_name               = row["last_name"]
-        new_record.address                 = row["address"]
-        new_record.address2                = row["address2"]
-        new_record.city                    = row["city"]
-        new_record.state_id                = row["state_id"].to_i
-        new_record.zip                     = row["zipcode"]
-        new_record.country_id              = row["country_id"].to_i
-        new_record.phone                   = row["phone"]
-        new_record.address_type_id         = Address::SHIPPING
-        new_record.default_billing         = false
-        new_record.default_shipping        = row["user_profile_type_id"].to_i == 2 ? true : false
-                       
-        new_record.save(false)  
+        u.shipping_phone             = row["phone"]
+        u.shipping_country_id        = row["country_id"].to_i
+        u.shipping_zipcode           = row["zipcode"]
+        u.shipping_state_id          = row["state_id"].to_i
+        u.shipping_city              = row["city"]
+        u.shipping_address2          = row["address2"]
+        u.shipping_address           = row["address"]
+        u.shipping_last_name         = row["last_name"]
+        u.shipping_first_name        = row["first_name"]
+        
+        u.save(false)
         
       end
                               
@@ -1522,23 +1516,17 @@ class DBTransfer
       
       if u
 
-        new_record = Address.new 
-      
-        new_record.user_id                 = row["user_id"].to_i
-        new_record.first_name              = row["first_name"]
-        new_record.last_name               = row["last_name"]
-        new_record.address                 = row["address"]
-        new_record.address2                = row["address2"]
-        new_record.city                    = row["city"]
-        new_record.state_id                = row["state_id"].to_i
-        new_record.zip                     = row["zipcode"]
-        new_record.country_id              = row["country_id"].to_i
-        new_record.phone                   = row["phone"]
-        new_record.address_type_id         = Address::BILLING
-        new_record.default_billing         = true
-        new_record.default_shipping        = row["user_profile_type_id"].to_i == 1 ? true : false
-                       
-        new_record.save(false)  
+        u.billing_phone              = row["phone"]
+        u.billing_country_id         = row["country_id"].to_i
+        u.billing_zipcode            = row["zipcode"]
+        u.billing_state_id           = row["state_id"].to_i
+        u.billing_city               = row["city"]
+        u.billing_address2           = row["address2"]
+        u.billing_address            = row["address"]
+        u.billing_last_name          = row["last_name"]
+        u.billing_first_name         = row["first_name"]
+        
+        u.save(false)
         
       end
                               
@@ -1554,28 +1542,22 @@ class DBTransfer
       u = User.find(row["user_id"].to_i) rescue nil
       
       if u
-
-        new_record = Address.new 
-      
-        new_record.user_id                 = row["user_id"].to_i
-        new_record.first_name              = row["first_name"]
-        new_record.last_name               = row["last_name"]
-        new_record.address                 = row["address"]
-        new_record.address2                = row["address2"]
-        new_record.city                    = row["city"]
-        new_record.state_id                = row["state_id"].to_i
-        new_record.zip                     = row["zipcode"]
-        new_record.country_id              = row["country_id"].to_i
-        new_record.phone                   = row["phone"]
-        new_record.dorm_ship_college_name  = row["college_name"]
-        new_record.dorm_ship_not_assigned  = row["not_assigned"].to_i == 1 ? true : false
-        new_record.dorm_ship_not_part      = row["not_part"].to_i == 1 ? true : false
-        new_record.address_type_id         = Address::DORM_SHIPPING
-        new_record.default_billing         = false
-        new_record.default_shipping        = row["user_profile_type_id"].to_i == 3 ? true : false
-                       
-        new_record.save(false)  
         
+         u.billing_phone
+         u.dorm_ship_not_part         = row["not_part"].to_i == 1 ? true : false
+         u.dorm_ship_not_assigned     = row["not_assigned"].to_i == 1 ? true : false
+         u.dorm_ship_college_name     = row["college_name"]
+         u.shipping_phone             = row["phone"]
+         u.shipping_country_id        = row["country_id"].to_i
+         u.shipping_zipcode           = row["zipcode"]
+         u.shipping_state_id          = row["state_id"].to_i
+         u.shipping_city              = row["city"]
+         u.shipping_address2          = row["address2"]
+         u.shipping_address           = row["address"]
+         u.shipping_last_name         = row["last_name"]
+         u.shipping_first_name        = row["first_name"]
+        
+         u.save(false)
       end
                               
     end #end each_hash

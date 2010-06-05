@@ -1,0 +1,131 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox">
+						<div class="tabset" id="tabset">
+							<ul>
+								<li><%= link_to "<span>My Wish List</span><em>&nbsp;</em>", account_wish_list_path, :class => "tab active" %></li>
+							</ul>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="box-title">
+										<h2 class="collection"><span>My Collection of Cool Stuff</span></h2>
+										<div class="sorting" id="acct_wl_sorting">
+											<% form_for :options, :url => account_wish_list_path, :html => {:id => 'wl_sort_form', :method => "get"} do |f| %>
+												<fieldset>
+													
+													<span class="customer-service">
+														<%= link_to "refresh", 'javascript:document.forms["wl_sort_form"].submit();', :class => 'btn' %>
+													</span>
+													
+													<%= f.select :sort_by, 
+															options_for_select([
+																["Date Added", "created_at"],
+																["Date Added", "created_at"],
+																["Name","name"],
+																["Price", "price"]
+															], params[:options] ? params[:options][:sort_by] : nil), 
+															{}, 
+															{
+																:class => 'select-t4'
+															} %>
+					
+													<%= f.label :sort_by, 'Sort By:' %>
+													
+													
+													<%= f.select :show,
+													 		options_for_select([
+																["All", "all"],
+																["All", "all"],
+																["Unfulfilled", "unfulfilled"],
+																["Fulfilled", "fulfilled"]
+														], params[:options] ? params[:options][:show] : nil),
+														{},
+														{
+															:class => 'select-t4'
+														} %>
+													<%= f.label :show, 'Show:' %>
+													
+													<input type="submit" value="Submit" class="hidden" />
+												</fieldset>
+											<% end %>
+										</div>
+										
+									</div>
+									
+									
+									<!-- table wish holder -->
+									<div class="table-box wish-holder">
+										<% form_for @wish_list, :url => account_update_wish_list_path, :html => {:id => 'wl_update_form'} do |f| %>
+											
+											<%= f.error_messages %>
+											
+											<fieldset>
+												<div class="table-head">
+													<strong class="item">ITEM</strong>
+													<strong class="align-c price-sec">PRICE</strong>
+													<strong class="align-c wish-qty">WISH QTY</strong>
+													<strong class="align-c got-qty">GOT QTY</strong>
+													<strong class="align-c buy-sec">BUY</strong>
+													<strong class="align-c remove">REMOVE</strong>
+												</div>
+												<table class="table-body">
+													
+													<% if @wish_list.wish_list_items.empty? %>
+														
+														<tr>
+															<td colspan="6">
+																<div class="row">
+																	<h2 style="width: 100%; text-align: center;">There are no items in your wish list</h2>
+																</div>
+															</td>
+														</tr>
+														
+													<% else %>
+														<% @items.each do |item| %>
+															<%= render :partial => "wish_list_item", :locals => {:object => item} %>
+														<% end %>
+													<% end %>
+							
+												</table>
+												<input type="submit" value="Submit" class="hidden" />
+											</fieldset>
+										<% end %>
+									</div>
+									<%= link_to "<span>Update</span><em>&nbsp;</em>", 'javascript:document.forms["wl_update_form"].submit();', :class => "box-submit" %>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

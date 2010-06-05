@@ -1,0 +1,26 @@
+<ul>
+	<li>
+		<%= link_to "<span>Contact Us</span><em>&nbsp;</em>", contact_path, 
+		 		:class => "tab #{'active' if request.path == contact_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>FAQ's</span><em>&nbsp;</em>", faq_path, 
+		 		:class => "tab #{'active' if request.path == faq_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>Returns/Exchanges</span><em>&nbsp;</em>", returns_path,
+		 		:class => "tab #{'active' if request.path == returns_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>Privacy Policy</span><em>&nbsp;</em>", privacy_policy_path,
+		 		:class => "tab #{'active' if request.path == privacy_policy_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>Online Security</span><em>&nbsp;</em>", security_path,
+		 		:class => "tab #{'active' if request.path == security_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>Shipping Policy</span><em>&nbsp;</em>", shipping_path, 
+		 		:class => "tab #{'active' if request.path == shipping_path}" %>
+	</li>
+</ul>

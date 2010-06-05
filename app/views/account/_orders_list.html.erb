@@ -1,0 +1,107 @@
+<% if @orders.empty? %>
+
+	
+	<!-- table view orders -->
+	<div class="table-box view-orders-holder">
+	
+		<div class="table-head">
+			<strong class="align-c order-details">ORDER DETAILS</strong>
+			<strong class="align-c item-order">ITEMS IN ORDER</strong>
+			<strong class="align-c actions">ACTIONS</strong>
+		</div>
+
+		<table class="table-body">
+			<tr>
+				<td class="order-details"></td>
+				<td class="item-order">
+					
+					<h2>&nbsp;</h2>
+					<h2>&nbsp;</h2>
+					<h2>&nbsp;</h2>
+					<h2 style="text-align: center;">No Orders Found</h2>
+					<h2>&nbsp;</h2>
+					<h2>&nbsp;</h2>
+					<h2>&nbsp;</h2>
+					
+				</td>
+				<td class="actions align-r bnone"></td>
+			</tr>
+		</table>
+	</div>
+
+
+<% else %>
+
+	<% @orders.each_with_index do |order,i| %>
+	<!-- table view orders -->
+	<div class="table-box view-orders-holder">
+	
+		<% if i == 0 %>
+		<div class="table-head">
+			<strong class="align-c order-details">ORDER DETAILS</strong>
+			<strong class="align-c item-order">ITEMS IN ORDER</strong>
+			<strong class="align-c actions">ACTIONS</strong>
+		</div>
+		<% end %>
+	
+	
+		<table class="table-body">
+			<tr>
+				<td class="order-details">
+					<div class="order-date">
+						<span>Order date:</span>
+						<strong class="date"><%= order.order_date.to_s(:friendly) %></strong>
+						<dl>
+							<dt>Order Number:</dt>
+							<dd><%= order.order_id %></dd>
+							<dt>Shipping:</dt>
+							<dd>Standard</dd>
+							<dt>Order Total:</dt>
+							<dd>$<%= order.grand_total %></dd>
+						</dl>
+					</div>
+				</td>
+				<td class="item-order">
+					<div class="item-list-info">
+					
+						<% for order_item in order.order_line_items %>
+						<div class="item-info">
+							<%= link_to image_tag(order_item.variation.product.product_image(:thumb)), order_item.variation.product.default_front_url %>
+							<div class="description">
+								<strong class="item-title">
+									<%= order_item.item_name %>
+									<% if order_item.quantity > 1 %>
+										(x<%= order_item.quantity %>)
+									<% end %>
+								</strong>
+								<span class="item-desc">#<%= order_item.product_number %></span>
+								<span class="item-desc"><%= truncate(order_item.variation.product.product_overview, :length => 40) %></span>
+
+								<% order_item.order_line_item_options.group_by(&:option_name).each do |option, values| %>
+									<span class="item-desc"><%= option %>: <%= values.collect(&:option_value) %></span>
+								<% end %>
+
+								<% order_item.order_line_item_product_as_options.group_by(&:option_name).each do |option, values| %>
+									<span class="item-desc"><%= option %>: <%= values.collect(&:display_value) %></span>
+								<% end %>
+							</div>
+						</div>
+						<% end %>
+				
+					</div>
+				</td>
+				<td class="actions align-r bnone">
+					<ul class="actions-list">
+						<li><a class="table-btn tb-t1" href="#"><span>Track Order</span><em>&nbsp;</em></a></li>
+					
+						<li><%= link_to "<span>View Order</span><em>&nbsp;</em>", account_view_order_path(order), :class => "table-btn tb-t2" %></li>
+						<li><em><%= link_to "View Invoice", account_view_order_invoice_path(order) %></em></li>
+						<li><em><%= link_to "Return an Item", returns_path %></em></li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<% end %>
+	
+<% end %>

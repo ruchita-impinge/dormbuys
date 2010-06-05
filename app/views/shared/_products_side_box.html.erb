@@ -1,0 +1,26 @@
+<!-- product side boxes -->
+<div class="product-sboxes">
+	<strong class="slogan t-might-like">You might also like...</strong>
+	
+	<% if @cart.blank? || @cart.items.empty? %>
+		<% rec_prods = Product.random_featured_products(num_products) %>
+	<% else %>
+		<% rec_prods = @cart.recommended_products(num_products) %>
+	<% end %>
+	
+	<% for rec_prod in rec_prods %>
+	<div class="p-box">
+		<div class="heading">
+			<strong><%= truncate(rec_prod.product_name, :limit => 25) %></strong>
+		</div>
+		<div class="body">
+			<%= link_to image_tag(rec_prod.product_image(:recommended)), rec_prod.default_front_url %>
+			<p><%= truncate(rec_prod.product_overview, :length => 130) %></p>
+			<strong class="price"><em>our price:</em> $<%= rec_prod.retail_price %></strong>
+			<span class="see-more">
+				<%= link_to 'See more like this', rec_prod.subcategories.first.default_front_url %>
+			</span>
+		</div>
+	</div>
+	<% end %>
+</div>

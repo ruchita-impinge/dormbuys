@@ -1,0 +1,6 @@
+$: << File.dirname(__FILE__)
+
+require 'active_support/all'
+require 'bigdecimal'
+
+require 'quantified/attribute'

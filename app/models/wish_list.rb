@@ -1,4 +1,6 @@
 class WishList < ActiveRecord::Base
+
+  attr_accessor :sort_by, :show
     
   after_update :save_wish_list_items
   
@@ -28,7 +30,7 @@ class WishList < ActiveRecord::Base
     
     wish_list_item_attributes.each do |attributes|
       if attributes[:id].blank?
-        item = wish_list_items.build(attributes)
+        item = wish_list_items.build(attributes) unless attributes.values.all?(&:blank?)
       else
         item = wish_list_items.detect {|x| x.id == attributes[:id].to_i}
         item.attributes = attributes if item

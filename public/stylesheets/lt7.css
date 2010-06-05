@@ -308,6 +308,9 @@ this.runtimeStyle.backgroundImage = "none")),this.pngSet=true)
 	background:none;
 	filter:progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-learn.png', sizingMethod='crop');
 }
+.drop-t10 .select-top,
+.drop-t10 .select-bottom,
+.drop-t10 ul,
 .drop-t8 .select-top,
 .drop-t8 .select-bottom,
 .drop-t8 ul,
@@ -326,4 +329,66 @@ this.runtimeStyle.backgroundImage = "none")),this.pngSet=true)
 .drop-accountification-select ul,
 .drop-select-t4 .select-top,
 .drop-select-t4 .select-bottom,
-.drop-select-t4 ul { filter:none;}
+.drop-select-t4 ul,
+.customer-service .process-steps a.btn,
+.need-create-registry a.btn {filter:none;}
+#main .sub-tabs .drop-box .box-t {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-dropbox-t.png', sizingmethod='crop');
+}
+#main .sub-tabs .drop-box .box-b {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-dropbox-b.png', sizingmethod='crop');
+}
+#main .sub-tabs .drop-box .box-area {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-dropbox.png', sizingmethod='crop');
+}
+.featured-products .tabset ul li.first a.t-link strong {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-t-link-c.png', sizingmethod='scale');
+}
+.featured-products .tabset ul li.first a.t-link span {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-t-link-r.png', sizingmethod='crop');
+}
+.featured-products .tabset ul li.first a.t-link {
+	filter: none !important;
+}
+.customer-service a.btn {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-btn06.png', sizingmethod='crop');
+}
+.main-title .t-customer-service {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/t-customer-service.png', sizingmethod='crop');
+}
+.main-title .t-news-room {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/t-news-room.png', sizingmethod='crop');
+}
+.main-title .t-survival-101-links {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/t-survival-101-links.png', sizingmethod='crop');
+}
+.main-title .t-how-2-affiliatize {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/t-how-2-affiliatize.png', sizingmethod='crop');
+}
+.main-title .t-scholarships {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/t-scholarships.png', sizingmethod='crop');
+}
+.main-title .t-gift-registry {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/title-gift-registry.png', sizingmethod='crop');
+}
+.mbox .tabset a.tab-big {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-tab-big.png', sizingmethod='crop');
+}
+.email-box .btn ,
+.bottom-inner a {
+	background: none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='images/bg-btn06.png', sizingmethod='crop');
+}

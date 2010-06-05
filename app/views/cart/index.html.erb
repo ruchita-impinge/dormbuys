@@ -44,7 +44,7 @@
 												</div>
 												<table class="table-body">
 													
-													<% if @cart.cart_items.empty? %>
+													<% if @cart.items.empty? %>
 													
 														<tr>
 															<td colspan="4">
@@ -54,7 +54,7 @@
 													
 													<% else %>
 													
-														<% for cart_item in @cart.cart_items %>
+														<% for cart_item in @cart.items %>
 														<tr>
 															<td class="item">
 																<div class="item-info">
@@ -131,7 +131,7 @@
 													</ul>
 												</td>
 												<td>
-													<p><strong>Methods of Payment:</strong> Dormbuys.com accepts: Visa, Mastercard, Discover, American Express, and Dormbuys.com <a href="#">Gift Cards</a></p>
+													<p><strong>Methods of Payment:</strong> Dormbuys.com accepts: Visa, Mastercard, Discover, American Express, and Dormbuys.com <%= link_to "Gift Cards", buy_gift_card_path %></p>
 												</td>
 											</tr>
 											<tr>
@@ -139,19 +139,19 @@
 													<%= render :partial => 'shared/secure_logo_block' %>
 												</td>
 												<td>
-													<p><strong>Security &amp; Privacy:</strong><br/>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <a href="#">Privacy Policy</a></p>
+													<p><strong>Security &amp; Privacy:</strong><br/>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <%= link_to "Privacy Policy", privacy_policy_path %></p>
 												</td>
 											</tr>
 											<tr class="bnone">
 												<td>
 													<ul class="card-list">
-														<li><a href="#"><img alt="image description" src="images/img-card10.jpg" /></a></li>
-														<li><a href="#"><img alt="image description" src="images/img-card11.jpg" /></a></li>
-														<li><a href="#"><img alt="image description" src="images/img-card12.jpg" /></a></li>
+														<li><%= link_to image_tag("/images/img-card10.jpg"), buy_gift_card_path %></li>
+														<li><%= link_to image_tag("/images/img-card11.jpg"), buy_gift_card_path %></li>
+														<li><%= link_to image_tag("/images/img-card12.jpg"), buy_gift_card_path %></li>
 													</ul>
 												</td>
 												<td>
-													<p><strong>Coupons &amp; Gift Cards:</strong> Have a coupon or Gift Card? Proceed to checkout and enter your coupon code when it is time to pay. Need a Gift Card? <strong><a href="#">Click here.</a></strong></p>
+													<p><strong>Coupons &amp; Gift Cards:</strong> Have a coupon or Gift Card? Proceed to checkout and enter your coupon code when it is time to pay. Need a Gift Card? <strong><%= link_to "Click Here", buy_gift_card_path %></strong></p>
 												</td>
 											</tr>
 										</table>
@@ -177,7 +177,7 @@
 											<div class="sep-box">
 												<div class="item-subtotal">
 													<strong class="price">$<%= @cart.subtotal %></strong>
-													<span><%= @cart.cart_items.size %> item subtotal:</span>
+													<span><%= @cart.items.size %> item subtotal:</span>
 												</div>
 											</div>
 											<div class="sep-box">
@@ -236,41 +236,16 @@
 						<div class="box-b"></div>
 					</div>
 					
-					<!-- product side boxes -->
-					<div class="product-sboxes">
-						<strong class="slogan t-might-like">You might also like...</strong>
-						<div class="p-box">
-							
-							<% if @cart.cart_items.empty? %>
-								<% rec_prod = Product.random_featured_products(1).first %>
-							<% else %>
-								<% rec_prod = @cart.recommended_products(1).first %>
-							<% end %>
-							
-							<div class="heading">
-								<strong><%= truncate(rec_prod.product_name, :limit => 25) %></strong>
-							</div>
-							<div class="body">
-								<%= link_to image_tag(rec_prod.product_image(:recommended)), rec_prod.default_front_url %>
-								<p><%= truncate(rec_prod.product_overview, :length => 130) %></p>
-								<strong class="price"><em>our price:</em> $<%= rec_prod.retail_price %></strong>
-								<span class="see-more">
-									<%= link_to 'See more like this', rec_prod.subcategories.first.default_front_url %>
-								</span>
-							</div>
-						</div>
-					</div>
-				
-				
-				
+					<%= render :partial => "shared/products_side_box", :locals => {:num_products => 1} %>
+
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	
-	
-	
-	<%= yield :front_footer_gift_blog %>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
 
 </div>

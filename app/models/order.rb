@@ -53,6 +53,7 @@ class Order < ActiveRecord::Base
     [4, 'Refunded'],
     [5, 'Canceled']
   ]
+  ORDER_STATUS_PENDING = [1,2]
   
   PAYMENT_CREDIT_CARD = 1
   PAYMENT_OPTIONS = [

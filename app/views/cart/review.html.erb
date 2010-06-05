@@ -37,7 +37,7 @@
 										</div>
 										<table class="table-body table-body2">
 											
-											<% for cart_item in @cart.cart_items %>
+											<% for cart_item in @cart.items %>
 											<tr>
 												<td class="item">
 													<div class="item-info">
@@ -191,6 +191,8 @@
 		</div>
 	</div>
 	
-	<%= yield :front_footer_gift_blog %>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
 	
 </div>

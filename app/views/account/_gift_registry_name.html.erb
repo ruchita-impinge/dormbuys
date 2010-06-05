@@ -1,0 +1,18 @@
+<div class="user-box gift_registry_name">
+	<% fields_for "gift_registry[gift_registry_name_attributes][]", gift_registry_name, :index => nil do |x| %>
+		<ul>
+			<% if gift_registry_name.new_record? %>
+				<li><%= link_to_function 'Remove', "$(this).parents('.gift_registry_name').remove();" %></li>
+			<% else %>
+				<li><%= link_to_function 'Remove', "mark_gift_name_for_destroy(this, '.gift_registry_name')" %></li>
+				<%= x.hidden_field :id %>
+				<%= x.hidden_field :should_destroy, :value => "0", :class => 'should_destroy' %>
+			<% end %>
+		</ul>
+		<strong><%= gift_registry_name.first_name %> <%= gift_registry_name.last_name %></strong>
+		<em><%= gift_registry_name.email %></em>
+		<%= x.hidden_field :first_name %>
+		<%= x.hidden_field :last_name %>
+		<%= x.hidden_field :email %>
+	<% end %>
+</div>

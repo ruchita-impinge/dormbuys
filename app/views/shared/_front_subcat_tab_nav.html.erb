@@ -31,12 +31,28 @@
 							<%= link_to "<em>#{subcat.name}</em><span></span>", subcat.default_front_url,
 							 		:class => "tab #{active_css}" %>
 						</li>
+					<% else %>
+						<% content_for :more_tab_links do %>
+							<li><%= link_to subcat.name, subcat.default_front_url %></li>
+						<% end %>
 					<% end %>
 				
 				<% end %>
 				
 				<% if @category.visible_primary_subcategories.size > 5 %>
-					<li><a title="more-1" class="more" href="#">more</a></li>
+					<li>
+						<a title="more-1" class="more" href="#">more</a>
+						<div class="drop-box">
+							<div class="box-t">
+								<div class="box-area">
+									<ul>
+										<%= yield :more_tab_links %>
+									</ul>
+								</div>
+							</div>
+							<div class="box-b"></div>
+						</div>
+					</li>
 				<% end %>
 				
 			</ul>

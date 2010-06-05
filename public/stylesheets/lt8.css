@@ -1,1 +1,2 @@
-.table-box .item-info .description {margin-top: expression(this.parentNode.offsetHeight > this.offsetHeight ? ((this.parentNode.offsetHeight-this.offsetHeight)/2 + "px") : "0");}
+.table-box .item-info .description,
+.registry-view .item-info .description {margin-top: expression(this.parentNode.offsetHeight > this.offsetHeight ? ((this.parentNode.offsetHeight-this.offsetHeight)/2 + "px") : "0");}

@@ -1,0 +1,72 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox">
+						<div class="tabset" id="tabset">
+							
+							<%= render :partial => "order_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									
+									<!--
+									<form action="#">
+										<fieldset>
+											<select class="select-inner" title="select">
+												<option>SHOW ORDERS FROM:</option>
+												<option>option 1</option>
+												<option>option 2</option>
+												<option>option 3</option>
+												<option>option 4</option>
+												<option>option 5</option>
+											</select>
+											<input type="submit" value="Submit" class="hidden" />
+										</fieldset>
+									</form>
+									-->
+									
+									<%= render :partial => "orders_list" %>
+									
+									<div class="pager-hold">
+										<% unless @view_all %>
+											<%= will_paginate @orders %>
+										<% end %>
+										
+										<%= link_to "View All", account_all_orders_path(:view_all => 1), :class => 'view' %>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

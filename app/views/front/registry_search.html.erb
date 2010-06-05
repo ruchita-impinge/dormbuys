@@ -1,0 +1,144 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-gift-registry">Gift Registry</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link t-tis-better active" href="#"><strong><img src="/images/text-tis-better.png" alt="Tis better to give..." class="png" width="229" height="32" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							
+							<%= render :partial => "gift_registry_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<!-- info-hold -->
+									<div class="table-box card-holder">
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<strong class="text-who-gift">Who’s Gift Registry?</strong>
+													<p>Enter a first name, last name, and/or registry number and shazaam...you’ll be on your way to spreading some dorm love by giving some lucky dorm dweller exactly what they’re looking for. And no worries, if you don't have all the info, just enter what you do know...</p>
+													<div class="input-box input-box3_2">
+														<%= link_to "<span>New search</span><em>&nbsp;</em>", main_gift_registry_path, :class => "table-btn tb-t2 tb-t3" %>
+													</div>
+												</td>
+												<td>
+													<div class="need-create-registry">
+														<p>Need to create your own Gift Registry? Piece of cake...</p>
+														<%= link_to "Create a Registry", account_new_gift_registry_path, :class => 'button' %>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="registry-result">
+										<div class="box-title">
+											
+											<!--
+											<form action="#">
+												<fieldset>
+													<select id="sort-by" class="t10" title="Sort By">
+														<option>Last Name</option>
+														<option>Option 2</option>
+														<option>Option 3</option>
+													</select>
+													<label for="sort-by">Sort By:</label>
+													<input type="submit" value="Submit" class="hidden" />
+												</fieldset>
+											</form>
+											-->
+											
+											
+										</div>
+										<table class="table-body" summary="table body">
+											<thead>
+												<tr>
+													<th class="name">NAME</th>
+													<th class="event-type">EVENT TYPE</th>
+													<th class="state">STATE</th>
+													<th class="date">DATE</th>
+													<th class="registry-number">REGISTRY NUMBER</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="5" class="divider"></td>
+												</tr>
+												
+												<% if @gift_registries.empty? %>
+													<tr>
+														<td colspan="5">
+															<h2>No registries were found</h2>
+														</td>
+													</tr>
+												<% else %>
+													<% @gift_registries.each do |registry| %>
+													<tr>
+														<td class="name">
+															<%= registry.gift_registry_names.collect {|n| 
+																	link_to("#{h(n.first_name)} #{h(n.last_name)}", main_view_registry_path(n.gift_registry)) 
+																}.join(", ") %>
+														</td>
+														<td class="event-type"><%= registry.event_type_description %></td>
+														<td class="state"><%= registry.shipping_state.abbreviation %></td>
+														<td class="date"><%= registry.event_date.to_time.strftime("%m/%d/%Y") %></td>
+														<td class="registry-number"><%= registry.registry_number %></td>
+													</tr>
+													<% end %>
+												<% end %>
+			
+											</tbody>
+										</table>
+										<div class="paging">
+											<%= will_paginate @gift_registries %>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<!-- product side boxes -->
+					<div class="product-sboxes">
+						<strong class="slogan share">Share the Dorm Love</strong>
+						<div class="p-box">
+							<div class="heading">
+								<strong class="giftistry">GIFTISTRY</strong>
+							</div>
+							<div class="body">
+								<%= render :partial => "shared/gift_card_sidebar" %>
+							</div>
+						</div>
+						<!--
+						<div class="banner">
+							<img src="/images/img67.gif" alt="image description" />
+						</div>
+						-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

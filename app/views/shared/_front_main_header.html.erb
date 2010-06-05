@@ -2,33 +2,34 @@
 <div id="header">
 	<div class="top">
 		<ul>
-			<li><a href="#">Log in</a></li>
-			<li><a href="#">My Account</a></li>
-			<li><a href="#">My Wish List</a></li>
+			<li><%= link_to "Log in", account_login_path %></li>
+			<li><%= link_to "My Account", account_path %></li>
+			<li><%= link_to "My Wish List", account_wish_list_path %></li>
 			<li><%= link_to 'My Shopping Cart', cart_path, :class => 'shop' %></li>
 			<li><%= link_to 'Checkout', cart_login_path %></li>
 		</ul>
 	</div>
 	<ul class="sub-nav">
-		<li><a href="#">FAQ</a></li>
-		<li><a href="#">NEWSROOM</a></li>
-		<li><a href="#">COSTUMER SERVICE</a></li>
-		<li><a href="#">CONTACT</a></li>
+		<li><%= link_to 'FAQ', faq_path %></li>
+		<li><%= link_to 'NEWSROOM', news_path %></li>
+		<li><%= link_to 'CUSTOMER SERVICE', faq_path %></li>
+		<li><%= link_to 'CONTACT', contact_path %></li>
 	</ul>
 	<div class="bottom">
 		<ul class="contact">
-			<li><a class="tweets" href="#">Tweets</a></li>
-			<li><a class="fbook" href="#">Fbook</a></li>
-			<li><a class="blog" href="#">Blog</a></li>
+			<li><%= link_to 'Tweets', twitter_path, :class => 'tweets', :target => "_blank" %></li>
+			<li><%= link_to 'Facebook', facebook_path, :class => 'fbook', :target => "_blank" %></li>
+			<li><%= link_to 'Blog', blog_path, :class => 'blog', :target => "_blank" %></li>
 		</ul>
 	</div>
 	<div class="search-box">
-		<form action="#">
+		<% form_for :search, :url => product_search_path, :html => {:id => 'search_form', :method => "get"} do |f| %>
 			<fieldset>
-				<input type="text" class="text" value="What do you need for your dorm?" title="search" />
+				<%= f.text_field :search_term, :class => "text", :value => "What do you need for your dorm?",
+				 		:onclick => "this.value = '';" %>
 				<input type="image" src="/images/bg-btn01.gif" value="" class="btn" alt="search" />
 			</fieldset>
-		</form>
+		<% end %>
 	</div>
 	<span class="follow-arrow">Follow us</span>
 </div>

@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  
+   
   def habtm_checkbox_list(classname, value_field, display_field, object_name, method_name, 
         checked_collection, cols=4, order_statement=nil)
     

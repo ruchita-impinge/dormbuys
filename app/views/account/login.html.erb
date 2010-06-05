@@ -1,0 +1,153 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-stuff active"><img src="/images/text-mystuff.png" alt="image description" class="png" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>Are you a RETURNING CUSTOMER?</strong>
+											</div>
+											<div>
+												<strong>Are you a NEW CUSTOMER?</strong>
+												<span class="or">or</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<% form_for :login, :url => account_submit_login_path, :html => {:id => 'cart_login_frm'} do |f| %>
+														<fieldset>
+															<div class="input-box">
+																<%= f.text_field :email, :class => 'text', :id => 'email', :title => 'Email Address' %>
+																<%= f.label :email, 'Email Address:', :for => 'email' %>
+															</div>
+															<div class="input-box">
+																<%= f.password_field :password, :class => 'text', :id => 'password', :title => 'Password' %>
+																<%= f.label :password, 'Password:', :for => 'password' %>
+															</div>
+															<div class="check-box">
+																<%= f.label :remember, 'Remember me', :for => 'remember' %>
+																<%= f.check_box :remember, :id => 'remember', :title => 'Remember me' %>
+															</div>
+															<%= link_to 'Continue', 'javascript:document.forms["cart_login_frm"].submit();', :class => 'continue-btn' %>
+															<div class="input-box">
+																<%= link_to 'Forgot your password?', '#' %>
+															</div>
+															<input type="submit" value="Submit" class="hidden" />
+														</fieldset>
+													<% end %>
+												</td>
+												<td>
+													<% form_for @user, :url => account_user_signup_path, :html => {:id => 'cart_user_signup_frm'} do |f| %>
+														<fieldset>
+															
+															<%= f.error_messages %>
+															
+															<div class="input-box">
+																<%= f.text_field :first_name, :class => 'text', :id => 'name', :title => 'First Name' %>
+																<%= f.label :first_name, 'First Name:', :for => 'name' %>
+															</div>
+															<div class="input-box">
+																<%= f.text_field :last_name, :class => 'text', :id => 'name2', :title => 'Last Name' %>
+																<%= f.label :last_name, 'Last Name:', :for => 'name2' %>
+															</div>
+															<div class="input-box">
+																<%= f.text_field :email, :class => 'text', :id => 'email2', :title => 'Email Address' %>
+																<%= f.label :email, 'Email Address:', :for => 'email2' %>
+															</div>
+															<div class="input-box">
+																<%= f.password_field :password, :class => 'text', :id => 'create', :title => 'Create a Password' %>
+																<%= f.label :password, 'Create a Password:', :for => 'create' %>
+															</div>
+															<div class="input-box">
+																<%= f.password_field :password_confirmation, :class => 'text', :id => 'password2', :title => 'Re-type Password' %>
+																<%= f.label :password_confirmation, 'Re-type Password:', :for => 'password2' %>
+															</div>
+															<%= link_to 'Continue', 'javascript:document.forms["cart_user_signup_frm"].submit();', :class => 'continue-btn' %>
+															<input type="submit" value="Submit" class="hidden" />
+														</fieldset>
+													<% end %>
+												</td>
+											</tr>
+										</table>
+										<div class="text-box">
+											<div class="table-head">
+												<strong>&nbsp;</strong>
+											</div>
+											<table class="table-body table-body2">
+												<tr>
+													<td>
+													</td>
+													<td>
+														<strong class="proceed">PROCEED DIRECTLY TO CHECKOUT</strong>
+														<p>By choosing this option none of your user information will be saved in our records. You will not be able to review your order status or track your shipments.</p>
+														<a href="#" class="continue-btn">Continue</a>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>SECURITY &amp; PRIVACY</strong>
+										</div>
+										<table class="table-body">
+											<tr>
+												<td>
+													<%= render :partial => 'shared/secure_logo_block' %>
+												</td>
+												<td>
+													<p>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <a href="#">Privacy Policy</a></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<%= render :partial => "shared/products_side_box", :locals => {:num_products => 2} %>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+	
+	
+</div>

@@ -29,7 +29,19 @@ class Cart < ActiveRecord::Base
     
   
  
-
+  def items
+    self.cart_items.find(:all, :conditions => {:is_gift_registry_item => false, :is_wish_list_item => false})
+  end #end method items
+  
+  
+  def wish_list_items
+    self.cart_items.find(:all, :conditions => {:is_wish_list_item => true})
+  end #end method wish_list_items
+  
+  
+  def gift_registry_items
+    self.cart_items.find(:all, :conditions => {:is_gift_registry_item => true})
+  end #end method gift_registry_items
   
   
 
@@ -95,8 +107,16 @@ class Cart < ActiveRecord::Base
     item = self.cart_items.build
     item.quantity = cart_item_attributes[:qty]
     item.product_variation_id = cart_item_attributes[:variation_id]
-    item.product_options = cart_item_attributes[:product_option_values].collect {|x| x['id']}
-    item.product_as_options = cart_item_attributes[:product_as_option_values].collect {|x| x['id']}
+    item.product_options = cart_item_attributes[:product_option_values].collect {|x| x['id']} unless cart_item_attributes[:product_option_values].blank?
+    item.product_as_options = cart_item_attributes[:product_as_option_values].collect {|x| x['id']} unless cart_item_attributes[:product_as_option_values].blank?
+    
+    #these are items that a person wants to add to THEIR OWN registry / list
+    item.is_gift_registry_item = cart_item_attributes[:is_gift_registry_item] unless cart_item_attributes[:is_gift_registry_item].blank?
+    item.is_wish_list_item = cart_item_attributes[:is_wish_list_item] unless cart_item_attributes[:is_wish_list_item].blank?
+    
+    item.wish_list_item_id = cart_item_attributes[:wish_list_item_id] unless cart_item_attributes[:wish_list_item_id].blank?
+    item.gift_registry_item_id = cart_item_attributes[:gift_registry_item_id] unless cart_item_attributes[:gift_registry_item_id].blank?
+    
     item.save!
   end #end method add(cart_item_attributes)
   
@@ -149,7 +169,18 @@ class Cart < ActiveRecord::Base
       end
     end
     
-    return ShippingRatesTable.get_rate(shipping_calc_total)
+    table_rate = ShippingRatesTable.get_rate(shipping_calc_total)
+    
+    if self.shipping_state
+      state_shipping = self.shipping_state.state_shipping_rates.collect(&:additional_cost).sum
+      unless state_shipping.class == Money
+        state_shipping = Money.new(0)
+      end
+    else
+      state_shipping = Money.new(0)
+    end
+    
+    return table_rate + state_shipping
     
   end #end method shipping
   
@@ -271,6 +302,37 @@ class Cart < ActiveRecord::Base
   end #end method gift_card_attributes=(gc_attributes)
   
   
+  def load_user_data(user)
+    
+    self.email                  = user.email
+    self.whoami                 = user.whoami
+    self.billing_phone          = user.billing_phone
+    self.dorm_ship_not_part     = user.dorm_ship_not_part
+    self.dorm_ship_not_assigned = user.dorm_ship_not_assigned
+    self.dorm_ship_college_name = user.dorm_ship_college_name
+    self.shipping_phone         = user.shipping_phone
+    self.shipping_country_id    = user.shipping_country_id
+    self.shipping_zipcode       = user.shipping_zipcode
+    self.shipping_state_id      = user.shipping_state_id
+    self.shipping_city          = user.shipping_city
+    self.shipping_address2      = user.shipping_address2
+    self.shipping_address       = user.shipping_address
+    self.shipping_last_name     = user.shipping_last_name
+    self.shipping_first_name    = user.shipping_first_name
+    self.billing_country_id     = user.billing_country_id
+    self.billing_zipcode        = user.billing_zipcode
+    self.billing_state_id       = user.billing_state_id
+    self.billing_city           = user.billing_city
+    self.billing_address2       = user.billing_address2
+    self.billing_address        = user.billing_address
+    self.billing_last_name      = user.billing_last_name
+    self.billing_first_name     = user.billing_first_name
+    self.user_profile_type_id   = user.user_profile_type_id
+    self.save(false)
+    
+  end #end method load_user_data(user)
+  
+  
   def display_payment_info
     setup_payment_display
   end #end method display_payment_info
@@ -300,6 +362,7 @@ class Cart < ActiveRecord::Base
       return if self.skip_credit_card == true
       
       cc_vals = payment_info
+      return if cc_vals.blank?
 
       self.credit_card = Payment::PaymentManager.credit_card(
         cc_vals['card_type'], 
@@ -325,6 +388,7 @@ class Cart < ActiveRecord::Base
 
 
     def payment_info
+      return nil if self.payment_data.blank? || self.salt.blank?
       de_crypt_str = Security::SecurityManager.decrypt_with_salt(self.payment_data, self.salt)
       name, number, exp, ctype, vcode = de_crypt_str.split("=!=")
       {'name_on_card' => name, 'card_number' => number, 'exp_date' => exp, 'card_type' => ctype, 'vcode' => vcode}

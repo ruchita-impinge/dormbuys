@@ -1,0 +1,103 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-gift-registry">Gift Registry</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link t-tis-better active" href="#"><strong><img src="/images/text-tis-better.png" alt="Tis better to give..." class="png" width="229" height="32" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							
+							<%= render :partial => "gift_registry_tabs" %>
+							
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<!-- info-hold -->
+									<div class="table-box card-holder">
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<strong class="text-who-gift">Who’s Gift Registry?</strong>
+													<p>Enter a first name, last name, and/or registry number and shazaam...you’ll be on your way to spreading some dorm love by giving some lucky dorm dweller exactly what they’re looking for. And no worries, if you don't have all the info, just enter what you do know...</p>
+													<% form_for :gift_registry_search, :url => main_registry_search_path, :html => {:id => 'reg_search'} do |f| %>
+														<fieldset>
+															<div class="input-box">
+																<%= f.text_field :first_name, :class => 'text text2' %>
+																<%= f.label :first_name, "First Name:" %>
+															</div>
+															<div class="input-box">
+																<%= f.text_field :last_name, :class => 'text text2' %>
+																<%= f.label :last_name, "Last Name:" %>
+															</div>
+															<div class="input-box">
+																<%= f.text_field :registry_number, :class => "text text2" %>
+																<%= f.label :registry_number, "Registry #:" %>
+															</div>
+															<div class="input-box input-box3">
+																<%= link_to "<span>Search</span><em>&nbsp;</em>", "javascript:document.forms['reg_search'].submit();", :class => "table-btn tb-t2 tb-t3" %>
+															</div>
+															<input type="submit" value="Submit" class="hidden" />
+														</fieldset>
+													<% end %>
+												</td>
+												<td>
+													<div class="need-create-registry">
+														<p>Need to create your own Gift Registry? Piece of cake...</p>
+														<%= link_to "Create a Registry", account_new_gift_registry_path, :class => 'button' %>
+														<% unless logged_in? %>
+															<div class="bottom-link"><%= link_to "Login to edit your registry.", account_gift_registries_path %></div>
+														<% end %>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<!-- table-box -->
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<!-- side column -->
+				<div id="s-column">
+					<!-- product side boxes -->
+					<div class="product-sboxes">
+						<strong class="slogan share">Share the Dorm Love</strong>
+						<div class="p-box">
+							<div class="heading">
+								<strong class="giftistry">GIFTISTRY</strong>
+							</div>
+							<div class="body">
+								<%= render :partial => "shared/gift_card_sidebar" %>
+							</div>
+						</div>
+						<!--
+						<div class="banner">
+							<img src="/images/img67.gif" alt="image description" />
+						</div>
+						-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

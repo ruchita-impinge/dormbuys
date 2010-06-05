@@ -1,0 +1,10 @@
+<ul>
+	<li>
+		<%= link_to "<span>Current Information</span><em>&nbsp;</em>", account_billing_path,
+		 		:class => "tab #{'active' if request.path == account_billing_path}" %>
+	</li>
+	<li>
+		<%= link_to "<span>Edit My Information</span><em>&nbsp;</em>", account_billing_edit_path, 
+		 		:class => "tab #{'active' if request.path == account_billing_edit_path}"%>
+	</li>
+</ul>

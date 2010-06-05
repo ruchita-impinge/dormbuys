@@ -211,7 +211,7 @@ class ShippingContainerConfigurator
                 #than the largest box we have.  If it is we'll find the best container to use, if not we'll
                 #loop again using the largest one
                 if @parcel_candidates.sum {|candidate| candidate.volume } > largest.volume
-                  parcel = ShippingShippingParcel.new(largest)
+                  parcel = ShippingParcel.new(largest)
                   candidate = @parcel_candidates.shift
                   parcel.add_item(candidate)
                 else

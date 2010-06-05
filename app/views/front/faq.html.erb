@@ -1,0 +1,210 @@
+<% content_for :head do %>
+	<%= javascript_include_tag "jquery.accordion.js" %>
+<% end %>
+
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-customer-service">Customer Service</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-link active" href="#"><strong><img src="/images/text-how-can-you-help.png" alt="How Can We Help?" class="png" width="192" height="23" /></strong><span>&nbsp;</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="columns-holder">
+				<!-- main column -->
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox customer-service login">
+						<div class="tabset">
+							<%= render :partial => "customer_service_tabs" %>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>QUESTION</strong>
+											</div>
+											<div>
+												<strong>ANSWER</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<table class="table-body table-body2">
+											<tr>
+												<td>
+													<ul class="accordion">
+														<li>
+															<a href="#" class="opener">SHIPPING</a>
+															<div class="slide">
+																<ul class="list-question">
+																	<li><a class="tab" href="#tab1" title="link1">Can dormbuys ship directly to my college or university?</a></li>
+																	<li><a class="tab" href="#tab2" title="link2">How long will it take for me to receive my order?</a></li>
+																	<li><a class="tab" href="#tab3" title="link3">I need my order fast. Can you expedite my shipping?</a></li>
+																	<li><a class="tab" href="#tab4" title="link4">Are you able to ship to Hawaii or Alaska?</a></li>
+																	<li><a class="tab" href="#tab5" title="link5">Are you able to ship internationally?</a></li>
+																	<li><a class="tab" href="#tab6" title="link6">Do you ship to po boxes or apo/ae addresses?</a></li>
+																</ul>
+															</div>
+														</li>
+														<li>
+															<a href="#" class="opener">ORDER STATUS</a>
+															<div class="slide">
+																<ul class="list-question">
+																	<li><a class="tab" href="#tab7" title="link7">Why did i only receive part of my order?</a></li>
+																	<li><a class="tab" href="#tab8" title="link8">Can i track my order online?</a></li>
+																	<li><a class="tab" href="#tab9" title="link9">What if i order an item that is out of stock?</a></li>
+																</ul>
+															</div>
+														</li>
+														<li>
+															<a href="#" class="opener">RETURNS</a>
+															<div class="slide">
+																<ul class="list-question">
+																	<li><a class="tab" href="#tab10" title="link10">Question 1</a></li>
+																	<li><a class="tab" href="#tab11" title="link11">Question 2</a></li>
+																	<li><a class="tab" href="#tab12" title="link12">Question 3</a></li>
+																	<li><a class="tab" href="#tab13" title="link13">Question 4</a></li>
+																</ul>
+															</div>
+														</li>
+														<li>
+															<a href="#" class="opener">GIFT REGISTRY &amp; WISHLIST</a>
+															<div class="slide">
+																<ul class="list-question">
+																	<li><a class="tab" href="#tab14" title="link14">Question 1</a></li>
+																	<li><a class="tab" href="#tab15" title="link15">Question 2</a></li>
+																	<li><a class="tab" href="#tab16" title="link16">Question 3</a></li>
+																	<li><a class="tab" href="#tab17" title="link17">Question 4</a></li>
+																</ul>
+															</div>
+														</li>
+														<li>
+															<a href="#" class="opener">EVERYTHING ELSE</a>
+															<div class="slide">
+																<ul class="list-question">
+																	<li><a class="tab" href="#tab18" title="link18">Question 1</a></li>
+																	<li><a class="tab" href="#tab19" title="link19">Question 2</a></li>
+																	<li><a class="tab" href="#tab20" title="link20">Question 3</a></li>
+																	<li><a class="tab" href="#tab21" title="link21">Question 4</a></li>
+																</ul>
+															</div>
+														</li>
+													</ul>
+												</td>
+												<td>
+													<div class="answer-box">
+														<em class="mark cat">(Click on a category to the left.)</em>
+														<em class="mark quest">(Nov click on a question.)</em>
+														<div class="tab-content" id="tab1">
+															<strong class="title">Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab2">
+															<strong class="title">2 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab3">
+															<strong class="title">3 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab4">
+															<strong class="title">4 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab5">
+															<strong class="title">5 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab6">
+															<strong class="title">6 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab7">
+															<strong class="title">7 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab8">
+															<strong class="title">8 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab9">
+															<strong class="title">9 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab10">
+															<strong class="title">10 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab11">
+															<strong class="title">11 Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab12">
+															<strong class="title">12 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab13">
+															<strong class="title">13 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab14">
+															<strong class="title">14 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab15">
+															<strong class="title">15 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab16">
+															<strong class="title">16 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab17">
+															<strong class="title">17 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab18">
+															<strong class="title">18 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab19">
+															<strong class="title">19 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab20">
+															<strong class="title">20 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+														<div class="tab-content" id="tab21">
+															<strong class="title">21 Can Dormbuys.com ship directly to my college or university?</strong>
+															<p>You bet! As you’re placing your order, just choose "Ship To My College Dorm" in the shipping address section and we'll send it right to you. 'Cause we’re dedicated to getting you everything you need quickly and efficiently. Heck, we’ll even ship your summer order to your college or university before you arrive, as long as you check with your school to make sure they can store the shipment until you get there. But if you’re already on-campus, shipping to your college is as simple as entering your college’s assigned 'ship to' address within our checkout process.</p>
+														</div>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+				<%= render :partial => "customer_service_contact" %>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

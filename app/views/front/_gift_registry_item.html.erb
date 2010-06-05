@@ -1,0 +1,48 @@
+<% if gift_registry_item.product_variation %>
+
+<% fields_for "gift_registry_purchase[gift_registry_item_attributes][]", gift_registry_item, :index => nil do |x| %>
+
+
+<tr>
+	
+	<%= x.hidden_field :id %>
+	
+	<td class="item">
+		<div class="item-info">
+			<%= link_to image_tag(object.product_variation.product.product_image(:thumb)), 
+			 		object.product_variation.product.default_front_url %>
+			<div class="description">
+				<strong class="item-title">
+					<%= link_to truncate(object.product_variation.product.product_name, :length => 20),
+					 		object.product_variation.product.default_front_url %>
+
+					<% unless gift_registry_item.comments.blank? %>
+						<br /><%= gift_registry_item.comments %>
+					<% end %>
+				</strong>
+			</div>
+		</div>
+	</td>
+	<td class="price">
+		<em class="price">$<%= gift_registry_item.price %></em>
+	</td>
+	<td class="need-qty">
+		<em class="price"><%= gift_registry_item.desired_qty %></em>
+	</td>
+	<td class="got-qty">
+		<em class="price"><%= gift_registry_item.received_qty %></em>
+	</td>
+	<td class="buy-qty">
+		
+		<% if gift_registry_item.product_variation.qty_on_hand > 0 %>
+		<%= x.label :buy_qty, "&nbsp;", :class => "hidden" %>
+		<%= x.text_field :buy_qty, :class => "text" %>
+		<% else %>
+			<span>Out of Stock</span>
+		<% end %>
+		
+	</td>
+</tr>
+<% end %>
+
+<% end %>

@@ -1,0 +1,86 @@
+<!-- main title -->
+<div class="main-title">
+	<h2 class="t-accountification">Accountification</h2>
+</div>
+<!-- main holder - my stuff -->
+<div class="main-holder">
+	<div class="featured-products">
+		<div class="title tabset">
+			<ul>
+				<li class="first"><a class="t-my-account active"><img src="/images/text-myaccount.png" alt="image description" class="png" width="129" height="36" /></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- main content -->
+	<div class="main-content">
+		<div class="mcontent-b">
+			<div class="tab-holder">
+				<div class="tabset left-tabset">
+					
+					<%= render :partial => "account_nav" %>
+					
+				</div>
+				<div id="m-column">
+					<!-- main box -->
+					<div class="mbox login">
+						<div class="tabset" id="tabset">
+							<ul>
+								<li><a class="tab active" href="#"><span>Log Out</span><em>&nbsp;</em></a></li>
+							</ul>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<div>
+												<strong>&nbsp;</strong>
+											</div>
+											<div>
+												<strong>&nbsp;</strong>
+												<span class="db">db</span>
+											</div>
+										</div>
+										<!-- email-box -->
+										<div class="email-box">
+											<div class="form-box">
+												<p>You have successfully logged out of your Dormbuys.com account.</p>
+												<%= link_to "Log Back In", account_login_path, :class => 'join-btn' %>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+						<div class="mbox-body">
+							<div class="mbox-t">
+								<div class="mbox-area">
+									<div class="table-box card-holder">
+										<div class="table-head table-head2">
+											<strong>&nbsp;</strong>
+										</div>
+										<table class="table-body">
+											<tr>
+												<td>
+													<%= render :partial => "shared/secure_logo_block" %>
+												</td>
+												<td>
+													<p><strong>Security &amp; Privacy:</strong><br />Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <a href="#">Privacy Policy</a></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="mbox-b"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% content_for :front_footer_gift_blog do %>
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+	<% end %>
+</div>

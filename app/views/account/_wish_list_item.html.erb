@@ -1,0 +1,48 @@
+<% if object.product_variation %>
+<% fields_for "wish_list[wish_list_item_attributes][]", object, :index => nil do |x| %>
+		
+		<%= x.hidden_field :id %>
+		
+		<tr class="bnone">
+			<td class="item">
+				<div class="item-info">
+					<%= link_to image_tag(object.product_variation.product.product_image(:thumb)), 
+					 		object.product_variation.product.default_front_url %>
+					<div class="description">
+						<strong class="item-title">
+							<%= link_to truncate(object.product_variation.product.product_name, :length => 20),
+							 		object.product_variation.product.default_front_url %>
+						</strong>
+					</div>
+				</div>
+			</td>
+			<td class="price-sec align-c">
+				<em class="price">$<%= object.price %></em>
+			</td>
+			<td class="wish-qty align-c">
+				<%= x.text_field :wish_qty, :class => 'qty' %>
+			</td>
+			<td class="got-qty align-c">
+				<em class="price"><%= object.got_qty %></em>
+			</td>
+			<td class="buy-sec align-c">
+				<%= link_to "<span>Add to Cart</span><em>&nbsp;</em>", cart_add_wish_list_item_path(object), :class => "table-btn tb-t2" %>
+			</td>
+			<td class="remove align-r">
+
+				<input id="wl_rem_<%= object.id %>" type="checkbox" name="wish_list[wish_list_item_attributes][][should_destroy]" value="1" />
+				<label class="hidden" for="wl_rem_<%= object.id %>">&nbsp;</label>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="6" class="comment-area">
+				<div class="row">
+					<%= x.text_field :comments, :class => 'text' %>
+					<%= x.label :comments, 'Comment:' %>
+				</div>
+			</td>
+		</tr>
+		
+		
+<% end %>
+<% end %>

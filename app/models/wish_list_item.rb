@@ -65,4 +65,46 @@ class WishListItem < ActiveRecord::Base
     self.product_custom_option_values = to_add.join(FIELD_DIVIDER)
   end #end method product_custom_options(opts, vals)
   
+  
+  def to_cart_item_params
+    params = {:qty => 1, :variation_id => self.product_variation_id}
+    params[:product_option_values] = self.product_options unless self.product_options.blank?
+    params[:product_as_option_values] = self.product_as_options unless self.product_as_options.blank?
+    params[:wish_list_item_id] = self.id
+    return params
+  end #end method to_cart_item_params
+
+  
+  def price
+     tmp_price = self.product_variation.rounded_retail_price
+
+      unless self.product_options.blank?
+        self.product_options.each do |pov_id|
+          pov = ProductOptionValue.find(pov_id)
+          if pov
+            tmp_price += pov.price_increase
+          end
+        end
+      end
+
+      unless self.product_as_options.blank?
+        self.product_as_options.each do |paov_id|
+          paov = ProductAsOptionValue.find(paov_id)
+          if paov
+            tmp_price += (paov.product_variation.rounded_retail_price + paov.price_adjustment)
+          end
+        end
+      end
+
+      return tmp_price
+    
+  end #end method price
+  
+  
+  
+  def fulfilled?
+    self.got_qty >= self.wish_qty
+  end #end method fulfilled?
+  
+  
 end
