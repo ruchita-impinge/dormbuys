@@ -861,6 +861,12 @@ class Order < ActiveRecord::Base
   
   def cancel_order
     
+    #del the order's shipping labels
+    unless kill_all_shipping_labels
+      return false
+    end
+    
+    
     #refund the full order amount
     if self.grand_total.cents > 0
       @refund = full_refund
@@ -909,9 +915,12 @@ class Order < ActiveRecord::Base
     
       Notifier.deliver_order_canceled(self)
     
+    else
+      self.errors.add_to_base(@refund.message)
     end #end if refund success
     
-    return @refund.success
+    
+    return @refund_pass
     
   end #end method cancel_order
   
