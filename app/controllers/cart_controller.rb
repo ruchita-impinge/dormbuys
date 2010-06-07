@@ -181,7 +181,7 @@ class CartController < ApplicationController
       redirect_to cart_path
     end
     
-    
+
     if @cart.billing_address.blank? && logged_in?
       @cart.user_profile_type_id = current_user.user_profile_type_id
       @cart.billing_first_name   = current_user.billing_first_name
@@ -213,8 +213,7 @@ class CartController < ApplicationController
         @cart.dorm_ship_not_part      = current_user.dorm_ship_not_part    
       end #end if dorm        
          
-    end #end shipping_address
-    
+    end #end shipping_address    
     
   end #end method billing_shipping
   

@@ -1,6 +1,6 @@
 class ShippingLabel < ActiveRecord::Base
   
-  validates_presence_of :label, :tracking_number
+  validates_presence_of :label, :tracking_number, :identification_number
   belongs_to :order
   
   attr_accessor :should_destroy
@@ -21,8 +21,10 @@ class ShippingLabel < ActiveRecord::Base
   ##
   def before_destroy
     
-    del_path = "#{SHIP_LABELS_STORE}/#{self.label}"
-    FileUtils.rm del_path, :force => true
+    del_html = "#{SHIP_LABELS_STORE}/#{File.basename(self.label)}"
+    del_graphic = "#{SHIP_LABELS_STORE}/label#{File.basename(self.label).gsub(".html", ".gif")}"
+    FileUtils.rm del_html, :force => true
+    FileUtils.rm del_graphic, :force => true
 
   end #end before_destroy
   

@@ -16,7 +16,8 @@ module ActiveMerchant
         :rates => 'ups.app/xml/Rate',
         :track => 'ups.app/xml/Track',
         :shipment_confirm => 'ups.app/xml/ShipConfirm',
-        :shipment_accept => 'ups.app/xml/ShipAccept'
+        :shipment_accept => 'ups.app/xml/ShipAccept',
+        :void => 'ups.app/xml/Void'
       }
       
       PICKUP_CODES = HashWithIndifferentAccess.new({
@@ -128,18 +129,27 @@ module ActiveMerchant
       def shipment_confirmation_request(carrier_service, packages, label_specification, options)
         options = @options.merge(options)
         packages = Array(packages)
-        access_request = build_access_request
-        confirmation_request = build_confirmation_request(carrier_service, packages, label_specification, options)
+        access_request = "<?xml version='1.0' ?>" + build_access_request
+        confirmation_request = "<?xml version='1.0' encoding='UTF-8' ?>" + build_confirmation_request(carrier_service, packages, label_specification, options)
         response = commit(:shipment_confirm, save_request(access_request + confirmation_request), (options[:test] || false))
         parse_shipment_confirm_response(response, options)
       end
       
       def shipment_accept_request(digest, options = {})
         options = @options.merge(options)
-        access_request = build_access_request
-        acceptance_request = build_shipment_acceptance_request(digest, options)
+        access_request = "<?xml version='1.0' ?>" + build_access_request
+        acceptance_request = "<?xml version='1.0' encoding='UTF-8' ?>" + build_shipment_acceptance_request(digest, options)
         response = commit(:shipment_accept, save_request(access_request + acceptance_request), (options[:test] || false))
         parse_shipment_accept_response(response, options)
+      end
+      
+      def void_shipment(identification_number, tracking_numbers = [], options = {})
+        options = @options.merge(options)
+        tracking_numbers = Array(tracking_numbers)
+        access_request = "<?xml version='1.0' ?>" + build_access_request
+        void_request = "<?xml version='1.0' encoding='UTF-8' ?>" + build_void_shipment_request(identification_number, tracking_numbers, options)
+        response = commit(:void, save_request(access_request + void_request), (options[:test] || false))
+        parse_void_response(response, options)
       end
       
       protected
@@ -196,8 +206,8 @@ module ActiveMerchant
               end
             end
             shipment << XmlNode.new('Service') do |shipment_service|
-              shipment_service << XmlNode.new('Code', carrier_service || "03")
-              shipment_service << XmlNode.new('Description', DEFAULT_SERVICES[carrier_service] || DEFAULT_SERVICES["03"])
+              shipment_service << XmlNode.new('Code', carrier_service || "14")
+              shipment_service << XmlNode.new('Description', DEFAULT_SERVICES[carrier_service] || DEFAULT_SERVICES["14"])
             end
             shipment << XmlNode.new('PaymentInformation') do |payment_info|
               payment_info << XmlNode.new('Prepaid') do |prepaid|
@@ -229,6 +239,15 @@ module ActiveMerchant
                   value = ((imperial ? package.lbs : package.kgs).to_f*1000).round/1000.0 # 3 decimals
                   package_weight << XmlNode.new("Weight", [value,0.1].max)
                 end
+                unless package.value.blank?
+                  package_node << XmlNode.new("PackageServiceOptions") do |package_service_options|
+                    package_service_options << XmlNode.new("InsuredValue") do |insured_value|
+                      currency = package.currency.blank? ? "USD" : package.currency.to_s
+                      insured_value << XmlNode.new("CurrencyCode", currency)
+                      insured_value << XmlNode.new("MonetaryValue", package.value.to_s)
+                    end
+                  end
+                end
               end
             end
           end
@@ -255,8 +274,29 @@ module ActiveMerchant
         xml_request.to_s
       end
       
+      def build_void_shipment_request(identification_number, tracking_numbers = [], options = {})
+        xml_request = XmlNode.new('VoidShipmentRequest') do |void_request|
+          void_request << XmlNode.new('Request') do |request|
+            request << XmlNode.new('RequestAction', 'Void')
+            request << XmlNode.new('RequestOption', '1')
+          end
+          
+          if tracking_numbers.blank?
+            void_request << XmlNode.new('ShipmentIdentificationNumber', identification_number)
+          else
+            void_request << XmlNode.new('ExpandedVoidShipment') do |expanded_void_shipment|
+              expanded_void_shipment << XmlNode.new('ShipmentIdentificationNumber', identification_number)
+              tracking_numbers.each do |tracking_number|
+                expanded_void_shipment << XmlNode.new('TrackingNumber', tracking_number)
+              end
+            end
+          end
+        end
+        xml_request.to_s
+      end
+      
       def build_access_request
-        xml_request = XmlNode.new('AccessRequest') do |access_request|
+        xml_request = XmlNode.new("AccessRequest") do |access_request|
           access_request << XmlNode.new('AccessLicenseNumber', @options[:key])
           access_request << XmlNode.new('UserId', @options[:login])
           access_request << XmlNode.new('Password', @options[:password])
@@ -335,7 +375,7 @@ module ActiveMerchant
                   value = ((imperial ? package.lbs : package.kgs).to_f*1000).round/1000.0 # 3 decimals
                   package_weight << XmlNode.new("Weight", [value,0.1].max)
                 end
-              
+                
                 # not implemented:  * Shipment/Package/LargePackageIndicator element
                 #                   * Shipment/Package/ReferenceNumber element
                 #                   * Shipment/Package/PackageServiceOptions element
@@ -427,15 +467,15 @@ module ActiveMerchant
           total_price = root_node.get_text('TotalCharges/MonetaryValue').to_s.to_f
           currency = root_node.get_text('TotalCharges/CurrencyCode').to_s
           digest = root_node.get_text('ShipmentDigest').to_s
-          ShipmentConfirmResponse.new(success, message, Hash.from_xml(response).values.first,
-            :xml => response,
-            :request => last_request,
-            :identification_number => identification_number,
-            :total_price => total_price,
-            :currency => currency,
-            :digest => digest
-            )
         end
+        ShipmentConfirmResponse.new(success, message, Hash.from_xml(response).values.first,
+          :xml => response,
+          :request => last_request,
+          :identification_number => identification_number,
+          :total_price => total_price,
+          :currency => currency,
+          :digest => digest
+          )
       end
       
       def parse_shipment_accept_response(response, options = {})
@@ -459,18 +499,49 @@ module ActiveMerchant
           currency_code = root_node.get_text('ShipmentCharges/TotalCharges/CurrencyCode').to_s
           billing_weight = root_node.get_text('BillingWeight/Weight').to_s.to_f
           weight_unit = root_node.get_text('BillingWeight/UnitOfMeasurement/Code').to_s
-          
-          ShipmentAcceptResponse.new(success, message, Hash.from_xml(response).values.first,
-            :xml => response,
-            :request => last_request,
-            :identification_number => identification_number,
-            :shipment_charges => shipment_charges,
-            :currency_code => currency_code,
-            :billing_weight => billing_weight,
-            :weight_unit => weight_unit,
-            :shipment_packages => @shipment_packages
-            )
+          high_value_report_node = root_node.elements['ControlLogReceipt']
+          if high_value_report_node
+            high_value_report_image = high_value_report_node.get_text('GraphicImage').to_s
+            high_value_report_image_format = high_value_report_node.get_text('ImageFormat/Code').to_s
+          end
         end
+        ShipmentAcceptResponse.new(success, message, Hash.from_xml(response).values.first,
+          :xml => response,
+          :request => last_request,
+          :identification_number => identification_number,
+          :shipment_charges => shipment_charges,
+          :currency_code => currency_code,
+          :billing_weight => billing_weight,
+          :weight_unit => weight_unit,
+          :high_value_report_image => high_value_report_image,
+          :high_value_report_image_format => high_value_report_image_format,
+          :shipment_packages => @shipment_packages
+          )
+      end
+      
+      def parse_void_response(response, options = {})
+        xml = REXML::Document.new(response)
+        success = response_success?(xml)
+        message = response_message(xml)
+        if success
+          @package_level_results = []
+          xml.elements.each('/*/PackageLevelResults') do |package_level_result|
+            tracking_number = package_level_result.get_text('TrackingNumber').to_s
+            status_code = package_level_result.get_text('StatusCode').to_s.to_f
+            description = package_level_result.get_text('Description').to_s
+            @package_level_results << VoidResult.new(tracking_number, status_code, description)
+          end
+          status_node = xml.elements['VoidShipmentResponse/Status']
+          status_type = status_node.get_text('StatusType/Code').to_s
+          status_code = status_node.get_text('StatusCode/Code').to_s
+        end
+        VoidShipmentResponse.new(success, message, Hash.from_xml(response).values.first,
+          :xml => response,
+          :request => last_request,
+          :package_level_results => @package_level_results,
+          :status_type => status_type,
+          :status_code => status_code
+          )
       end
       
       def parse_tracking_response(response, options={})

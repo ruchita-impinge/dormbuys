@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100604202044) do
+ActiveRecord::Schema.define(:version => 20100607134454) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -222,15 +222,11 @@ ActiveRecord::Schema.define(:version => 20100604202044) do
   end
 
   create_table "dorm_bucks_email_list_clients", :force => true do |t|
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "email"
   end
 
   create_table "email_list_clients", :force => true do |t|
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "email"
   end
 
   create_table "gift_card_reports", :force => true do |t|
@@ -279,8 +275,8 @@ ActiveRecord::Schema.define(:version => 20100604202044) do
     t.string   "registry_number"
     t.boolean  "show_in_search_by_name",   :default => true
     t.boolean  "show_in_search_by_number", :default => true
-    t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
   create_table "gift_registry_items", :force => true do |t|
@@ -433,6 +429,9 @@ ActiveRecord::Schema.define(:version => 20100604202044) do
     t.integer "order_id"
     t.integer "vendor_id"
   end
+
+  add_index "orders_vendors", ["order_id"], :name => "index_orders_vendors_on_order_id"
+  add_index "orders_vendors", ["vendor_id"], :name => "index_orders_vendors_on_vendor_id"
 
   create_table "product_as_option_values", :force => true do |t|
     t.integer  "product_variation_id"
@@ -602,9 +601,10 @@ ActiveRecord::Schema.define(:version => 20100604202044) do
   end
 
   create_table "shipping_labels", :force => true do |t|
-    t.integer "order_id",                       :null => false
-    t.string  "tracking_number", :limit => 100, :null => false
-    t.string  "label",                          :null => false
+    t.integer "order_id",                             :null => false
+    t.string  "tracking_number",       :limit => 100, :null => false
+    t.string  "label",                                :null => false
+    t.string  "identification_number"
   end
 
   add_index "shipping_labels", ["order_id"], :name => "index_shipping_labels_on_order_id"

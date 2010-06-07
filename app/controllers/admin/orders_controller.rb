@@ -209,18 +209,13 @@ class Admin::OrdersController < Admin::AdminController
   def update
         
     @order = Order.find(params[:id])
+    @order.attributes = params[:order]
 
     respond_to do |format|
-      if @order.update_attributes(params[:order])
+      if @order.save
         
-        if @order.canceled?
-          flash[:notice] = "Order has been queued for cancelation"
-          format.html { redirect_to(admin_orders_path) }
-        else
-          flash[:notice] = 'Order was successfully updated.'
-          format.html { redirect_to(edit_admin_order_path(@order)) }
-        end
-        
+        flash[:notice] = 'Order was successfully updated.'
+        format.html { redirect_to(edit_admin_order_path(@order)) }
         
         format.xml  { head :ok }
       else

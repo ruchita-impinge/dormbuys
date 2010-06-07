@@ -6,7 +6,8 @@ class Order < ActiveRecord::Base
   before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors
   
   after_create :run_followup_tasks
-  after_update :save_order_line_items, :save_shipping_labels, :cancel_if_necessary
+  after_update :save_order_line_items, :save_shipping_labels #, :cancel_if_necessary
+  before_save :cancel_if_necessary
   
   belongs_to :order_vendor
   belongs_to :user
@@ -141,7 +142,8 @@ class Order < ActiveRecord::Base
   def cancel_if_necessary
     return if self.skip_all_callbacks
     if self.order_status_id == Order::ORDER_STATUS_CANCELED
-      self.send_later(:cancel_order)
+      #self.send_later(:cancel_order)
+      self.cancel_order
     end
   end
  
@@ -417,27 +419,27 @@ class Order < ActiveRecord::Base
         for parcel in shippment.items
   
          #get the ship request info from the courier
-=begin  
-      
-########
-# DEPRECIATED WITH MOVE TO UPS
-########
 
-         price, label, tracking_number = ShipManager.courier_ship_request(
-           self.get_payment_shipping_address, 
-           parcel.length,
-           parcel.width,
-           parcel.depth,
-           parcel.weight, 
-           1, 
-           self.order_id)
- 
-         #write out the shipping label image
-         label_path = Files::FileManager.save_shipping_label(label.path)
-=end
+      
+# ########
+# # DEPRECIATED WITH MOVE TO UPS
+# ########
+# 
+#          price, label, tracking_number = ShipManager.courier_ship_request(
+#            self.get_payment_shipping_address, 
+#            parcel.length,
+#            parcel.width,
+#            parcel.depth,
+#            parcel.weight, 
+#            1, 
+#            self.order_id)
+#  
+#          #write out the shipping label image
+#          label_path = Files::FileManager.save_shipping_label(label.path)
+
 
           #USING UPS
-          label_path, tracking_number = ShipManager.courier_ship_request(
+          label_path, tracking_number, identification_number = ShipManager.courier_ship_request(
              self.get_payment_shipping_address, 
              parcel.length,
              parcel.width,
@@ -447,7 +449,11 @@ class Order < ActiveRecord::Base
              self.order_id)
 
           #create a shipping label object on the order
-          self.shipping_labels.build(:label => label_path, :tracking_number => tracking_number)
+          self.shipping_labels.build(
+            :label => label_path, 
+            :tracking_number => tracking_number, 
+            :identification_number => identification_number
+          )
   
           #we can save the tracking number on the line_item.shipping_numbers but we can only
           #do it if there is a single parcel in the shippment.  This is because there is a possibility
@@ -918,7 +924,9 @@ class Order < ActiveRecord::Base
       #void the label with the courier
       begin
         ShipManager.void_shipping_label(label)
-      rescue
+      rescue ActiveMerchant::Shipping::ResponseError => e
+        self.errors.add_to_base(e.message)
+        return false
       end
       
       #del any tracking #s filled from this label
@@ -1178,24 +1186,25 @@ class Order < ActiveRecord::Base
       depth = attributes[:depth].to_f
       weight = attributes[:weight].to_f
     
-=begin
-DEPRECIATED WITH MOVE TO UPS
 
-      price, label, tracking_number = ShipManager.courier_ship_request(
-        shipping_address, 
-        length,
-        width,
-        depth,
-        weight, 
-        1, 
-        self.order_id)
-    
-    
-      #write out the shipping label image
-      label_path = Files::FileManager.save_shipping_label(label.path)
-=end
+#   DEPRECIATED WITH MOVE TO UPS
+# 
+#       price, label, tracking_number = ShipManager.courier_ship_request(
+#         shipping_address, 
+#         length,
+#         width,
+#         depth,
+#         weight, 
+#         1, 
+#         self.order_id)
+#     
+#     
+#       #write out the shipping label image
+#       label_path = Files::FileManager.save_shipping_label(label.path)
+
+
       # USING UPS
-      label_path, tracking_number = ShipManager.courier_ship_request(
+      label_path, tracking_number, identification_number = ShipManager.courier_ship_request(
          shipping_address, 
          length,
          width,
@@ -1204,7 +1213,11 @@ DEPRECIATED WITH MOVE TO UPS
          1, 
          self.order_id)
 
-      self.shipping_labels.create(:label => label_path, :tracking_number => tracking_number)
+      self.shipping_labels.create(
+        :label => label_path, 
+        :tracking_number => tracking_number, 
+        :identification_number => identification_number
+      )
       
     rescue Exception => e
       self.add_hoc_label_errors << "ERROR CALCULATING SHIPPING - " + e.message
