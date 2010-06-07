@@ -1,7 +1,8 @@
 set :application, "main_rails_app"
 set :user, "psadmin"
 set :runner, user
-set :main_server, "demo.dormbuys.com"
+set :main_server, "beta.dormbuys.com"
+set :gateway, "psadmin@beta.dormbuys.com"
 
 set :scm, "git"
 set :repository,  "ssh://psadmin@parkersmithsoftware.com:30000/var/git/dormbuys_3_0.git"
@@ -17,11 +18,18 @@ set :deploy_via, :remote_cache
 
 
 # setup the servers
-# setup the servers
+set :web1, "dormbuys-web1.dormbuys.com:30000"
+set :web2, "dormbuys-web2.dormbuys.com:30000"
+set :db1, "dormbuys-db1.dormbuys.com:30000"
+
+
 set :domain, main_server
-role :app, main_server
-role :web, main_server
-role :db,  main_server, :primary => true
+role :app, web2
+role :app, web1, :primary => true
+role :web, web1, web2
+role :db, web1, :primary => true
+#role :db, db1, :primary => true, :no_release => true
+#role :db, db2, :no_release => true
 
 
 namespace :deploy do
@@ -43,9 +51,11 @@ namespace :deploy do
      sudo "rm -rf #{release_path}/config/database.yml"
       run "ln -sf #{shared_path}/database.yml #{release_path}/config/database.yml"
 
-      sudo "rm -rf #{release_path}/public/content"
-      run "ln -sf #{shared_path}/content #{release_path}/public/content"
+      sudo "rm -rf #{release_path}/public/user_files"
+      run "ln -sf #{shared_path}/user_files #{release_path}/public/user_files"
 
+      sudo "rm -rf #{release_path}/app/themes"
+      run "ln -sf #{shared_path}/themes #{release_path}/app/themes"
   end
   
   

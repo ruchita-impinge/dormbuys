@@ -4,7 +4,11 @@
 class ApplicationController < ActionController::Base
   include SslRequirement
   include AuthenticatedSystem  
+  
+  BETA_USER_ID = "dormbuys"
+  BETA_PASSWORD = "whodat"
 
+  before_filter :authenticate_for_beta
   before_filter :set_current_user
 
 
@@ -49,6 +53,14 @@ class ApplicationController < ActionController::Base
     flash[:error] = "Couldn't log you in as '#{params[:login][:email]}'"
     logger.warn "Failed login for '#{params[:login][:email]}' from #{request.remote_ip} at #{Time.now.utc}"
   end
+
+  private
+  
+    def authenticate_for_beta
+        authenticate_or_request_with_http_basic do |id, password| 
+            id == BETA_USER_ID && password == BETA_PASSWORD
+        end
+     end
   
   
 end
