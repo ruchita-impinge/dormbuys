@@ -1,5 +1,8 @@
 class CartController < ApplicationController
   
+  ssl_required :login, :submit_login, :user_signup, :billing_shipping, 
+    :save_billing_shipping, :review, :confirm
+  
   layout "front_short_banner"
   
   #view cart
@@ -177,6 +180,42 @@ class CartController < ApplicationController
       flash[:error] = "Your cart is empty"
       redirect_to cart_path
     end
+    
+    
+    if @cart.billing_address.blank? && logged_in?
+      @cart.user_profile_type_id = current_user.user_profile_type_id
+      @cart.billing_first_name   = current_user.billing_first_name
+      @cart.billing_last_name    = current_user.billing_last_name 
+      @cart.billing_address      = current_user.billing_address   
+      @cart.billing_address2     = current_user.billing_address2  
+      @cart.billing_city         = current_user.billing_city      
+      @cart.billing_state_id     = current_user.billing_state_id  
+      @cart.billing_zipcode      = current_user.billing_zipcode   
+      @cart.billing_country_id   = current_user.billing_country_id
+    end #end billing address
+    
+    
+    if @cart.shipping_address.blank? && logged_in?
+      
+      @cart.shipping_first_name  = current_user.shipping_first_name
+      @cart.shipping_last_name   = current_user.shipping_last_name 
+      @cart.shipping_address     = current_user.shipping_address   
+      @cart.shipping_address2    = current_user.shipping_address2  
+      @cart.shipping_city        = current_user.shipping_city      
+      @cart.shipping_state_id    = current_user.shipping_state_id  
+      @cart.shipping_zipcode     = current_user.shipping_zipcode   
+      @cart.shipping_country_id  = current_user.shipping_country_id
+      @cart.shipping_phone       = current_user.shipping_phone  
+      
+      if current_user.user_profile_type_id == Order::ADDRESS_DORM
+        @cart.dorm_ship_college_name  = current_user.dorm_ship_college_name
+        @cart.dorm_ship_not_assigned  = current_user.dorm_ship_not_assigned
+        @cart.dorm_ship_not_part      = current_user.dorm_ship_not_part    
+      end #end if dorm        
+         
+    end #end shipping_address
+    
+    
   end #end method billing_shipping
   
   

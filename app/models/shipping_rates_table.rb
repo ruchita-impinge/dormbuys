@@ -73,7 +73,7 @@ class ShippingRatesTable < ActiveRecord::Base
     
     
     
-    if found_rate.blank? && sub_total.cents < @rates.last.subtotal.cents
+    if found_rate.blank? && sub_total.cents <= @rates.last.subtotal.cents
       return Money.new(0)
     end #end if
     
@@ -96,6 +96,23 @@ class ShippingRatesTable < ActiveRecord::Base
   def self.is_enabled?
     self.find(:first).enabled == true
   end #end method self.is_enabled?
+  
+  
+  def self.print_rates(type = "standard_rate")
+    desc = []
+    desc_rates = ShippingRatesTable.first.shipping_rates.all(:order => "int_subtotal DESC")
+    desc_rates.each_with_index do |rate,i|
+      if i == 0
+        desc << ["#{rate.subtotal}-#{rate.subtotal}", "#{rate.send(type.to_sym)}"]
+      else
+        desc << ["#{rate.subtotal + Money.new(1)}-#{desc_rates[i-1].subtotal}", "#{rate.send(type.to_sym)}"]
+      end
+    end
+    
+    desc << ["0.00-#{desc_rates.last.subtotal}", "0.00"]
+    
+    return desc.reverse
+  end #end method print_rates(type = :standard)
   
   
 end #end class

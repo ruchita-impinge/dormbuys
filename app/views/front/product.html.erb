@@ -22,15 +22,58 @@
 						
 								<div class="column">
 							
-							
+									<% content_for :head do %>
+										<% javascript_tag do %>
+											var original_img_url;
+											var original_link_text;
+											$(document).ready(function(){
+												
+												$img = $("#img_enlarge_image");
+												original_img_url = $img.attr("src");
+												
+												$lnk = $("#link_enlarge_image");
+												original_link_text = $lnk.text();
+												
+												$("a.additional_image").mouseover(function(){
+													$img.attr("src", $(this).attr("rel"));
+													$lnk.text($(this).attr("title"));
+												});
+												
+												$("a.additional_image").mouseout(function(){
+													$img.attr("src", original_img_url);
+													$lnk.text(original_link_text);
+												});
+												
+												
+											});//end ready
+										<% end %>
+									<% end %>
 							
 									<div class="image-holder">
-										<%= image_tag @product.product_image.url(:main), :alt => @product.product_name %>
+										<%= link_to image_tag(@product.product_image.url(:main), :alt => @product.product_name, :id => "img_enlarge_image"), 
+												@product.product_image(:large), :target => "_blank", :class => "lightwindow" %>
 									</div>
-									<span>Enlarge Image</span>
-							
-							
-							
+									<span>
+										<%= link_to "Enlarge Image", @product.product_image(:large), 
+												:id => "link_enlarge_image", :target => "_blank", :class => "lightwindow" %>
+									</span>
+									
+									
+									<div class="additional_product_images">
+
+										<% @product.additional_product_images.in_groups_of(4, false) do |image_group| %>
+											<% image_group.each do |aimg| %>
+												<%= link_to image_tag(aimg.image(:thumb)), aimg.image(:large),
+														:target => "_blank", 
+														:class => "additional_image lightwindow", 
+														:rel => aimg.image(:main),
+														:title => aimg.description  %>
+											<% end %>
+											<div class="clear"></div>
+										<% end %>
+									</div>
+									
+									
 									<!--
 									<span class="stars">stars</span>
 									<p>(based on <a href="#">305 reviews</a>)</p>
@@ -39,6 +82,7 @@
 										<li><a href="#">see all</a></li>
 									</ul>
 									-->
+
 							
 									<div class="link-box">
 										<%= link_to_function "save to my Wish List" do |page|

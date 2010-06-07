@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Dormbucks | Dormbuys.com</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<%= stylesheet_link_tag "all" %>
+	<%= stylesheet_link_tag "form" %>
+	
+	<%= javascript_include_tag "jquery-1.4.2.min.js" %>
+	<%= javascript_include_tag "jquery.galleryScroll.1.5.2.js" %>
+	<%= javascript_include_tag "main.js" %>
+	<%= javascript_include_tag "form.js" %>
+	<%= javascript_include_tag "front.js" %>
+	
+	<!--[if lt IE 8]><%= stylesheet_link_tag "lt8" %><![endif]-->
+	<!--[if lt IE 7]><%= stylesheet_link_tag "lt7" %><![endif]-->
+	
+	<link type="text/css" rel="stylesheet" href="/images/promo_pages/dormbucks/dormbucks.css" />
+	<script type="text/javascript">
+	$(document).ready(function(){
+
+		$("#coupon_code").focus(function(){
+			if($(this).val() == "Code"){
+				$(this).val("");
+			}
+		});
+		
+		$("#email").focus(function(){
+			if($(this).val() == "Email Address"){
+				$(this).val("");
+			}
+		});
+		
+		$("#check_value_btn").click(function(e){
+			e.preventDefault();
+			
+			var email = $("#email").val();
+			var code = $("#coupon_code").val();
+			var errors = new Array();
+			
+			if(email == "Email Address" || email == ""){
+				errors.push("An email address is required");
+			}
+			if(code == "Code" || code == ""){
+				errors.push("A code is required");
+			}
+			
+			
+			if(errors.length == 0)
+			{
+				
+				$.ajax({
+			   		type: "POST",
+			   		url: "/check_dorm_bucks",
+			   		data: "code=" + code + "&email=" + email,
+			   		success: function(data){
+						
+						if(data.match(/error/i)){
+							
+							alert(data);
+							$("#dollar_sign").hide();
+							$("#coupon_value").val("");
+							
+						}else{
+						
+							var values = data.split("-");
+							var type = values[0];
+							var amount = values[1];
+						
+							$("#coupon_value").val(amount);
+							if(type == "dollar"){
+								$("#dollar_sign").show();
+							}else{
+								$("#dollar_sign").hide();
+							}
+						}
+						
+			   		}
+			 	});
+			 
+				
+			}else{
+				alert("ERRORS:\n" + errors.join("\n"));
+			}
+			
+		});//end click
+
+	});//end ready
+	</script>
+	
+</head>
+<body>
+<!-- page -->
+<div id="page">
+	<!-- main -->
+	<div id="main">
+		<h1><%= link_to 'Dormbuys.com', root_path %></h1>
+		
+		
+		<%= render :partial => 'shared/front_main_nav' %>
+		
+		<% flash.each do |key, msg| %>
+		    <%= content_tag :p, msg, :class => key %>
+		<% end %>
+		
+
+		
+		<!-- middle -->
+		<div class="middle">
+		
+			<div class="featured-products">
+				<div class="title tabset">
+				</div>
+
+				<div class="bucks_container">
+
+				<div class="Table_01">
+
+					<div class="DBY-DormBucks-v05-sliced-02_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-03_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-04_">
+						<a href="http://www.dormbuys.com">Gift Card</a>
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-05_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-06_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-07_">
+						<input type="text" name="coupon_code" id="coupon_code" value="Code" />
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-08_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-09_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-10_">
+						<input type="text" name="email" id="email" value="Email Address" />
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-11_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-12_">
+						<input type="image" src="/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_12.jpg" id="check_value_btn" value="" />
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-13_">
+
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-14_">
+						<div id="dollar_sign">$</div>
+						<input type="text" name="coupon_value" id="coupon_value" readonly="true" />
+					</div>
+					<div class="DBY-DormBucks-v05-sliced-15_">
+						<p class="message">
+							Any questions regarding use of the card should be directed to the 
+							representatives at Dormbuys.com by calling 1-866-502-3676.  Use of the 
+							card constitutes compliance with the terms and conditions accompanying 
+							this card.
+						</p>
+						<a href="http://www.dormbuys.com">Dormbuys.com</a>
+					</div>
+				</div>
+
+				</div>
+
+			</div>
+					
+			
+		</div>
+		<!-- middle -->
+		
+	</div>
+	<!-- main -->
+	
+	<%= render :partial => "shared/front_main_header" %>
+	
+</div>
+<!-- page -->
+
+<%= render :partial => "shared/front_main_footer_nav" %>
+
+
+</body>
+</html>

@@ -13,8 +13,11 @@ class Subcategory < ActiveRecord::Base
   has_attached_file :list_image, :styles => {:original => ["130x132#", :jpg]},
     :default_style => :original,
     :default_url => "/content/images/:class/:attachment/:style_missing.jpg",
-    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   validates_attachment_presence :list_image
   validates_attachment_content_type :list_image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']
@@ -66,7 +69,8 @@ class Subcategory < ActiveRecord::Base
   end #end method set_attachment_filenames
   
   def visible_products
-    self.products.find(:all, :conditions => {:visible => true})
+    products = self.products.find(:all, :conditions => {:visible => true})
+    products.reject {|p| p if p.product_variations.size == 1 && p.product_variations.first.qty_on_hand <= 0 }
   end #end method visible_products
   
   

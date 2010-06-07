@@ -6,7 +6,7 @@
 			<%= unique_text_field_with_auto_complete :product, :product_name, 
 				{
 					:name => "product_variation_search_term",
-			 		:value => wish_list_item.product_variation_name, 
+			 		:value => h(wish_list_item.product_variation_name), 
 					:class => 'textfield'
 				} %>
 			<%= x.hidden_field :product_variation_id, :value => "#{wish_list_item.product_variation_id}", :class => 'product_variation_id' %>

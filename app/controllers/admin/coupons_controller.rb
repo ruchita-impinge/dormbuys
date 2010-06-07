@@ -1,5 +1,5 @@
-class Admin::CouponsController < ApplicationController
-  
+class Admin::CouponsController < Admin::AdminController
+
   
   def search
     

@@ -9,7 +9,7 @@ class Courier < ActiveRecord::Base
   CANADA_POST = 5
   
   def self.current_courier
-    Courier::FEDEX
+    Courier::UPS
   end #end method self.current_courier
   
 end

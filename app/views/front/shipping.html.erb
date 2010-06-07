@@ -57,62 +57,16 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr>
-																<td>$0.00 - $24.98</td>
-																<td class="col2">$7.99</td>
-															</tr>
-															<tr>
-																<td>$24.99 – 49.98</td>
-																<td class="col2">$8.99</td>
-															</tr>
-															<tr>
-																<td>$49.99 - $74.98</td>
-																<td class="col2">$9.99</td>
-															</tr>
-															<tr>
-																<td>$74.99 - $99.98</td>
-																<td class="col2">$10.99</td>
-															</tr>
-															<tr>
-																<td>$99.99 - $124.98</td>
-																<td class="col2">$11.99</td>
-															</tr>
-															<tr>
-																<td>$124.99 – $149.98</td>
-																<td class="col2">$12.99</td>
-															</tr>
-															<tr>
-																<td>$149.99 – 174.98</td>
-																<td class="col2">$13.99</td>
-															</tr>
-															<tr>
-																<td>$174.99 - $199.98</td>
-																<td class="col2">$14.99</td>
-															</tr>
-															<tr>
-																<td>$199.99 - $249.98</td>
-																<td class="col2">$15.99</td>
-															</tr>
-															<tr>
-																<td>$249.99 - $499.98</td>
-																<td class="col2">$17.99</td>
-															</tr>
-															<tr>
-																<td>$499.99 - $749.98</td>
-																<td class="col2">$19.99</td>
-															</tr>
-															<tr>
-																<td>$749.99 - $999.98</td>
-																<td class="col2">$24.99</td>
-															</tr>
-															<tr>
-																<td>$999.99 - $1499.99</td>
-																<td class="col2">$29.99</td>
-															</tr>
-															<tr>
-																<td>$1500+</td>
-																<td class="col2">$37.99</td>
-															</tr>
+															
+															<% ShippingRatesTable.print_rates("standard_rate").each do |rate_block| %>
+															<% low, high = rate_block.first.split("-")%>
+															<% charges = rate_block.last %>
+																<tr>
+																	<td><%= low == high ? "$#{low}+" : "$#{low} - $#{high}" %></td>
+																	<td class="col2">$<%= charges %></td>
+																</tr>
+															<% end %>
+															
 														</tbody>
 													</table>
 												</div>
@@ -126,62 +80,14 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr>
-																<td>$0.00 - $24.98</td>
-																<td class="col2">$7.99</td>
-															</tr>
-															<tr>
-																<td>$24.99 – 49.98</td>
-																<td class="col2">$8.99</td>
-															</tr>
-															<tr>
-																<td>$49.99 - $74.98</td>
-																<td class="col2">$9.99</td>
-															</tr>
-															<tr>
-																<td>$74.99 - $99.98</td>
-																<td class="col2">$10.99</td>
-															</tr>
-															<tr>
-																<td>$99.99 - $124.98</td>
-																<td class="col2">$11.99</td>
-															</tr>
-															<tr>
-																<td>$124.99 – $149.98</td>
-																<td class="col2">$12.99</td>
-															</tr>
-															<tr>
-																<td>$149.99 – 174.98</td>
-																<td class="col2">$13.99</td>
-															</tr>
-															<tr>
-																<td>$174.99 - $199.98</td>
-																<td class="col2">$14.99</td>
-															</tr>
-															<tr>
-																<td>$199.99 - $249.98</td>
-																<td class="col2">$15.99</td>
-															</tr>
-															<tr>
-																<td>$249.99 - $499.98</td>
-																<td class="col2">$17.99</td>
-															</tr>
-															<tr>
-																<td>$499.99 - $749.98</td>
-																<td class="col2">$19.99</td>
-															</tr>
-															<tr>
-																<td>$749.99 - $999.98</td>
-																<td class="col2">$24.99</td>
-															</tr>
-															<tr>
-																<td>$999.99 - $1499.99</td>
-																<td class="col2">$29.99</td>
-															</tr>
-															<tr>
-																<td>$1500+</td>
-																<td class="col2">$37.99</td>
-															</tr>
+															<% ShippingRatesTable.print_rates("express_rate").each do |rate_block| %>
+															<% low, high = rate_block.first.split("-")%>
+															<% charges = rate_block.last %>
+																<tr>
+																	<td><%= low == high ? "$#{low}+" : "$#{low} - $#{high}" %></td>
+																	<td class="col2">$<%= charges %></td>
+																</tr>
+															<% end %>
 														</tbody>
 													</table>
 												</div>
@@ -195,62 +101,14 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr>
-																<td>$0.00 - $24.98</td>
-																<td class="col2">$7.99</td>
-															</tr>
-															<tr>
-																<td>$24.99 – 49.98</td>
-																<td class="col2">$8.99</td>
-															</tr>
-															<tr>
-																<td>$49.99 - $74.98</td>
-																<td class="col2">$9.99</td>
-															</tr>
-															<tr>
-																<td>$74.99 - $99.98</td>
-																<td class="col2">$10.99</td>
-															</tr>
-															<tr>
-																<td>$99.99 - $124.98</td>
-																<td class="col2">$11.99</td>
-															</tr>
-															<tr>
-																<td>$124.99 – $149.98</td>
-																<td class="col2">$12.99</td>
-															</tr>
-															<tr>
-																<td>$149.99 – 174.98</td>
-																<td class="col2">$13.99</td>
-															</tr>
-															<tr>
-																<td>$174.99 - $199.98</td>
-																<td class="col2">$14.99</td>
-															</tr>
-															<tr>
-																<td>$199.99 - $249.98</td>
-																<td class="col2">$15.99</td>
-															</tr>
-															<tr>
-																<td>$249.99 - $499.98</td>
-																<td class="col2">$17.99</td>
-															</tr>
-															<tr>
-																<td>$499.99 - $749.98</td>
-																<td class="col2">$19.99</td>
-															</tr>
-															<tr>
-																<td>$749.99 - $999.98</td>
-																<td class="col2">$24.99</td>
-															</tr>
-															<tr>
-																<td>$999.99 - $1499.99</td>
-																<td class="col2">$29.99</td>
-															</tr>
-															<tr>
-																<td>$1500+</td>
-																<td class="col2">$37.99</td>
-															</tr>
+															<% ShippingRatesTable.print_rates("overnight_rate").each do |rate_block| %>
+															<% low, high = rate_block.first.split("-")%>
+															<% charges = rate_block.last %>
+																<tr>
+																	<td><%= low == high ? "$#{low}+" : "$#{low} - $#{high}" %></td>
+																	<td class="col2">$<%= charges %></td>
+																</tr>
+															<% end %>
 														</tbody>
 													</table>
 												</div>

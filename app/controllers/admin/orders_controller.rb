@@ -1,6 +1,7 @@
-class Admin::OrdersController < ApplicationController
+class Admin::OrdersController < Admin::AdminController
   require 'admin_order_builder.rb'
   include AdminOrderBulder
+
 
   def packing_list
     @order = Order.find(params[:id])

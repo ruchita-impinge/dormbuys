@@ -57,7 +57,7 @@ ActionController::Routing::Routes.draw do |map|
   map.admin_products_search '/admin/products/search', :controller => 'admin/products', :action => 'search'
 
   #HARD CODED URLS
-  map.buy_gift_card '/college/REPLACE/REPLACE/REPLACE', :controller => 'front', :action => 'product'
+  map.buy_gift_card '/college/grab_a_gift_card', :controller => 'front', :action => 'product', :product_permalink_handle => "dormbuys-branded-gift-card"
   map.main_gift_registry '/college/gift_registry', :controller => 'front', :action => 'registry'
   map.main_registry_search '/college/gift_registry/search', :controller => 'front', :action => 'registry_search'
   map.main_view_registry '/college/gift_registry/view/:id', :controller => "front", :action => "registry_view"
@@ -109,6 +109,15 @@ ActionController::Routing::Routes.draw do |map|
   map.security '/security', :controller => 'front', :action => 'security'
   map.shipping '/shipping', :controller => 'front', :action => 'shipping'
   map.faq '/faq', :controller => 'front', :action => 'faq'
+  map.email_list_signup '/email_list_signup', :controller => 'front', :action => 'email_list_signup'
+  map.data_feeds '/shop/data_feeds', :controller => 'third_party_feeds', :action => 'data_feeds'
+  
+  #learn_more URLS
+  map.learn_not_assigned '/learn_more/not_assigned', :controller => "learn_more", :action =>"not_assigned"
+  map.learn_secure_shopping '/learn_more/secure_shopping', :controller => "learn_more", :action =>"secure_shopping"
+  map.learn_ship_date '/learn_more/ship_date', :controller => "learn_more", :action =>"ship_date"
+  map.learn_vcode '/learn_more/vcode', :controller => "learn_more", :action =>"vcode"
+  map.learn_check_giftcard '/learn_more/check_giftcard', :controller => "learn_more", :action =>"check_giftcard"
   
   #account urls
   map.account '/account', :controller => 'account', :action => 'index'
@@ -150,6 +159,16 @@ ActionController::Routing::Routes.draw do |map|
   map.login '/login', :controller => 'account', :action => 'login'
 
   map.resource :session
+  
+  
+  #TEMPORARY named routes
+  map.pie_mask '/pie-mask', :controller => 'promo', :action => 'piemask'
+  map.dormbucks '/bucks', :controller => 'promo', :action => 'dormbucks'
+  map.check_bucks '/check_dorm_bucks', :controller => 'promo', :action => 'check_dorm_bucks'
+  map.sale '/sale', :controller => "front", :action => "subcategory", :subcategory_permalink_handle => "sale"
+  
+  
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
 

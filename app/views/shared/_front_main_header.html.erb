@@ -27,7 +27,8 @@
 			<fieldset>
 				<%= f.text_field :search_term, :class => "text", :value => "What do you need for your dorm?",
 				 		:onclick => "this.value = '';" %>
-				<input type="image" src="/images/bg-btn01.gif" value="" class="btn" alt="search" />
+
+				<%= image_submit_tag("/images/bg-btn01.gif", :value => "", :class => 'btn', :alt => 'search') %>
 			</fieldset>
 		<% end %>
 	</div>

@@ -11,7 +11,8 @@ class ShippingLabel < ActiveRecord::Base
   
   
   def label_url
-    "#{APP_CONFIG['filesystem']['web_labels_path']}/#{self.label}"
+    # "#{APP_CONFIG['filesystem']['web_labels_path']}/#{self.label}"
+    self.label
   end #end method label_url
   
   ##

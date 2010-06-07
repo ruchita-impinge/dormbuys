@@ -1,4 +1,5 @@
-class Admin::StateShippingRatesController < ApplicationController
+class Admin::StateShippingRatesController < Admin::AdminController
+  
   # GET /state_shipping_rates
   # GET /state_shipping_rates.xml
   def index

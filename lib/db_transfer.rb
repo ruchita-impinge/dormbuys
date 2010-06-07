@@ -1,3 +1,12 @@
+#
+# To run do this from the console:
+# x = DBTransfer.new
+# x.run
+#
+# (this will fire everything in 'execute_transfer_methods')
+# you'll want to make sure your constants are set correctly, and your DB connection info (in initialize)
+
+
 require "mysql"
 require 'digest/sha1'
 require 'open-uri'
@@ -6,7 +15,7 @@ require 'mime/types'
 
 class DBTransfer
   
-  DEMO = true
+  DEMO = false
   CAT_BANNERS_PATH = "/Users/brian/Desktop/db_files/images/products/categories/banners"
   CAT_FEAT_PATH = "/Users/brian/Desktop/db_files/images/products/categories/featured_images"
   SUBCAT_LIST_IMG_PATH = "/Users/brian/Desktop/db_files/images/products/subcategories/list_images"
@@ -84,8 +93,24 @@ class DBTransfer
   
   
   def execute_transfer_methods
-    #transfer_categories    
-    #transfer_subcategories
+    
+    # => --- ALREADY TRANSFERED ---
+              #transfer_categories    
+              #transfer_subcategories
+    
+    # => --- PRE-LAUNCH TRANSFER ---
+              #transfer_products
+              #transfer_product_images
+              #transfer_additional_product_image_records
+              #transfer_additional_product_image_files
+              #transfer_product_variations
+              #transfer_product_packages
+    
+    
+    # => --- AT-LAUNCH TRANSFER ---
+    #
+    # NOTE that we'll need to re-transfer qty-on hand and qty-on hold for inventory
+    #
     #transfer_gift_cards
     #transfer_coupons
     #transfer_orders
@@ -95,13 +120,8 @@ class DBTransfer
     #transfer_order_drop_ship_emails
     #transfer_users
     #transfer_users_vendors
-    #transfer_products
-    #transfer_product_images
-    #transfer_additional_product_image_records
-    #transfer_additional_product_image_files
-    #transfer_product_variations
-    #transfer_product_packages
     #transfer_addresses
+    
   end #end method execute_transfer_methods
   
   
@@ -1060,7 +1080,7 @@ class DBTransfer
   def transfer_products
     destroy_products
     
-    records = source_query("select * from products") unless DEMO == true
+    records = source_query("select * from products order by id asc") unless DEMO == true
     records = source_query("select * from products where id IN (5345,5351,5353,5354,5356,5357,5358,5360,5361,5363,5364,5365,5366,5367,5368,5369,5372,5373,5374,5375,5376,5378,5379,5380,5444);") unless DEMO == false
     
     

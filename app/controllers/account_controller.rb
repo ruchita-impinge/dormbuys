@@ -1,7 +1,13 @@
 class AccountController < ApplicationController
+
   before_filter :login_required, :except => [:login, :submit_login, :logout]
   
   layout 'front_short_banner'
+  
+  
+  def ssl_required?
+    true
+  end
   
   
   def index

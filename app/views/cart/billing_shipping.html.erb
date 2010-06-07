@@ -96,28 +96,32 @@
 												
 											</fieldset>
 										</div>
-										<div class="holder holder2">
-											<div class="table-head table-head2">
-												<strong>PAYMENT INFORMATION</strong>
-											</div>
-											<table class="table-body table-body2">
-												<tr>
-													<td>
-														<%= render :partial => 'credit_card_form', :locals => {:f => f} %>
-													</td>
-													<td>
-														<div class="banner-box">
-															<img src="/images/img71.jpg" alt="image description" />
-															<div class="learn">
-																<div>
-																	<a href="#">Learn more</a>
+										
+										<% unless @cart.grand_total.cents == 0 %>
+											<div class="holder holder2">
+												<div class="table-head table-head2">
+													<strong>PAYMENT INFORMATION</strong>
+												</div>
+												<table class="table-body table-body2">
+													<tr>
+														<td>
+															<%= render :partial => 'credit_card_form', :locals => {:f => f} %>
+														</td>
+														<td>
+															<div class="banner-box">
+																<img src="/images/img71.jpg" alt="image description" />
+																<div class="learn">
+																	<div>
+																		<%= link_to "Learn more", learn_secure_shopping_path, :id => "learn_more_secure" %>
+																	</div>
 																</div>
 															</div>
-														</div>
-													</td>
-												</tr>
-											</table>
-										</div>
+														</td>
+													</tr>
+												</table>
+											</div>
+										<% end %>
+										
 										<div class="bottom-box">
 											
 											<%= link_to_function 'Review Your Order' do |page|
@@ -125,7 +129,10 @@
 													page << '$("#billing_shipping").submit();'
 												end %>
 												
-											<em>Your credit card will not be charged at this time.</em>
+											<% unless @cart.grand_total.cents == 0 %>
+												<em>Your credit card will not be charged at this time.</em>
+											<% end %>
+											
 										</div>
 									</div>
 								</div>
@@ -148,7 +155,7 @@
 													<%= render :partial => 'shared/secure_logo_block' %>
 												</td>
 												<td>
-													<p>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <a href="#">Privacy Policy</a></p>
+													<p>Every transaction on DormBuys.com is secure. Any personal information you give us will be handled according to our <%= link_to "Privacy Policy", privacy_policy_path %></p>
 												</td>
 											</tr>
 										</table>

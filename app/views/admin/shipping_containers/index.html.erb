@@ -37,7 +37,7 @@
 			    		<td class="center"><%=h shipping_container.width %></td>
 			    		<td class="center"><%=h shipping_container.depth %></td>
 			    		<td class="center"><%=h shipping_container.weight %></td>
-			    		<td class="center"><%= shipping_container.demensional_weight ? "YES" : "NO" %></td>
+			    		<td class="center"><%= shipping_container.dimensional_weight ? "YES" : "NO" %></td>
 						<td class="center"><%= link_to 'View', admin_shipping_container_path(shipping_container), :class => "tbl_lnk_show" %></td>
 			    		<td class="center"><%= link_to 'Edit', edit_admin_shipping_container_path(shipping_container), :class => "tbl_lnk_edit" %></td>
 			    		<td class="center"><%= link_to 'Delete', admin_shipping_container_path(shipping_container), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>

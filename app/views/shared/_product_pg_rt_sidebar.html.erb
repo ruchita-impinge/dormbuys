@@ -10,7 +10,10 @@
 				<strong><%=h rproduct.product_name %></strong>
 			</div>
 			<div class="body">
+				<!--
 				<a class="open" href="#lightbox<%= rproduct.id %>">
+				-->
+				<a class="" href="<%= rproduct.default_front_url %>">
 					<%= image_tag rproduct.product_image(:recommended), :alt => strip_tags(rproduct.product_name) %>
 				</a>
 				<p><%= truncate(rproduct.product_overview, :length => 130) %></p>
@@ -23,7 +26,7 @@
 </div>
 
 <% content_for :eo_page do %>
-	
+	<% if 1 == 2 %>
 	<% @recommended_products.each do |rproduct| %>
 	
 		<div class="quick-popup" id="lightbox<%= rproduct.id %>">
@@ -118,5 +121,5 @@
 		
 	
 	<% end %>
-	
+	<% end %>
 <% end %>

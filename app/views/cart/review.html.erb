@@ -178,8 +178,18 @@
 							</div>
 							<div class="body">
 								<address>
-									<% @cart.display_payment_info.each do |x| %>
-										<span><%= x.upcase %></span>
+									<% if @cart.grand_total.cents > 0 %>
+										<% @cart.display_payment_info.each do |x| %>
+											<span><%= x.upcase %></span>
+										<% end %>
+									<% else %>
+									
+										<% if @cart.gift_cards.size > 0 %>
+											<span>Gift Card</span>
+										<% else %>
+											<span>None Required</span>
+										<% end %>
+									
 									<% end %>
 								</address>
 								<strong class="edit"><%= link_to 'Edit', cart_billing_shipping_path %></strong>

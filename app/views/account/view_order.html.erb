@@ -86,6 +86,17 @@
 															<li>tel: <%= @order.billing_phone %></li>
 															<li><%= @order.email %></li>
 														</ul>
+														<ul>
+															<a name="tracking"></a>
+															<li><strong>Tracking Numbers:</strong></li>
+															<% if @order.shipping_numbers.empty? %>
+																<li>no tracking numbers posted yet</li>
+															<% else %>
+																<% @order.shipping_numbers.each do |shipping_number| %>
+																	<li><%= link_to shipping_number.tracking_number, shipping_number.tracking_url, :target => "_blank" %></li>
+																<% end %>
+															<% end %>
+														</ul>
 													</div>
 												</td>
 												<td class="item-details bnone">

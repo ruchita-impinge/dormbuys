@@ -74,6 +74,8 @@ class ProductVariation < ActiveRecord::Base
 
 
   def rounded_retail_price
+    return Money.new(0) if self.total_retail_price.cents == 0
+    
     tr_cents = self.total_retail_price.to_s.split(".").last.to_i
     adj_cents = 0
 

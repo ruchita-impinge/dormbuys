@@ -1,4 +1,4 @@
-class Admin::SubcategoriesController < ApplicationController
+class Admin::SubcategoriesController < Admin::AdminController
   
   
   def mapper

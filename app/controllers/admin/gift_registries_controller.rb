@@ -1,5 +1,5 @@
-class Admin::GiftRegistriesController < ApplicationController
-  
+class Admin::GiftRegistriesController < Admin::AdminController
+
   
   def auto_complete_for_product_product_name
 

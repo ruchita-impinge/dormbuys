@@ -1,4 +1,5 @@
-class Admin::UsersController < ApplicationController
+class Admin::UsersController < Admin::AdminController
+  
   
   def search
     case params[:search][:search_type]

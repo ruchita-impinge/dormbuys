@@ -11,6 +11,12 @@ function initAdminOrderBuilder()
 	jQuery("#btn_calc_shipping").click(calculateShipping);
 	jQuery("#btn_submit_orders").click(submitOrder);
 	
+	jQuery("#order_subtotal, #order_tax, #order_total_coupon, #order_total_giftcards, #order_total_discounts").blur(updateOrderTotals);
+	jQuery("#order_shipping").blur(function(){
+		skip_shipping_calc = true;
+		updateOrderTotals();
+	});
+	
 }//end function
 
 

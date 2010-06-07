@@ -1,5 +1,5 @@
 <fieldset>
-	<div class="card-box">
+	<div class="card-box whiteRadio">
 		<%= f.radio_button :payment_provider_id, Order::PAYMENT_CREDIT_CARD, :id => 'card' %>
 		<label for="card">Credit Card</label>
 		<ul>
@@ -42,7 +42,7 @@
 		<%= c.label :card_type, '*Card Type:' %>
 	</div>
 	<div class="input-box">
-		<a href="#" class="what">What is this?</a>
+		<%= link_to "What is this?", learn_vcode_path, :class => "what lightwindow" %>
 		<%= c.text_field :vcode, :class => 'text text4' %>
 		<%= c.label :vcode, '*Verification Code:' %>
 	</div>

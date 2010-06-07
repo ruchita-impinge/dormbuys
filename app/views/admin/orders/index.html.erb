@@ -38,8 +38,8 @@
 						<td class="center">
 							<%= get_note_icons(order) %>
 						</td>
-						<td class="center"><%= link_to 'View', admin_order_path(order), :class => "tbl_lnk_show" %></td>
-			    		<td class="center"><%= link_to 'Edit', edit_admin_order_path(order), :class => "tbl_lnk_edit" %></td>
+						<td class="center"><%= link_to 'Process', "#", :class => "tbl_lnk_show" %></td>
+			    		<td class="center"><%= link_to 'Manage', edit_admin_order_path(order), :class => "tbl_lnk_edit" %></td>
 			  		</tr>
 			<% end %>
 

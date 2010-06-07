@@ -92,8 +92,7 @@
 				</td>
 				<td class="actions align-r bnone">
 					<ul class="actions-list">
-						<li><a class="table-btn tb-t1" href="#"><span>Track Order</span><em>&nbsp;</em></a></li>
-					
+						<li><%= link_to "<span>Track Order</span><em>&nbsp;</em>", "#{account_view_order_path(order)}#tracking", :class => "table-btn tb-t1" %></li>
 						<li><%= link_to "<span>View Order</span><em>&nbsp;</em>", account_view_order_path(order), :class => "table-btn tb-t2" %></li>
 						<li><em><%= link_to "View Invoice", account_view_order_invoice_path(order) %></em></li>
 						<li><em><%= link_to "Return an Item", returns_path %></em></li>

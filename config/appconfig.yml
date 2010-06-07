@@ -38,6 +38,12 @@ development: &non_production_settings
         auth_password: pmdizG6iI0ypnv3EW7V9Opw94 
         account_number: 510087526
         meter_number: 1223651
+    ups:
+        origin_number: A64V28
+        login: dormbuysdotcom
+        password: xavier01
+        key: 9C60A235E9C53978
+        testing: 1
     googleproducts:
         host: uploads.google.com
         user: dormbuys123
@@ -69,17 +75,23 @@ production:
         login_id: sosik01
         transaction_key: 88w6rP42rRC8NYD6
     filesystem:
-        local_files_path: /files/shared/files/products
-        web_files_path: /files/products
-        local_labels_path: /files/shared/files/shipping_labels
-        web_labels_path: /files/shipping_labels
-        local_images_path: /files/shared/images/products
-        web_images_path: /images/products
+        local_files_path: /public/content/files/products
+        web_files_path: /content/files/products
+        local_labels_path: /public/content/files/shipping_labels
+        web_labels_path: /content/files/shipping_labels
+        local_images_path: /public/content/images/products
+        web_images_path: /content/images/products
     fedex:
         auth_key: hnbs3bHzmVY0ZoIU
         auth_password: pmdizG6iI0ypnv3EW7V9Opw94 
         account_number: 336114829
         meter_number: 4283569
+    ups:
+        origin_number: A64V28
+        login: dormbuysdotcom
+        password: xavier01
+        key: 9C60A235E9C53978
+        testing: 1
     googleproducts:
         host: uploads.google.com
         user: dormbuys123

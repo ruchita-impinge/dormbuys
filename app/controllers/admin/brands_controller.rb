@@ -1,4 +1,5 @@
-class Admin::BrandsController < ApplicationController
+class Admin::BrandsController < Admin::AdminController
+  
   # GET /brands
   # GET /brands.xml
   def index

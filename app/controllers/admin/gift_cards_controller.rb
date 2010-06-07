@@ -1,4 +1,6 @@
-class Admin::GiftCardsController < ApplicationController
+class Admin::GiftCardsController < Admin::AdminController
+
+  
   
   def search
     

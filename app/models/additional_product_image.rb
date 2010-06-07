@@ -9,12 +9,15 @@ class AdditionalProductImage < ActiveRecord::Base
   has_attached_file :image, 
     :styles => {
       :large => ["500x500#", :jpg],
-      :main => ["250x250#", :jpg],
+      :main => ["277x277#", :jpg],
       :thumb => ["50x50#", :jpg]
     },
     :default_style => :thumb,
-    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   validates_attachment_presence :image
   validates_attachment_content_type :image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']

@@ -1,4 +1,6 @@
-class Admin::CategoriesController < ApplicationController
+class Admin::CategoriesController < Admin::AdminController
+
+  
   # GET /categories
   # GET /categories.xml
   def index

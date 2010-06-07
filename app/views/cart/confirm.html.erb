@@ -173,5 +173,48 @@
 	<% content_for :front_footer_gift_blog do %>
 		<%= render :partial => "shared/front_footer_gift_blog" %>
 	<% end %>
+	
+	
+	<% content_for :eo_page do %>
+
+		<% @voucher_code = @order.coupon.blank? ? "" : @order.coupon.coupon_number %>
+
+		<!-- <webgains tracking code> -->
+		<script language="javascript" type="text/javascript">
+
+		var wgOrderReference = "<%= @order.order_id %>";
+		var wgOrderValue = "<%= @order.subtotal.to_s %>";
+		var wgEventID = "4215";
+		var wgComment = "";
+		var wgLang = "en_US";
+		var wgsLang = "javascript-client";
+		var wgVersion = "1.2";
+		var wgProgramID = "2605";
+		var wgSubDomain = "track";
+		var wgCheckSum = "";
+		var wgItems = "";
+		var wgVoucherCode = "<%= @voucher_code %>";
+		var wgCustomerID = "";
+
+		if(location.protocol.toLowerCase() == "https:") wgProtocol="https";
+		else wgProtocol = "http";
+
+		wgUri = wgProtocol + "://" + wgSubDomain + ".webgains.com/transaction.html" + "?wgver=" + wgVersion + "&wgprotocol=" + wgProtocol + "&wgsubdomain=" + wgSubDomain + "&wgslang=" + wgsLang + "&wglang=" + wgLang + "&wgprogramid=" + wgProgramID + "&wgeventid=" + wgEventID + "&wgvalue=" + wgOrderValue + "&wgchecksum=" + wgCheckSum + "&wgorderreference="  + wgOrderReference + "&wgcomment=" + escape(wgComment) + "&wglocation=" + escape(document.referrer) + "&wgitems=" + escape(wgItems) + "&wgcustomerid=" + escape(wgCustomerID) + "&wgvouchercode=" + escape(wgVoucherCode);
+		document.write('<sc'+'ript language="JavaScript"  type="text/javascript" src="'+wgUri+'"></sc'+'ript>');
+		</script>
+
+		<noscript>
+		<img src="https://track.webgains.com/transaction.html?wgver=1.2&wgprogramid=2605&wgrs=1&wgvalue=<%= @order.subtotal.to_s %>&wgeventid=4215&wgorderreference=<%= @order.order_id %>&wgitems=&wgcustomerid=&wgvouchercode=<%= @voucher_code %>" alt="" />
+		</noscript>
+		<!-- </webgains tracking code> -->
+
+
+
+
+		<!-- CA order confirmation -->
+		<img src="https://tracking.searchmarketing.com/thankyou.asp?SMCID=1743&oVal=<%= @order.subtotal.to_s %>&OrderID=<%= @order.order_id %>" width="1" height="1" border="0" />
+		
+	<% end %>
+	
 
 </div>

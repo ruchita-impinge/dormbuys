@@ -1,4 +1,6 @@
-class Admin::ShippingContainersController < ApplicationController
+class Admin::ShippingContainersController < Admin::AdminController
+  
+  
   # GET /shipping_containers
   # GET /shipping_containers.xml
   def index

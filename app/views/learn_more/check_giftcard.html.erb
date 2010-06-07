@@ -1,0 +1,48 @@
+<div id="check_giftcard">
+	
+	<h2>enter your gift card code</h2>
+	
+	<p>Once you have entered your case sensitive Gift Card Code in the checkout screen, simply click 
+		<strong>Apply</strong>. Your new total Balance will appear in the Order Summary Section at the 
+		top right of the page. If your balance is zero you can click <strong>Review Order</strong> and 
+		complete the checkout process. If you have a remaining balance you can use a second gift card 
+		or you can complete your order by using one of the accepted major credit cards. (MasterCard, 
+		Visa or Discover)</p>
+		
+	<h2>gift card balance</h2>
+	
+	<p>Checking the balance of your Gift Card is easy. Click here to check your balance now.</p>
+	
+	<% form_remote_tag :url => {:controller => :learn_more, :action => :check_gc_balance} do %>
+	<div id="check_gc_form">
+		<label>Gift Card:</label>
+		<input type="text" id="gift_card" name="gift_card" />
+		
+		<label>PIN:</label>
+		<input type="text" id="pin" name="pin" />
+		
+		<input type="submit" value="Check Balance" />
+	</div>
+	<% end %>
+	<br />
+	<span id="gc_info"></span>
+	
+	<p>You can also check the balance remaining on your Gift Card by calling our Toll 
+		Free Customer Service Department at 1–866–502–DORM (3676). When you call be 
+		sure to have your Gift Card Code in front of you.</p>
+		
+	<h2>rules and regulations for gift cards</h2>
+	
+	<ul>
+		<li>Dormbuys.com Gift Cards may only be redeemed at <a href="http://www.dormbuys.com">www.dormbuys.com</a></li>
+		<li>If the amount of your gift card does NOT cover the total purchase amount, you will 
+			need to pay for the remainder of the purchase with a valid form of payment.</li>
+		<li>If the amount of your Gift Card is MORE than the total order amount, the balance 
+			amount of your Gift Card will be stored on your Gift Card for future use.</li>
+		<li>Gift Cards are non-transferable, non-refundable and are not redeemable for cash.</li>
+		<li>We cannot replace lost or stolen gift cards.</li>
+		<li>We do not charge sales tax on the purchase of Gift Cards: however, items paid 
+			for with a Gift Card will be charged applicable sales tax (KY residents only)</li>
+	</ul>
+	
+</div><!--[eo:check_giftcard]-->

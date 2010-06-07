@@ -1,4 +1,6 @@
-class Admin::WarehousesController < ApplicationController
+class Admin::WarehousesController < Admin::AdminController
+
+  
   # GET /warehouses
   # GET /warehouses.xml
   def index

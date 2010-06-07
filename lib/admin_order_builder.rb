@@ -108,7 +108,7 @@ module AdminOrderBulder
   def product_staging
     
     @product = Product.find_by_product_name(params[:product_name])
-    
+        
     render :update do |page|
       page.replace_html "product_staging",
         :partial => 'product_staging',

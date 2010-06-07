@@ -372,7 +372,9 @@ h1 a {
 #main .nav ul .drop-box ul li {
 	float:none;
 	background:none;
-	margin:0;
+	display: block;
+	line-height: 11px;
+	margin: 0px 0px 10px 0px;
 	padding:0;
 }
 #main .nav ul .drop-box ul li a {
@@ -637,7 +639,7 @@ h1 a {
 #main .sub-tabs .drop-box .box-area {
 	background:url(../images/bg-dropbox.png) no-repeat;
 	padding:0 10px;
-	min-height:155px;
+	min-height:10px;
 }
 #main .sub-tabs .drop-box .box-area:after {
 	content:"";
@@ -645,7 +647,7 @@ h1 a {
 	clear:both;
 }
 * html #main .sub-tabs .drop-box .box-area {
-	height:155px;
+	height:10px;
 }
 #main .sub-tabs .drop-box ul {
 	font-size:11px;
@@ -5055,4 +5057,99 @@ table#account_reg_items .comment-area .row input{
 #acct_wl_sorting {
 	float:right;
 	width:425px;
+}
+.additional_product_images{
+	margin-left: 25px;
+	margin-bottom: 30px;
+}
+a.additional_image{
+	display: block;
+	float: left;
+	border: 3px solid #b7b2a1;
+	margin: 10px 5px 0px 5px;
+}
+a.additional_image img{
+	display: block;
+	float: left;
+	margin: 0px;
+	padding: 0px;
+}
+.clear {
+	clear: both;
+}
+
+#promo_form #infusionsoft{
+	position: absolute;
+	top: -35px;
+	left: 552px;
+}
+#promo_form{
+	position: relative;
+}
+#promo_form label{
+	display: none;
+}
+#promo_form input.default-input{
+	width: 105px;
+	height: 15px;
+	padding: 0px;
+	margin: 0px;
+	font-size: 10px;
+	color: #777;
+	position: absolute;
+	left: 87px;
+	background: transparent;
+	border: none;
+}
+#promo_form #Contact0FirstName{
+	top: 244px;
+}
+#promo_form #Contact0LastName{
+	top: 265px;
+}
+#promo_form #Contact0Email{
+	top: 286px;
+}
+#promo_form #Contact0_whoareyou{
+	top: 298px;
+	left: 85px;
+	position: absolute;
+	width: 121px;
+	border: none;
+	background-color: transparent;
+	border: none;
+	cursor:pointer;
+	display:inline;
+	float:left;
+	height:22px;
+	margin-top:1px;
+	opacity: 0.0; /* Safari, Opera */
+	-moz-opacity:0.0; /* FireFox */
+	filter: alpha(opacity=0); /* IE */
+	padding-top:8px;
+	z-index:2;
+	font-size: 10px;
+}
+#promo_form #Contact0_whoareyoulabel{
+	position: absolute;
+	top: 308px;
+	left: 88px;
+	width: 121px;
+	height: 20px;
+	font-size: 10px;
+	z-index: 1;
+	color: #777;
+	text-transform: capitalize;
+	background: transparent;
+}
+#promo_form #Contact0Submit{
+	position: absolute;
+	top: 328px;
+	left: 122px;
+	width: 78px;
+	height: 22px;
+	z-index: 100;
+	background: transparent;
+	border: none;
+	text-indent: -999999px;
 }

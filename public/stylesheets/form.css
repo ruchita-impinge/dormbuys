@@ -11,6 +11,13 @@
 	overflow: hidden;
 }
 .radioAreaChecked {background-position:0 -21px;}
+
+.whiteRadio .radioArea, 
+.whiteRadio .radioAreaChecked{
+	background: url(../images/bg-radio-white.gif) no-repeat;
+}
+.whiteRadio .radioAreaChecked {background-position:0 -21px;}
+
 .radio2 .radioArea,
 .radio2 .radioAreaChecked {
 	width:20px !important;

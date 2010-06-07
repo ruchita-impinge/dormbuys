@@ -220,7 +220,7 @@
 			<div><b>Shipping Labels:</b></div>
 			<ul id="admin_shipping_labels_list">
 				<% for shipping_label in @order.shipping_labels %>
-					<li><%= link_to shipping_label.tracking_number, shipping_label.label_url %></li>
+					<li><%= link_to shipping_label.tracking_number, shipping_label.label_url, :target => "_blank" %></li>
 				<% end %>
 			</ul>
 			
@@ -228,6 +228,18 @@
 			<ul id="admin_shipping_labels_list">
 				<li><%= link_to 'Packing List', packing_list_admin_order_path(@order) %></li>
 			</ul>
+			
+			
+			<div><b>Packstream:</b></div>
+			<div id="packstream">
+
+				<script src="https://api.packstream.com/_scripts/print.aspx" type="text/javascript"></script>
+				<script type="text/javascript">
+					writePackstreamButton(document.getElementById('packstream_button'), 'E5C5A360-4168-4738-A2C4-31B08C45726A', '<%= @order.order_id %>');
+				</script>
+
+				<br /><br />
+			</div>
 			
 		</div><!-- end .std_box_content_wrapper -->
 

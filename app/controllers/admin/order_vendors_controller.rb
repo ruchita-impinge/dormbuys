@@ -1,4 +1,6 @@
-class Admin::OrderVendorsController < ApplicationController
+class Admin::OrderVendorsController < Admin::AdminController
+
+  
   # GET /order_vendors
   # GET /order_vendors.xml
   def index

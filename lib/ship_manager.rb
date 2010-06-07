@@ -1,4 +1,11 @@
+require 'base64'
+require 'fileutils'
+require 'tempfile'
+require 'active_shipping'
+
 class ShipManager
+  
+  include ActiveMerchant::Shipping
   
   
   def self.get_rate(subtotal, service_type = :standard)
@@ -215,8 +222,11 @@ class ShipManager
   def self.courier_ship_request(dest_info, length, width, height, weight, 
     num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
     
-    self.fedex_ship_request(dest_info, length, width, height, weight, 
-      num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
+    self.ups_ship_request(dest_info, length, width, height, weight,
+      num_packages, order_id, insured_value, svc_type, trn_type)
+    
+    #self.fedex_ship_request(dest_info, length, width, height, weight, 
+    #  num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
       
   end #end courier_ship_request
   
@@ -239,6 +249,123 @@ class ShipManager
   
   
 #-------------------------- CARRIER SPECIFIC BELOW -------------------------------------
+
+
+  def self.ups_ship_request(dest_info, length, width, height, weight, num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
+    
+    ups_login         = APP_CONFIG['ups']['login'].to_s
+    ups_pass          = APP_CONFIG['ups']['password'].to_s
+    ups_key           = APP_CONFIG['ups']['key'].to_s
+    ups_origin_number = APP_CONFIG['ups']['origin_number'].to_s
+    ups_testing       = APP_CONFIG['ups']['testing'].to_i == 1
+    
+    #######
+    ### SETUP FOR GROUND BY DEFAULT
+    #######
+    carrier_service = svc_type.blank? ? "03" : svc_type
+    
+    #create the UPS object
+    @ups = UPS.new(:login => ups_login, :password => ups_pass, :key => ups_key)
+    
+    
+    #setup the packages
+    packages = [Package.new((weight * 16),[length, width, height], :units => :imperial)]
+    
+    
+    #set the label spec
+    label_specification = {:print_code => "GIF", :format_code => "GIF", :user_agent => "Mozilla/4.5"}
+    
+    
+    #scrub the zip
+    if dest_info[:zip].length > 5
+       dest_info[:zip] = dest_info[:zip].to_s[0,5]
+    end
+    
+    #setup destination and origin
+    options = {
+      :origin => {
+        :address_line1 => "1110 Avoca Station Court", 
+        #:address_line2 => "", 
+        :country => 'US', 
+        :state => 'KY',
+        :city => 'Louisville',
+        :zip => '40245', 
+        :phone => "(502) 254-4324", 
+        :name => "Dormbuys.com", 
+        :attention_name => "Ship & Rec.", 
+        :origin_number => ups_origin_number
+      }, 
+      :destination => {
+        :company_name => (dest_info[:company_name] ? dest_info[:company_name] : dest_info[:name]),
+        :attention_name => dest_info[:name],
+        :phone => dest_info[:phone], 
+        :address_line1 => dest_info[:address1], 
+        #:address_line2 => "", 
+        :country => dest_info[:country].upcase, 
+        :state => dest_info[:state].upcase, 
+        :city => dest_info[:city], 
+        :zip => dest_info[:zip]
+        }, 
+      :test => ups_testing
+    }
+    options[:destination][:address_line2] = dest_info[:address2] unless dest_info[:address2].blank?
+    
+    
+    confirm_response = @ups.shipment_confirmation_request(carrier_service, packages, label_specification, options)
+    
+    accept_response = @ups.shipment_accept_request(confirm_response.digest, {:test => ups_testing})
+    
+    
+    return_array = []
+    
+    accept_response.shipment_packages.each do |package|
+      
+      #gives you the base64 code for html label
+    	html_image = package.html_image 
+    	
+    	#gives you the base64 code for graphic label
+    	graphic_image = package.graphic_image 
+    	
+    	#gives you the images format(gif/png)
+    	label_image_format = package.label_image_format 
+    	
+    	#gives you the tracking number of package
+    	tracking_number = package.tracking_number 
+    	
+    	
+    	#write out the GRAPHIC file
+    	label_tmp_file = Tempfile.new("shipping_label")
+      label_tmp_file.write Base64.decode64(graphic_image)
+      label_tmp_file.rewind
+      
+      #write out the HTML file
+      html_tmp_file = Tempfile.new("shipping_label_html")
+      html_tmp_file.write Base64.decode64(html_image)
+      html_tmp_file.rewind
+      
+      FileUtils.mkdir_p(SHIP_LABELS_STORE) unless File.exists?(SHIP_LABELS_STORE)
+      
+      #save the GRAPHIC file
+      graphic_filename = "#{SHIP_LABELS_STORE}/label#{tracking_number}.#{label_image_format.downcase}"
+      graphic_url = "#{WEB_LABEL_REPOSITORY}/label#{tracking_number}.#{label_image_format.downcase}"
+      gf = File.new(graphic_filename, "wb")
+      gf.write File.new(label_tmp_file.path).read
+      gf.close
+      
+      #save the HTML file
+      html_filename = "#{SHIP_LABELS_STORE}/#{tracking_number}.html"
+      html_url = "#{WEB_LABEL_REPOSITORY}/#{tracking_number}.html"
+      hf = File.new(html_filename, "wb")
+      hf.write File.new(html_tmp_file.path).read
+      hf.close
+      
+      return_array = [html_url, tracking_number]
+ 
+    end #end shipment_packages.each
+    
+    return return_array
+    
+  end #end method self.ups_ship_request(dest_info, length, width, height, weight)
 
 
   

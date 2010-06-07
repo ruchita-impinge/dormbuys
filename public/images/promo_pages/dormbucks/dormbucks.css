@@ -1,0 +1,191 @@
+
+.bucks_container{
+	margin: 0px auto;
+	width: 960px;
+	height: 1243px;
+	text-align: left;
+	position: relative;
+}
+
+div.Table_01 {
+	margin: 0px 0px;
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:960px;
+	height:1243px;
+}
+div.DBY-DormBucks-v05-sliced-02_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_02.jpg);
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:960px;
+	height:289px;
+}
+
+div.DBY-DormBucks-v05-sliced-03_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_03.jpg);
+	position:absolute;
+	left:0px;
+	top:289px;
+	width:658px;
+	height:173px;
+}
+
+div.DBY-DormBucks-v05-sliced-04_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_04.jpg);
+	position:absolute;
+	left:658px;
+	top:289px;
+	width:302px;
+	height:173px;
+}
+div.DBY-DormBucks-v05-sliced-04_ a{
+	display: block;
+	width: 302px;
+	height: 173px;
+	text-indent: -999999px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+div.DBY-DormBucks-v05-sliced-05_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_05.jpg);
+	position:absolute;
+	left:0px;
+	top:462px;
+	width:960px;
+	height:55px;
+}
+
+div.DBY-DormBucks-v05-sliced-06_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_06.jpg);
+	position:absolute;
+	left:0px;
+	top:517px;
+	width:353px;
+	height:329px;
+}
+
+div.DBY-DormBucks-v05-sliced-07_ {
+	background-color: #fff;
+	position:absolute;
+	left:353px;
+	top:517px;
+	width:305px;
+	height:43px;
+}
+div.DBY-DormBucks-v05-sliced-07_ input,
+div.DBY-DormBucks-v05-sliced-10_ input,
+div.DBY-DormBucks-v05-sliced-14_ input{
+	height: 42px;
+	width: 305px;
+	background: #fff;
+	border: none;
+	font-size: 33px;
+	font-family: Arial;
+	color: #ccc;
+	text-transform: uppercase;
+}
+div.DBY-DormBucks-v05-sliced-14_ input{
+	color: #000;
+	font-size: 35px;
+}
+div.DBY-DormBucks-v05-sliced-14_ #dollar_sign{
+	height: 42px;
+	font-size: 30px;
+	font-family: Arial;
+	position: absolute;
+	top: 14px;
+	left: -23px;
+	display: none;
+}
+
+div.DBY-DormBucks-v05-sliced-08_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_08.jpg);
+	position:absolute;
+	left:658px;
+	top:517px;
+	width:302px;
+	height:329px;
+}
+
+div.DBY-DormBucks-v05-sliced-09_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_09.jpg);
+	position:absolute;
+	left:353px;
+	top:560px;
+	width:305px;
+	height:41px;
+}
+
+div.DBY-DormBucks-v05-sliced-10_ {
+	background-color: #fff;
+	position:absolute;
+	left:353px;
+	top:601px;
+	width:305px;
+	height:42px;
+}
+
+div.DBY-DormBucks-v05-sliced-11_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_11.jpg);
+	position:absolute;
+	left:353px;
+	top:643px;
+	width:305px;
+	height:29px;
+}
+
+div.DBY-DormBucks-v05-sliced-12_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_12.jpg);
+	position:absolute;
+	left:353px;
+	top:672px;
+	width:305px;
+	height:60px;
+}
+div.DBY-DormBucks-v05-sliced-12_ input{
+	outline: none;
+}
+
+div.DBY-DormBucks-v05-sliced-13_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_13.jpg);
+	position:absolute;
+	left:353px;
+	top:732px;
+	width:305px;
+	height:69px;
+}
+
+div.DBY-DormBucks-v05-sliced-14_ {
+	background-color: #fff;
+	position:absolute;
+	left:353px;
+	top:801px;
+	width:305px;
+	height:45px;
+}
+
+div.DBY-DormBucks-v05-sliced-15_ {
+	background: url(/images/promo_pages/dormbucks/DBY-DormBucks-v05_sliced_15.jpg);
+	position:absolute;
+	left:0px;
+	top:846px;
+	width:960px;
+	height:397px;
+}
+div.DBY-DormBucks-v05-sliced-15_ p.message{
+	display: none;
+}
+div.DBY-DormBucks-v05-sliced-15_ a{
+	position: absolute;
+	text-indent: -999999px;
+	display: block;
+	height: 50px;
+	width: 200px;
+	top: 103px;
+	left: 365px;
+}

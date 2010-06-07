@@ -1,0 +1,47 @@
+<div class="tab">
+	<div class="pager gallery-box">
+		<div class="quote-box">
+			
+			<!--
+			<form action="#">
+				<fieldset>
+					<select title="select">
+						<option>SORT BY</option>
+						<option>Price (highest to lowest)</option>
+						<option>Price (lowest to highest)</option>
+						<option>Best Selling (most popular)</option>
+						<option>Highest Rated</option>
+					</select>
+					<input type="submit" value="Submit" class="hidden" />
+				</fieldset>
+			</form>
+			-->
+			
+			<ul class="breadcrumbs">
+				<li><h3>Search Results</h3></li>
+			</ul>
+		</div>
+		<div class="product-hold">
+			
+			<% if @products.empty? %>
+				<h2>&nbsp;</h2>
+				<h2 style="text-align: center; color: #5C8727">No products matched your search terms</h2>
+				<% 10.times do %>
+					<h2>&nbsp;</h2>
+				<% end %>
+			<% else %>
+				<% @products.in_groups_of(6, false) do |row| %>
+					<ul>
+						<% for product in row %>
+							<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
+						<% end %>
+					</ul>
+				<% end %>
+			<% end %>
+			
+		</div>
+	</div>
+	<div class="pager-hold">
+		<%= will_paginate(@products) %>
+	</div>
+</div>

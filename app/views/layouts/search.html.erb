@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title><%= [@page_title, "Dormbuys.com"].join(" | ") %></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<%= stylesheet_link_tag "all" %>
+	<%= stylesheet_link_tag "sifr" %>
+	<%= stylesheet_link_tag "form" %>
+	<%= stylesheet_link_tag "colorbox" %>
+	
+	<%= javascript_include_tag "jquery-1.4.2.min.js" %>
+	<%= javascript_include_tag "jquery.galleryScroll.1.5.2.js" %>
+	<%= javascript_include_tag "jquery.colorbox-min.js" %>
+	<%= javascript_include_tag "main.js" %>
+	<%= javascript_include_tag "sifr.js" %>
+	<%= javascript_include_tag "form.js" %>
+	<%= javascript_include_tag "front.js" %>
+	
+	<!--[if lt IE 8]><%= stylesheet_link_tag "lt8" %><![endif]-->
+	<!--[if lt IE 7]><%= stylesheet_link_tag "lt7" %><![endif]-->
+	
+	<%= yield :head %>
+	
+</head>
+<body>
+<!-- page -->
+<div id="page">
+	<!-- main -->
+	<div id="main">
+		<h1><%= link_to 'Dormbuys.com', root_path %></h1>
+		
+		
+		<%= render :partial => 'shared/front_main_nav' %>
+		
+		<% flash.each do |key, msg| %>
+		    <%= content_tag :p, msg, :class => key %>
+		<% end %>
+		
+		
+		<div class="placeholder">
+			<%= image_tag Category.first.banner.url, :alt => "search" %>
+		</div>
+		
+		
+		<!-- middle -->
+		<div class="middle">
+		
+			<div class="featured-products">
+				<div class="title tabset">
+				</div>
+
+				<%= yield %>
+
+			</div>
+					
+		
+			
+		<%= render :partial => "shared/front_footer_gift_blog" %>
+			
+		</div>
+		<!-- middle -->
+		
+		<%= render :partial => "shared/front_footer_green_bar" %>
+		
+	</div>
+	<!-- main -->
+	
+	<%= render :partial => "shared/front_main_header" %>
+	
+</div>
+<!-- page -->
+
+<%= render :partial => "shared/front_main_footer_nav" %>
+
+
+<%= yield :eo_page %>
+<%= render :partial => "shared/tracking_codes" %>
+
+</body>
+</html>

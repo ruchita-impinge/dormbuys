@@ -37,11 +37,6 @@ class FrontController < ApplicationController
     @category = @subcategory.category
     @products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
     
-    #bw hack
-    if RAILS_ENV == "development"
-      @products = Product.all.paginate :per_page => 12, :page => params[:page]
-    end
-    
     @page_title = @subcategory.name
     render :layout => "front_large_banner"
   end #end subcategory
@@ -69,10 +64,32 @@ class FrontController < ApplicationController
   
   
   def search
-    params[:search_term]
-    raise "Search not yet implemented"
+
+    @products = Product.all(:conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"]).paginate :per_page => 12, :page => params[:page]
+    render :layout => "search"
+    
   end #end method search
   
+  
+  #ajax method
+  def email_list_signup
+    render :update do |page|
+
+      mail_client = EmailListClient.find_by_email(params[:email_list][:email_address])
+      if mail_client
+        page.alert("You're already on the mailing list!")
+      else
+        new_mail_client = EmailListClient.new(:email => params[:email_list][:email_address])
+        if new_mail_client.save
+          page.alert("Thanks for signing up!")
+        else
+          msgs = new_mail_client.errors.full_messages.join('\n')
+          page << "alert(\"Errors:\\n#{msgs}\")"
+        end
+      end
+      
+    end
+  end #end method email_list_signup
   
   
   def registry
@@ -221,7 +238,15 @@ class FrontController < ApplicationController
   def contact_submit
     @contact_message = ContactMessage.new(params[:contact_message])
     if @contact_message.valid?
-      #send contact message
+
+      #send the contact message email
+      Notifier.send_later(:deliver_contact, 
+        @contact_message.name, 
+        @contact_message.email, 
+        @contact_message.subject, 
+        @contact_message.message
+      )
+
       flash[:notice] = "Thanks! We'll respond to your message shortly"
       redirect_to contact_path and return
     else

@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Dormbuys.com></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<%= stylesheet_link_tag "all" %>
+	<%= stylesheet_link_tag "form" %>
+	<%= stylesheet_link_tag "colorbox" %>
+	
+	<%= javascript_include_tag "jquery-1.4.2.min.js" %>
+	<%= javascript_include_tag "jquery.colorbox-min.js" %>
+	<%= javascript_include_tag "main.js" %>
+	<%= javascript_include_tag "form.js" %>
+	
+	<!--[if lt IE 8]><%= stylesheet_link_tag "lt8" %><![endif]-->
+	<!--[if lt IE 7]><%= stylesheet_link_tag "lt7" %><![endif]-->
+	
+	<%= yield :head %>
+	
+</head>
+<body>
+	
+	<%= yield %>
+	
+</body>
+</html>

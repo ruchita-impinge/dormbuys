@@ -2,9 +2,31 @@
 		<div class="title tabset">
 			<ul>
 				<li class="first">
-					<a class="tab" href="#">
-						<img src="/images/text-bedology.png" alt="image description" class="png inner-png" />
-					</a>
+					<% if @category.id == Category::BATH %>
+						<%= link_to image_tag("/images/text-bathmatics.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::LAUNDRY %>
+						<%= link_to image_tag("/images/text-laundristics.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::BEDDING %>
+						<%= link_to image_tag("/images/text-bedology.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::DECOR %>
+						<%= link_to image_tag("/images/text-decoristics.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::FURNITURE %>
+						<%= link_to image_tag("/images/text-furnitecture.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::APPLIANCES %>
+						<%= link_to image_tag("/images/text-socio-appliances.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::TECH %>
+						<%= link_to image_tag("/images/text-gadgetometry.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::SPACE_SAVERS %>
+						<%= link_to image_tag("/images/text-spacesavonomics.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::PACKAGES %>
+						<%= link_to image_tag("/images/text-gift-cards.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::GIFT_CARDS %>
+						<%= link_to image_tag("/images/text-gift-cards.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::GIFT_CARDS_MORE %>
+						<%= link_to image_tag("/images/text-gift-cards.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+				  	<% elsif @category.id == Category::SALE %>
+						<%= link_to image_tag("/images/text-sale.png", :alt =>"", :class => "png inner-png"), @category.default_front_url, :class => "tab #{'active' if controller.action_name == 'category'}" %>
+					<% end %>
 				</li>
 			</ul>
 			<ul class="sub-tabs">

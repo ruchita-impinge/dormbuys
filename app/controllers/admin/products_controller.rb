@@ -1,4 +1,4 @@
-class Admin::ProductsController < ApplicationController
+class Admin::ProductsController < Admin::AdminController
   
   before_filter :scrub_multi_model_params, :only => [:create, :update]
   

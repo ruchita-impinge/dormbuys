@@ -34,8 +34,11 @@ class Product < ActiveRecord::Base
       :thumb => ["51x51#", :jpg]
     },
     :default_style => :list,
-    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   # validates_attachment_presence :product_image
   #validates_attachment_content_type :product_image, 
@@ -244,8 +247,6 @@ class Product < ActiveRecord::Base
     
     products = subs_group.collect {|s| s.products }.flatten
     
-    #bw hack
-    products = Product.all if RAILS_ENV == 'development' && products.size <= 5
     
     #start w/ 1 initial random number
     randoms = [rand(products.size)]
@@ -268,10 +269,6 @@ class Product < ActiveRecord::Base
   
   def self.random_featured_products(nums = 4)
     
-    #bw hack
-    if RAILS_ENV == "development"
-      return Product.find(:all, :limit => nums)
-    end
     
     randoms = []
 

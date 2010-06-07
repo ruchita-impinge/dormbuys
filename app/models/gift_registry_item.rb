@@ -69,7 +69,7 @@ class GiftRegistryItem < ActiveRecord::Base
   
   def categories
     cats = []
-    self.product_variation.product.subcategories.collect{|sub| cats << sub.category}
+    self.product_variation.product.subcategories.collect{|sub| cats << sub.category} if self.product_variation
     cats.uniq
   end #end method categories
   

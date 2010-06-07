@@ -1,4 +1,4 @@
-class Admin::QuantityDiscountsController < ApplicationController
+class Admin::QuantityDiscountsController < Admin::AdminController
   
   
   def auto_complete_for_product_product_name

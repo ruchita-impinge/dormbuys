@@ -1,46 +1,9 @@
 require "net/ftp"
+require 'net/https'
+require 'open-uri'
+
 
 class ThirdPartySystems
-  
-  
-  def self.generate_initial_lnt_file
-    fields = [
-    "Product Code",
-    "Is the Product Code Unique?",
-    "SKU",
-    "Is the SKU Unique?",
-    "Barcode",
-    "Product Availability",
-    "Product Parent Name",
-    "Product Parent Description",
-    "Parent Description Bullet Point 1",
-    "Parent Description Bullet Point 2",
-    "Parent Description Bullet Point 3",
-    "Parent Description Bullet Point 4",
-    "Parent Description Bullet Point 5",
-    "Product Child Name",
-    "Has a Parent?",
-    "Product Child Description",
-    "Child Description Bullet Point 1",
-    "Child Description Bullet Point 2",
-    "Child Description Bullet Point 3",
-    "Child Description Bullet Point 4",
-    "Child Description Bullet Point 5",
-    "Brand Name",
-    "Category Name",
-    "Product Type",
-    "Product Size",
-    "Product Color",
-    "Product Quantity",
-    "Product Retail Price",
-    "Product Comparison Price",
-    "Additional Charge",
-    "Additional Charge Description",
-    "Product Parent Image URL",
-    "Product Child Image URL"]
-    
-  end #end method self.generate_initial_lnt_file
-  
   
   # Google Products updater.  This method creates and writes a tab-delimited
   # file of product information.  Then using FTP it uploads the file to google
@@ -67,7 +30,7 @@ class ThirdPartySystems
       
       #setup vars
       id = variation.product_number
-      link = "http://www.dormbuys.com/shop/product/" + "#{variation.product.id}"
+      link = "http://www.dormbuys.com" + "#{variation.product.default_front_url}"
       title = variation.full_title[0,80]
       
       description = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
@@ -79,12 +42,12 @@ class ThirdPartySystems
       #title.gsub!(/'/, "&rsquo;")
       
       begin
-        img_lnk = "http://www.dormbuys.com" + variation.product.main_image
+        img_lnk = "#{variation.product.product_image.url(:main)}"
       rescue
         img_lnk = "http://www.dormbuys.com"
       end
       
-      price = variation.current_price
+      price = variation.rounded_retail_price.to_s
       condition = "new"
       
       #add the line to the output
@@ -153,19 +116,20 @@ class ThirdPartySystems
       _manufacturer = "" #variation.product.vendor.company_name rescue "Dormbuys.com"
       _manufacturer_model = variation.manufacturer_number.blank? ? "0" : variation.manufacturer_number
       _MPN = variation.manufacturer_number.blank? ? "0" : variation.manufacturer_number
-      _merchant_category = variation.subcategory
+      _merchant_category = variation.subcategories.first.name
       _brand = "" #variation.product.vendor.company_name rescue "Dormbuys.com"
-      _current_price = variation.current_price.to_s
+      _current_price = variation.rounded_retail_price.to_s
       _in_stock = variation.qty_on_hand > 0 ? 1 : 0
+
       begin
-        _reference_image_url = "http://www.dormbuys.com" + variation.product.main_image
+        _reference_image_url = "#{variation.product.product_image.url(:main)}"
       rescue
-        _reference_image_url = "http://www.dormbuys.com/images/home_2_0/logo.gif"
+        _reference_image_url = "http://www.dormbuys.com"
       end
       
       _offer_name = variation.full_title.gsub("|", "-")
       _offer_description = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "").gsub("|","-")
-      _action_url = "http://www.dormbuys.com/shop/product/" + "#{variation.product.id}"
+      _action_url = "http://www.dormbuys.com" + #{variation.product.default_front_url}"
       
 
       #add the line to the output
@@ -188,6 +152,304 @@ class ThirdPartySystems
   
   
   
+  def self.update_lnt
+    
+    processed_product_ids = []
+    
+    clean_for_csv = Proc.new do |str|
+      str.gsub(/(\r\n|\r|\n|\t)/s, " ").gsub(","," ").gsub(/"/,"").gsub(/'/, "")
+    end
+    
+    
+    
+    hdr = {
+      :product_code => "Product Code", #required
+      :is_unique => "Is the Product Code Unique?",  #torrey commerce only
+      :sku => "SKU",
+      :is_sku_unique => "Is the SKU Unique?", #torrey commerce only
+      :barcode => "Barcode",
+      :product_availability => "Product Availability",
+      :product_parent_name => "Product Parent Name", #required
+      :product_parent_description => "Product Parent Description",
+      :product_bullet_1 => "Product Description Bullet Point 1",
+      :product_bullet_2 => "Product Description Bullet Point 2",
+      :product_bullet_3 => "Product Description Bullet Point 3",
+      :product_bullet_4 => "Product Description Bullet Point 4",
+      :product_bullet_5 => "Product Description Bullet Point 5",
+      :product_child_name => "Product Child Name", #required
+      :has_a_parent => "Has a Parent?", #torrey commerce only
+      :product_child_description => "Product Child Description",
+      :child_bullet_1 => "Child Description Bullet Point 1",
+      :child_bullet_2 => "Child Description Bullet Point 2",
+      :child_bullet_3 => "Child Description Bullet Point 3",
+      :child_bullet_4 => "Child Description Bullet Point 4",
+      :child_bullet_5 => "Child Description Bullet Point 5",
+      :brand_name => "Brand Name", #required
+      :category_name => "Category Name", #required
+      :product_type => "Product Type",
+      :product_size => "Product Size",
+      :product_color => "Product Color", #required
+      :product_quantity => "Product Quantity", #required
+      :product_retail_price => "Product Retail Price", #required
+      :product_comparison_price => "Product Comparison Price",
+      :additional_charge => "Additional Charge",
+      :additional_charge_description => "Additional Charge Description",
+      :product_parent_image_url => "Product Parent Image URL",
+      :product_child_image_url => "Product Child Image URL"
+    }
+  
+    # setup the output headers
+    #
+    @headings = [] 
+    @headings << hdr[:product_code]
+    @headings << hdr[:product_parent_name]
+    @headings << hdr[:product_parent_description]
+    @headings << hdr[:brand_name]
+    @headings << hdr[:category_name]
+    @headings << hdr[:product_size]
+    @headings << "Product Name"
+    @headings << "Product Description"
+    @headings << "Attribute Name"
+    @headings << hdr[:product_quantity]
+    @headings << hdr[:product_retail_price]
+    @headings << hdr[:product_comparison_price]
+    @headings << hdr[:product_parent_image_url]
+    
+    @rows = []
+  
+    @variations = ThirdPartySystems.get_lnt_product_variations
+    
+    @variations.each do |variation|
+      
+      row = []
+      
+      row << "#{clean_for_csv.call variation.product_number}"
+      row << "#{clean_for_csv.call variation.full_title}"
+      row << "#{clean_for_csv.call variation.product.product_overview}"
+      
+      
+      #add brand
+      row << "Dormbuys.com"
+      
+      #add LNT category
+      unless variation.product.subcategories.first.blank?
+        lnt_cat_id = variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::LNT)
+        if lnt_cat_id
+          lnt_cat = ThirdPartyCategory.find(lnt_cat_id)
+          row << "#{lnt_cat.name}"
+        else
+          row << "UNKNOWN"
+        end
+        
+      else
+        row << "UNKNOWN"
+      end
+      
+      
+      
+      #handle product_size
+      if variation.title != "default"
+        
+        if variation.variation_group.downcase =~ /size/
+          row << "#{clean_for_csv.call variation.title.split("/").first}"
+        else
+          row << ""
+        end
+        
+      else
+        row << ""
+      end #end if-child
+      
+      
+      #handle product name and product description
+      row << "#{clean_for_csv.call variation.full_title}"
+      row << "#{clean_for_csv.call variation.product.product_overview}"
+      
+      
+      #handle 'attribute name'
+      if variation.title != "default"
+        
+        row << "#{clean_for_csv.call variation.title.split("/").last}"
+        
+      else
+        row << ""
+      end #end if-child
+      
+      
+      #product qty
+      row << "#{variation.qty_on_hand}"
+      
+      
+      #product price
+      row << "#{ThirdPartySystems.get_lnt_price(variation)}"
+      
+      #handle the comparison price
+      row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
+      
+      #handle product image
+      #row << "http://www.dormbuys.com#{variation.product.main_image}"
+      unless processed_product_ids.include? variation.product.id
+        processed_product_ids << variation.product.id
+        row << variation.product.additional_product_images.collect {|ai| "#{ai.image.url(:main)}"}.join("|")
+      end
+      
+      @rows << row
+      
+    end #end each variation
+  
+  
+    file_content = @headings.join(",") + "\n"
+    for row in @rows
+      file_content += row.join(",") + "\n"
+    end
+  
+  
+    ftp_file = "#{RAILS_ROOT}/public/files/products/LNT_PRODUCTS.csv"
+    fh = File.new(ftp_file, "w")
+    fh.puts(file_content)
+    fh.close
+    
+  end #end method self.update_lnt
+  
+  
+  def self.update_lnt_inventory
+
+    @headings = [] 
+    @headings << "Product SKU"
+    @headings << "Prices"
+    @headings << "Compare Prices"
+    @headings << "Quantity"
+    
+    @rows = []
+  
+    @variations = ThirdPartySystems.get_lnt_product_variations
+    
+    @variations.each do |variation|
+      
+      row = []  
+      
+      row << "#{variation.product_number}"
+      
+      #product price
+      row << "#{ThirdPartySystems.get_lnt_price(variation)}"
+      
+      #handle the comparison price
+      row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
+      
+      #product qty
+      row << "#{variation.qty_on_hand}"
+      
+      @rows << row
+      
+    end #end each variation
+  
+  
+    file_content = @headings.join(",") + "\n"
+    for row in @rows
+      file_content += row.join(",") + "\n"
+    end
+  
+  
+    #ftp_file = "#{RAILS_ROOT}/public/files/products/LNT_INVENTORY_UPDATE.csv"
+    #fh = File.new(ftp_file, "w")
+    #fh.puts(file_content)
+    #fh.close
+    
+    fname = Time.now.strftime("DORM-INV-%m%d%y-%H%M%S.csv")
+    
+    #transfer to FTP
+    self.ftp_transfer_content(
+      file_content, 
+      "#{fname}", 
+      "ftp.torreycommerce.net", 
+      "dormbuys", 
+      "D0rmBuys333")
+    
+  end #end method self.update_lnt_inventory
+  
+  
+  def self.post_orders_to_packstream
+    
+    @orders = Order.find(:all, :conditions => ['sent_to_packstream = ?', false])
+    
+    for @order in @orders
+    
+      order_xml = <<-ENDXML
+      <?xml version="1.0" encoding="UTF-8"?>
+      <orderInformation>
+        <order>
+          <orderId>#{@order.order_id}</orderId>
+          <orderDate>#{@order.order_date.strftime("%m/%d/%Y %H:%I")}</orderDate>
+          <userId>#{@order.user_id.blank? ? -1 : @order.user_id}</userId>
+          <typeOfCustomer>#{@order.whoami.blank? ? "" : @order.whoami}</typeOfCustomer>
+        </order>
+        <orderItems>
+      ENDXML
+    
+      
+          for oli in @order.order_line_items
+            order_xml += <<-ENDXML
+            <item>
+              <productNumber>#{oli.product_number}</productNumber>
+              <productId>#{oli.get_product_variation.product.id}</productId>
+              <itemName>#{oli.item_name}</itemName>
+              <quantity>#{oli.quantity}</quantity>
+              <unitPrice>#{oli.unit_price}</unitPrice>
+              <total>#{oli.total}</total>
+            </item>
+            ENDXML
+          end
+      
+      
+      order_xml += <<-ENDXML
+        </orderItems>
+        <customer>
+          <firstName>#{@order.user_id.blank? ? @order.billing_first_name : @order.user.first_name}</firstName>
+          <lastName>#{@order.user_id.blank? ? @order.billing_last_name : @order.user.last_name}</lastName>
+          <email>#{@order.user_id.blank? ? @order.email : @order.user.email}</email>
+          <phone>#{@order.user_id.blank? ? @order.billing_phone : @order.user.phone}</phone>
+        </customer>  
+        <billingAddress>
+          <billingFirstName>#{@order.billing_first_name}</billingFirstName>
+          <billingLastName>#{@order.billing_last_name}</billingLastName>
+          <billingAddress>#{@order.billing_address}</billingAddress>
+          <billingCity>#{@order.billing_city}</billingCity>
+          <billingState>#{State.find(@order.billing_state_id).full_name}</billingState>
+          <billingZipCode>#{@order.billing_zipcode}</billingZipCode>
+          <billingCountry>#{Country.find(@order.billing_country_id).country_name}</billingCountry>
+          <billingPhone>#{@order.billing_phone}</billingPhone>
+        </billingAddress>
+        <shippingAddress>
+          <shippingFirstName>#{@order.shipping_first_name}</shippingFirstName>
+          <shippingLastName>#{@order.shipping_last_name}</shippingLastName>
+          <shippingAddress>#{@order.shipping_address}</shippingAddress>
+          <shippingCity>#{@order.shipping_city}</shippingCity>
+          <shippingState>#{State.find(@order.shipping_state_id).full_name}</shippingState>
+          <shippingZipCode>#{@order.shipping_zipcode}</shippingZipCode>
+          <shippingCountry>#{Country.find(@order.shipping_country_id).country_name}</shippingCountry>
+          <shippingPhone>#{@order.shipping_phone}</shippingPhone>
+        </shippingAddress>
+      </orderInformation>
+      ENDXML
+    
+      uri = URI.parse("https://api.packstream.com/order.aspx")
+      
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req.form_data = {:data => order_xml}
+      
+      http_session = Net::HTTP.new(uri.host, uri.port)
+      http_session.use_ssl = true
+      http_session.start { |http| 
+        http.request(req)
+      }
+    
+      @order.update_attributes(:sent_to_packstream => true)
+    
+   end #end for loop
+    
+  end #end method self.post_orders_to_packstream
+  
+  
   
   def self.update_packstream
     
@@ -201,15 +463,15 @@ class ThirdPartySystems
       xml += %(<product_id>#{p.id}</product_id>\n)
       xml += %(<product_name>#{CGI::escapeHTML(p.product_name)}</product_name>)
       xml += %(<product_overview>#{CGI::escapeHTML(p.product_overview)}</product_overview>)
-      pimage = p.main_image rescue ""
-      xml += %(<image_url><![CDATA[http://www.dormbuys.com#{pimage}]]></image_url>)
-      xml += %(<price>#{p.our_price}</price>)
+
+      xml += %(<image_url><![CDATA[#{p.product_image.url(:main)}]]></image_url>)
+      xml += %(<price>#{p.retail_price}</price>)
       xml += %(<msrp>#{p.list_price}</msrp>)
-      xml += %(<url><![CDATA[http://www.dormbuys.com/shop/product/#{p.id}]]></url>)
+      xml += %(<url><![CDATA[http://www.dormbuys.com#{p.default_front_url}]]></url>)
       xml += %(<visible>#{p.visible}</visible>)
       
       xml += %(<recommendations>)
-      for r in p.cross_sell_products
+      for r in p.recommended_products
         xml += %(<product_id>#{r.id}</product_id>\n)
         xml += %(<product_name>#{CGI::escapeHTML(r.product_name)}</product_name>)
         xml += %(<product_overview>#{CGI::escapeHTML(r.product_overview)}</product_overview>)
@@ -229,8 +491,8 @@ class ThirdPartySystems
           xml += %(<full_title>#{CGI::escapeHTML(v.full_title)}</full_title>)
           xml += %(<qty_on_hand>#{v.qty_on_hand}</qty_on_hand>)
           xml += %(<qty_on_hold>#{v.qty_on_hold}</qty_on_hold>)
-          xml += %(<msrp>#{v.retail_price}</msrp>)
-          xml += %(<price>#{v.current_price}</price>)
+          xml += %(<msrp>#{v.list_price}</msrp>)
+          xml += %(<price>#{v.rounded_retail_price}</price>)
           xml += %(<visible>#{v.visible}</visible>)
         end
       xml += %(</variations>)
@@ -246,8 +508,96 @@ class ThirdPartySystems
     fh.close
   
   end #end method self.update_packstream
+  
+  
+  def self.get_lnt_product_variations
     
+    variations = []
     
+    products = Product.find(:all, :conditions => ['drop_ship = ?', false], :include => :product_variations)
+    
+    products.each do |product|
+      product.product_variations.each do |variation|
+        
+        #product cost is greater than 2.98 and weight is less than 25 lbs
+        if variation.rounded_retail_price > (2.98).to_money && variation.product_packages.collect.sum {|pp| pp.weight } < 25
+          variations << variation
+        end #end if
+        
+      end #end each variation
+    end #end each product
+    
+    variations
+    
+  end #end method self.get_lnt_product_variations
+
+  
+  
+  def self.get_lnt_price(variation)
+    
+    weight = variation.product_packages.collect.sum {|pp| pp.weight}
+    
+    if weight <= 5
+      
+      return variation.rounded_retail_price + (8.00).to_money
+      
+    elsif weight > 5 && weight <= 10
+      
+      return variation.rounded_retail_price + (9.00).to_money
+      
+    elsif weight > 10 && weight <= 15
+     
+     return variation.rounded_retail_price + (9.00).to_money
+     
+    elsif weight > 15 && weight <= 20
+      
+      return variation.rounded_retail_price + (10.50).to_money
+      
+    elsif weight > 20 && weight <= 25
+      
+      return variation.rounded_retail_price + (12.00).to_money
+      
+    else
+      
+      return variation.rounded_retail_price + (12.00).to_money
+      
+    end
+  
+  end #end get_lnt_price
+  
+  
+  
+  def self.get_lnt_comparison_price(variation)
+    
+    weight = variation.product_packages.collect.sum {|pp| pp.weight}
+    
+    if weight <= 5
+      
+      return variation.list_price + (8.00).to_money
+      
+    elsif weight > 5 && weight <= 10
+      
+      return variation.list_price + (9.00).to_money
+      
+    elsif weight > 10 && weight <= 15
+     
+     return variation.list_price + (9.00).to_money
+     
+    elsif weight > 15 && weight <= 20
+      
+      return variation.list_price + (10.50).to_money
+      
+    elsif weight > 20 && weight <= 25
+      
+      return variation.list_price + (12.00).to_money
+      
+    else
+      
+      return variation.list_price + (12.00).to_money
+      
+    end
+  
+  end #end get_lnt_price
   
   
   

@@ -1,4 +1,46 @@
 <div class="tab" id="tab1">
+	<img src="/images/banners/banner-home-main.jpg" alt="image description" />
+	
+	<div id="promo_form">
+		
+		
+		<form action="https://dormbuys.infusionsoft.com/AddForms/processFormSecure.jsp" method='POST' id="infusionsoft">
+
+			<input name="infusion_xid" value="0becbe2720aa65823a4f0f309f018958" type="hidden" id="infusion_xid" />
+			<input name="infusion_type" value="CustomFormWeb" type="hidden" id="infusion_type" />
+			<input name="infusion_name" value="FM: Homepage 10% Off" type="hidden" id="infusion_name" />
+
+			<label for="Contact0FirstName">First Name: *</label>
+			<input size="15" name="Contact0FirstName" type="text" id="Contact0FirstName" class="default-input" />
+
+
+			<label for="">Last Name: *</label>
+			<input size="15" name="Contact0LastName" type="text" id="Contact0LastName" class="default-input" />
+
+
+			<label for="">Email: *</label>
+			<input size="15" name="Contact0Email" type="text" id="Contact0Email" class="default-input" />
+
+
+			<label for="">Who are you: *</label>
+			<div id="Contact0_whoareyoulabel"></div>
+			<select name="Contact0_whoareyou" id="Contact0_whoareyou" onchange="document.getElementById('Contact0_whoareyoulabel').innerHTML = this.value;">
+				<option value="parent">Parent</option>
+				<option value="college student">College Student</option>
+				<option value="high school student">High School Student</option>
+				<option value="other">Other</option>
+			</select>
+
+			<input name="Submit" value="Submit" type="submit" id="Contact0Submit" class="button np inf-button" />
+
+		</form>
+		
+		
+	</div><!-- end #promo_form -->
+	
+	
+	<% if 1 == 2 %>
+	<!--
 	<img src="/images/img04.jpg" alt="image description" />
 	<ul class="product-ico">
 		<li class="col1 popup-holder">
@@ -12,9 +54,13 @@
 		</li>
 	</ul>
 	<span class="number"></span>
+	-->
+	<% end %>
 </div>
 
 <% content_for :home_banner_product_popups do %>
+	<% if 1 == 2 %>
+	<!--
 	<div class="popup" id="popup1">
 		<div class="bg">
 			<img src="images/img15.jpg" alt="image description" />
@@ -39,4 +85,6 @@
 			<em>our price:<span>$59.99</span></em>
 		</div>
 	</div>
+	-->
+	<% end %>
 <% end %>

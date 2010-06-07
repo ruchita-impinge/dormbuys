@@ -53,10 +53,12 @@ class Cart < ActiveRecord::Base
     end
     
     if should_validate?
-      setup_cc_attributes
-      unless self.credit_card.blank?
-        unless self.credit_card.valid?
-          self.credit_card.errors.full_messages.each{|e| self.errors.add_to_base("Credit Card #{e}")}
+      if self.grand_total.cents > 0
+        setup_cc_attributes
+        unless self.credit_card.blank?
+          unless self.credit_card.valid?
+            self.credit_card.errors.full_messages.each{|e| self.errors.add_to_base("Credit Card #{e}")}
+          end
         end
       end
     end

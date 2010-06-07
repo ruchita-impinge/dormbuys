@@ -147,15 +147,27 @@ class UpsLabelTest
     	tracking_number = package.tracking_number 
     	
     	
-    	#write out the file
+    	#write out the GRAPHIC file
     	label_tmp_file = Tempfile.new("shipping_label")
       label_tmp_file.write Base64.decode64(graphic_image)
       label_tmp_file.rewind
       
-      filename = "#{SAVE_LABEL_LOCATION}/#{tracking_number}.#{label_image_format.downcase}"
-      f = File.new(filename, "wb")
-      f.write File.new(label_tmp_file.path).read
-      f.close
+      #write out the HTML file
+      html_tmp_file = Tempfile.new("shipping_label_html")
+      html_tmp_file.write Base64.decode64(html_image)
+      html_tmp_file.rewind
+      
+      #save the GRAPHIC file
+      graphic_filename = "#{SAVE_LABEL_LOCATION}/label#{tracking_number}.#{label_image_format.downcase}"
+      gf = File.new(graphic_filename, "wb")
+      gf.write File.new(label_tmp_file.path).read
+      gf.close
+      
+      #save the HTML file
+      html_filename = "#{SAVE_LABEL_LOCATION}/#{tracking_number}.html"
+      hf = File.new(html_filename, "wb")
+      hf.write File.new(html_tmp_file.path).read
+      hf.close
  
     	out << tracking_number
     	

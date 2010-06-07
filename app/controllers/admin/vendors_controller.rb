@@ -1,5 +1,4 @@
-class Admin::VendorsController < ApplicationController
-  
+class Admin::VendorsController < Admin::AdminController
   
   def search
     

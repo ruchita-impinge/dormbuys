@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   cattr_accessor :current_user
   
-  before_create :setup_roles
+  before_create :setup_roles, :add_to_mailing_list
   before_validation :set_shipping_address
     
   
@@ -103,6 +103,14 @@ class User < ActiveRecord::Base
       self.role_ids = [1] #default customer role
     end
   end #end method setup_roles
+  
+  
+  def add_to_mailing_list
+    mail_client = EmailListClient.find_by_email(self.email)
+    unless mail_client
+      EmailListClient.create(:email => self.email)
+    end
+  end #end method add_to_mailing_list
 
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.

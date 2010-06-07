@@ -417,7 +417,12 @@ class Order < ActiveRecord::Base
         for parcel in shippment.items
   
          #get the ship request info from the courier
-        
+=begin  
+      
+########
+# DEPRECIATED WITH MOVE TO UPS
+########
+
          price, label, tracking_number = ShipManager.courier_ship_request(
            self.get_payment_shipping_address, 
            parcel.length,
@@ -429,7 +434,17 @@ class Order < ActiveRecord::Base
  
          #write out the shipping label image
          label_path = Files::FileManager.save_shipping_label(label.path)
+=end
 
+          #USING UPS
+          label_path, tracking_number = ShipManager.courier_ship_request(
+             self.get_payment_shipping_address, 
+             parcel.length,
+             parcel.width,
+             parcel.depth,
+             parcel.weight, 
+             1, 
+             self.order_id)
 
           #create a shipping label object on the order
           self.shipping_labels.build(:label => label_path, :tracking_number => tracking_number)
@@ -841,9 +856,14 @@ class Order < ActiveRecord::Base
   def cancel_order
     
     #refund the full order amount
-    @refund = full_refund
+    if self.grand_total.cents > 0
+      @refund = full_refund
+      @refund_pass = @refund.success
+    else
+      @refund_pass = true
+    end
     
-    if @refund.success
+    if @refund_pass
     
       #del the order's shipping labels
       kill_all_shipping_labels
@@ -1158,7 +1178,9 @@ class Order < ActiveRecord::Base
       depth = attributes[:depth].to_f
       weight = attributes[:weight].to_f
     
-    
+=begin
+DEPRECIATED WITH MOVE TO UPS
+
       price, label, tracking_number = ShipManager.courier_ship_request(
         shipping_address, 
         length,
@@ -1171,7 +1193,17 @@ class Order < ActiveRecord::Base
     
       #write out the shipping label image
       label_path = Files::FileManager.save_shipping_label(label.path)
-    
+=end
+      # USING UPS
+      label_path, tracking_number = ShipManager.courier_ship_request(
+         shipping_address, 
+         length,
+         width,
+         depth,
+         weight, 
+         1, 
+         self.order_id)
+
       self.shipping_labels.create(:label => label_path, :tracking_number => tracking_number)
       
     rescue Exception => e
@@ -1233,6 +1265,10 @@ class Order < ActiveRecord::Base
       oli.product_drop_ship             = cart_item.product_variation.product.drop_ship
       oli.warehouse_location            = cart_item.product_variation.warehouse_location
       
+      #set the wish_list and gift_registry tracking ids
+      oli.wish_list_item_id             = cart_item.wish_list_item_id unless cart_item.wish_list_item_id.blank?
+      oli.gift_registry_item_id         = cart_item.gift_registry_item_id unless cart_item.gift_registry_item_id.blank?
+      
       #set produc options, and poducts as options
       oli.pov_ids                       = cart_item.pov_ids
       oli.paov_ids                      = cart_item.paov_ids
@@ -1256,5 +1292,17 @@ class Order < ActiveRecord::Base
     return order
   end #end method new_from_cart(params)
 
+
+  def shipping_numbers
+    nums = []
+    self.order_line_items.each do |oli|
+      oli.shipping_numbers.each do |num|
+        unless num.tracking_number.blank?
+          nums << num
+        end
+      end
+    end
+    nums.uniq
+  end #end method tracking_numbers
 
 end #end class

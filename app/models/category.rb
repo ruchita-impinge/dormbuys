@@ -24,8 +24,11 @@ class Category < ActiveRecord::Base
   
   has_attached_file :banner, :styles => {:original => ["960x364#", :jpg]},
     :default_style => :original,
-    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   validates_attachment_presence :banner
   validates_attachment_content_type :banner, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']
@@ -34,8 +37,11 @@ class Category < ActiveRecord::Base
   
   has_attached_file :featured_image, :styles => {:original => ["80x80#", :jpg]},
     :default_style => :original,
-    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
   validates_attachment_presence :featured_image
   validates_attachment_content_type :featured_image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']

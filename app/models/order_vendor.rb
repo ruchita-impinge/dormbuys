@@ -15,8 +15,11 @@ class OrderVendor < ActiveRecord::Base
       :large => "200x125>"
     },
     :default_style => :large,
-    :url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    :path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
 
   validates_attachment_presence :logo
   validates_attachment_content_type :logo, 

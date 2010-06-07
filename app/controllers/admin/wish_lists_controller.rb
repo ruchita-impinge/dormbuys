@@ -1,4 +1,5 @@
-class Admin::WishListsController < ApplicationController
+class Admin::WishListsController < Admin::AdminController
+
   
   
   def auto_complete_for_product_product_name

@@ -13,6 +13,7 @@
 		</div>
 	</div>
 	-->
+	
 	<div class="box">
 		<h2><span>DailyDeal</span></h2>
 		<div class="box-content">
@@ -26,17 +27,47 @@
 		</div>
 	</div>
 
+
 	<div class="box other">
 		<h2><span>WishList</span></h2>
 		<div class="box-content">
-			<a href="#"><img src="/images/img11.jpg" alt="image description" /></a>
-			<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted.</p>
+			<%= link_to image_tag("/images/img11.jpg"), account_wish_list_path %>
+			<p>
+				You build it, and we'll keep tabs on all the dormelicious stuff you want.  So that one day...
+			</p>
 			<ul>
-				<li><a href="#">Go to my List</a></li>
-				<li class="arrow"><a href="#">Create a new List</a></li>
+				<li>
+					<%= link_to "Go to my List", account_wish_list_path %>
+				</li>
+				<li class="arrow">
+					<%= link_to "Create a new List", account_wish_list_path %>
+				</li>
 			</ul>
 		</div>
 	</div>
+	
+	
+	<div class="box other">
+		<h2><span>Gift Registry</span></h2>
+		<div class="box-content">
+			<%= link_to image_tag("/images/middle-block-gr-back.png"), account_gift_registries_path %>
+			<p>
+				<!--Its as simple as 1, 2, 3: -->
+				Choose what you want, alert family &amp; friends, then just
+				wait for all the gifts to start pouring in.
+			</p>
+			<ul>
+				<li>
+					<%= link_to "Go to my Registry", account_gift_registries_path %>
+				</li>
+				<li class="arrow">
+					<%= link_to "Create a new Registry", account_new_gift_registry_path %>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<!--
 	<div class="box">
 		<h2><span>Welcome ;)</span></h2>
 		<div class="box-content">
@@ -45,4 +76,7 @@
 			<p>Brand new to the DB fam? Great! Click <a href="#">HERE</a> and we'll take 10% off your first order.</p>
 		</div>
 	</div>
+	-->
+	
+	
 </div>

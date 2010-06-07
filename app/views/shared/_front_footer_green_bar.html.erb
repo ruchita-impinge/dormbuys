@@ -7,12 +7,14 @@
 			<li><%= link_to 'how 2 affiliatize', affiliates_path, :class => 'how' %></li>
 			<li><%= link_to 'how can we help?', faq_path, :class => 'help' %></li>
 		</ul>
-		<form action="#">
+		<% form_remote_for :email_list, :url => email_list_signup_path, :html => {:id => 'email_frm'} do |f| %>
 			<fieldset>
-				<input class="btn" type="image" src="/images/submit.gif" alt="submit" />
-				<input id="item1" class="text" type="text" value="Enter your email adress" title="email" />
-				<label for="item1">JOIN OUR EMAIL LIST:</label>
+
+				<%= image_submit_tag("/images/submit.gif", :class => "btn", :alt => "submit") %>
+				<%= f.text_field :email_address, :class => "text", :value => "Enter your email address",
+				 	:onclick => "this.value = '';" %>
+				<%= f.label :email_address, 'JOIN OUR EMAIL LIST:' %>
 			</fieldset>
-		</form>
+		<% end %>
 	</div>
 </div>
