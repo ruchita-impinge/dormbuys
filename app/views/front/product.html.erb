@@ -60,14 +60,13 @@
 									
 									
 									<div class="additional_product_images">
-
-										<% @product.additional_product_images.in_groups_of(4, false) do |image_group| %>
+										<% @additional_images.in_groups_of(4, false) do |image_group| %>
 											<% image_group.each do |aimg| %>
-												<%= link_to image_tag(aimg.image(:thumb)), aimg.image(:large),
+												<%= link_to image_tag(aimg[:thumb]), aimg[:large],
 														:target => "_blank", 
 														:class => "additional_image lightwindow", 
-														:rel => aimg.image(:main),
-														:title => aimg.description  %>
+														:rel => aimg[:main],
+														:title => aimg[:title]  %>
 											<% end %>
 											<div class="clear"></div>
 										<% end %>
@@ -128,13 +127,13 @@
 
 												<% if @product.product_variations.size > 10 %>
 													<br />
-													<span><%= pluralize(@product.product_variations.size, variation.variation_group) %>:
-														Choose from <%= @product.product_variations.size %> selections</span>
+													<span><%= pluralize(@product.available_variations.size, variation.variation_group) %>:
+														Choose from <%= @product.available_variations.size %> selections</span>
 												<% else %>
 													<br />
 													<span>
-													  <%= pluralized_name(@product.product_variations.size, variation.variation_group) %>:
-													  <%= @product.product_variations.collect{|v| v.title }.join(", ") %>
+													  <%= pluralized_name(@product.available_variations.size, variation.variation_group) %>:
+													  <%= @product.available_variations.collect{|v| v.title }.join(", ") %>
 													</span>
 												<% end %>
 
@@ -178,7 +177,7 @@
 										
 													<div class="select-row">
 														<%= f.select :variation_id, product_variations_for_select(@product),
-														 		{:prompt => "Select #{@product.product_variations.first.variation_group}"},
+														 		{:prompt => "Select #{@product.available_variations.first.variation_group}"},
 																{:class => 'inner-select2 required', :title => 'select'} %>
 		
 														<span class="arrow">arrow</span>

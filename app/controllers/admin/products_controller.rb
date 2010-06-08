@@ -182,6 +182,8 @@ class Admin::ProductsController < Admin::AdminController
       eo_js
     
       page << js_copy
+      page << "setup_price_calcs();"
+      #page << "setupFileFields();"
     end
   end #end method add_variation
   
@@ -197,7 +199,9 @@ class Admin::ProductsController < Admin::AdminController
   
   
   def scrub_multi_model_params
-    return unless params[:product][:product_variation_attributes]
+    return unless params[:product] && params[:product][:product_variation_attributes]
+    return unless params[:product_packages] && params[:product_packages][:product_variation_package_attributes]
+    
     params[:product][:product_variation_attributes].each do |key, values|
       values.first[:product_package_attributes] = params[:product_packages][:product_variation_package_attributes][key]
     end
@@ -224,6 +228,14 @@ class Admin::ProductsController < Admin::AdminController
   
   def variations
     @product = Product.find(params[:id])
+    
+    if @product.product_variations.empty?
+      v = @product.product_variations.build
+      v.product_number = ProductVariation.create_product_number
+      v.title = "default"
+      pack = v.product_packages.build
+    end
+    
   end #end method variations
   
   
@@ -254,7 +266,7 @@ class Admin::ProductsController < Admin::AdminController
   # GET /products
   # GET /products.xml
   def index
-    @products = Product.find(:all).paginate :per_page => 10, :page => params[:page]
+    @products = Product.find(:all, :order => 'product_name asc').paginate :per_page => 10, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb
@@ -314,6 +326,8 @@ class Admin::ProductsController < Admin::AdminController
   # PUT /products/1
   # PUT /products/1.xml
   def update
+    
+    #raise "test"
     
     #kill any non-unique product sub-categories
     if params[:product][:subcategory_ids]

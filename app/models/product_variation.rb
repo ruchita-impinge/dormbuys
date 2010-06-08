@@ -12,8 +12,26 @@ class ProductVariation < ActiveRecord::Base
   has_and_belongs_to_many :quantity_discounts
   
   validates_uniqueness_of :product_number
-  validates_presence_of :title, :qty_on_hand, :qty_on_hold, :reorder_qty, :product_number,
-    :wh_row, :wh_bay, :wh_shelf, :wh_product
+  validates_presence_of :title, :qty_on_hand, :qty_on_hold, :reorder_qty, :product_number
+  validates_presence_of :wh_row, :wh_bay, :wh_shelf, :wh_product, :unless => :drop_ship_product?
+  
+  has_attached_file :image, 
+    :styles => {
+      :large => ["500x500#", :jpg],
+      :main => ["277x277#", :jpg],
+      :thumb => ["50x50#", :jpg]
+    },
+    :default_style => :thumb,
+    :storage => :s3,
+    :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+    :path => ":class/:attachment/:id/:style_:basename.:extension"
+    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
+    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
+  
+  validates_attachment_presence :image
+  validates_attachment_content_type :image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']
+  validates_attachment_size :image, :less_than => 1.megabytes, :message => "can't be more than 1MB"
+    
   
   composed_of :wholesale_price, 
     :class_name => "Money", 
@@ -40,9 +58,20 @@ class ProductVariation < ActiveRecord::Base
     :mapping => %w(int_list_price cents),
     :converter => Proc.new {|amount| amount.to_money }
 
+
+  def validate
+    unless self.product.drop_ship
+      self.errors.add_to_base("At least one product package is required") if self.product_packages.empty?
+    end
+  end #end method validate
+
   def should_destroy?
     should_destroy.to_i == 1
   end #end method should_destroy?
+  
+  def drop_ship_product?
+    self.product.drop_ship
+  end #end method drop_ship_product?
   
   #depreciated method
   def fixed_shipping

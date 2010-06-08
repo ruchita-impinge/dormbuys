@@ -30,10 +30,15 @@
 
 				<% for product in @products %>
 			  		<tr>
-			    		<td><%=h product.product_name %></td>
-			    		<td class="center"><%=h product.visible %></td>
-						<td class="center"> -- </td>
-						<td class="center"> -- </td>
+			    		<td>
+							<%=h product.product_name %>
+							<% if product.available_variations.empty? %>
+								<br /><small class="field_error">No available variations</small>
+							<% end %>
+						</td>
+			    		<td class="center"><%= product.visible ? "YES" : "<span class='field_error'>NO</span>" %></td>
+						<td class="center"> <%= product.product_variations.size %> </td>
+						<td class="center"> <%= product.retail_price %> </td>
 						<td class="center"><%= link_to 'View', admin_product_path(product), :class => "tbl_lnk_show" %></td>
 			    		<td class="center"><%= link_to 'Edit', edit_admin_product_path(product), :class => "tbl_lnk_edit" %></td>
 			    		<td class="center"><%= link_to 'Delete', admin_product_path(product), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>

@@ -179,7 +179,15 @@
 	
 	<div class="std_box_content">
 		
-		<h3>Nothing to show here yet</h3>
+		<div class="std_box_content_wrapper">
+			<ul>
+				<% for product in @vendor.products %>
+					<li>
+						<%= link_to product.product_name, admin_product_path(product) %>
+					</li>
+				<% end %>
+			</ul>
+		</div>
 		
 	</div><!-- end .std_box_content -->
 	

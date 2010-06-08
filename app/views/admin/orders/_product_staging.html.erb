@@ -20,7 +20,7 @@
 			<input type="hidden" value="<%= @product.product_variations.first.id %>" name="product[variation_id]" />
 		<% else %>
 			<div class="field">
-				<%= select_product_variations(@product, "product[variation_id]", nil) %>
+				<%= select_product_variations(@product, "product[variation_id]", nil, true) %>
 				<label><%= @product.product_variations.first.variation_group %></label>
 			</div>
 		<% end %>

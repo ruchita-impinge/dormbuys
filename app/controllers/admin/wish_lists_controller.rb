@@ -11,7 +11,7 @@ class Admin::WishListsController < Admin::AdminController
       '%' + product_name.downcase + '%'], 
       :order => "#{params[:method]} ASC",
       :limit => 10)
-    @variations = @products.collect {|p| p.product_variations }.flatten
+    @variations = @products.collect {|p| p.available_variations }.flatten
 
     render :partial => 'auto_complete_list', :object => @variations
   end

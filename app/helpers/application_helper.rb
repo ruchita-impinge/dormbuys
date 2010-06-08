@@ -161,9 +161,10 @@ module ApplicationHelper
   
   
   
-  def select_product_variations(product, name, selected)
+  def select_product_variations(product, name, selected, for_admin=false)
     out = %(<select name="#{name}">)
-    out += %(<option value="">Select #{product.product_variations.first.variation_group}...</option>)
+    out += %(<option value="">Select #{product.available_variations.first.variation_group}...</option>) unless for_admin
+    out += %(<option value="">Select #{product.product_variations.first.variation_group}...</option>) if for_admin
     for variation in product.product_variations
       out += %(<option value="#{variation.id}"#{' selected' if variation.id == selected}>
         #{variation.title}

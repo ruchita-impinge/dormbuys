@@ -52,7 +52,7 @@
 									
 										<div class="select-row">
 											<%= f.select :variation_id, product_variations_for_select(@product),
-											 		{:prompt => "Select #{@product.product_variations.first.variation_group}"},
+											 		{:prompt => "Select #{@product.available_variations.first.variation_group}"},
 													{:class => 'inner-select2 required', :title => 'select'} %>
 	
 											<span class="arrow">arrow</span>

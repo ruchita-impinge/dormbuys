@@ -47,20 +47,22 @@
 			<%= v.label :variation_group, nil, :for => "#{pre}__variation_group" %>
 		</div>
 		
-		<div class="field short">
+		<div class="field shorter">
 			<%= v.text_field :product_number, :class => 'textfield product_number' %>
 			<%= v.label :product_number, nil, :for => "#{pre}__product_number" %>
 		</div>
 		
-		<div class="field short">
+		<div class="field shorter">
 			<%= v.text_field :manufacturer_number, :class => 'textfield manufacturer_number' %>
 			<%= v.label :manufacturer_number, nil, :for => "#{pre}__manufacturer_number" %>
 		</div>
 		
 		
-		<div class="field check">
-			<%= v.check_box :visible, :class => 'check visible' %>
+		<div class="field shorter">
+			
+			<%= v.select :visible, [["Yes", 1], ["No", 0]].collect {|x| [x.first, x.last]} %>
 			<%= v.label :visible %>
+
 		</div>
 		<div class="clear"></div>
 		
@@ -71,6 +73,8 @@
 
 		<div class="clear"></div>
 		
+
+		
 		<h4>Prices</h4>
 		<div class="field shorter">
 			<%= v.text_field :wholesale_price, :class => 'textfield wholesale_price' %>
@@ -79,7 +83,7 @@
 		
 		<div class="field shorter">
 			<%= v.text_field :freight_in_price, :class => 'textfield freight_in_price' %>
-			<%= v.label :freight_in_price, nil, :for => "#{pre}__freight_in_price" %>
+			<%= v.label :freight_in_price, "Inbound Freight Cost", :for => "#{pre}__freight_in_price" %>
 		</div>
 		
 		<div class="field shorter">
@@ -105,19 +109,19 @@
 		</div>
 		
 		<div class="field shorter">
-			<h5>Total Wholesale: <%= product_variation.total_wholesale_price %></h5>
+			<h5>Total Wholesale: <span class="total_wholesale_price"><%= product_variation.total_wholesale_price %></span></h5>
 		</div>
 		
 		<div class="field shorter">
-			<h5>Retail Price: <%= product_variation.retail_price %></h5>
+			<h5>Retail Price: <span class="retail_price"><%= product_variation.retail_price %></span></h5>
 		</div>
 		
 		<div class="field shorter">
-			<h5>Total Retail: <%= product_variation.total_retail_price %></h5>
+			<h5>Total Retail: <span class="total_retail_price"><%= product_variation.total_retail_price %></span></h5>
 		</div>
 		
 		<div class="field shorter">
-			<h5>Rounded Retail: <%= product_variation.rounded_retail_price %></h5>
+			<h5>Rounded Retail: <span class="rounded_retail_price"><%= product_variation.rounded_retail_price %></span></h5>
 		</div>
 		
 		
@@ -164,7 +168,21 @@
 	    </div>
 
 		
+		<h4>Variation Image</h4>
 		
+		<div class="field">
+			<%= v.file_field :image, :class => "textfield file_field" %>
+			<%= v.label :image %>
+		</div>
+		
+		<% if product_variation.image.file? %>
+			<div class="field">
+				<%= link_to image_tag(product_variation.image(:thumb), :class => 'product_image_preview'),
+				 	product_variation.image(:large), :target => "_blank" %>
+			</div>
+		<% end %>
+		
+		<div class="clear"></div>
 		
 		
 	<% end %>

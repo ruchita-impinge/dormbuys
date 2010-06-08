@@ -53,9 +53,27 @@ class FrontController < ApplicationController
       return
     end
     
+    if @product.available_variations.empty?
+      flash[:error] = "This product is currently unavailable"
+      redirect_to root_path
+    end
+    
     @subcategory = @product.subcategories.first
     @category = @subcategory.category
     @page_title = @product.product_name
+    
+    
+    @additional_images = []
+    @product.additional_product_images.each do |aimg|
+      @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description}
+    end
+    
+    @product.available_variations.each do |v|
+      if v.image.file?
+        @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title}
+      end
+    end
+    
     
     @recommended_products = @product.recommended_products
     render :layout => "front_large_banner"
@@ -64,8 +82,10 @@ class FrontController < ApplicationController
   
   
   def search
-
-    @products = Product.all(:conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"]).paginate :per_page => 12, :page => params[:page]
+    @page_title = "Search"
+    found_products = Product.all(:conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"])
+    parsed_products = found_products.reject {|p| p if p.available_variations.empty? }
+    @products = parsed_products.paginate :per_page => 12, :page => params[:page]
     render :layout => "search"
     
   end #end method search

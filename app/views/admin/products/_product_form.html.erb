@@ -13,7 +13,7 @@
 
 
 	<div class="field">
-		<%= f.select :vendor_ids, Vendor.all.collect{|v| [v.company_name, v.id]},
+		<%= f.select :vendor_ids, Vendor.all(:order => "company_name ASC").collect{|v| [v.company_name, v.id]},
 				{
 					:selected => @product.vendor_ids.first,
 					:prompt => "Select Vendor..."
@@ -24,7 +24,7 @@
 	
 	
 	<div class="field">
-		<%= f.select :warehouse_ids, Warehouse.all.collect{|w| [w.name, w.id]},
+		<%= f.select :warehouse_ids, Warehouse.all(:order => "name ASC").collect{|w| [w.name, w.id]},
 				{
 					:selected => @product.warehouse_ids.first,
 					:prompt => "Select Warehouse..."

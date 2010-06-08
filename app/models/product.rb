@@ -77,11 +77,15 @@ class Product < ActiveRecord::Base
     
     
   def retail_price
-    self.product_variations.sort {|a,b| a.rounded_retail_price <=> b.rounded_retail_price }.first.rounded_retail_price
+    begin
+      self.available_variations.sort {|a,b| a.rounded_retail_price <=> b.rounded_retail_price }.first.rounded_retail_price
+    rescue
+      "123456.78".to_money
+    end
   end #end method retail_price
   
   def list_price
-    self.product_variations.sort {|a,b| a.list_price <=> b.list_price }.first.list_price
+    self.sort {|a,b| a.list_price <=> b.list_price }.first.list_price
   end #end method list_price
   
 
@@ -219,7 +223,7 @@ class Product < ActiveRecord::Base
       result = true if product_as_options.first.product_as_option_values.size > 0
     end
     
-    result = true if product_variations.size > 1
+    result = true if available_variations.size > 1
     
     result
   end #end method has_options?

@@ -1,3 +1,122 @@
+<% content_for :head do %>
+	<% javascript_tag do %>
+		$(document).ready(function(){
+			
+			setup_price_calcs();
+			
+		});//end ready
+		
+		
+		function setup_price_calcs()
+		{
+			$(".wholesale_price, .freight_in_price, .drop_ship_fee, .shipping_in_price, .markup").unbind("blur");
+			$(".wholesale_price, .freight_in_price, .drop_ship_fee, .shipping_in_price, .markup").blur(function(){
+				
+				calculate_variation_prices(this);
+				
+			});//end blur
+			
+		}//end function
+		
+		
+		function calculate_variation_prices(e)
+		{
+			
+			//console.log("calculate_variation_prices");
+			
+			//get prices to do calcs on
+			var wholesale_price = Number($(e).parents(".variation").contents().find(".wholesale_price").val());
+			var freight_in_price = Number($(e).parents(".variation").contents().find(".freight_in_price").val());
+			var drop_ship_fee = Number($(e).parents(".variation").contents().find(".drop_ship_fee").val());
+			var shipping_in_price = Number($(e).parents(".variation").contents().find(".shipping_in_price").val());
+			var markup = Number($(e).parents(".variation").contents().find(".markup").val());
+			
+			//console.log("WP: " + wholesale_price);
+			//console.log("FIP: " + freight_in_price);
+			//console.log("DSF: " + drop_ship_fee);
+			//console.log("SIP: " + shipping_in_price);
+			//console.log("MU: " + markup);
+			
+			//get objects we'll set calculated values into
+			$total_wholesale_price = $(e).parents(".variation").contents().find(".total_wholesale_price");
+			$retail_price = $(e).parents(".variation").contents().find(".retail_price");
+			$total_retail_price = $(e).parents(".variation").contents().find(".total_retail_price");
+			$rounded_retail_price = $(e).parents(".variation").contents().find(".rounded_retail_price");
+			
+			
+			var calc_total_wholesale_price = (wholesale_price + freight_in_price + drop_ship_fee);
+			
+			var calc_markup = ((markup >= 1)? (markup / 100.0) : markup);
+			var calc_retail_price = calc_total_wholesale_price / (1.0 - calc_markup);
+			
+			var calc_total_retail_price = calc_retail_price + shipping_in_price;
+
+			
+			var calc_rounded_retail_price;
+			
+			if(calc_total_retail_price <= 0)
+			{
+				calc_rounded_retail_price = 0;
+			
+			} else {
+				
+				var tr_cents_arr = formatCurrency(calc_total_retail_price).split(".");
+				var tr_cents = Number(tr_cents_arr[tr_cents_arr.length-1]);
+				
+				var adj_cents = 0;
+				var adj_cents_str = "";
+				
+				
+				if(tr_cents <= 49){
+					
+					adj_cents = 49 - tr_cents;
+					
+				} else if(tr_cents <= 99){
+					
+					adj_cents = 99 - tr_cents;
+					
+				}
+				
+				
+				if(adj_cents < 10){
+					
+					adj_cents_str = "0.0" + String(adj_cents);
+					
+				} else {
+					
+					adj_cents_str = "0." + String(adj_cents);
+					
+				}
+				
+				
+				calc_rounded_retail_price = calc_total_retail_price + Number(adj_cents_str);
+				
+			}//end if-else on calc_rounded_retail_price
+
+			
+			
+			//set the vars
+			var set_total_wholesale_price = formatCurrency(calc_total_wholesale_price);
+			var set_retail_price = formatCurrency(calc_retail_price);
+			var set_total_retail_price = formatCurrency(calc_total_retail_price);
+			var set_rounded_retail_price = formatCurrency(calc_rounded_retail_price);
+			
+			//console.log("calc TWP: " + set_total_wholesale_price);
+			//console.log("calc RP: " + set_retail_price);
+			//console.log("calc TRP: " + set_total_retail_price);
+			//console.log("calc RRP: " + set_rounded_retail_price);
+			
+			$total_wholesale_price.text(set_total_wholesale_price);
+			$retail_price.text(set_retail_price);
+			$total_retail_price.text(set_total_retail_price);
+			$rounded_retail_price.text(set_rounded_retail_price);
+
+		}//end function
+		
+	<% end %>
+<% end %>
+
+
 <% content_for :full_width_top do %>
 	<%= render "shared/admin_main_nav" %>
 <% end %>
@@ -11,7 +130,7 @@
 		
 		<%= render "product_menu" %>
 		
-		<% form_for([:admin, @product]) do |f| %>
+		<% form_for([:admin, @product], :html => {:multipart => true}) do |f| %>
 		  <%= f.error_messages %>
 
 		<fieldset id="fieldset_variations">

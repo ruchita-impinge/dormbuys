@@ -70,7 +70,7 @@ class Subcategory < ActiveRecord::Base
   
   def visible_products
     products = self.products.find(:all, :conditions => {:visible => true})
-    products.reject {|p| p if p.product_variations.size == 1 && p.product_variations.first.qty_on_hand <= 0 }
+    products.reject {|p| p if p.available_variations.empty? }
   end #end method visible_products
   
   
