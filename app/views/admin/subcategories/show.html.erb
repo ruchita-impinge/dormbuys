@@ -28,22 +28,31 @@
 
 						<p>
 			  <b>Category:</b>
-			  <%=h @subcategory.category_id %>
+			  <%=h @subcategory.category.name %>
 			</p>
 
 						<p>
 			  <b>Parent:</b>
-			  <%=h @subcategory.parent_id %>
+			  <%= @subcategory.parent ? @subcategory.parent.name : 'None' %>
+			</p>
+
+			<p>
+				<b>Products:</b> <%= @subcategory.products.count %>
 			</p>
 
 						<p>
 			  <b>Visible:</b>
-			  <%=h @subcategory.visible %>
+			  <%=h @subcategory.visible ? "Yes" : "No" %>
 			</p>
 
 						<p>
 			  <b>Display order:</b>
 			  <%=h @subcategory.display_order %>
+			</p>
+			
+			<p>
+				<b>Image:</b><br />
+				<%= image_tag(@subcategory.list_image(:original)) %>
 			</p>
 
 					
