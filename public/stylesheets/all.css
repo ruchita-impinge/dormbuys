@@ -480,6 +480,10 @@ h1 a {
 	width:100%;
 	overflow:hidden;
 	background:#455a21;
+	min-height: 30px;
+}
+* html #main .featured-products .pager ul .title {
+	height: 30px;
 }
 #main .featured-products .pager ul .title h2 {
 	margin:6px 0 4px;
@@ -496,7 +500,7 @@ h1 a {
 }
 #main .featured-products .pager ul .title h3 {
 	margin:0;
-	line-height:24px;
+	line-height:15px;
 	text-align:center;
 	font-size:10px;
 	color:#fff;

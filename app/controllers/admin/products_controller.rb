@@ -289,6 +289,7 @@ class Admin::ProductsController < Admin::AdminController
   # GET /products/new.xml
   def new
     @product = Product.new
+    @product.warehouse_ids  = [3631]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -340,7 +341,7 @@ class Admin::ProductsController < Admin::AdminController
     if params[:end_action]
       go_to = {:action => params[:end_action].to_sym, :id => @product }
     else
-      go_to = admin_products_path
+      go_to = edit_admin_product_path(@product)
     end
 
     respond_to do |format|

@@ -217,7 +217,7 @@
 												<div class="input-row">
 													<label for="qty">Qty:</label>
 											
-													<%= f.text_field :qty, :id => 'qty', :class => 'required' %>
+													<%= f.text_field :qty, :id => 'qty', :class => 'required', :value => "1" %>
 													<%= f.hidden_field :is_gift_registry_item, :value => 0, :id => "is_gift_registry_item" %>
 													<%= f.hidden_field :is_wish_list_item, :value => 0, :id => "is_wish_list_item" %>
 											

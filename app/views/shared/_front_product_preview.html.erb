@@ -1,6 +1,6 @@
 <li>
 	<div class="title">
-		<h3><%= truncate(product.product_name, :length => 25) %></h3>
+		<h3><%=h product.product_name %></h3>
 	</div>
 	<div class="text">
 		<%= link_to image_tag(product.product_image(:list), :alt => product.product_name), 
