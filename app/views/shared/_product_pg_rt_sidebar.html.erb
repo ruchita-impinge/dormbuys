@@ -14,7 +14,7 @@
 				<a class="open" href="#lightbox<%= rproduct.id %>">
 				-->
 				<a class="" href="<%= rproduct.default_front_url %>">
-					<%= image_tag rproduct.product_image(:recommended), :alt => strip_tags(rproduct.product_name) %>
+					<%= image_tag rproduct.product_image(:list), :alt => strip_tags(rproduct.product_name) %>
 				</a>
 				<p><%= truncate(rproduct.product_overview, :length => 130) %></p>
 				<strong class="price"><em>our price:</em> $<%= rproduct.retail_price %></strong>
