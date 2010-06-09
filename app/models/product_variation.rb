@@ -25,13 +25,14 @@ class ProductVariation < ActiveRecord::Base
     :storage => :s3,
     :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
     :path => ":class/:attachment/:id/:style_:basename.:extension"
-    #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
-    #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
-  validates_attachment_presence :image
-  validates_attachment_content_type :image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png']
-  validates_attachment_size :image, :less_than => 1.megabytes, :message => "can't be more than 1MB"
+  #validates_attachment_presence :image
+  validates_attachment_content_type :image, :content_type => ['image/pjpeg', 'image/jpeg', 'image/jpg', 'image/gif', 'image/png'], :if => :has_image?
+  validates_attachment_size :image, :less_than => 1.megabytes, :message => "can't be more than 1MB", :if => :has_image?
     
+  def has_image?
+    self.image.file?
+  end #end method has_image?
   
   composed_of :wholesale_price, 
     :class_name => "Money", 
