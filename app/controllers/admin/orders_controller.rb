@@ -151,6 +151,11 @@ class Admin::OrdersController < Admin::AdminController
   end
 
 
+  def inline_order_list
+    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 50, :page => params[:page]
+    render :partial => "orders_list", :layout => false and return
+  end #end method inline_order_list
+
 
   def show
     @order = Order.find(params[:id])

@@ -12,8 +12,16 @@ class ShippingLabel < ActiveRecord::Base
   
   def label_url
     # "#{APP_CONFIG['filesystem']['web_labels_path']}/#{self.label}"
-    self.label
+    self.html_url
   end #end method label_url
+  
+  def graphic_url
+    self.label.gsub("#{self.tracking_number}.html", "label#{self.tracking_number}.gif")
+  end #end method graphic_url
+  
+  def html_url
+    self.label
+  end #end method html_url
   
   ##
   # Function to handle the deletion of the physical file from the filesystem before deleting the 

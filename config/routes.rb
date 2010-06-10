@@ -50,6 +50,7 @@ ActionController::Routing::Routes.draw do |map|
   map.notify_dropship_admin_order '/admin/orders/:id/notify_dropship', :controller => 'admin/orders', :action => 'notify_dropship'
   map.apply_credit_admin_order '/admin/orders/:id/apply_credit', :controller => 'admin/orders', :action => 'apply_credit'
   map.packing_list_admin_order '/admin/orders/:id/packing_list', :controller => 'admin/orders', :action => 'packing_list'
+  map.inline_order_list '/admin/orders/inline_order_list', :controller => "admin/orders", :action => "inline_order_list"
   
   map.admin_vendors_search '/admin/vendors/search', :controller => 'admin/vendors', :action => 'search'
   map.admin_giftcard_search '/admin/gift_cards/search', :controller => 'admin/gift_cards', :action => 'search'
@@ -110,7 +111,7 @@ ActionController::Routing::Routes.draw do |map|
   map.shipping '/shipping', :controller => 'front', :action => 'shipping'
   map.faq '/faq', :controller => 'front', :action => 'faq'
   map.email_list_signup '/email_list_signup', :controller => 'front', :action => 'email_list_signup'
-  map.data_feeds '/shop/data_feeds', :controller => 'third_party_feeds', :action => 'data_feeds'
+  map.data_feeds '/shop/data_feeds/:id', :controller => 'third_party_feeds', :action => 'data_feeds'
   
   #learn_more URLS
   map.learn_not_assigned '/learn_more/not_assigned', :controller => "learn_more", :action =>"not_assigned"

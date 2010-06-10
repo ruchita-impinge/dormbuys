@@ -13,24 +13,24 @@ class ThirdPartyFeedsController < ApplicationController
 
         for product in @products
             name = product.product_name
-            deeplink = "http://www.dormbuys.com/shop/product/#{product.id}"
+            deeplink = "http://www.dormbuys.com#{product.default_front_url}"
             category = product.subcategories.collect{|sub| sub.category.name}.first
-            price = product.our_price.to_s
+            price = product.retail_price.to_s
             product_id = product.id
             description = product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "").gsub(/”/, '"').gsub(/"/, '""')
             begin
-              image_url = "http://www.dormbuys.com" + product.main_image
+              image_url = product.product_image(:main)
             rescue
               image_url = "http://www.dormbuys.com"
             end
             begin
-              thumbnail_image_URL = "http://www.dormbuys.com" + product.main_image_thumb
+              thumbnail_image_URL = product.product_image(:thumb)
             rescue
               thumbnail_image_URL = "http://www.dormbuys.com"
             end
             delivery_time = "varies by location"
             delivery_cost = "varies by location"
-            related_product_ids = product.cross_sell_products.collect{|p| p.id}.join("|")
+            related_product_ids = product.recommended_products.collect{|p| p.id}.join("|")
           
             output += %("#{name}","#{deeplink}","#{category}","#{price}","#{product_id}","#{description}","#{image_url}","#{thumbnail_image_URL}","#{delivery_time}","#{delivery_cost}","#{related_product_ids}"\n)
         end
@@ -48,7 +48,7 @@ class ThirdPartyFeedsController < ApplicationController
         for slabel in order.shipping_labels
           labelXML += %(<label>)
             labelXML += %(<trackingNumber>#{slabel.tracking_number}</trackingNumber>)
-            labelXML += %(<labelUrl>http://www.dormbuys.com#{slabel.label_path}</labelUrl>)
+            labelXML += %(<labelUrl>http://www.dormbuys.com#{slabel.graphic_url}</labelUrl>)
           labelXML += %(</label>)
         end
         

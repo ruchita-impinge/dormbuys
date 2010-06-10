@@ -1,0 +1,37 @@
+<% if @orders.empty? %>
+	
+	<h3>No orders were found</h3>
+
+<% else %>
+
+	<table class="std_box_table">
+		<thead>
+	  		<tr>
+	    		<th>Order #</th>
+	    		<th class="center">Date</th>
+	    		<th class="center">Status</th>
+	    		<th class="right">Total</th>
+				<th class="center">Notes</th>
+				<th colspan="2" class="center">Manage</th>
+	  		</tr>
+		</thead>
+		<tbody>
+
+		<% for order in @orders %>
+	  		<tr class="<%= order_row_css(order) %>">
+	    		<td><%=h order.order_id %></td>
+	    		<td class="center"><%=h order.order_date.to_time.to_s(:friendly) %></td>
+	    		<td class="center"><%=h order.status_text %></td>
+	    		<td class="right"><%=h order.grand_total %></td>
+				<td class="center">
+					<%= get_note_icons(order) %>
+				</td>
+				<td class="center"><%= link_to 'Process', "#", :class => "tbl_lnk_show" %></td>
+	    		<td class="center"><%= link_to 'Manage', edit_admin_order_path(order), :class => "tbl_lnk_edit" %></td>
+	  		</tr>
+	<% end %>
+
+		</tbody>
+	</table>
+
+<% end %>
