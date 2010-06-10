@@ -219,6 +219,11 @@ function initTabsAccord() {
 			_opener.click(function(){
 				_cat.hide();
 				_quest.show();
+				if($(this).hasClass("ui-state-default"))
+				{
+					_cat.show();
+					_quest.hide();
+				}
 				_links.filter('.active').each(function(){
 					$($(this).removeClass('active').attr('href')).hide();
 				});

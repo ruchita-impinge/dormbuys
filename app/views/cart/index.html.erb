@@ -208,7 +208,9 @@
 														<label for="id3">Next Bus Day:</label>
 													</div>
 													-->
-													<em class="learn-more"><a href="#">Learn more</a> about shipping options</em>
+													<em class="learn-more">
+														<%= link_to "Learn more", shipping_path, :target => "_blank" %> about shipping options
+													</em>
 												</div>
 											</div>
 											<div class="sep-box">
@@ -224,8 +226,12 @@
 													 		cart_billing_shipping_path, :class => 'box-submit' %>
 												<% end %>
 												<ul class="link-list">
-													<li><a href="#">Return Policy</a></li>
-													<li><a href="#">Credit Card Safeguard</a></li>
+													<li>
+														<%= link_to "Return Policy", returns_path, :target => "_blank" %>
+													</li>
+													<li>
+														<%= link_to "Credit Card Safeguard", learn_secure_shopping_path, :id => "learn_more_secure" %>
+													</li>
 												</ul>
 											</div>
 										</fieldset>

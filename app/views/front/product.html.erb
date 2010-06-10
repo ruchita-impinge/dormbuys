@@ -201,13 +201,15 @@
 
 												<!-- Product AS Options Selection -->
 												<% if @product.product_as_options.size > 0 %>
-													<% for pao in @product.product_as_options %>
+													<% if @product.product_as_options.collect{|pao| pao.product_as_option_values }.flatten.size > 0 %>
+														<% for pao in @product.product_as_options %>
 
-														<div class="select-row">
-															<%= select_product_as_options(pao, "cart_item[product_as_option_values][][id]", nil) %>
-															<span class="arrow">arrow</span>
-														</div>
+															<div class="select-row">
+																<%= select_product_as_options(pao, "cart_item[product_as_option_values][][id]", nil) %>
+																<span class="arrow">arrow</span>
+															</div>
 
+														<% end %>
 													<% end %>
 												<% end %>
 
