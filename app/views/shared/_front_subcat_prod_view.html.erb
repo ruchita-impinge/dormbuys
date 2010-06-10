@@ -34,6 +34,9 @@
 		</div>
 	</div>
 	<div class="pager-hold">
-		<%= will_paginate(@products) %>
+		<%= link_to "View All", "?view_all=1", :class => 'view_all' %>
+		<% unless params[:view_all] %>
+			<%= will_paginate(@products) %>
+		<% end %>
 	</div>
 </div>

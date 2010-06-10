@@ -158,7 +158,6 @@ ActionController::Routing::Routes.draw do |map|
   map.logout '/logout', :controller => 'account', :action => 'logout'
   map.login '/login', :controller => 'account', :action => 'login'
 
-  map.resource :session
   
   
   #TEMPORARY named routes
@@ -168,6 +167,8 @@ ActionController::Routing::Routes.draw do |map|
   map.sale '/sale', :controller => "front", :action => "subcategory", :subcategory_permalink_handle => "sale"
   
   
+  #legacy URL
+  map.legacy '/shop/product/:old_site_product_id', :controller => "front", :action => "product"
   
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -194,6 +195,8 @@ ActionController::Routing::Routes.draw do |map|
   #     products.resources :comments
   #     products.resources :sales, :collection => { :recent => :get }
   #   end
+
+  map.resource :session
 
   # Sample resource route within a namespace:
   map.namespace :admin do |admin|

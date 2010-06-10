@@ -21,6 +21,15 @@ class AccountController < ApplicationController
   
   
   def login
+    
+    if logged_in?
+      if current_user.has_role?("admin")
+        redirect_to(admin_products_path) and return
+      else
+        redirect_to(account_path) and return
+      end
+    end
+    
     @page_title = "Account Login"
     @user = User.new
   end #end method login

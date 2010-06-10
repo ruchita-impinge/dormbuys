@@ -5,7 +5,8 @@ class FrontController < ApplicationController
     @page_title = "Home"
     
     if RAILS_ENV == "development"
-      @featured_products = Product.all(:limit => 10)
+      @featured_products = Product.all(:limit => 20)
+      @featured_products.reject!{|p| p if p.available_variations.empty? }
     else
       @featured_products = Product.random_featured_products(10)
     end
@@ -41,7 +42,12 @@ class FrontController < ApplicationController
     end
     
     @category = @subcategory.category
-    @products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
+    
+    if params[:view_all]
+      @products = @subcategory.visible_products
+    else
+      @products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
+    end
     
     @page_title = @subcategory.name
     render :layout => "front_large_banner"
@@ -51,7 +57,12 @@ class FrontController < ApplicationController
 
 
   def product
-    @product = Product.find_by_permalink_handle(params[:product_permalink_handle])
+    
+    if params[:old_site_product_id]
+      @product = Product.find(params[:old_site_product_id])
+    else
+      @product = Product.find_by_permalink_handle(params[:product_permalink_handle])
+    end
     
     if @product.blank?
       flash[:error] = "Product was not found"

@@ -108,7 +108,7 @@ h1 a {
 	float:none;
 	position:absolute;
 	top:63px;
-	left:421px;
+	left:410px;
 	margin:0;
 	height:auto;
 	font-size:9px;
@@ -790,6 +790,9 @@ h1 a {
 	float:right;
 	font-size:9px;
 	color:#9c9c9c;
+	position: absolute;
+	bottom: 15px;
+	right: 15px;
 }
 #main .gallery-box ul li .text em span {
 	font-size:14px;
@@ -5170,4 +5173,24 @@ a.additional_image img{
 	position: absolute;
 	right: 84px;
 	bottom: 90px;
+}
+a.view_all{
+	float: right;
+}
+.pagination span.current{
+	color: #fff;
+}
+.card-list li{
+	display: block;
+	float: left;
+	margin: 0px 5px;
+}
+.card-list li.scanalert{
+	margin-top: 18px;
+}
+.card-list li.bbb{
+	margin-top: 0px;
+}
+.card-list li.auth{
+	margin-top: 5px;
 }

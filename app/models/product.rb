@@ -51,7 +51,11 @@ class Product < ActiveRecord::Base
   
   
   def default_front_url
-    @handle ||= "/college/#{self.subcategories.first.category.permalink_handle}/#{self.subcategories.first.permalink_handle}/#{self.permalink_handle}"
+    begin
+      @handle ||= "/college/#{self.subcategories.first.category.permalink_handle}/#{self.subcategories.first.permalink_handle}/#{self.permalink_handle}"
+    rescue
+      @handle = "/NO-SUBCAT-ERROR"
+    end
     @handle
   end #end method default_front_url
   
@@ -249,7 +253,7 @@ class Product < ActiveRecord::Base
     subs_group = cat.subcategories.reject {|s| s if s == sub}
     subs_group << sub if subs_group.empty? #do this if the cat only has 1 sub anyway
     
-    products = subs_group.collect {|s| s.products }.flatten
+    products = subs_group.collect {|s| s.visible_products }.flatten
     
     
     #start w/ 1 initial random number
@@ -284,6 +288,7 @@ class Product < ActiveRecord::Base
         product_variations pv
       WHERE
         pv.qty_on_hand > 0
+        AND pv.visible = 1
         AND p.featured_item = 1
         AND pv.product_id = p.id
       )

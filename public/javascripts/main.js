@@ -72,6 +72,7 @@ function initTabs()
 							}
 							this.className += " active";
 							c.style.display = "block";
+							$("#" + c.id + " .list").css("margin-top", (($("#" + c.id).height() - $("#" + c.id + " .list").height()) / 2) + "px");
 							return false;
 						}
 					}
