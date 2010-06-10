@@ -34,6 +34,7 @@ class ProductVariation < ActiveRecord::Base
     self.image.file?
   end #end method has_image?
   
+  
   composed_of :wholesale_price, 
     :class_name => "Money", 
     :mapping => %w(int_wholesale_price cents),

@@ -258,7 +258,8 @@ h1 a {
 }
 #main .nav ul a em {
 	float:left;
-	padding:9px 9px 7px 12px;
+	/*padding:9px 11px 7px 14px;*/
+	padding:9px 7px 7px 10px;
 	font-style:normal;
 	text-transform: uppercase;
 }

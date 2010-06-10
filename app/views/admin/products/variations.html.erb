@@ -161,5 +161,25 @@
 </div><!-- end .std_box -->
 
 
-<%= link_to '<span>Update</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Update</span>', 'javascript:submitVariationForm();', :class => 'button positive' %>
 <%= link_to '<span>Cancel</span>', admin_products_path, :class => 'button negative' %>
+
+
+<% content_for :head do %>
+	<% javascript_tag do %>
+	function submitVariationForm()
+	{
+		$(".variation_image").each(function(){
+			
+			if( $(this).val() != "" )
+			{
+				$(this).prev().remove();
+			}
+			
+		});//end each
+		
+		document.forms[0].submit();
+		
+	}//end function
+	<% end %>
+<% end %>

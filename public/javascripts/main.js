@@ -27,6 +27,8 @@ else if (window.attachEvent && !window.opera)
 	
 function initTabs()
 {
+	
+
 	var sets = document.getElementsByTagName("div");
 	for (var i = 0; i < sets.length; i++)
 	{

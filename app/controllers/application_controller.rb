@@ -57,8 +57,10 @@ class ApplicationController < ActionController::Base
   private
   
     def authenticate_for_beta
-        authenticate_or_request_with_http_basic do |id, password| 
-            id == BETA_USER_ID && password == BETA_PASSWORD
+        unless RAILS_ENV == "development"
+          authenticate_or_request_with_http_basic do |id, password| 
+              id == BETA_USER_ID && password == BETA_PASSWORD
+          end
         end
      end
   

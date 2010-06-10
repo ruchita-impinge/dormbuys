@@ -183,7 +183,7 @@ class Admin::ProductsController < Admin::AdminController
     
       page << js_copy
       page << "setup_price_calcs();"
-      #page << "setupFileFields();"
+      page << "setupFileFields();"
     end
   end #end method add_variation
   

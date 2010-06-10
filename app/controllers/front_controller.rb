@@ -3,7 +3,13 @@ class FrontController < ApplicationController
 
   def index
     @page_title = "Home"
-    @featured_products = Product.random_featured_products(10)
+    
+    if RAILS_ENV == "development"
+      @featured_products = Product.all(:limit => 10)
+    else
+      @featured_products = Product.random_featured_products(10)
+    end
+    
     render :layout => 'home'
   end #end index
 
