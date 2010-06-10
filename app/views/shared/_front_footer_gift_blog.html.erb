@@ -1,10 +1,13 @@
 <div class="middle-box">
+	<% @post = BlogScrape.latest %>
+	
+	<%= link_to '&nbsp;', @post.link, :target => '_blank', :id => "our_latest_blog_inv" %>
 	
 	<%= link_to 'registry', main_gift_registry_path, :class => 'gift-registry' %>
 	<%= link_to 'cards', buy_gift_card_path, :class => 'gift-cards' %>
 	
 	<div class="latest-blog">
-		<% @post = BlogScrape.latest %>
+		
     	<% @latest_blog_content = %(<span>#{strip_tags(@post.title)}</span> #{strip_tags(@post.description)}) %>
 		<p>
 			<%= truncate(@latest_blog_content, 245) %>

@@ -3,7 +3,8 @@ html, body {
 }
 body{
 	margin:0;
-	font:12px/14px "Trebuchet MS",Arial,Verdana,sans-serif;
+	/*font:12px/14px "Trebuchet MS",Arial,Verdana,sans-serif;*/ 
+	font:12px/14px Arial,Helvetica,Verdana,sans-serif;
 	min-width:960px;
 	background:#fff;
 }
@@ -257,8 +258,9 @@ h1 a {
 }
 #main .nav ul a em {
 	float:left;
-	padding:9px 11px 7px 14px;
+	padding:9px 9px 7px 12px;
 	font-style:normal;
+	text-transform: uppercase;
 }
 #main .nav ul a .l,
 #main .nav ul a .r { display:none;}
@@ -665,7 +667,7 @@ h1 a {
 #main .sub-tabs .drop-box ul li {
 	float:none;
 	background:none;
-	margin:0;
+	margin:0 0 5px 0;
 	padding:0;
 }
 #main .sub-tabs .drop-box ul li a {
@@ -675,6 +677,7 @@ h1 a {
 	width:auto;
 	float:none;
 	color:#797877 !important;
+	line-height: 10px;
 }
 #main .sub-tabs .drop-box ul li a:hover {
 	text-decoration:underline;
@@ -699,7 +702,7 @@ h1 a {
 	height:620px;
 }
 #page .featured-products .gallery-box a.arrow-left {
-	width:11px;
+	width:10px;
 	height:57px;
 	margin:3px 0 0 2px;
 	background:url(../images/arrow-left2.gif) no-repeat;
@@ -817,7 +820,8 @@ h1 a {
 	background:url(../images/separator05.gif) no-repeat 17px 13px;
 	margin:0 18px 6px 0;
 	display:table;
-	width:927px;
+	/*width:927px;*/
+	width: 943px;
 }
 .featured-products .quote-box:after {
 	display:block;
@@ -2547,7 +2551,7 @@ h1 a {
 }
 .order-summary .coupon-code .submit {
 	float:right;
-	margin:-2px -9px 0 0;
+	margin:-4px -9px 0 0;
 	position:relative;
 }
 .order-summary .coupon-discount {
@@ -2986,6 +2990,7 @@ h1 a {
 .detail .text strong span {
 	color:#808080;
 	font-weight:normal;
+	font-size: 13px;
 }
 .detail .text strong em {
 	font-size:10px;
@@ -5156,4 +5161,12 @@ a.additional_image img{
 	background: transparent;
 	border: none;
 	text-indent: -999999px;
+}
+#our_latest_blog_inv{
+	display: block;
+	width: 220px;
+	height: 50px;
+	position: absolute;
+	right: 84px;
+	bottom: 90px;
 }
