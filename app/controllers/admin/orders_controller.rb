@@ -132,7 +132,7 @@ class Admin::OrdersController < Admin::AdminController
             date
           ],
           :order => 'order_date DESC'
-          ).paginate :per_page => 10, :page => params[:page]
+          ).paginate :per_page => 50, :page => params[:page]
     end
     
     render :action => :index
@@ -142,7 +142,7 @@ class Admin::OrdersController < Admin::AdminController
     
 
   def index
-    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 10, :page => params[:page]
+    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 50, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb
