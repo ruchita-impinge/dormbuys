@@ -84,7 +84,7 @@
 																<%= f.password_field :password_confirmation, :class => 'text', :id => 'password2', :title => 'Re-type Password' %>
 																<%= f.label :password_confirmation, 'Re-type Password:', :for => 'password2' %>
 															</div>
-															<%= link_to 'Continue', 'javascript:document.forms["cart_user_signup_frm"].submit();', :class => 'continue-btn' %>
+															<%= link_to 'Continue', "javascript:document.forms['cart_user_signup_frm'].submit();", :class => 'continue-btn' %>
 															<input type="submit" value="Submit" class="hidden" />
 														</fieldset>
 													<% end %>

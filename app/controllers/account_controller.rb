@@ -1,6 +1,6 @@
 class AccountController < ApplicationController
 
-  before_filter :login_required, :except => [:login, :submit_login, :logout]
+  before_filter :login_required, :except => [:login, :submit_login, :logout, :user_signup]
   
   layout 'front_short_banner'
   
@@ -66,6 +66,7 @@ class AccountController < ApplicationController
   
   
   def user_signup
+        
     @page_title = "Account Login"
     @user = User.new(params[:user])
     @user.role_ids = [1]
