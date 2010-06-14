@@ -697,10 +697,10 @@ h1 a {
 	background:url(../images/bg-gallery-hold.gif) repeat-x 0 100%;
 }
 #main .featured-products .inner-gall {
-	min-height:620px;
+	min-height:300px;
 }
 * html #main .featured-products .inner-gall {
-	height:620px;
+	height:300px;
 }
 #page .featured-products .gallery-box a.arrow-left {
 	width:10px;
@@ -1055,7 +1055,7 @@ h1 a {
 	display:block;
 	color:#dfdfdf !important;
 	font-weight:normal;
-	font-size:9px;
+	font-size:10px;
 	line-height:14px;
 }
 .left-tabset ul li a.color1 {
@@ -5183,7 +5183,7 @@ a.view_all{
 .card-list li{
 	display: block;
 	float: left;
-	margin: 0px 5px;
+	margin: 0px;
 }
 .card-list li.scanalert{
 	margin-top: 18px;
@@ -5193,4 +5193,7 @@ a.view_all{
 }
 .card-list li.auth{
 	margin-top: 5px;
+}
+#contact_frm_text{
+	line-height: 15px;
 }
