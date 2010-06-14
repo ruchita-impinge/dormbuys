@@ -60,7 +60,7 @@
 														<dt>Address:</dt>
 														<dd>
 															<%= @user.billing_address %> <br />
-															<% if @user.billing_address2 %>
+															<% unless @user.billing_address2.blank? %>
 																<%= @user.billing_address2 %><br />
 															<% end %>
 															<%= @user.billing_city %>, <%= @user.billing_state.abbreviation %> <%= @user.billing_zipcode %><br />
@@ -98,7 +98,7 @@
 																<%= @user.dorm_ship_college_name %><br />
 															<% end %>
 															<%= @user.shipping_address %> <br />
-															<% if @user.shipping_address2 %>
+															<% unless @user.shipping_address2.blank? %>
 																<% unless @user.dorm_ship_not_part %>
 																	<%= @user.shipping_address2 %><br />
 																<% end %>

@@ -60,7 +60,7 @@ class AccountController < ApplicationController
       note_failed_signin
       @email       = params[:login][:email]
       @remember_me = params[:login][:remember]
-      render :action => 'login'
+      redirect_to login_path
     end
   end #end method submit_login
   

@@ -26,6 +26,7 @@
 				{
 					:order => [:year, :month, :day], 
 					:discard_day => true,
+					:prompt => {:month => "Month", :year => "Year"},
 					:start_year => Date.today.year
 				}, 
 				{:class => 'select-t4 t5'} %>
@@ -34,6 +35,7 @@
 	<div class="input-box">
 		<%= c.select :card_type, 
 				options_for_select([
+					["Visa", "visa"],
 					["Visa", "visa"],
 					["MasterCard", "master"],
 					["Discover/Novus", "discover"],

@@ -222,10 +222,10 @@
 												</div>
 												<% if logged_in? %>
 													<%= link_to "<span>Secure Checkout</span><em>&nbsp;</em>",
-													 		cart_login_path, :class => 'box-submit' %>
+													 		cart_billing_shipping_path, :class => 'box-submit' %>
 												<% else %>
 													<%= link_to "<span>Secure Checkout</span><em>&nbsp;</em>",
-													 		cart_billing_shipping_path, :class => 'box-submit' %>
+													 		cart_login_path, :class => 'box-submit' %>
 												<% end %>
 												<ul class="link-list">
 													<li>

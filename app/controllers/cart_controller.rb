@@ -135,18 +135,19 @@ class CartController < ApplicationController
       find_cart
       @cart.load_user_data(current_user)
       
-      if user.has_role?("admin")
-        redirect_back_or_default(admin_products_path)
-      else
-        redirect_back_or_default(cart_billing_shipping_path)
-      end
+      #if user.has_role?("admin")
+      #  redirect_back_or_default(admin_products_path)
+      #else
+      #  redirect_back_or_default(cart_billing_shipping_path)
+      #end
+      redirect_back_or_default(cart_billing_shipping_path)
       
       flash[:notice] = "Logged in successfully"
     else
       note_failed_signin
       @email       = params[:login][:email]
       @remember_me = params[:login][:remember]
-      render :action => 'login'
+      redirect_to cart_login_path
     end
   end #end method submit_login
   

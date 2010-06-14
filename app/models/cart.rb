@@ -109,6 +109,7 @@ class Cart < ActiveRecord::Base
     item = self.cart_items.build
     item.quantity = cart_item_attributes[:qty]
     item.product_variation_id = cart_item_attributes[:variation_id]
+    
     item.product_options = cart_item_attributes[:product_option_values].collect {|x| x['id']} unless cart_item_attributes[:product_option_values].blank?
     item.product_as_options = cart_item_attributes[:product_as_option_values].collect {|x| x['id']} unless cart_item_attributes[:product_as_option_values].blank?
     
@@ -399,8 +400,15 @@ class Cart < ActiveRecord::Base
   
     
     def payment_info=(values)
+      
+      y = values["exp_date(1i)"]
+      m = values["exp_date(2i)"]
+      d = values["exp_date(3i)"]
+      values[:exp_date] = Date.parse("#{m}/#{d}/#{y}")
+      
+      
       self.salt = make_token
-      pre_crypt_str = "#{values[:name_on_card]}=!=#{values[:card_number]}=!=#{values[:exp_date] ? values[:exp_date].strftime("%m/%d/%Y") : Date.today }=!=#{values[:card_type]}=!=#{values[:vcode]}"
+      pre_crypt_str = "#{values[:name_on_card]}=!=#{values[:card_number]}=!=#{values[:exp_date] ? values[:exp_date].strftime("%m/%d/%Y") : (Date.today - 1.year) }=!=#{values[:card_type]}=!=#{values[:vcode]}"
       self.payment_data = Security::SecurityManager.encrypt_with_salt(pre_crypt_str, self.salt)
     end #end method
     
