@@ -2,6 +2,6 @@
 <p>Phone: <%= @order.shipping_phone %></p>
 <p>
 	<%= link_to_remote 'Edit Shipping Address', 
-			:url => edit_shipping_admin_order_path(@order),
-			:confirm => "Are you sure you want to edit this order?\n\nEditing the shipping information will void any shipping labels, they will need to be recreated manually.\n\nAdditionally any tracking information from the removed labels will also be deleted." %>
+			:confirm => "Are you sure you want to edit this order?\n\nEditing the shipping information will void any shipping labels, they will need to be recreated manually.\n\nAdditionally any tracking information from the removed labels will also be deleted.",
+			:url => edit_shipping_admin_order_path(@order) %>
 </p>

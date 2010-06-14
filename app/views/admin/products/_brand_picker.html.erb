@@ -1,0 +1,14 @@
+<div class="brand_picker">
+
+	<div class="field">
+		<%= brand_selector(object) %>
+		<label>Brand</label>
+	</div>
+
+	<div class="del_link">
+		<%= link_to_function 'delete', "$(this).parents('.brand_picker').remove()" %>
+	</div>
+
+
+<div class="clear"></div>
+</div>

@@ -46,6 +46,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.admin_users_search '/admin/users/search', :controller => 'admin/users', :action => 'search'
   map.admin_orders_search '/admin/orders/search', :controller => 'admin/orders', :action => 'search'
+  map.process_admin_order '/admin/orders/:id/process', :controller => 'admin/orders', :action => 'edit'
+  map.order_processed '/admin/orders/:id/order_processed', :controller => 'admin/orders', :action => 'complete_processing'
+  map.cancel_processing '/admin/orders/:id/cancel_processing', :controller => 'admin/orders', :action => 'cancel_processing'
   map.edit_shipping_admin_order '/admin/orders/:id/edit_shipping', :controller => 'admin/orders', :action => 'edit_shipping'
   map.notify_dropship_admin_order '/admin/orders/:id/notify_dropship', :controller => 'admin/orders', :action => 'notify_dropship'
   map.apply_credit_admin_order '/admin/orders/:id/apply_credit', :controller => 'admin/orders', :action => 'apply_credit'

@@ -15,7 +15,7 @@ class Admin::VendorsController < Admin::AdminController
   # GET /vendors
   # GET /vendors.xml
   def index
-    @vendors = Vendor.find(:all).paginate :per_page => 10, :page => params[:page]
+    @vendors = Vendor.find(:all, :order => 'company_name ASC').paginate :per_page => 10, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

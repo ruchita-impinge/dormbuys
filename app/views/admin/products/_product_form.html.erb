@@ -94,7 +94,29 @@
 		<div id="product_subcategories">
 
 			<% for sub in @product.subcategories %>
-				<%= render "subcategory_picker", :object => sub %>
+				<%= render :partial => "subcategory_picker", :object => sub %>
+			<% end %>
+
+		</div><!-- end #vendor_brands -->
+
+	  </fieldset>
+	
+	
+	
+	
+	<fieldset class="field_fieldset">
+		<legend>Brands</legend>
+
+		<%= link_to_function 'Add A Brand', :class => 'add_subcat_link' do |page|
+				page.insert_html :bottom, "product_brands", 
+					:partial => "brand_picker.html.erb", 
+					:object => Brand.new	
+			end %>
+
+		<div id="product_brands">
+
+			<% for brand in @product.brands %>
+				<%= render "brand_picker", :object => brand %>
 			<% end %>
 
 		</div><!-- end #vendor_brands -->

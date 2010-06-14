@@ -26,7 +26,26 @@
 				<td class="center">
 					<%= get_note_icons(order) %>
 				</td>
-				<td class="center"><%= link_to 'Process', "#", :class => "tbl_lnk_show" %></td>
+				
+				
+				<td class="center">
+					<% if order.processing %>
+					
+						<span>(in fulfillment)</span>
+					
+					<% elsif order.processed %>
+					
+						<%= link_to 'Re-Process', process_admin_order_path(order), 
+							:class => "tbl_lnk_show", :confirm => "Are you sure you want to RE-PROCESS this order?" %>
+					
+					<% else %>
+					
+						<%= link_to 'Process', process_admin_order_path(order), 
+							:class => "tbl_lnk_show", :confirm => "Are you sure you want to process this order?" %>
+						
+					<% end %>
+				</td>
+				
 	    		<td class="center"><%= link_to 'Manage', edit_admin_order_path(order), :class => "tbl_lnk_edit" %></td>
 	  		</tr>
 	<% end %>

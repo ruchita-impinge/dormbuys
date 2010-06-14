@@ -2,7 +2,61 @@ class Admin::OrdersController < Admin::AdminController
   require 'admin_order_builder.rb'
   include AdminOrderBulder
 
+#ajax methods
+  def complete_processing
+    @order = Order.find(params[:id])
+    
+    # update the inventory here
+    ######
+    # loop through the order line items and deduct the order line item QTY from the  ONHOLD quantity
+    # for the product variation
+    for item in @order.order_line_items
 
+      variation = item.get_product_variation
+
+      if variation
+
+        #alter inventory 
+        unless variation.product.drop_ship 
+          new_onhold = variation.qty_on_hold - item.quantity
+          variation.update_attributes(:qty_on_hold => new_onhold)
+        end
+
+      end #end variation
+
+    end #end loop over order_line_items
+    
+    @order.skip_all_callbacks = true
+    @order.processing = false
+    @order.processed = true
+    @order.save(false)
+    
+    render :update do |page|
+      page << %( $("#processing_status").text("Processed"); )
+      page << %( doneProcessing = true; )
+      page << %( window.location.href = "#{admin_orders_path}" )
+    end
+    
+  end #end method complete_processing
+
+
+  def cancel_processing
+    @order = Order.find(params[:id])
+    @order.skip_all_callbacks = true
+    @order.processing = false
+    @order.processed = false
+    @order.save(false)
+    
+    render :update do |page|
+      page << %( $("#processing_status").text("Processing Canceled"); )
+      page << %( doneProcessing = true; )
+      page << %( window.location.href = "#{admin_orders_path}" )
+    end
+    
+  end #end method cancel_processing
+
+
+#ancillary method
   def packing_list
     @order = Order.find(params[:id])
     render :partial => "shared/packing_list.html.erb", :layout => "packing_list"
@@ -142,7 +196,7 @@ class Admin::OrdersController < Admin::AdminController
     
 
   def index
-    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 50, :page => params[:page]
+    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 100, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb
@@ -151,10 +205,12 @@ class Admin::OrdersController < Admin::AdminController
   end
 
 
+
   def inline_order_list
-    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 50, :page => params[:page]
+    @orders = Order.find(:all, :order => 'order_date DESC').paginate :per_page => 100, :page => params[:page]
     render :partial => "orders_list", :layout => false and return
   end #end method inline_order_list
+
 
 
   def show
@@ -182,6 +238,17 @@ class Admin::OrdersController < Admin::AdminController
 
   def edit
     @order = Order.find(params[:id])
+    if request.path =~ /process/
+      @order.skip_all_callbacks = true
+      @order.processed = false
+      @order.processing = true
+      @order.save(false)
+    else
+      if @order.processing
+        flash[:error] = "You can't update this order while it is being processed!!!"
+        flash.discard
+      end
+    end
   end
 
 
@@ -214,21 +281,23 @@ class Admin::OrdersController < Admin::AdminController
   def update
         
     @order = Order.find(params[:id])
+    @order.skip_new_callbacks = true
     @order.attributes = params[:order]
 
     respond_to do |format|
+      
       if @order.save
-        
         flash[:notice] = 'Order was successfully updated.'
         format.html { redirect_to(edit_admin_order_path(@order)) }
-        
         format.xml  { head :ok }
       else
+        
         format.html { render :action => "edit" }
         format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
-    end
-  end
+      
+    end #end respond_to
+  end #end action
 
 
 

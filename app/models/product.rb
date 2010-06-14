@@ -11,6 +11,7 @@ class Product < ActiveRecord::Base
   has_and_belongs_to_many :vendors
   has_and_belongs_to_many :warehouses
   has_and_belongs_to_many :subcategories
+  has_and_belongs_to_many :brands
   has_many :additional_product_images
   has_many :product_options
   has_many :product_restrictions
@@ -48,6 +49,14 @@ class Product < ActiveRecord::Base
   validates_attachment_size :product_image, 
     :less_than => 1.megabytes, :message => "can't be more than 1MB",
     :if => :has_product_image?
+  
+  
+  
+  def validate
+    if self.subcategories.empty?
+      self.errors.add_to_base "Must have at least one subcategory."
+    end
+  end #end method validate
   
   
   def default_front_url

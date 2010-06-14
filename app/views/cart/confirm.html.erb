@@ -175,6 +175,12 @@
 	<% end %>
 	
 	
+	
+	<% content_for :google_tracking do %>
+		<%= render :partial => "shared/google_ecom_trk", :object => @order %>
+	<% end %>
+	
+	
 	<% content_for :eo_page do %>
 
 		<% @voucher_code = @order.coupon.blank? ? "" : @order.coupon.coupon_number %>

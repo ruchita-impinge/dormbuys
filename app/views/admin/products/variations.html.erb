@@ -138,7 +138,8 @@
 
 			<%= link_to_remote 'Add A Variation', 
 					:url => {:action => :add_variation},
-					:html => {:class => 'fieldset_add_link'} %>
+					:html => {:class => 'fieldset_add_link'},
+					:with => %('pp_count=' + $(".variation").eq($(".variation").length-1).contents().find(".product_package").length) %>
 
 			<div id="product_variations">
 				<%= render :partial => 'product_variation', :collection => @product.product_variations %>	

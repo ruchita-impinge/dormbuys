@@ -1,0 +1,23 @@
+pageTracker._addTrans(
+   "<%= @order.order_id %>",                   // Order ID
+   "Dormbuys.com",                             // Affiliation
+   "<%= @order.grand_total %>",                // Total
+   "<%= @order.tax %>",                        // Tax
+   "<%= @order.shipping %>",                   // Shipping
+   "<%= @order.shipping_city %>",              // City
+   "<%= State.find(@order.shipping_state_id).full_name %>", // State
+   "USA"                                       // Country
+ );
+
+<% for line_item in @order.order_line_items %>
+pageTracker._addItem(
+  "<%= @order.order_id %>",                   // Order ID
+  "<%= line_item.product_number %>",  		  // SKU
+  "<%= line_item.item_name %>",               // Product Name 
+  "General",                      			  // Category
+  "<%= line_item.unit_price %>",              // Price
+  "<%= line_item.quantity %>"                 // Quantity
+);
+<% end %>
+
+pageTracker._trackTrans();

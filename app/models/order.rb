@@ -1,6 +1,6 @@
 class Order < ActiveRecord::Base
   
-  attr_accessor :admin_created_order, :add_hoc_label_errors, :skip_all_callbacks
+  attr_accessor :admin_created_order, :add_hoc_label_errors, :skip_all_callbacks, :skip_new_callbacks
   
   before_validation :set_shipping_address
   before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors
@@ -162,6 +162,7 @@ class Order < ActiveRecord::Base
 
   def run_followup_tasks
     return if self.skip_all_callbacks
+    return if self.skip_new_callbacks
     self.send_later(:setup_order_shipping)
     self.send_later(:track_item_sold_counts)
     self.send_later(:update_gift_registry_wish_list)
@@ -259,6 +260,7 @@ class Order < ActiveRecord::Base
 
   def set_order_user
     return if self.skip_all_callbacks
+    return if self.skip_new_callbacks
     
     #look at order email, and if that email is assoc w/ a user account
     #we will attach the user_account to the order
@@ -273,6 +275,7 @@ class Order < ActiveRecord::Base
 
   def run_final_qty_checks
     return if self.skip_all_callbacks
+    return if self.skip_new_callbacks
 
     return true if admin_created_order
     
@@ -296,6 +299,7 @@ class Order < ActiveRecord::Base
 
   def save_order_payment
     return if self.skip_all_callbacks
+    return if self.skip_new_callbacks
     
     pass = true
     
@@ -356,6 +360,7 @@ class Order < ActiveRecord::Base
   
   def adj_item_inventory
     return if self.skip_all_callbacks
+    return if self.skip_new_callbacks
     
     #alter the inventory of the order items & on_hold qty
     for item in self.order_line_items

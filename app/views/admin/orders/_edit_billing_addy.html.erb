@@ -56,7 +56,7 @@
 	
 	
 	<div class="field">
-		<%= link_to '<span>Update</span>', "javascript:document.forms['billing_addy_form'].submit();", 
+		<%= link_to '<span>Update</span>', "javascript:doneProcessing = true; document.forms['billing_addy_form'].submit();", 
 				:class => 'button positive', 
 				:style => 'margin: 0px;' %>
 	</div>

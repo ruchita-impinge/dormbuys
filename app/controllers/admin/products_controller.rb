@@ -103,6 +103,7 @@ class Admin::ProductsController < Admin::AdminController
   def add_variation
     render :update do |page|
       pv = ProductVariation.new_default
+      params[:pp_count].to_i.times { pv.product_packages.build }
       page.insert_html :bottom, "product_variations", :partial => "product_variation", :object => pv
       js_copy = <<-eo_js
       
@@ -141,43 +142,44 @@ class Admin::ProductsController < Admin::AdminController
         last.contents().find('.wh_product').val(prev.contents().find('.wh_product').val());
         
         
-        /*
-        var package_count = prev.down(".v_product_packages").childElements().length;
+        var package_count = prev.contents().find('.product_package').length;
         if( package_count == 1 )
         {
-          var prev_pp = prev.down(".v_product_packages").childElements().last();
-          var last_pp = last.down(".v_product_packages").childElements().last();
-          last_pp.down(".weight").value = $F(prev_pp.down(".weight"));
-          last_pp.down(".length").value = $F(prev_pp.down(".length"));
-          last_pp.down(".width").value = $F(prev_pp.down(".width"));
-          last_pp.down(".depth").value = $F(prev_pp.down(".depth"));
+          var prev_pp = prev.contents().find('.product_package').eq(0);
+          var last_pp = last.contents().find('.product_package').eq(0);
+          last_pp.contents().find(".weight").val( prev_pp.contents().find(".weight").val() );
+          last_pp.contents().find(".length").val( prev_pp.contents().find(".length").val() );
+          last_pp.contents().find(".width").val( prev_pp.contents().find(".width").val() );
+          last_pp.contents().find(".depth").val( prev_pp.contents().find(".depth").val() );
         }
         else if( package_count > 1)
         {
-          
-          var single_pp = last.down(".v_product_packages").innerHTML; //we know it is single b/c it was just made
-          last.down(".v_product_packages").innerHTML = "";
+
+          /*
+          var single_pp = last.contents().find(".product_package").eq(0).parent().html(); //we know it is single b/c it was just made
+          last.contents().find(".v_product_packages").html("");
           for(var j=0; j < package_count; j++)
           {
-              last.down(".v_product_packages").insert(single_pp);
+              last.contents.find(".v_product_packages").append(single_pp);
           }
+          */
           
-          var prev_packages = prev.down(".v_product_packages").childElements();
-          var last_packages = last.down(".v_product_packages").childElements();
+          var prev_packages = prev.contents().find(".product_package");
+          var last_packages = last.contents().find(".product_package");
           
           for(var i=0; i < prev_packages.length; i++)
           {
             
-            last_packages[i].down(".weight").value = $F(prev_packages[i].down(".weight"));
-            last_packages[i].down(".length").value = $F(prev_packages[i].down(".length"));
-            last_packages[i].down(".width").value = $F(prev_packages[i].down(".width"));
-            last_packages[i].down(".depth").value = $F(prev_packages[i].down(".depth"));
-            last_packages[i].down(".hdn_ships_separately").value = $F(prev_packages[i].down(".hdn_ships_separately"));
-            last_packages[i].down(".ships_separately_check").checked = prev_packages[i].down(".ships_separately_check").checked;
+            last_packages.eq(i).contents().find(".weight").val( prev_packages.eq(i).contents().find(".weight").val() );
+            last_packages.eq(i).contents().find(".length").val( prev_packages.eq(i).contents().find(".length").val() );
+            last_packages.eq(i).contents().find(".width").val( prev_packages.eq(i).contents().find(".width").val() );
+            last_packages.eq(i).contents().find(".depth").val( prev_packages.eq(i).contents().find(".depth").val() );
+            last_packages.eq(i).contents().find(".hdn_ships_separately").val( prev_packages.eq(i).contents().find(".hdn_ships_separately").val() );
+            last_packages.eq(i).contents().find(".ships_separately_check").attr("checked",  prev_packages.eq(i).contents().find(".ships_separately_check").is(":checked") );
           }//end for
           
         }//end else if
-        */
+        
       }
       eo_js
     

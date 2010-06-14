@@ -2,6 +2,21 @@
 	<%= render "shared/admin_main_nav" %>
 <% end %>
 
+
+<% content_for :head do %>
+	<% javascript_tag do %>
+		var doneProcessing = false;
+		function confirmExit()
+		{
+			if(!doneProcessing)
+			{
+				return "Be sure to update the order status, and processing status as necessary before you leave.";
+			}
+		}
+	<% end %>
+<% end %>
+
+
 <%= error_messages_for :order %>
 
 <div class="span-24 last std_box_satcked_top">
@@ -107,7 +122,7 @@
 <!-- ORDER ITEMS -->
 <div class="std_box span-24 last std_box_satcked_top">
 	
-	<h3 class="std_box_heading">Purchased Items - <%= link_to 'Print Packing List', packing_list_admin_order_path(@order) %></h3>
+	<h3 class="std_box_heading">Purchased Items - <%= link_to 'Print Packing List', packing_list_admin_order_path(@order), :target => "_blank" %></h3>
 	
 	<div class="std_box_content">
 	
@@ -133,6 +148,10 @@
 	<div class="std_box_content">
 		
 		<% form_for([:admin, @order], :html => {:id => 'comment_form'}) do |f| %>
+		
+			<% if @order.processing %>
+				<%= hidden_field_tag "processing", 1 %>
+			<% end %>
 
 			<div class="field long">
 				<%= f.text_area :order_comments %>
@@ -173,7 +192,7 @@
 				 	:onclick => "insertAtCursor('order_order_comments', dateTimeStr); return false;", :class => 'button' %>
 				
 				<%= link_to '<span>Update Comments</span>', "#", :class => 'button positive',
-				 	:onclick => '$("#comment_form").submit(); return false;'%>
+				 	:onclick => 'doneProcessing = true; $("#comment_form").submit(); return false;'%>
 				
 			</div>
 			<div class="clear"></div>
@@ -319,6 +338,10 @@
 		
 		<% form_for([:admin,@order], :html => {:id => 'shipping_num_form'}) do |frm| %>
 		
+		<% if @order.processing %>
+			<%= hidden_field_tag "processing", 1 %>
+		<% end %>
+		
 		<% fields_for "order[updated_shipping_number_attributes]", ShippingNumber.new, :index => nil do |f| %>
 		
 			<table class="std_box_table">
@@ -380,7 +403,7 @@
 			</div>
 			
 			<div class="field">
-				<%= link_to '<span>Update</span>', 'javascript:document.forms["shipping_num_form"].submit();', 
+				<%= link_to '<span>Update</span>', 'javascript:doneProcessing = true; document.forms["shipping_num_form"].submit();', 
 					:class => 'button positive', :style => 'margin: 0px;' %>
 			</div>
 			<div class="clear"></div>
@@ -420,9 +443,14 @@
 					if(val == cancelId)
 					{
 						if(confirm("Are you sure you want to cancel?  This cannot be undone!"))
+						{
 							document.forms["status_form"].submit();
+						}
 						else
+						{
+							doneProcessing = false; 
 							return false;
+						}
 						
 					}else {
 						document.forms["status_form"].submit();
@@ -433,6 +461,10 @@
 		<% end %>
 		
 		<% form_for([:admin, @order], :html => {:id => 'status_form'}) do |f| %>
+		
+			<% if @order.processing %>
+				<%= hidden_field_tag "processing", 1 %>
+			<% end %>
 			
 			
 			<div class="field">
@@ -445,7 +477,7 @@
 						'#', 
 						:class => 'button positive', 
 						:style => 'margin: 0px;',
- 						:onclick => 'checkCancel(); return false;'%>
+ 						:onclick => 'doneProcessing = true; checkCancel(); return false;'%>
 			</div>
 			<div class="clear"></div>
 			
@@ -495,6 +527,59 @@
 <div class="clear"></div>
 
 
+
+<% if @order.processing %>
+
+<% content_for :head do %>
+	<% javascript_tag do %>
+		window.onbeforeunload = confirmExit;
+	<% end %>
+<% end %>
+
+<!-- ORDER PROCESSING -->
+<div class="std_box span-24 last std_box_satcked_top">
+	
+	<h3 class="std_box_heading">Order Processing</h3>
+	
+	<div class="std_box_content">
+	
+		<div class="std_box_content_wrapper">
+		
+			<%= link_to_remote "<span>Order is processed I'm done</span>", 
+					:url => order_processed_path(@order),
+					:html => {:class => 'button positive'} %>
+					
+			<%= link_to_remote "<span>Cancel processing I'll return later.</span>", 
+					:url => cancel_processing_path(@order), 
+					:html => {:class => 'button negative'} %>
+			
+			<div class="clear"></div>
+			
+			<br />
+			<p>
+			<strong>
+				Processing Status: 
+				<span id="processing_status">
+					<%= @order.processing ? "Processing" : (@order.processed ? "Processed" : "Not Processed") %>
+				</span>
+			</strong>
+			</p>
+			
+		</div><!-- end std_box_content_wrapper -->
+
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+<% end %>
+
+
 <!-- ORDER CREDITS -->
 <div class="std_box span-24 last std_box_satcked_top">
 	
@@ -503,6 +588,10 @@
 	<div class="std_box_content">
 	
 		<% form_for(:credit, :url => apply_credit_admin_order_path(@order), :html => {:id => 'credit_frm'}) do |f| %>
+		
+			<% if @order.processing %>
+				<%= hidden_field_tag "processing", 1 %>
+			<% end %>
 			
 			<p>To apply a credit to this order simply enter the amount to be credited below. Note: A credit or the sum of all credits can not be greater than the original total order value. </p>
 			
@@ -517,7 +606,7 @@
 			</div>
 			
 			<div class="field">
-				<%= link_to '<span>Apply Credit</span>', 'javascript:document.forms["credit_frm"].submit();', 
+				<%= link_to '<span>Apply Credit</span>', 'javascript:doneProcessing = true; document.forms["credit_frm"].submit();', 
 					:class => 'button positive', 
 					:style => 'margin: 0px;' %>
 			</div>
