@@ -393,8 +393,17 @@ class Cart < ActiveRecord::Base
     def payment_info
       return nil if self.payment_data.blank? || self.salt.blank?
       de_crypt_str = Security::SecurityManager.decrypt_with_salt(self.payment_data, self.salt)
-      name, number, exp, ctype, vcode = de_crypt_str.split("=!=")
-      {'name_on_card' => name, 'card_number' => number, 'exp_date' => exp, 'card_type' => ctype, 'vcode' => vcode}
+      name, number, exp_date, ctype, vcode = de_crypt_str.split("=!=")
+      ex = Date.parse(exp_date)
+      {
+        'name_on_card' => name, 
+        'card_number' => number, 
+        'expiration_date(1i)' => ex.year.to_s,
+        'expiration_date(2i)' => ex.month.to_s,
+        'expiration_date(3i)' => ex.day.to_s,
+        'card_type' => ctype, 
+        'vcode' => vcode
+      }
     end #end method store_payment_info(values)
   
   
