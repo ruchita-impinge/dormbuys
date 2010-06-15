@@ -874,8 +874,13 @@ class Order < ActiveRecord::Base
     
     #refund the full order amount
     if self.grand_total.cents > 0
-      @refund = full_refund
-      @refund_pass = @refund.success
+      begin
+        @refund = full_refund
+        @refund_pass = @refund.success
+      rescue Exception => e
+        self.errors.add_to_base(e.message)
+        return false
+      end
     else
       @refund_pass = true
     end

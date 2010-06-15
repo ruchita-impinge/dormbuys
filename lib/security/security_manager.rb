@@ -4,14 +4,14 @@ class Security::SecurityManager
   
   #encryption method
   def self.encrypt(plain_text) 
-    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], APP_CONFIG['enc_salt'], :algorithm => 'blowfish')
-    key.encrypt(plain_text)
+    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], APP_CONFIG['enc_salt'], :algorithm => 'aes256')
+    key.encrypt64(plain_text)
   end #end method encrypt(plain_text)
   
   #decryption method
   def self.decrypt(cypher_text)
-    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], APP_CONFIG['enc_salt'], :algorithm => 'blowfish')
-    key.decrypt(cypher_text)
+    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], APP_CONFIG['enc_salt'], :algorithm => 'aes256')
+    key.decrypt64(cypher_text)
   end #end method decrypt(cypher_text)
   
   
