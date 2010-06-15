@@ -348,7 +348,9 @@ class Cart < ActiveRecord::Base
   
 
   def credit_card_attributes=(attributes)
-    self.payment_info = attributes.first unless attributes.first.values.all?(&:blank?)
+    unless attributes.first["card_number"].blank? || attributes.first["vcode"].blank?
+      self.payment_info = attributes.first
+    end
   end #end method credit_card_attributes=(credit_card_attributes)
 
   private

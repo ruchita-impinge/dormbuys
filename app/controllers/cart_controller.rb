@@ -99,6 +99,11 @@ class CartController < ApplicationController
       render :action => 'index' and return
     end
     
+    if @cart.subtotal < @coupon.min_purchase
+      @coupon_error = "#{@coupon.min_purchase} minimum required"
+      render :action => 'index' and return
+    end
+    
     @cart.coupon = @coupon
     @cart.save
     redirect_to cart_path
