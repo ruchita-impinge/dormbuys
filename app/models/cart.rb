@@ -397,7 +397,8 @@ class Cart < ActiveRecord::Base
       ex = Date.parse(exp_date)
       {
         'name_on_card' => name, 
-        'card_number' => number, 
+        'card_number' => number,
+        'exp_date' => exp_date,
         'expiration_date(1i)' => ex.year.to_s,
         'expiration_date(2i)' => ex.month.to_s,
         'expiration_date(3i)' => ex.day.to_s,
