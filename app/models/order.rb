@@ -882,9 +882,6 @@ class Order < ActiveRecord::Base
     
     if @refund_pass
     
-      #del the order's shipping labels
-      kill_all_shipping_labels
-    
       #update inventory levels
       order_line_items.each do |line_item|
         
@@ -939,8 +936,13 @@ class Order < ActiveRecord::Base
       begin
         ShipManager.void_shipping_label(label)
       rescue ActiveMerchant::Shipping::ResponseError => e
-        self.errors.add_to_base(e.message)
-        return false
+        
+        #if we are not testing UPS
+        if APP_CONFIG['ups']['testing'].to_i != 1
+          self.errors.add_to_base(e.message)
+          return false
+        end
+        
       end
       
       #del any tracking #s filled from this label
@@ -1042,6 +1044,7 @@ class Order < ActiveRecord::Base
   
       
       #save any status change
+      self.skip_new_callbacks = true
       self.save
     
     end #end unless canceled?
