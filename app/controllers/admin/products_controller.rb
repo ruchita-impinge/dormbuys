@@ -331,7 +331,7 @@ class Admin::ProductsController < Admin::AdminController
   def update
         
     #kill any non-unique product sub-categories
-    if params[:product][:subcategory_ids]
+    if params && params[:product] && params[:product][:subcategory_ids]
       params[:product][:subcategory_ids].uniq!
     end
     
