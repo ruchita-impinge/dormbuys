@@ -2,7 +2,7 @@ $(document).ready(function(){
 	setupHomePageCatBannerNav();
 	$("a.lightwindow").colorbox();
 	$('a#learn_more_secure, a.learn_more_dorm_ship, a.learn_more_gift').colorbox({width:'700px'});
-	$('a#what_is_vcode').colorbox({width:'301px'});
+	$('a#what_is_vcode').colorbox({innerWidth:'301px', innerHeight:'245px'});
 });//end ready
 
 //function to mark items that are JS removed for real delete
