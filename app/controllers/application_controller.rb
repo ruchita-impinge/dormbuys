@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
-  filter_parameter_logging :password, :password_confirmation, :name_on_card, :card_number, :exp_date,
-    :card_type, :vcode
+  filter_parameter_logging :password, :password_confirmation, :vcode, :card_number,
+    #:name_on_card, :exp_date, :card_type
   
   
   def set_current_user

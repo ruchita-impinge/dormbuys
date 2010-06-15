@@ -222,7 +222,12 @@ function calculateShipping(e)
 		e.preventDefault();
 	
 	var sub = Number(jQuery("#order_subtotal").val()) - Number(jQuery("#order_total_coupon").val());
-	var ship_state_id = jQuery("#shipping_state_id").val();
+	var ship_state_id;
+	if(jQuery("#user_profile_type_id").val() == 1){
+		ship_state_id = Number(jQuery("#order_shipping_state_id").val());
+	}else{
+		ship_state_id = Number(jQuery("#order_billing_state_id").val())
+	}
 	
 	jQuery.ajax({
 	   type: "POST",
