@@ -229,7 +229,13 @@ class Payment::PaymentManager
         :password => APP_CONFIG['authorize_net']['transaction_key'].to_s   #Transaction Key
       })
     
-      cc_num = Security::SecurityManager.decrypt(order.payment_transaction_data)
+      begin
+        cc_num = Security::SecurityManager.decrypt(order.payment_transaction_data)
+      rescue Exception => e
+        raise "Decryption Error: #{e.message}"
+      end
+      
+      
       options = {
         :card_number => cc_num, 
         :order_id => "#{order.order_id}", 
@@ -338,7 +344,12 @@ class Payment::PaymentManager
         :password => APP_CONFIG['authorize_net']['transaction_key'].to_s   #Transaction Key
       })
     
-      cc_num = Security::SecurityManager.decrypt(order.payment_transaction_data)
+      begin
+        cc_num = Security::SecurityManager.decrypt(order.payment_transaction_data)
+      rescue Exception => e
+        raise "Decryption Error: #{e.message}"
+      end
+      
       options = {
         :card_number => cc_num, 
         :order_id => "#{order.order_id}", 
