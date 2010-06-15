@@ -143,7 +143,7 @@ class Order < ActiveRecord::Base
     return if self.skip_all_callbacks
     if self.order_status_id == Order::ORDER_STATUS_CANCELED
       #self.send_later(:cancel_order)
-      self.cancel_order
+      return self.cancel_order
     end
   end
  
@@ -857,8 +857,18 @@ class Order < ActiveRecord::Base
         :message          => "Refunded full total", 
         :success          => true)
     else
+      
+      begin
         result = Payment::PaymentManager.make_full_refund(self, grand_total)
-    end
+      rescue Exception => e
+        self.errors.add_to_base(e.message)
+        return false
+      end
+      
+    end #end if-else
+    
+    
+    return result
     
   end #end method full_refund
   
@@ -874,62 +884,72 @@ class Order < ActiveRecord::Base
     
     #refund the full order amount
     if self.grand_total.cents > 0
-      begin
-        @refund = full_refund
-        @refund_pass = @refund.success
-      rescue Exception => e
-        self.errors.add_to_base(e.message)
+      
+      unless refund = full_refund
         return false
+      else
+        refund_pass = refund.success
       end
+      
     else
-      @refund_pass = true
+      refund_pass = true
     end
     
-    if @refund_pass
     
-      #update inventory levels
-      order_line_items.each do |line_item|
-        
-        variation = line_item.variation
-        
-        unless line_item.product_drop_ship
-          
-          if variation
-            
-            new_onhold = variation.qty_on_hold - line_item.quantity
-            new_onhand = variation.qty_on_hand + line_item.quantity
-            variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
-            
-          end #end if
-        
-        end #end unless
-        
-        
-        for ov in line_item.order_line_item_product_as_options
-
-          optional_variation = ProductVariation.find_by_product_number(ov.product_number)
-
-          unless optional_variation.product.drop_ship
-            new_onhand = optional_variation.qty_on_hand + line_item.quantity #credit on-hand
-            new_onhold = optional_variation.qty_on_hold - line_item.quantity #debit on-hold
-            optional_variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
-          end
-
-        end #end for product_optional_variations
-        
-        
-      end #end order_line_items.each
+    if refund_pass
     
-      Notifier.deliver_order_canceled(self)
+      self.re_stock_canceled_inventory
+    
+      Notifier.send_later(:deliver_order_canceled, self)
     
     else
-      self.errors.add_to_base(@refund.message)
+      self.errors.add_to_base(refund.message)
+      return false
     end #end if refund success
     
     
-    return @refund_pass
+    return refund_pass
     
   end #end method cancel_order
+  
+  
+  
+  def re_stock_canceled_inventory
+    
+    #update inventory levels
+    order_line_items.each do |line_item|
+      
+      variation = line_item.variation
+      
+      unless line_item.product_drop_ship
+        
+        if variation
+          
+          new_onhold = variation.qty_on_hold - line_item.quantity
+          new_onhand = variation.qty_on_hand + line_item.quantity
+          variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
+          
+        end #end if
+      
+      end #end unless
+      
+      
+      for ov in line_item.order_line_item_product_as_options
+
+        optional_variation = ProductVariation.find_by_product_number(ov.product_number)
+
+        unless optional_variation.product.drop_ship
+          new_onhand = optional_variation.qty_on_hand + line_item.quantity #credit on-hand
+          new_onhold = optional_variation.qty_on_hold - line_item.quantity #debit on-hold
+          optional_variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
+        end
+
+      end #end for product_optional_variations
+      
+      
+    end #end order_line_items.each
+    
+  end #end method re_stock_canceled_inventory
   
   
   
@@ -968,8 +988,6 @@ class Order < ActiveRecord::Base
       label.destroy
       
     end #end labels.each
-    
-    update_order_ship_status
     
   end #end method kill_all_shipping_labels
   
