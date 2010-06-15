@@ -226,8 +226,9 @@ class CartController < ApplicationController
   
   def save_billing_shipping
     @page_title = "Order Billing and Shipping"
+    
     unless request.post? || request.put?
-      redirect_to cart_billing_shipping_path
+      redirect_to cart_billing_shipping_path and return
     end
     
     

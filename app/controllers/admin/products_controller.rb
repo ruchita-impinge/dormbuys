@@ -329,9 +329,7 @@ class Admin::ProductsController < Admin::AdminController
   # PUT /products/1
   # PUT /products/1.xml
   def update
-    
-    #raise "test"
-    
+        
     #kill any non-unique product sub-categories
     if params[:product][:subcategory_ids]
       params[:product][:subcategory_ids].uniq!
@@ -353,9 +351,11 @@ class Admin::ProductsController < Admin::AdminController
         flash[:notice] = 'Product was successfully updated.'
         format.html { redirect_to(go_to) }
         format.xml  { head :ok }
+        return
       else
         format.html { render go_to }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
+        return
       end
     end
   end
