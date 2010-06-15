@@ -192,7 +192,7 @@ class Cart < ActiveRecord::Base
   def total_coupons
     return Money.new(0) unless self.coupon
     
-    return Money.new(0) unless subtotal >= self.coupon.min_purchase
+    return Money.new(0) unless self.subtotal >= self.coupon.min_purchase
     
     
     if self.coupon.coupon_type_id == CouponType::DOLLAR
@@ -201,7 +201,7 @@ class Cart < ActiveRecord::Base
       
     elsif self.coupon.coupon_type_id == CouponType::PERCENTAGE
       
-      return subtotal * (self.coupon.value / 100)
+      return self.subtotal * (self.coupon.value / 100.0)
       
     elsif self.coupon.coupon_type_id == CouponType::TIERED_DOLLAR
       
@@ -209,7 +209,7 @@ class Cart < ActiveRecord::Base
       
     elsif self.coupon.coupon_type_id == CouponType::TIERED_PERCENTAGE
       
-      return subtotal * (self.coupon.get_tiered_value(subtotal.to_s.to_f.ceil) / 100)
+      return self.subtotal * (self.coupon.get_tiered_value(subtotal.to_s.to_f.ceil) / 100.0)
       
     end
     
