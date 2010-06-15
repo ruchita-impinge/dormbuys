@@ -25,6 +25,11 @@ ActionController::Routing::Routes.draw do |map|
     :conditions => {:method => :get},
     :controller => 'admin/quantity_discounts',
     :action => 'auto_complete_for_product_product_name'
+    
+  map.vendor_auto_complete_user_email '/admin/vendors/auto_complete_for_user_email',
+    :conditions => {:method => :get},
+    :controller => 'admin/vendors',
+    :action => 'auto_complete_for_user_email'
 
 #-------order builder-------
   map.order_auto_complete_product_name '/admin/orders/auto_complete_for_product_product_name',

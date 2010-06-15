@@ -925,8 +925,13 @@ class Order < ActiveRecord::Base
         
         if variation
           
-          new_onhold = variation.qty_on_hold - line_item.quantity
-          new_onhand = variation.qty_on_hand + line_item.quantity
+          if self.processed
+            new_onhold = variation.qty_on_hold # don't update on-hold if processed
+            new_onhand = variation.qty_on_hand + line_item.quantity
+          else
+            new_onhold = variation.qty_on_hold - line_item.quantity
+            new_onhand = variation.qty_on_hand + line_item.quantity
+          end
           variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
           
         end #end if
@@ -939,9 +944,16 @@ class Order < ActiveRecord::Base
         optional_variation = ProductVariation.find_by_product_number(ov.product_number)
 
         unless optional_variation.product.drop_ship
-          new_onhand = optional_variation.qty_on_hand + line_item.quantity #credit on-hand
-          new_onhold = optional_variation.qty_on_hold - line_item.quantity #debit on-hold
+          
+          if self.processed
+            new_onhand = optional_variation.qty_on_hand + line_item.quantity #credit on-hand
+            new_onhold = optional_variation.qty_on_hold # don't update on-hold if processed
+          else
+            new_onhand = optional_variation.qty_on_hand + line_item.quantity #credit on-hand
+            new_onhold = optional_variation.qty_on_hold - line_item.quantity #debit on-hold
+          end
           optional_variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
+          
         end
 
       end #end for product_optional_variations
@@ -1351,7 +1363,9 @@ class Order < ActiveRecord::Base
     self.order_line_items.each do |oli|
       oli.shipping_numbers.each do |num|
         unless num.tracking_number.blank?
-          nums << num
+          unless nums.collect(&:tracking_number).include?(num.tracking_number)
+            nums << num
+          end
         end
       end
     end

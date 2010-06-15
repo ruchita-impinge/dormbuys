@@ -1,5 +1,20 @@
 class Admin::VendorsController < Admin::AdminController
   
+  
+  def auto_complete_for_user_email
+
+    email = params[:user_search_term]
+
+    @users = User.find(:all, 
+      :conditions => [ "LOWER(#{params[:method]}) LIKE ?",
+      email.downcase + '%'], 
+      :order => "#{params[:method]} ASC",
+      :limit => 10)
+
+    render :partial => 'user_auto_complete_list', :object => @users
+  end
+  
+  
   def search
     
     @vendors = Vendor.find(

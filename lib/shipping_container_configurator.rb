@@ -59,7 +59,7 @@ class ShippingContainerConfigurator
     packages.each_with_index do |box, i|
       
       if box.ships_separately
-        @shippment.add_parcel(Parcel.new(box, true))
+        @shippment.add_parcel(ShippingParcel.new(box, true))
         packages_to_remove << i
       else
       

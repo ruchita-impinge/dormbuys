@@ -4,6 +4,19 @@ module AdminOrderBulder
     subtotal = params[:subtotal]
     shipping = ShippingRatesTable.get_rate(subtotal)
     
+    unless params[:shipping_state_id].blank?
+      begin
+        state = State.find(params[:shipping_state_id])
+        state_shipping = state.state_shipping_rates.collect(&:additional_cost).sum
+        unless state_shipping.class == Money
+          state_shipping = Money.new(0)
+        end
+        shipping += state_shipping
+      rescue
+        
+      end
+    end
+    
     render :update do |page|
       page << %($("#order_shipping").val("#{shipping.to_s}"))
       page << %(skip_shipping_calc = true; updateOrderTotals();)
