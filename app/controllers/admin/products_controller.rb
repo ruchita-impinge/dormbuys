@@ -349,16 +349,20 @@ class Admin::ProductsController < Admin::AdminController
       if @product.update_attributes(params[:product])
                 
         flash[:notice] = 'Product was successfully updated.'
-        format.html { redirect_to(go_to) }
+        format.html { redirect_to(go_to) and return }
         format.xml  { head :ok }
-        return
       else
         format.html { render go_to }
         format.xml  { render :xml => @product.errors, :status => :unprocessable_entity }
-        return
       end
-    end
-  end
+      
+    end #end respond_to
+    
+    #failsafe
+    flash[:error] = "There was somethink funky going on when you saved, maybe you should check your work."
+    redirect_to(edit_admin_product_path(@product))
+    
+  end #end action
 
   # DELETE /products/1
   # DELETE /products/1.xml
