@@ -268,8 +268,8 @@ class Product < ActiveRecord::Base
     #start w/ 1 initial random number
     randoms = [rand(products.size)]
     
-    #loop until we have 3
-    while randoms.size < 3
+    #loop until we have 2
+    while randoms.size < 2
       num = rand(products.size)
       unless randoms.include? num
         randoms << num

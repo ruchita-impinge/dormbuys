@@ -127,7 +127,7 @@ module ApplicationHelper
   
   def select_product_options(po, name, selected)
     out = %(<select name=#{name} class="inner-select2" title="select">)
-    out += %(<option value="">Select "#{po.option_name}"...</option>)
+    out += %(<option value="">Select #{po.option_name}...</option>)
     for value in po.product_option_values
       out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>
         #{h value.option_value} #{value.price_increase.cents > 0 ? '(+ $' + value.price_increase.to_s + ')' : ''}
