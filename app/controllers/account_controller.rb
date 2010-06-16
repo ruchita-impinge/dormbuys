@@ -1,6 +1,6 @@
 class AccountController < ApplicationController
 
-  before_filter :login_required, :except => [:login, :submit_login, :logout, :user_signup]
+  before_filter :login_required, :except => [:login, :submit_login, :logout, :user_signup, :forgot_password, :submit_forgot_password]
   
   layout 'front_short_banner'
   
@@ -18,6 +18,30 @@ class AccountController < ApplicationController
   end
   
   
+  
+  def forgot_password
+  end #end method forgot_password
+  
+  def submit_forgot_password
+    
+    unless request.post? || request.put?
+      redirect_to forgot_password_path
+    end
+    
+    @user = User.find_by_email(params[:login][:email])
+    
+    if @user
+      
+      @user.send_new_password
+      
+      flash[:notice] = "Your password has been reset and emailed to: #{@user.email}"
+      redirect_to forgot_password_path
+    else
+      flash[:error] = "User could not be found"
+      redirect_to forgot_password_path
+    end
+    
+  end #end method submit_forgot_password
   
   
   def login

@@ -162,6 +162,9 @@ ActionController::Routing::Routes.draw do |map|
   map.account_add_registry_name '/account/gift_registry/add_registry_name', :controller => 'account', :action => 'add_registry_name'
   map.account_view_gift_registry '/account/gift_registry/:id', :controller => 'account', :action => "view_gift_registry"
 
+  map.forgot_password '/account/forgot_password', :controller => 'account', :action => 'forgot_password'
+  map.submit_forgot_password '/account/submit_forgot_password', :controller => 'account', :action => 'submit_forgot_password'
+
   #map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   #map.login '/login', :controller => 'sessions', :action => 'new'
   map.logout '/logout', :controller => 'account', :action => 'logout'

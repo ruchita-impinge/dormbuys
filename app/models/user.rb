@@ -145,9 +145,55 @@ class User < ActiveRecord::Base
     
   end #end method wish_list
   
+  
+  
+  ##
+  # method to reset the user's password, and send them an email telling
+  # them what the reset password is
+  ##
+  def send_new_password
+  
+    #get a random string
+    new_pass = User.random_string(10)
+    
+    #set the password & confirmation 
+    self.password = self.password_confirmation = new_pass
+    
+    #save the new password thereby encrypting and setting the
+    #crypted_password
+    self.save
+    
+    #send an email to let the user know
+    Notifier.send_later(:deliver_forgot_password, self.email, new_pass)
+  
+  end #end send_new_password
+  
+  
 
   protected
     
+  ##
+  # method to generate a random string of charactares consisting of 
+  # lowercase, uppercase, and numbers that is as long as the specified 
+  # length
+  #
+  # @param Integer len - length of random string
+  # @return - alpha numeric string of the specified length
+  ##
+  def self.random_string(len)
+
+    #array holding a-z + A-Z + 0-9
+    chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+
+    newpass = ""
+
+    #loop upto the specified length adding a random character
+    #from the chars array to the new pass
+    1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
+
+    return newpass
+
+  end #end self.random_string
 
 
 end

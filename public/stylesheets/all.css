@@ -486,7 +486,8 @@ h1 a {
 	vertical-align: middle;
 	overflow:hidden;
 	background:#455a21;
-	min-height: 30px;
+	/*min-height: 30px;*/
+	height: 30px;
 }
 * html #main .featured-products .pager ul .title {
 	height: 30px;
@@ -505,7 +506,7 @@ h1 a {
 	background:none;
 }
 #main .featured-products .pager ul .title h3 {
-	margin:4px 0px 0px 0px;
+	margin:0px 0px 0px 0px;
 	line-height:12px;
 	text-align:center;
 	font-size:10px;
@@ -5199,4 +5200,7 @@ a.view_all{
 }
 #contact_frm_text{
 	line-height: 15px;
+}
+#forgot_pass_table{
+	background: none;
 }
