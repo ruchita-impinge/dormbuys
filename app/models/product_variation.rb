@@ -189,6 +189,7 @@ class ProductVariation < ActiveRecord::Base
   
   #mass assignment setter method
   def product_package_attributes=(product_package_attributes)    
+    return if product_package_attributes.blank?
     product_package_attributes.each do |attributes|
       if attributes[:id].blank?
         z = product_packages.build(attributes)

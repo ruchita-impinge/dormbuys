@@ -1,5 +1,7 @@
 class ShippingNumber < ActiveRecord::Base
   
+  before_save :check_del_num
+  
   belongs_to :courier
   belongs_to :order_line_item
 
@@ -32,6 +34,15 @@ class ShippingNumber < ActiveRecord::Base
     end
   end #end method tracking_url
 
-  
+
+
+  def check_del_num
+    if self.tracking_number == "delete"
+      self.tracking_number = ""
+      self.courier_id = ""
+    end
+  end #end method check_del_num
+
+
   
 end

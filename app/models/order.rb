@@ -1,6 +1,7 @@
 class Order < ActiveRecord::Base
   
-  attr_accessor :admin_created_order, :add_hoc_label_errors, :skip_all_callbacks, :skip_new_callbacks
+  attr_accessor :admin_created_order, :add_hoc_label_errors, :shipping_number_errors, 
+    :skip_all_callbacks, :skip_new_callbacks
   
   before_validation :set_shipping_address
   before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors
@@ -30,7 +31,7 @@ class Order < ActiveRecord::Base
     :order_status_id, :payment_provider_id, :client_ip_address, :how_heard_option_id, :whoami
   
   validates_associated :order_line_items
-  validates_associated :shipping_labels
+  #validates_associated :shipping_labels
   
   
   DORM_SHIP_DATE  = 1
@@ -136,6 +137,13 @@ class Order < ActiveRecord::Base
         self.errors.add_to_base(err)
       end
     end
+    
+    unless self.shipping_number_errors.blank?
+      self.shipping_number_errors.each do |err|
+        self.errors.add_to_base(err)
+      end
+    end
+    
   end #end method validate
  
  
@@ -499,6 +507,7 @@ class Order < ActiveRecord::Base
     
     @setup_order_shipping_done = true
     
+    self.skip_all_callbacks = true
     self.save
     
   end #end method setup_order_shipping
@@ -1079,7 +1088,7 @@ class Order < ActiveRecord::Base
   
       
       #save any status change
-      self.skip_new_callbacks = true
+      self.skip_all_callbacks = true
       self.save
     
     end #end unless canceled?
@@ -1197,7 +1206,16 @@ class Order < ActiveRecord::Base
   
 
   def updated_shipping_number_attributes=(shipping_num_attributes)
+    
+    self.shipping_number_errors = []
+    
     attributes = shipping_num_attributes.first
+    
+    if attributes[:id].blank?
+      self.shipping_number_errors << "You must select a tracking number to update"
+      return false
+    end
+    
     attributes[:id].each do |shipping_number_id|
       num = ShippingNumber.find(shipping_number_id)
       if num
@@ -1205,7 +1223,7 @@ class Order < ActiveRecord::Base
       end
     end
     
-    Notifier.send_later(:updated_tracking, self)
+    Notifier.send_later(:deliver_updated_tracking, self)
     
   end #end method updated_shipping_number_attributes(shipping_num_attributes)
 
