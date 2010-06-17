@@ -276,6 +276,8 @@ class CartController < ApplicationController
     
     if @order.save
       
+      #debugger
+      
       #save the order into their session
       session[:order_id] = @order.id
       

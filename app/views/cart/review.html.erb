@@ -82,7 +82,7 @@
 										</div>
 										
 										<%= link_to '<span>Submit Your Order</span><em>&nbsp;</em>', cart_confirm_path, :class => 'box-submit',
-										 		:disable_with => "Please wait..." %>
+										 		:onclick => "window.location.href = '#{cart_confirm_path}'; $(this).attr('href', '#').html('<span>Please Wait</span><em>&nbsp;</em>'); return false;" %>
 
 										
 									</div>

@@ -29,10 +29,14 @@ class ShippingLabel < ActiveRecord::Base
   ##
   def before_destroy
     
-    del_html = "#{SHIP_LABELS_STORE}/#{File.basename(self.label)}"
-    del_graphic = "#{SHIP_LABELS_STORE}/label#{File.basename(self.label).gsub(".html", ".gif")}"
-    FileUtils.rm del_html, :force => true
-    FileUtils.rm del_graphic, :force => true
+    begin
+      del_html = "#{SHIP_LABELS_STORE}/#{File.basename(self.label)}"
+      del_graphic = "#{SHIP_LABELS_STORE}/label#{File.basename(self.label).gsub(".html", ".gif")}"
+      FileUtils.rm del_html, :force => true
+      FileUtils.rm del_graphic, :force => true
+    rescue
+      return true
+    end
 
   end #end before_destroy
   

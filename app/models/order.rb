@@ -4,11 +4,13 @@ class Order < ActiveRecord::Base
     :skip_all_callbacks, :skip_new_callbacks
   
   before_validation :set_shipping_address
+  
   before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors
   
   after_create :run_followup_tasks
   after_update :save_order_line_items, :save_shipping_labels #, :cancel_if_necessary
-  before_save :cancel_if_necessary
+  
+  before_update :cancel_if_necessary
   
   belongs_to :order_vendor
   belongs_to :user
@@ -171,12 +173,16 @@ class Order < ActiveRecord::Base
   def run_followup_tasks
     return if self.skip_all_callbacks
     return if self.skip_new_callbacks
+
+    
+    self.track_coupons_used
+    self.track_gift_cards_used
+    
     self.send_later(:setup_order_shipping)
     self.send_later(:track_item_sold_counts)
     self.send_later(:update_gift_registry_wish_list)
-    self.send_later(:track_coupons_used)
-    self.send_later(:track_gift_cards_used)
     Notifier.send_later(:deliver_customer_order_notification, self)
+    
   end #end method run_followup_tasks
 
 
@@ -336,8 +342,6 @@ class Order < ActiveRecord::Base
       #save the transaction number
       self.payment_transaction_number = @payment_result[:transaction_number]
 
-      #save the packing configuration
-      self.packing_configuration = self.shippments_as_html
 
       #store transaction specific data
       if self.grand_total.cents == 0
@@ -414,6 +418,10 @@ class Order < ActiveRecord::Base
     
     return if @setup_order_shipping_done
     
+    #save the packing configuration
+    self.packing_configuration = self.shippments_as_html
+    
+    
     #create shipping numbers for each individual product on the order
     self.order_line_items.each do |line_item|
       1.upto(line_item.quantity) do |i| 
@@ -486,8 +494,15 @@ class Order < ActiveRecord::Base
       end #end unless drop_ship
 
     end #end shippments
+
     
+    self.order_line_items.each do |line_item|
+      line_item.shipping_numbers.each do |num|
+        num.save(false)
+      end
+    end
     
+
     @setup_order_shipping_done = true
     
     self.skip_all_callbacks = true

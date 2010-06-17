@@ -5,10 +5,10 @@ class OrderLineItem < ActiveRecord::Base
   belongs_to :order
   belongs_to :wish_list_item
   belongs_to :gift_registry_item
-  has_many :order_line_item_options
-  has_many :order_line_item_product_as_options
-  has_many :order_line_item_discounts
-  has_many :shipping_numbers
+  has_many :order_line_item_options, :dependent => :destroy
+  has_many :order_line_item_product_as_options, :dependent => :destroy
+  has_many :order_line_item_discounts, :dependent => :destroy
+  has_many :shipping_numbers, :dependent => :destroy
   
   validates_presence_of :item_name, :quantity, :product_number
   

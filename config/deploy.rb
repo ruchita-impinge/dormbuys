@@ -94,7 +94,7 @@ after "deploy:start", "dj:start"
 after "deploy:stop", "dj:stop"
 
 before "deploy:update_code", "dj:stop"
-after "deploy:restart", "dj:restart"
+after "deploy:restart_passenger", "dj:restart"
 
 # delayed_job
 namespace :dj do

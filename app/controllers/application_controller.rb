@@ -30,7 +30,11 @@ class ApplicationController < ActionController::Base
   
   
     if session[:cart_id]
-      @cart = Cart.find(session[:cart_id])
+      begin
+        @cart = Cart.find(session[:cart_id])
+      rescue
+        @cart = Cart.create
+      end
     elsif logged_in?
     
       if current_user.carts.first
