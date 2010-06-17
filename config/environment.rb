@@ -23,6 +23,10 @@ Rails::Initializer.run do |config|
   config.gem "ezcrypto"
   config.gem "ruby-debug"
   config.gem 'hoptoad_notifier'
+  config.gem "ghazel-daemons", :lib => "daemons", :source => "http://gems.gitgub.com"
+  gem "ghazel-daemons"
+  require "daemons"
+  
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

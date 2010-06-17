@@ -17,9 +17,7 @@ class ShipManager
   
     
   def self.courier_quote(sender_zip, to_zip, length, width, height, weight, num_packages)
-    
-    raise "UPS quote not implemented"
-    
+    self.fedex_quick_quote(sender_zip, to_zip, length, width, height, weight, num_packages)
   end #end method self.courier_quote
 
 
@@ -224,15 +222,23 @@ class ShipManager
   def self.courier_ship_request(dest_info, length, width, height, weight, 
     num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
     
-    self.ups_ship_request(dest_info, length, width, height, weight, num_packages, order_id, insured_value, svc_type, trn_type)
+    self.ups_ship_request(dest_info, length, width, height, weight,
+      num_packages, order_id, insured_value, svc_type, trn_type)
     
+    #
+    #  self.fedex_ship_request(dest_info, length, width, height, weight, 
+    #  num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
+    #
+      
   end #end courier_ship_request
   
   
   def self.void_shipping_label(shipping_label)
     
     ShipManager.void_ups_ship_request(shipping_label.identification_number, shipping_label.tracking_number)
-        
+    
+    #ShipManager.void_fedex_ship_request(shipping_label.tracking_number)
+    
   end #end void_shipping_label
   
   
@@ -385,6 +391,252 @@ class ShipManager
 
 
   
+  
+  ##
+  # method to get full pricing and shipping information from fedex by making a 
+  # "Ship Request".  The returned information can be used to make a label and get
+  # any tracking information
+  #
+  # * @param Hash dest_info - hash of information about the package destination
+  # * @param Float length - length of the package to ship
+  # * @param Float width - width of the package to ship
+  # * @param Float height - height of the package to ship
+  # * @param Float weight - weight of the package to ship
+  # * @param Integer num_packages - the total number of packages in the shippment
+  # * @param String order_id - dormbuys order id used for reference
+  # * @param Float insured_value - value to insure the package for
+  # * @param String svc_type - Fedex Service type, ground, priority etc
+  # * @param String trn_type - Fedex Transaction type, used with express or ground shipping
+  # * @return ShippingFedex - object with rate information
+  ##
+  # def self.fedex_ship_request(dest_info, length, width, height, weight, 
+  #   num_packages, order_id, insured_value=nil, svc_type=nil, trn_type=nil)
+  #     
+  # 
+  #     
+  #     options ={
+  #       :auth_key       => APP_CONFIG['fedex']['auth_key'].to_s,
+  #       :auth_password  => APP_CONFIG['fedex']['auth_password'].to_s,
+  #       :account_number => APP_CONFIG['fedex']['account_number'].to_s,
+  #       :meter_number   => APP_CONFIG['fedex']['meter_number'].to_s,
+  #       :debug          => true
+  #     }
+  #     
+  #     
+  #     
+  #     if dest_info[:zip].length > 5
+  #        dest_info[:zip] = dest_info[:zip].to_s[0,5]
+  #     end
+  #     
+  #     #fix residential shipping > 70 lbs
+  #     # if weight >= 70
+  #     #         service_type = Fedex::ServiceTypes::FEDEX_GROUND
+  #     #         residential = false
+  #     #       else
+  #     #         service_type = Fedex::ServiceTypes::GROUND_HOME_DELIVERY
+  #     #         residential = true
+  #     #       end
+  #     service_type = Fedex::ServiceTypes::FEDEX_GROUND
+  #     residential = false
+  #     
+  #     
+  #     #dest_info[:address1] += ' ' + dest_info[:address2] if dest_info[:address2]
+  #     
+  #     #SETUP the destination address info
+  #     dest_address_info = {
+  #       :country => dest_info[:country].upcase,
+  #       :street => dest_info[:address1],
+  #       :state => dest_info[:state].upcase,
+  #       :city => dest_info[:city],
+  #       :zip => dest_info[:zip],
+  #       :residential => residential
+  #     }
+  #     dest_address_info[:street2] = dest_info[:address2] unless dest_info[:address2].blank?
+  #     
+  #     contact_info = {
+  #       :name => dest_info[:name],
+  #       :phone_number => dest_info[:phone]
+  #     }
+  #     contact_info[:company_name] = dest_info[:company_name] if dest_info[:company_name]
+  # 
+  # 
+  #     ship_fields ={
+  #       :shipper => {
+  #         :contact => {
+  #           :name => 'Dormbuys.com',
+  #           :phone_number => '18665023676'
+  #         },
+  #         :address => {
+  #           :country => 'US',
+  #           :street => '13720 Aiken Rd. Unit B',
+  #           :state => 'KY',
+  #           :city => 'Louisville',
+  #           :zip => '40245'
+  #         }
+  #       },
+  #       :recipient => {
+  #         :contact => contact_info,
+  #         :address => dest_address_info
+  #       },
+  #       :service_type => service_type,
+  #       :length => length,
+  #       :width => width,
+  #       :height => height,
+  #       :weight => weight,
+  #       :reference_number => order_id
+  #     }
+  # 
+  # 
+  #     fedex = Fedex::Base.new(options)
+  #     fedex.label(ship_fields)
+  # 
+  # 
+  # end #end method self.fedex_ship_request
+  # 
+  
+  
+  
+  ##
+  # method to void a fedex_ship_request (and label)
+  #
+  # * @param String tracking_number - tracking number of the request to void
+  # * @return Boolean - T||F if request was voided
+  ##
+  # def self.void_fedex_ship_request(tracking_number)
+  #   
+  #   options ={
+  #     :auth_key       => APP_CONFIG['fedex']['auth_key'].to_s,
+  #     :auth_password  => APP_CONFIG['fedex']['auth_password'].to_s,
+  #     :account_number => APP_CONFIG['fedex']['account_number'].to_s,
+  #     :meter_number   => APP_CONFIG['fedex']['meter_number'].to_s,
+  #     :debug          => true
+  #   }
+  # 
+  #   
+  #   fedex = Fedex::Base.new(options)
+  #   fedex.cancel(:tracking_number => tracking_number)
+  #   
+  # end #end method self.void_fedex_ship_request(tracking_number)
+  # 
+  
+  
+  
+  ##
+  # method to get a quick price on shipping from fedex by making a "Rate Request"
+  #
+  # * @param String or Int sender_zip - origin zip code
+  # * @param String or Int to_zip, destination zip code 
+  # * @param Float length - length of the package
+  # * @param Float width - width of the package
+  # * @param Float height - height of the package
+  # * @param Float weight - total weight of the shippment
+  # * @param Int num_packages - total number of packages in the shippment
+  # * @return Float - shipping rate quote from fedex for the shippment
+  ##
+  # def self.fedex_quick_quote(sender_zip, to_zip, length, width, height, weight, num_packages)
+  #     
+  # 
+  #     if sender_zip.blank? || 
+  #        to_zip.blank? || 
+  #        length.blank? || 
+  #        width.blank? || 
+  #        height.blank? || 
+  #        weight.blank? || 
+  #        num_packages.blank?
+  #        raise "Invalid Arguments"
+  #      end
+  #      
+  #      if sender_zip.length > 5
+  #        sender_zip = sender_zip[0,5]
+  #      end
+  #      
+  #      if to_zip.length > 5
+  #        to_zip = to_zip[0,5]
+  #      end
+  #      
+  #      length = length.ceil
+  #      width = width.ceil
+  #      height = height.ceil
+  #      weight = weight.ceil
+  #      
+  #      #variable for any extra fees
+  #      additional_fees = 0.00
+  # 
+  #      #fix residential shipping > 70 lbs
+  #      # if weight >= 70
+  #      #        additional_fees += 2.25
+  #      #        service_type = Fedex::ServiceTypes::FEDEX_GROUND
+  #      #        residential = false
+  #      #      else
+  #      #        service_type = Fedex::ServiceTypes::GROUND_HOME_DELIVERY
+  #      #        residential = true
+  #      #      end
+  #      additional_fees += 2.25
+  #      service_type = Fedex::ServiceTypes::FEDEX_GROUND
+  #      residential = false
+  # 
+  #     options ={
+  #       :auth_key       => APP_CONFIG['fedex']['auth_key'].to_s,
+  #       :auth_password  => APP_CONFIG['fedex']['auth_password'].to_s,
+  #       :account_number => APP_CONFIG['fedex']['account_number'].to_s,
+  #       :meter_number   => APP_CONFIG['fedex']['meter_number'].to_s,
+  #       :debug          => true
+  #     }
+  # 
+  #     
+  #     price_fields ={
+  #       :origin => {
+  #         :country => 'US',
+  #         :street => ' ',
+  #         :state => "#{self.state_from_zip(sender_zip)}",
+  #         :city => ' ',
+  #         :zip => sender_zip
+  #       },
+  #       :destination => {
+  #         :country => 'US',
+  #         :street => ' ',
+  #         :state => "#{self.state_from_zip(to_zip)}",
+  #         :city => ' ',
+  #         :zip => to_zip,
+  #         :residential => residential
+  #       },
+  #       :service_type => service_type,
+  #       :count => num_packages, 
+  #       :weight => weight,
+  #       :length => length,
+  #       :width => width,
+  #       :height => height,
+  #     }
+  #     
+  # 
+  #       #actually calculate shipping
+  #       fedex = Fedex::Base.new(options)
+  #       price = fedex.price(price_fields)
+  #       final_price = ((price / 100.0) + additional_fees)
+  #       
+  #       
+  #       
+  #       
+  #       ################################################################
+  #       str = "\n\n[#{Time.now}]\n"                                     
+  #       str += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"            
+  #       str += "ran ShipManager.fedex_quick_quote\n"                    
+  #       str += "Sending From: #{sender_zip} To: #{to_zip}\n"            
+  #       str += "Length: #{length}, Width: #{width}, Depth: #{height}\n" 
+  #       str += "Weight: #{weight}\n"                                    
+  #       str += "Number of Packages: #{num_packages}\n\n"                
+  #       str += "PRICE: #{final_price}\n"                                
+  #       str += "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n"          
+  #                  
+  #       puts str                                                        
+  #                                                                                  
+  #       ################################################################
+  #       
+  #       return final_price.to_money
+  #     
+  #   end #end method self.fedex_quick_quote()
+  #   
+  #   
 
   
   ##

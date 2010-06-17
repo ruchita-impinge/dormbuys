@@ -33,8 +33,8 @@
 			  		<tr>
 			    		<td><%=h gift_card.giftcard_number %></td>
 			    		<td><%=h gift_card.giftcard_pin %></td>
-			    		<td class="center"><%=h gift_card.current_amount %></td>
-			    		<td class="center"><%=h gift_card.original_amount %></td>						
+			    		<td class="center"><%=h gift_card.original_amount %></td>
+			    		<td class="center"><%=h gift_card.current_amount %></td>						
 			    		<td class="center">
 							<% if gift_card.expires %>
 								<%= gift_card.expiration_date.to_time.to_s(:mdY) %>

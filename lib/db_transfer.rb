@@ -365,6 +365,7 @@ class DBTransfer
       new_record.expiration_date  = row["expiration_date"].blank? ? Date.today : Date.parse(row["expiration_date"]) 
       new_record.created_at       = row["created_at"].blank? ? Time.now : Time.parse(row["created_at"]) 
       new_record.updated_at       = row["updated_at"].blank? ? Time.now : Time.parse(row["updated_at"]) 
+      new_record.skip_before_create = true
       new_record.save(false)
       
     end #end each_hash

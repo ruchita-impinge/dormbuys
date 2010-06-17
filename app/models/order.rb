@@ -434,23 +434,6 @@ class Order < ActiveRecord::Base
          #get the ship request info from the courier
 
       
-# ########
-# # DEPRECIATED WITH MOVE TO UPS
-# ########
-# 
-#          price, label, tracking_number = ShipManager.courier_ship_request(
-#            self.get_payment_shipping_address, 
-#            parcel.length,
-#            parcel.width,
-#            parcel.depth,
-#            parcel.weight, 
-#            1, 
-#            self.order_id)
-#  
-#          #write out the shipping label image
-#          label_path = Files::FileManager.save_shipping_label(label.path)
-
-
           #USING UPS
           label_path, tracking_number, identification_number = ShipManager.courier_ship_request(
              self.get_payment_shipping_address, 
@@ -1257,22 +1240,6 @@ class Order < ActiveRecord::Base
       weight = attributes[:weight].to_f
     
 
-#   DEPRECIATED WITH MOVE TO UPS
-# 
-#       price, label, tracking_number = ShipManager.courier_ship_request(
-#         shipping_address, 
-#         length,
-#         width,
-#         depth,
-#         weight, 
-#         1, 
-#         self.order_id)
-#     
-#     
-#       #write out the shipping label image
-#       label_path = Files::FileManager.save_shipping_label(label.path)
-
-
       # USING UPS
       label_path, tracking_number, identification_number = ShipManager.courier_ship_request(
          shipping_address, 
@@ -1389,5 +1356,6 @@ class Order < ActiveRecord::Base
     end
     nums.uniq
   end #end method tracking_numbers
+
 
 end #end class

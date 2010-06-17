@@ -1,5 +1,7 @@
 class GiftCard < ActiveRecord::Base
   
+  attr_accessor :skip_before_create
+  
   before_create :set_current_amount
   
   has_and_belongs_to_many :orders
@@ -30,6 +32,7 @@ class GiftCard < ActiveRecord::Base
   
   
   def set_current_amount
+    return if self.skip_before_create == true
     self.current_amount = self.original_amount
   end #end method set_current_amount
     
