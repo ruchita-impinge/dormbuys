@@ -119,6 +119,7 @@ class CartController < ApplicationController
   
   
   def login
+    @cart_step = "login"
     
     if logged_in?
       find_cart
@@ -165,6 +166,7 @@ class CartController < ApplicationController
   
   
   def user_signup
+    @cart_step = "login"
     @page_title = "Login"
     @user = User.new(params[:user])
     @user.role_ids = [1]
@@ -187,6 +189,7 @@ class CartController < ApplicationController
   
   
   def billing_shipping
+    @cart_step = "billing_shipping"
     @page_title = "Order Billing and Shipping"
     find_cart
     if @cart.items.empty?
@@ -232,6 +235,7 @@ class CartController < ApplicationController
   
   
   def save_billing_shipping
+    @cart_step = "billing_shipping"
     @page_title = "Order Billing and Shipping"
     
     unless request.post? || request.put?
@@ -286,6 +290,7 @@ class CartController < ApplicationController
   
   
   def review
+    @cart_step = "review"
     @page_title = "Review Order"
     find_cart
     if @cart.items.empty?
@@ -304,6 +309,7 @@ class CartController < ApplicationController
   
   
   def confirm
+    @cart_step = "confirm"
     @page_title = "Order Confirmation"
     find_cart
     if @cart.items.empty?

@@ -92,7 +92,6 @@
 														<div class="description">
 															<strong class="item-title"><%= order_item.variation.full_title %></strong>
 															<span class="item-desc">#<%= order_item.variation.product_number %></span>
-															<span class="item-desc"><%= truncate(order_item.variation.product.product_overview, :length => 40) %></span>
 															
 															<% order_item.order_line_item_options.group_by(&:option_name).each do |option, values| %>
 																<span class="item-desc"><%= option %>: <%= values.collect(&:option_value) %></span>
@@ -139,7 +138,7 @@
 									<div class="text-hold">
 										<strong>Order submission complete. Your order number is <%= @order.order_id %></strong>
 										<p>Your order has been processed with great success! By the time you’ve finished reading this, you’ll find an electronic piece of mail in your inbox, containing the digits of your confirmation/receipt. That message also contains the rest of the info on this very page, as well as some other important order notes.</p>
-										<p>If you’ve got any Q’s about your order, feel free to contact us at <a href="mailto:help@dormbuys.com">help@dormbuys.com</a>. You can also track the status of your order by logging into your account and selecting “View Order History.” Easy-peasy, right? That’s how we do it.</p>
+										<p>If you’ve got any Q’s about your order, feel free to contact us at <a href="mailto:helpme@dormbuys.com">helpme@dormbuys.com</a>. You can also track the status of your order by logging into your account and selecting “View Order History.” Easy-peasy, right? That’s how we do it.</p>
 										<p>Thanks for hanging out with us!<br /> – The DB Crew</p>
 									</div>
 								</div>
