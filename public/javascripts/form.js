@@ -25,6 +25,43 @@ function is_mac() {
 	return false;
 }
 
+function reInitSelects()
+{
+	if(!document.getElementById) {return false;}
+	
+	selects = new Array();
+	
+	var _frms = document.getElementsByTagName("form");
+	for (var nf = 0; nf < _frms.length; nf++) {
+		if(_frms[nf].className.indexOf("default") == -1) {
+
+			var c = document.forms[nf].getElementsByTagName("select");
+			for(var nfs = 0; nfs < c.length; nfs++) {
+				selects.push(c[nfs]);
+			}
+		}
+	}
+	
+	replaceSelects();
+
+	var _selects = document.getElementsByTagName('select');
+	var _SelctClassName = [];
+	if (_selects) {
+		for (var i = 0; i < _selects.length; i++) {
+			if (_selects[i].className != '' && _selects[i].className != 'outtaHere')
+				_SelctClassName[i] = ' drop-'+_selects[i].className;
+		}
+		for (var i = 0; i < _SelctClassName.length; i++) {
+			var _selectDrop = document.getElementById('optionsDiv'+i);
+			if (_selectDrop) {
+				if (_SelctClassName[i]) 
+					_selectDrop.className += _SelctClassName[i];
+			}
+		}
+	}
+	
+}//end function
+
 function initCastomForms() {
 	if(!document.getElementById) {return false;}
 	getElements();
