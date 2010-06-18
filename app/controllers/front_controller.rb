@@ -82,14 +82,16 @@ class FrontController < ApplicationController
     
     @additional_images = []
     @product.additional_product_images.each do |aimg|
-      @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description}
+      @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description, :sort => 1}
     end
     
     @product.available_variations.each do |v|
       if v.image.file?
-        @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title}
+        @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title, :sort => 2}
       end
     end
+    
+    @additional_images.sort! {|x,y| x[:sort] <=> y[:sort]}
     
     
     @recommended_products = @product.recommended_products

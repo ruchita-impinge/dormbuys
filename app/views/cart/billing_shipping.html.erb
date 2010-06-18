@@ -198,16 +198,27 @@
 											<span>Tax:</span>
 										</div>
 									</div>
+									
+									<% if @cart.coupon || @cart.total_gift_cards.cents > 0 %>
 									<div class="sep-box sep-box2">
+										
+										<% if @cart.total_gift_cards.cents > 0 %>
 										<div class="item-subtotal">
 											<strong class="price">-$<%= @cart.total_gift_cards %></strong>
 											<span>Gift Cards:</span>
 										</div>
+										<% end %>
+										
+										<% unless @cart.coupon.blank? %>
 										<div class="item-subtotal">
 											<strong class="price">-$<%= @cart.total_coupons %></strong>
 											<span>Coupon:</span>
 										</div>
+										<% end %>
+										
 									</div>
+									<% end %>
+									
 									<div class="sep-box">
 										<div class="item-subtotal coloured-box">
 											<strong class="price">$<%= @cart.grand_total %></strong>

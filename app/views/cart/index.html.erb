@@ -62,7 +62,6 @@
 																	<div class="description">
 																		<strong class="item-title"><%= cart_item.title %></strong>
 																		<span class="item-desc">#<%= cart_item.product_number %></span>
-																		<span class="item-desc"><%= truncate(cart_item.product_description, :length => 40) %></span>
 																		
 																		<% cart_item.product_options.group_by(&:product_option).each do |option, values| %>
 																			<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:option_value_display) %></span>
@@ -191,7 +190,9 @@
 													<input class="text" type="text" id="code" name="coupon_number" />
 													<input class="submit" type="image" src="/images/btn-go.gif" alt="go" />
 												</div>
-												<p class="coupon-discount">Coupon Discount: <span>-$<%= @cart.total_coupons %></span></p>
+												<% unless @cart.coupon.blank? %>
+													<p class="coupon-discount">Coupon Discount: <span>-$<%= @cart.total_coupons %></span></p>
+												<% end %>
 											</div>
 											<div class="sep-box">
 												<div class="shipping">
