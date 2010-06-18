@@ -4521,7 +4521,7 @@ dl.info dd {
 }
 .customer-service .answer-box strong.title {
 	background: url(../images/bull-answer.gif) no-repeat;
-	padding: 0 0 0 32px;
+	padding: 5px 0 5px 32px;
 	margin: 0 0 10px -32px;
 	display: block;
 	color: #5c8727;
