@@ -106,6 +106,16 @@ class Cart < ActiveRecord::Base
   
   
   def add(cart_item_attributes)
+    
+    begin
+      variation = ProductVariation.find(cart_item_attributes[:variation_id])
+      if cart_item_attributes[:qty].to_i > variation.qty_on_hand
+        return [false, "Maximum available quantity of #{variation.full_title} is #{variation.qty_on_hand}, please call 1-866-502-DORM for special orders."]
+      end
+    rescue
+      return [false, "Item could not be found, please call 1-866-502-DORM for help."]
+    end
+    
     item = self.cart_items.build
     item.quantity = cart_item_attributes[:qty]
     item.product_variation_id = cart_item_attributes[:variation_id]
@@ -121,6 +131,9 @@ class Cart < ActiveRecord::Base
     item.gift_registry_item_id = cart_item_attributes[:gift_registry_item_id] unless cart_item_attributes[:gift_registry_item_id].blank?
     
     item.save!
+    
+    return [true, ""]
+    
   end #end method add(cart_item_attributes)
   
   

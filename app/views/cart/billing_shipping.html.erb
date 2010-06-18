@@ -51,6 +51,15 @@
 												<td>
 													<em class="top-text">Enter your billing information as it appears on your credit card statement. <strong>*Required Field</strong></em>
 													<%= render :partial => 'billing_form', :locals => {:f => f} %>
+													
+													
+													<% if logged_in? %>
+													<br />
+													<%= check_box_tag "update_profile", 1, true, :id => 'chk_update_profile' %>
+													<label for="chk_update_profile">Update my account with this billing &amp; shipping information</label>
+													<% end %>
+													
+													
 												</td>
 												<td>
 													<%= render :partial => 'shipping_method_selector', :locals => {:f => f, :obj => @cart} %>

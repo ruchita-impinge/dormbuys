@@ -39,7 +39,8 @@
 									{
 										:order => [:year, :day, :month],
 										:start_year => Time.now.year,
-										:use_month_numbers => true
+										:use_short_month => true,
+										:default => Time.now.beginning_of_year
 									},
 									{
 										:class => "t8"

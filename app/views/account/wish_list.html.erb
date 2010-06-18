@@ -43,8 +43,8 @@
 													
 													<%= f.select :sort_by, 
 															options_for_select([
-																["Date Added", "created_at"],
-																["Date Added", "created_at"],
+																["Added", "created_at"],
+																["Added", "created_at"],
 																["Name","name"],
 																["Price", "price"]
 															], params[:options] ? params[:options][:sort_by] : nil), 

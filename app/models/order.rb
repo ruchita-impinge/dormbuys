@@ -299,7 +299,7 @@ class Order < ActiveRecord::Base
       unless li.variation.product.drop_ship
         avail_qty = ProductVariation.find(li.variation.id).qty_on_hand
         if avail_qty < li.quantity
-          self.errors.add_to_base("The maximum available quantity of ''#{li.variation.full_title}' is #{avail_qty}")
+          self.errors.add_to_base("The maximum available quantity of ''#{li.variation.full_title}' is #{avail_qty} please call 1-866-502-DORM for special orders")
           pass = false
         end 
       end 

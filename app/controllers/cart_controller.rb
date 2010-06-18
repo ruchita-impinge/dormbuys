@@ -25,7 +25,14 @@ class CartController < ApplicationController
     end
     
     find_cart
-    @cart.add(params[:cart_item])
+    
+    cart_add_result = @cart.add(params[:cart_item])
+    
+    
+    if cart_add_result.first == false
+      flash[:error] = cart_add_result.last
+      redirect_to request.referrer and return
+    end
     
     
     if params[:cart_item][:is_wish_list_item].to_i == 1
@@ -236,6 +243,39 @@ class CartController < ApplicationController
     saved = @cart.update_attributes(params[:cart])
     
     if @cart.should_validate? && saved
+ 
+      
+      #if update the user's profile
+      if params[:update_profile].to_i == 1
+        
+        current_user.user_profile_type_id   = @cart.user_profile_type_id
+        current_user.billing_first_name     = @cart.billing_first_name
+        current_user.billing_last_name      = @cart.billing_last_name
+        current_user.billing_address        = @cart.billing_address
+        current_user.billing_address2       = @cart.billing_address2    
+        current_user.billing_city           = @cart.billing_city
+        current_user.billing_state_id       = @cart.billing_state_id    
+        current_user.billing_zipcode        = @cart.billing_zipcode      
+        current_user.billing_country_id     = @cart.billing_country_id
+        current_user.shipping_first_name    = @cart.shipping_first_name  
+        current_user.shipping_last_name     = @cart.shipping_last_name  
+        current_user.shipping_address       = @cart.shipping_address  
+        current_user.shipping_address2      = @cart.shipping_address2    
+        current_user.shipping_city          = @cart.shipping_city     
+        current_user.shipping_state_id      = @cart.shipping_state_id
+        current_user.shipping_zipcode       = @cart.shipping_zipcode    
+        current_user.shipping_country_id    = @cart.shipping_country_id
+        current_user.shipping_phone         = @cart.shipping_phone         
+        current_user.dorm_ship_college_name = @cart.dorm_ship_college_name
+        current_user.dorm_ship_not_assigned = @cart.dorm_ship_not_assigned
+        current_user.dorm_ship_not_part     = @cart.dorm_ship_not_part 
+        current_user.billing_phone          = @cart.billing_phone      
+        current_user.whoami                 = @cart.whoami
+        
+        current_user.save(false)       
+        
+      end #end profile update
+      
       redirect_to cart_review_path
     else
       render :action => 'billing_shipping'

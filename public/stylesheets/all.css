@@ -3964,6 +3964,7 @@ dl.info dd {
 	overflow:hidden;
 	background:url(../images/text-we.gif) no-repeat;
 	margin:0 auto;
+	margin-top: 50px;
 }
 .email-box label {
 	float:left;
@@ -5015,7 +5016,6 @@ dl.links-list dd {
 	margin-bottom: 45px;
 }
 textarea#gift_registry_message{
-	max-width: 236px;
 	width: 236px;
 }
 #errorExplanation{
