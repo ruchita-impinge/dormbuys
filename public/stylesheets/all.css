@@ -575,6 +575,7 @@ h1 a {
 }
 .inner-png {
 	margin-left:-15px;
+	margin-top: 4px;
 }
 /* sub-tabs */
 #main .sub-tabs {
@@ -4032,7 +4033,7 @@ dl.info dd {
 	float:left;
 	line-height:49px;
 }
-.pass-quality .quality a{
+.pass-quality .quality .indicator_bg{
 	width:248px;
 	height:59px;
 	display:block;
@@ -4040,6 +4041,31 @@ dl.info dd {
 	text-indent:-9999px;
 	overflow:hidden;
 	background:url(../images/bg-gradient.jpg) no-repeat;
+}
+.pass-quality .quality .indicator_bg .indicator_holder{
+	width:217px;
+	height:49px;
+	display:block;
+	position:absolute;
+	top: 2px;
+	left: 15px;
+	/*
+	background: red;
+	opacity: 0.7;
+	*/
+	text-indent:-9999px;
+	overflow:hidden;
+}
+.pass-quality .quality .indicator_bg .indicator_holder .indicator{
+	text-indent: -9999px;
+	overflow:hidden;
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 49px;
+	width: 2px;
+	background: #444;
 }
 .list2 {
 	margin:0;

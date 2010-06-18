@@ -91,7 +91,7 @@ production:
         login: dormbuysdotcom
         password: xavier01
         key: 9C60A235E9C53978
-        testing: 1
+        testing: 0
     googleproducts:
         host: uploads.google.com
         user: dormbuys123
