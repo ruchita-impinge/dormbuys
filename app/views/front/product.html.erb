@@ -36,7 +36,10 @@
 												
 												$("a.additional_image").mouseover(function(){
 													$img.attr("src", $(this).attr("rel"));
-													$lnk.text($(this).attr("title"));
+													if( $(this).attr("title") != "")
+													{
+														$lnk.text($(this).attr("title"));
+													}
 												});
 												
 												$("a.additional_image").mouseout(function(){
@@ -82,7 +85,8 @@
 									</ul>
 									-->
 
-							
+									
+									<!--
 									<div class="link-box">
 										<%= link_to_function "save to my Wish List" do |page|
 												page << '$("#is_wish_list_item").val("1");'
@@ -94,6 +98,7 @@
 												page << "document.forms['cart_form'].submit();"
 											end %>
 									</div>
+									-->
 							
 							
 								</div><!-- end left column -->
@@ -224,6 +229,18 @@
 													<%= f.hidden_field :is_wish_list_item, :value => 0, :id => "is_wish_list_item" %>
 											
 													<a href="javascript:document.forms['cart_form'].submit();" class="btn">Add to Cart</a>
+													
+
+													<%= link_to_function "Add to Registry", :class => "btn right" do |page|
+															page << '$("#is_wish_list_item").val("1");'
+															page << "document.forms['cart_form'].submit();"
+														end %>
+
+													<%= link_to_function "Add to Wish List", :class => "btn right" do |page|
+															page << '$("#is_gift_registry_item").val("1");'
+															page << "document.forms['cart_form'].submit();"
+														end %>
+								
 													<span class="arrow">arrow</span>
 												</div>
 												<input type="submit" value="Submit" class="hidden" />

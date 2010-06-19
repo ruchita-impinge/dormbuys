@@ -11,7 +11,7 @@
 	</div>
 	
 
-	<% fields_for "cart[credit_card_attributes]", nil, :index => nil do |c| %>
+	<% fields_for "cart[credit_card_attributes]", @cart, :index => nil do |c| %>
 	
 	<div class="input-box">
 		<%= c.text_field :name_on_card, :class => 'text text3' %>
@@ -27,7 +27,8 @@
 					:order => [:year, :month, :day], 
 					:discard_day => true,
 					:prompt => {:month => "Month", :year => "Year"},
-					:start_year => Date.today.year
+					:start_year => Date.today.year,
+					:default => @cart.exp_date
 				}, 
 				{:class => 'select-t4 t5'} %>
 		<%= c.label :exp_date, '*Exp. Date:' %>

@@ -60,7 +60,9 @@
 																<div class="item-info">
 																	<%= link_to image_tag(cart_item.thumbnail_url, :alt => cart_item.title), cart_item.product_link %>
 																	<div class="description">
-																		<strong class="item-title"><%= cart_item.title %></strong>
+																		<strong class="item-title">
+																			<%= link_to cart_item.title, cart_item.product_link %>
+																		</strong>
 																		<span class="item-desc">#<%= cart_item.product_number %></span>
 																		
 																		<% cart_item.product_options.group_by(&:product_option).each do |option, values| %>

@@ -50,6 +50,12 @@ class GiftRegistry < ActiveRecord::Base
     local_items.sort{|x,y| x.product_variation.full_title <=> y.product_variation.full_title}
   end #end method items
   
+  def last_item_added
+    local_items = self.gift_registry_items.reject {|x| x if x.product_variation.blank? }
+    local_items.sort!{|x,y| x.id <=> y.id}
+    local_items.last
+  end #end method last_item_added
+  
   def event_type_description
     REGISTRY_REASONS.each do |reason|
       if reason.first == self.registry_reason_id

@@ -25,15 +25,18 @@
 					<div class="mbox">
 						<div class="tabset" id="tabset">
 							<% content_for :extra_gift_reg_tab do %>
-								<li><a class="tab-big active" href="#"><%= @gift_registry.registry_number %></a></li>
+								<li><%= link_to @gift_registry.registry_number, account_view_gift_registry_path(@gift_registry), :class => "tab-big active" %></li>
 							<% end %>
 							<%= render :partial => "gift_registry_tabs" %>
-
 						</div>
 						<div class="mbox-body">
 							<div class="mbox-t">
 								<div class="mbox-area">
 									
+									<% unless @gift_registry.items.empty? %>
+									<%= link_to "Continue Shopping", @gift_registry.last_item_added.product_variation.product.default_front_url, 
+											:class => "continue registry_continue_link" %>
+									<% end %>
 									
 									<div class="registry-view">
 										<div class="view-title">

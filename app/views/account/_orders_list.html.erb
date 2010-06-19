@@ -75,7 +75,6 @@
 									<% end %>
 								</strong>
 								<span class="item-desc">#<%= order_item.product_number %></span>
-								<span class="item-desc"><%= truncate(order_item.variation.product.product_overview, :length => 40) %></span>
 
 								<% order_item.order_line_item_options.group_by(&:option_name).each do |option, values| %>
 									<span class="item-desc"><%= option %>: <%= values.collect(&:option_value) %></span>
@@ -94,7 +93,7 @@
 					<ul class="actions-list">
 						<li><%= link_to "<span>Track Order</span><em>&nbsp;</em>", "#{account_view_order_path(order)}#tracking", :class => "table-btn tb-t1" %></li>
 						<li><%= link_to "<span>View Order</span><em>&nbsp;</em>", account_view_order_path(order), :class => "table-btn tb-t2" %></li>
-						<li><em><%= link_to "View Invoice", account_view_order_invoice_path(order) %></em></li>
+						<li><em><%= link_to "View Receipt", account_view_order_invoice_path(order), :target => "_blank" %></em></li>
 						<li><em><%= link_to "Return an Item", returns_path %></em></li>
 					</ul>
 				</td>

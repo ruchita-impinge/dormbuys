@@ -3034,6 +3034,9 @@ h1 a {
 	margin-left:14px;
 	background:url(../images/bg-btn04.gif) no-repeat;
 }
+.detail .input-row .right{
+	margin-left: 103px;
+}
 .detail .input-row label {
 	font-size:16px;
 	line-height:35px;
@@ -5228,4 +5231,9 @@ a.view_all{
 }
 #forgot_pass_table{
 	background: none;
+}
+a.registry_continue_link{
+	float: right;
+	position: relative;
+	z-index: 1000;
 }

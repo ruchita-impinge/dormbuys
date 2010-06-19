@@ -359,6 +359,27 @@ class Cart < ActiveRecord::Base
   end #end method order_payment
   
   
+  def name_on_card
+    payment_info['name_on_card'] rescue nil
+  end #end method name_on_card
+  
+  def card_number
+    payment_info['card_number'] rescue nil
+  end #end method card_number
+  
+  def exp_date
+    Date.parse(payment_info['exp_date']) rescue nil
+  end #end method exp_date
+  
+  def card_type
+    payment_info['card_type'] rescue nil
+  end #end method card_type
+  
+  def vcode
+    payment_info['vcode'] rescue nil
+  end #end method vcode
+
+
 
   def credit_card_attributes=(attributes)
     unless attributes.first["card_number"].blank? || attributes.first["vcode"].blank?

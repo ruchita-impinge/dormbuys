@@ -147,7 +147,7 @@
 																<em>TOTAL: <span>$<%= @order.grand_total %></span></em>
 															</div>
 															<div class="btns-area">
-																<%= link_to "<span>Print Invoice</span><em>&nbsp;</em>", account_view_order_invoice_path(@order), :class => "table-btn tb-t2" %>
+																<%= link_to "<span>Print Receipt</span><em>&nbsp;</em>", account_view_order_invoice_path(@order), :class => "table-btn tb-t2", :target => "_blank" %>
 																<%= link_to "Return an Item", returns_path, :class => 'return' %>
 															</div>
 														</div>

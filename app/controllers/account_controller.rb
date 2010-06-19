@@ -502,7 +502,7 @@ class AccountController < ApplicationController
     
     if @gift_registry.update_attributes(params[:gift_registry])
       flash[:notice] = "Gift Registry was successfully updated"
-      redirect_to account_gift_registries_path
+      redirect_to account_view_gift_registry_path(@gift_registry)
     else
       render :action => "edit_gift_registry"
     end
