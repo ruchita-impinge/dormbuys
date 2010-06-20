@@ -19,13 +19,24 @@ class FrontController < ApplicationController
 
 
   def category
-    @category = Category.find_by_permalink_handle(params[:category_permalink_handle])
+    
+    if params[:old_site_category_id]
+      begin
+        @category = Category.find(params[:old_site_category_id])
+      rescue
+        @category = nil
+      end
+    else
+      @category = Category.find_by_permalink_handle(params[:subcategory_permalink_handle])
+    end
+    
+    
   
     if @category.blank?
       flash[:error] = "Category was not found"
-      redirect_to root_path
-      return
+      redirect_to root_path and return
     end
+    
     
     @page_title = @category.name
     render :layout => "front_large_banner"
@@ -35,13 +46,25 @@ class FrontController < ApplicationController
 
 
   def subcategory
-    @subcategory = Subcategory.find_by_permalink_handle(params[:subcategory_permalink_handle])
+    
+    if params[:old_site_subcategory_id]
+      begin
+        @subcategory = Subcategory.find(params[:old_site_subcategory_id])
+      rescue
+        @subcategory = nil
+      end
+    else
+      @subcategory = Subcategory.find_by_permalink_handle(params[:subcategory_permalink_handle])
+    end
+    
+    
+    
     
     if @subcategory.blank?
       flash[:error] = "Subcategory was not found"
-      redirect_to root_path
-      return
+      redirect_to root_path and return
     end
+    
     
     @category = @subcategory.category
     

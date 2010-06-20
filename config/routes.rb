@@ -179,8 +179,10 @@ ActionController::Routing::Routes.draw do |map|
   map.sale '/sale', :controller => "front", :action => "subcategory", :subcategory_permalink_handle => "sale"
   
   
-  #legacy URL
-  map.legacy '/shop/product/:old_site_product_id', :controller => "front", :action => "product"
+  #legacy URLs
+  map.legacy_product '/shop/product/:old_site_product_id', :controller => "front", :action => "product"
+  map.legacy_category '/shop/category/:old_site_category_id', :controller => "front", :action => "category"
+  map.legacy_subcategory '/shop/subcategory/:old_site_subcategory_id', :controller => "front", :action => "subcategory"
   
 
   # The priority is based upon order of creation: first created -> highest priority.
