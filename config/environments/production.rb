@@ -28,3 +28,42 @@ config.action_view.cache_template_loading            = true
 # config.threadsafe!
 
 ENV["RAILS_ASSET_ID"] = '201006191900'
+
+
+# CACHE KEYS IN PLAY
+#
+# home_page_1
+# home_page_2
+# front_large_banner_1
+# front_large_banner_2
+# front_large_banner_3
+# @category
+# @subcategory
+# [@subcategory, "page_#{params[:page].to_i}"]
+# @product
+
+memcache_options = {
+  :c_threshold => 10000,
+  :compression => true,
+  :debug => false,
+  :namespace => 'dormbuys',
+  :readonly => false,
+  :urlencode => false
+
+}
+config.cache_store = :mem_cache_store, 'localhost:11211', memcache_options
+
+# this is where you deal with passenger's forking
+begin
+   PhusionPassenger.on_event(:starting_worker_process) do |forked|
+     if forked
+       
+       # We're in smart spawning mode, so...
+       # Close duplicated memcached connections - they will open themselves
+       Rails.cache.instance_variable_get(:@data).reset
+       
+     end
+   end
+# In case you're not running under Passenger (i.e. devmode with mongrel)
+rescue NameError => error
+end

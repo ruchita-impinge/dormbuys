@@ -1,3 +1,5 @@
+<% cache([@subcategory, "page_#{params[:page].to_i}"], :expires_in => 5.minutes) do %>
+
 <div class="tab">
 	<div class="pager gallery-box">
 		<div class="quote-box">
@@ -40,3 +42,4 @@
 		<% end %>
 	</div>
 </div>
+<% end %>

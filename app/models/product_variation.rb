@@ -2,7 +2,7 @@ class ProductVariation < ActiveRecord::Base
   
   attr_accessor :should_destroy
   
-  after_update :save_product_packages
+  after_update :save_product_packages, :touch_product_n_subs
   
   belongs_to :product
   has_many :product_packages
@@ -210,6 +210,16 @@ class ProductVariation < ActiveRecord::Base
       end
     end
   end #end method save_product_packages
+  
+  
+  
+  def touch_product_n_subs
+    self.product.skip_all_callbacks = true
+    self.product.touch
+    self.product.subcategories.each do |sub|
+      sub.touch
+    end
+  end #end method touch_product_n_subs
   
   
 end #end class

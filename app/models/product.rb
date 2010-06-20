@@ -6,7 +6,7 @@ class Product < ActiveRecord::Base
   before_save :set_attachment_filenames
   
   after_update :save_additional_product_images, :save_product_options, :save_product_restrictions,
-    :save_product_variations, :save_product_as_options
+    :save_product_variations, :save_product_as_options, :touch_subcategories
   
   has_and_belongs_to_many :vendors
   has_and_belongs_to_many :warehouses
@@ -320,6 +320,15 @@ class Product < ActiveRecord::Base
     
   end #end method self.random_featured_products()
   
+  
+  
+  
+  def touch_subcategories
+    self.subcategories.each do |sub|
+      sub.skip_validation = true
+      sub.touch
+    end
+  end #end method touch_subcategories
   
   
   

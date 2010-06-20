@@ -49,13 +49,11 @@ namespace :deploy do
   task :symlink_resources do 
     
      sudo "rm -rf #{release_path}/config/database.yml"
-      run "ln -sf #{shared_path}/database.yml #{release_path}/config/database.yml"
+     run "ln -sf #{shared_path}/database.yml #{release_path}/config/database.yml"
 
-      sudo "rm -rf #{release_path}/public/user_files"
-      run "ln -sf #{shared_path}/user_files #{release_path}/public/user_files"
+     sudo "rm -rf #{release_path}/public/content"
+     run "ln -sf #{shared_path}/content #{release_path}/public/content"
 
-      sudo "rm -rf #{release_path}/app/themes"
-      run "ln -sf #{shared_path}/themes #{release_path}/app/themes"
   end
   
   
@@ -73,26 +71,55 @@ end
 
 
 deploy.task :start do end
-  
 
 
-namespace :delayed_job do
-  desc "Start delayed_job process" 
-  task :start, :roles => :app do
-    run "cd #{current_path}; script/delayed_job start production" 
+
+
+
+  after "deploy:start", "dj:start"
+  after "deploy:stop", "dj:stop"
+
+  before "deploy:update_code", "dj:stop"
+  after "deploy:restart_passenger", "dj:start"
+
+  # delayed_job
+  namespace :dj do
+
+    desc "Start delayed_job daemon."
+    task :start, :roles => :app do
+      sudo "echo 'testing sudo'"
+      run "if [ -d #{current_path} ]; then cd #{current_path} && sudo RAILS_ENV=production script/delayed_job start; fi"
+    end
+
+    desc "Stop delayed_job daemon."
+    task :stop, :roles => :app do
+      sudo "echo 'testing sudo'"
+      run "if [ -d #{current_path} ]; then cd #{current_path} && sudo RAILS_ENV=production script/delayed_job stop; fi"
+    end
+
+    desc "Restart delayed_job daemon."
+    task :restart, :roles => :app do
+      sudo "echo 'testing sudo'"
+      run "if [ -d #{current_path} ]; then cd #{current_path} && sudo RAILS_ENV=production script/delayed_job restart; fi"
+    end
+
+    desc "Show delayed_job daemon status."
+    task :status, :roles => :app do
+      sudo "echo 'testing sudo'"
+      run "if [ -d #{current_path} ]; then cd #{current_path} && sudo RAILS_ENV=production script/delayed_job status; fi"
+    end
+
+    desc "List the PIDs of all running delayed_job daemons."
+    task :pids, :roles => :app do
+      sudo "echo 'testing sudo'"
+      run "sudo lsof | grep '#{deploy_to}/shared/log/delayed_job.log' | cut -c 1-21 | uniq | awk '/^ruby/ {if(NR > 0){system(\"echo \" $2)}}'"
+    end
+
+    desc "Kill all running delayed_job daemons."
+    task :kill, :roles => :app do
+      sudo "echo 'testing sudo'"
+      run "sudo lsof | grep '#{deploy_to}/shared/log/delayed_job.log' | cut -c 1-21 | uniq | awk '/^ruby/ {if(NR > 0){system(\"kill -9 \" $2)}}'"
+      run "if [-d #{current_path} ]; then cd #{current_path} && sudo RAILS_ENV=production script/delayed_job stop; fi" # removes orphaned pid file(s)
+    end
+
   end
-
-  desc "Stop delayed_job process" 
-  task :stop, :roles => :app do
-    run "cd #{current_path}; script/delayed_job stop production" 
-  end
-
-  desc "Restart delayed_job process" 
-  task :restart, :roles => :app do
-    run "cd #{current_path}; script/delayed_job restart production" 
-  end
-end
-
-after "deploy:start", "delayed_job:start" 
-after "deploy:stop", "delayed_job:stop" 
-after "deploy:restart_passenger", "delayed_job:restart"

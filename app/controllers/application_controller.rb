@@ -58,6 +58,18 @@ class ApplicationController < ActionController::Base
     flash[:error] = "Couldn't log you in as '#{params[:login][:email]}'"
     logger.warn "Failed login for '#{params[:login][:email]}' from #{request.remote_ip} at #{Time.now.utc}"
   end
+  
+  
+  
+  def expire_general_caches
+    %w(home_page_1 home_page_2 front_large_banner_1 front_large_banner_2 front_large_banner_3).each do |frag|
+      if fragment_exist? frag
+	      expire_fragment frag
+	    end
+    end
+  end #end method expire_general_caches
+  
+  
 
   private
   

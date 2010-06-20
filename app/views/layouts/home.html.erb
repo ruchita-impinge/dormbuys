@@ -27,7 +27,7 @@
 </head>
 
 
-
+<% cache("home_page_1", :expires_in => 5.minutes) do %>
 <body>
 <!-- page -->
 <div id="page">
@@ -37,11 +37,13 @@
 		
 		
 		<%= render :partial => 'shared/front_main_nav' %>
-		
+<% end %>
+
 		<% flash.each do |key, msg| %>
 		    <%= content_tag :p, msg, :class => key %>
 		<% end %>
 		
+<% cache("home_page_2", :expires_in => 5.minutes) do %>		
 		
 		<%= render :partial => 'front/home_banner_area' %>
 		
@@ -76,4 +78,5 @@
 <%= render :partial => "shared/tracking_codes" %>
 
 </body>
+<% end %>
 </html>

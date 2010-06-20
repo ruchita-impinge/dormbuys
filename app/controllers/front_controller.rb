@@ -4,11 +4,13 @@ class FrontController < ApplicationController
   def index
     @page_title = "Home"
     
-    if RAILS_ENV == "development"
-      @featured_products = Product.all(:limit => 20)
-      @featured_products.reject!{|p| p if p.available_variations.empty? }
-    else
-      @featured_products = Product.random_featured_products(10)
+    unless read_fragment("home_page_1")
+      if RAILS_ENV == "development"
+        @featured_products = Product.all(:limit => 20)
+        @featured_products.reject!{|p| p if p.available_variations.empty? }
+      else
+        @featured_products = Product.random_featured_products(10)
+      end
     end
     
     render :layout => 'home'
@@ -80,21 +82,24 @@ class FrontController < ApplicationController
     @page_title = @product.product_name
     
     
-    @additional_images = []
-    @product.additional_product_images.each do |aimg|
-      @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description, :sort => 1}
-    end
-    
-    @product.available_variations.each do |v|
-      if v.image.file?
-        @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title, :sort => 2}
+    unless read_fragment(@product)
+      @additional_images = []
+      @product.additional_product_images.each do |aimg|
+        @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description, :sort => 1}
       end
-    end
     
-    @additional_images.sort! {|x,y| x[:sort] <=> y[:sort]}
+      @product.available_variations.each do |v|
+        if v.image.file?
+          @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title, :sort => 2}
+        end
+      end
+    
+      @additional_images.sort! {|x,y| x[:sort] <=> y[:sort]}
     
     
-    @recommended_products = @product.recommended_products
+      @recommended_products = @product.recommended_products
+    end #end read fragment
+      
     render :layout => "front_large_banner"
   end #end product
   
