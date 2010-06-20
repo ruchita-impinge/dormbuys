@@ -1352,7 +1352,7 @@ class Order < ActiveRecord::Base
     order.total_giftcards = cart.total_gift_cards
     order.total_coupon    = cart.total_coupons
     order.total_discounts = Money.new(0)
-    order.grand_total     = cart.grand_total
+    order.grand_total     = cart.grand_total.cents <= 0 ? Money.new(0) : cart.grand_total
     
     return order
   end #end method new_from_cart(params)

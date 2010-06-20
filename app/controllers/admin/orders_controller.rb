@@ -267,7 +267,7 @@ class Admin::OrdersController < Admin::AdminController
     respond_to do |format|
       if @order.save
         flash[:notice] = 'Order was successfully created.'
-        format.html { redirect_to(admin_orders_path) }
+        format.html { redirect_to(edit_admin_order_path(@order)) }
         format.xml  { render :xml => @order, :status => :created, :location => @order }
       else
         format.html { render :action => "new" }

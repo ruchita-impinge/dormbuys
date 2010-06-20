@@ -4,7 +4,7 @@ class FrontController < ApplicationController
   def index
     @page_title = "Home"
     
-    unless read_fragment("home_page_1")
+    unless read_fragment("home_page_2")
       if RAILS_ENV == "development"
         @featured_products = Product.all(:limit => 20)
         @featured_products.reject!{|p| p if p.available_variations.empty? }
@@ -61,20 +61,23 @@ class FrontController < ApplicationController
   def product
     
     if params[:old_site_product_id]
-      @product = Product.find(params[:old_site_product_id])
+      begin
+        @product = Product.find(params[:old_site_product_id])
+      rescue
+        @product = nil
+      end
     else
       @product = Product.find_by_permalink_handle(params[:product_permalink_handle])
     end
     
     if @product.blank?
       flash[:error] = "Product was not found"
-      redirect_to root_path
-      return
+      redirect_to root_path and return
     end
     
     if @product.available_variations.empty?
       flash[:error] = "This product is currently unavailable"
-      redirect_to root_path
+      redirect_to root_path and return
     end
     
     @subcategory = @product.subcategories.first

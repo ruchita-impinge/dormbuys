@@ -59,7 +59,7 @@ class Payment::PaymentManager
     result = Hash.new #hash to return later
    
     #handle payments for 0.00
-    if amount.cents == 0
+    if amount.cents <= 0
       result[:success] = true
       result[:transaction_number] = "000000"
       result[:message] = "Success: " + "Order approved"

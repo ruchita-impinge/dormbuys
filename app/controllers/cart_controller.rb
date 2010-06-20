@@ -14,6 +14,12 @@ class CartController < ApplicationController
   
   #add item to cart
   def add
+    
+    if params[:cart_item].blank?
+      flash[:error] = "Error adding to cart, try again or call 1-866-502-DORM for help"
+      redirect_to request.referrer and return
+    end
+    
     if params[:cart_item][:variation_id].blank?
       flash[:error] = "Use the first drop down list to select the product variation"
       redirect_to request.referrer and return
