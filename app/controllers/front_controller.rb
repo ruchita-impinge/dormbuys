@@ -103,28 +103,39 @@ class FrontController < ApplicationController
       redirect_to root_path and return
     end
     
-    @subcategory = @product.subcategories.first
-    @category = @subcategory.category
-    @page_title = @product.product_name
+    begin
+      
+      @subcategory = @product.subcategories.first
+      @category = @subcategory.category
+      @page_title = @product.product_name
     
     
-    unless read_fragment(@product)
-      @additional_images = []
-      @product.additional_product_images.each do |aimg|
-        @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description, :sort => 1}
-      end
-    
-      @product.available_variations.each do |v|
-        if v.image.file?
-          @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title, :sort => 2}
+      unless read_fragment(@product)
+        @additional_images = []
+        @product.additional_product_images.each do |aimg|
+          @additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description, :sort => 1}
         end
-      end
     
-      @additional_images.sort! {|x,y| x[:sort] <=> y[:sort]}
+        @product.available_variations.each do |v|
+          if v.image.file?
+            @additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title, :sort => 2}
+          end
+        end
+    
+        @additional_images.sort! {|x,y| x[:sort] <=> y[:sort]}
     
     
-      @recommended_products = @product.recommended_products
-    end #end read fragment
+        @recommended_products = @product.recommended_products
+      end #end read fragment
+      
+    rescue => e
+      HoptoadNotifier.notify(
+        :error_message => "Product Page Error: #{e.message}",
+        :parameters    => params
+      )
+      flash[:error] = "There was an error loading the product you requested"
+      redirect_to root_path and return
+    end
       
     render :layout => "front_large_banner"
   end #end product

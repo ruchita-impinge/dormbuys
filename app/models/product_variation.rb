@@ -216,11 +216,20 @@ class ProductVariation < ActiveRecord::Base
   def touch_product_n_subs
     return if self.skip_touch == true
     
-    self.product.skip_all_callbacks = true
-    self.product.touch
-    self.product.subcategories.each do |sub|
-      sub.touch
+    begin
+      
+      self.product.skip_all_callbacks = true
+      self.product.touch
+      self.product.subcategories.each do |sub|
+        sub.touch
+      end
+      
+    rescue => e
+      HoptoadNotifier.notify(
+        :error_message => "Error in ProductVariation -> touch_products_n_subs: #{e.message}"
+      )
     end
+    
   end #end method touch_product_n_subs
   
   
