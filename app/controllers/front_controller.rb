@@ -27,7 +27,7 @@ class FrontController < ApplicationController
         @category = nil
       end
     else
-      @category = Category.find_by_permalink_handle(params[:subcategory_permalink_handle])
+      @category = Category.find_by_permalink_handle(params[:category_permalink_handle])
     end
     
     
