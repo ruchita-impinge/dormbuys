@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   BETA_USER_ID = "dormbuys"
   BETA_PASSWORD = "whodat"
 
-  before_filter :authenticate_for_beta
+  #before_filter :authenticate_for_beta
   before_filter :set_current_user
 
 
@@ -73,13 +73,13 @@ class ApplicationController < ActionController::Base
 
   private
   
-    def authenticate_for_beta
-        unless RAILS_ENV == "development"
-          authenticate_or_request_with_http_basic do |id, password| 
-              id == BETA_USER_ID && password == BETA_PASSWORD
-          end
-        end
-     end
+    #def authenticate_for_beta
+    #    unless RAILS_ENV == "development"
+    #      authenticate_or_request_with_http_basic do |id, password| 
+    #          id == BETA_USER_ID && password == BETA_PASSWORD
+    #      end
+    #    end
+    # end
   
   
 end

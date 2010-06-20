@@ -1,6 +1,6 @@
 class ProductVariation < ActiveRecord::Base
   
-  attr_accessor :should_destroy
+  attr_accessor :should_destroy, :skip_touch
   
   after_update :save_product_packages, :touch_product_n_subs
   
@@ -214,6 +214,8 @@ class ProductVariation < ActiveRecord::Base
   
   
   def touch_product_n_subs
+    return if self.skip_touch == true
+    
     self.product.skip_all_callbacks = true
     self.product.touch
     self.product.subcategories.each do |sub|

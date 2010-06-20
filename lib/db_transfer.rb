@@ -111,18 +111,82 @@ class DBTransfer
     #
     # NOTE that we'll need to re-transfer qty-on hand and qty-on hold for inventory
     #
-    #transfer_gift_cards
-    #transfer_coupons
-    #transfer_orders
-    #transfer_order_line_items
-    #transfer_order_line_item_product_as_options
-    #transfer_order_line_item_options
-    #transfer_order_drop_ship_emails
-    #transfer_users
-    #transfer_users_vendors
-    #transfer_addresses
+              #transfer_gift_cards
+              #transfer_coupons
+              #transfer_orders
+              #transfer_order_line_items
+              #transfer_order_line_item_product_as_options
+              #transfer_order_line_item_options
+              #transfer_order_drop_ship_emails
+              #transfer_users
+              #transfer_users_vendors
+              #transfer_addresses
+    
+              #transfer_inventory
+              #import_dormbucks
     
   end #end method execute_transfer_methods
+  
+  
+  def import_dormbucks
+    
+    csv_file = File.join(File.dirname(__FILE__), "dormbucks.csv")
+    
+    #read the csv file into a variable
+    data = File.new(csv_file).read
+
+
+    #get each row into an array
+    data_array = data.split("\r")
+
+
+    #get the 1st row for the  col keys
+    keys = data_array[0].split(",")
+
+    #now lets make a hash of the numbers so we can reference the columns
+    data_keys = Hash.new
+    counter = 0
+
+    #construct the hash
+    keys.each do |key| 
+    	data_keys[key] = counter
+    	counter += 1
+    end
+
+
+    #now shift the key row off the top of the data_array
+    data_array.shift
+    
+
+    data_array.each do |row|
+      
+      #get the individual cells
+    	cells = row.split(",")
+    	
+    	cells.each do |c|
+    	  c.gsub!("\n","")
+    	  c.gsub!("\r","")
+  	  end
+  	  
+
+  	  
+      #setup our variables
+      c_number               = cells[0].rstrip.reverse.rstrip.reverse
+      discount_percentage    = cells[1].rstrip.reverse.rstrip.reverse
+
+      
+      c = Coupon.new
+      c.coupon_type_id = CouponType::PERCENTAGE
+      c.coupon_number = c_number
+      c.description = "#{discount_percentage}% Off"
+      c.value = discount_percentage.to_i
+      c.expiration_date = Date.parse("10/31/2010")
+      c.reusable = false
+      c.save(false)
+      
+    end #end dor
+    
+  end #end method import_dormbucks
   
   
   def destroy_categories
@@ -459,10 +523,14 @@ class DBTransfer
         when 5
           new_record.coupon_type_id = CouponType::FREE_SHIPPING
           new_record.is_free_shipping = true
+        else
+          new_record.coupon_type_id = CouponType::PERCENTAGE
+          puts "====> setting #{row["coupon_number"]} to % as #{row["discount_amount"]}"
       end
       
       new_record.value = row["discount_amount"]
       new_record.save(false)
+
       
     end #end each_hash
     
@@ -1417,6 +1485,36 @@ class DBTransfer
     
     
   end #end method transfer_product_variations
+  
+  
+  def transfer_inventory  
+    
+    records = source_query("select v.* from products p, product_variations v where v.product_id = p.id AND p.id;")
+    
+    
+    puts "\nBeginning inventory update process (#{show_time}) ....\n"
+    
+
+    
+    records.each_hash do |row|
+      
+      record = ProductVariation.find_by_product_id(row["product_id"])
+      if record
+        record.qty_on_hand           = row["qty_on_hand"].to_i
+        record.qty_on_hold           = row["qty_on_hold"].to_i
+        record.sold_count            = row["sold_count"].to_i
+        record.skip_touch = true
+        record.save(false)
+      else
+        puts "COULDNT FIND variation: #{row["product_id"]}"
+      end
+      
+
+    end #end each_hash
+    
+    puts "\nInventory transfer process complete (#{show_time})\n"
+    
+  end #end method transfer
   
   
   def destroy_product_packages

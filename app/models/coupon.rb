@@ -1,11 +1,3 @@
-# Migration Notes:
-#################
-# => The coupon structure has changed, there are no longer coupon_discounts primarily because
-# => there are no longer tiered discounds (because they were never used).  Instead the value of 
-# => the coupon is stored on the coupon record in int_value.  There is a getter and setter that take
-# => care of converting this to an int or Money based on the type.  The setter is called before_save, 
-# => because at the time of setting value=(val) can't know what type of coupon it is.
-
 class Coupon < ActiveRecord::Base
   
   attr_accessor :temp_value
