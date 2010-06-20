@@ -196,7 +196,7 @@ class Admin::OrdersController < Admin::AdminController
     
 
   def index
-    @orders = Order.find(:all, :order => 'order_date DESC', :conditions => ['order_date >= ?', 100.days.ago]).paginate :per_page => 100, :page => params[:page]
+    @orders = Order.find(:all, :order => 'order_date DESC', :limit => 300).paginate :per_page => 100, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb
@@ -207,7 +207,7 @@ class Admin::OrdersController < Admin::AdminController
 
 
   def inline_order_list
-    @orders = Order.find(:all, :order => 'order_date DESC', :conditions => ['order_date >= ?', 100.days.ago]).paginate :per_page => 100, :page => params[:page]
+    @orders = Order.find(:all, :order => 'order_date DESC', :limit => 300).paginate :per_page => 100, :page => params[:page]
     render :partial => "orders_list", :layout => false and return
   end #end method inline_order_list
 
