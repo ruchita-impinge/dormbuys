@@ -8,8 +8,7 @@ class ApplicationController < ActionController::Base
   BETA_USER_ID = "dormbuys"
   BETA_PASSWORD = "whodat"
 
-  #before_filter :authenticate_for_beta
-  before_filter :check_domain, :set_current_user
+  before_filter :set_current_user
 
 
   helper :all # include all helpers, all the time
@@ -19,12 +18,6 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation, :vcode, :card_number,
     #:name_on_card, :exp_date, :card_type
   
-  
-  def check_domain
-    if request.domain.downcase == "www.dormbuys.com"
-      redirect_to "http://dormbuys.com"
-    end
-  end #end method check_domain
   
   
   def set_current_user
@@ -78,15 +71,5 @@ class ApplicationController < ActionController::Base
   
   
 
-  private
-  
-    #def authenticate_for_beta
-    #    unless RAILS_ENV == "development"
-    #      authenticate_or_request_with_http_basic do |id, password| 
-    #          id == BETA_USER_ID && password == BETA_PASSWORD
-    #      end
-    #    end
-    # end
-  
   
 end
