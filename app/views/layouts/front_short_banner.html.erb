@@ -23,6 +23,8 @@
 	<%= yield :head %>
 	
 </head>
+
+<% cache("front_short_banner_1", :expires_in => 5.minutes) do %>
 <body>
 <!-- page -->
 <div id="page">
@@ -32,12 +34,15 @@
 		
 		
 		<%= render :partial => 'shared/front_main_nav' %>
-		
+<% end %>		
+
 		<% flash.each do |key, msg| %>
 		    <%= content_tag :p, msg, :class => key %>
 		<% end %>
 						
 		<%= yield %>
+
+<% cache("front_short_banner_2", :expires_in => 5.minutes) do %>
 
 		<%= yield :front_footer_gift_blog %>
 	
@@ -52,6 +57,8 @@
 <!-- page -->
 
 <%= render :partial => "shared/front_main_footer_nav" %>
+
+<% end %>
 
 
 <%= yield :eo_page %>
