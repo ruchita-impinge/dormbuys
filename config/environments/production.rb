@@ -42,6 +42,7 @@ ENV["RAILS_ASSET_ID"] = '201006191900'
 # [@subcategory, "page_#{params[:page].to_i}"]
 # @product
 
+
 memcache_options = {
   :c_threshold => 10000,
   :compression => true,
