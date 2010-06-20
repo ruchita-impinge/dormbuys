@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
   
   
   def expire_general_caches
-    %w(home_page_1 home_page_2 front_large_banner_1 front_large_banner_2 front_large_banner_3).each do |frag|
+    %w(home_page_1 home_page_2 front_large_banner_1 front_large_banner_2 front_large_banner_3 front_short_banner_1 front_short_banner_2).each do |frag|
       if fragment_exist? frag
 	      expire_fragment frag
 	    end
