@@ -241,18 +241,21 @@ class Cart < ActiveRecord::Base
   
   
   def total_before_tax_and_gift_cards
-    (subtotal + shipping) - (total_coupons)
+    tmp = (subtotal + shipping) - (total_coupons)
+    tmp.cents <= 0 ? Money.new(0) : tmp
   end #end method total_before_tax_and_gift_cards
   
   
   def total_before_gift_cards
-    (subtotal + tax + shipping) - (total_coupons)
+    tmp = (subtotal + tax + shipping) - (total_coupons)
+    tmp.cents <= 0 ? Money.new(0) : tmp
   end #end method total_before_gift_cards
   
   
   
   def grand_total
-    (subtotal + tax + shipping) - (total_coupons + total_gift_cards)
+    tmp = (subtotal + tax + shipping) - (total_coupons + total_gift_cards)
+    tmp.cents <= 0 ? Money.new(0) : tmp
   end #end method grand_total
   
   
