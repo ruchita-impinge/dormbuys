@@ -51,6 +51,8 @@ memcache_options = {
   :urlencode => false
 
 }
+
+require 'memcache' 
 config.cache_store = :mem_cache_store, 'localhost:11211', memcache_options
 
 # this is where you deal with passenger's forking

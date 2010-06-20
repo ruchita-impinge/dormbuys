@@ -146,7 +146,8 @@ class Admin::OrdersController < Admin::AdminController
           :conditions => [
             "order_id LIKE ? AND order_date >= ?", "%#{params[:search][:search_term]}%", date
           ],
-          :order => 'order_date DESC'
+          :order => 'order_date DESC',
+          :limit => 300
           ).paginate :per_page => 10, :page => params[:page]
         
         
@@ -156,7 +157,8 @@ class Admin::OrdersController < Admin::AdminController
           :conditions => [
             "email LIKE ? AND order_date >= ?", "%#{params[:search][:search_term]}%", date
           ],
-          :order => 'order_date DESC'
+          :order => 'order_date DESC',
+          :limit => 300
           ).paginate :per_page => 10, :page => params[:page]
           
           
@@ -169,7 +171,8 @@ class Admin::OrdersController < Admin::AdminController
             "%#{params[:search][:search_term]}%",
             date
           ],
-          :order => 'order_date DESC'
+          :order => 'order_date DESC',
+          :limit => 300
           ).paginate :per_page => 10, :page => params[:page]
           
           
@@ -185,7 +188,8 @@ class Admin::OrdersController < Admin::AdminController
             "%#{last_name}%",
             date
           ],
-          :order => 'order_date DESC'
+          :order => 'order_date DESC',
+          :limit => 300
           ).paginate :per_page => 50, :page => params[:page]
     end
     
