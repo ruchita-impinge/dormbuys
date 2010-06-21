@@ -1,5 +1,7 @@
 class CartController < ApplicationController
   
+  protect_from_forgery :except => :add
+  
   ssl_required :login, :submit_login, :user_signup, :billing_shipping, 
     :save_billing_shipping, :review, :confirm
   
