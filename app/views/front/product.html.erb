@@ -234,12 +234,12 @@
 													
 
 													<%= link_to_function "Add to Registry", :class => "btn right" do |page|
-															page << '$("#is_wish_list_item").val("1");'
+															page << '$("#is_gift_registry_item").val("1");'
 															page << "document.forms['cart_form'].submit();"
 														end %>
 
 													<%= link_to_function "Add to Wish List", :class => "btn right" do |page|
-															page << '$("#is_gift_registry_item").val("1");'
+															page << '$("#is_wish_list_item").val("1");'
 															page << "document.forms['cart_form'].submit();"
 														end %>
 								
