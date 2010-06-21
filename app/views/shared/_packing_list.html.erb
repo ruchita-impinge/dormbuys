@@ -86,12 +86,20 @@
 				<th scope="col">Product #</th>
 			-->
 				<th scope="col" class="center">MF #</th>
-				<th scope="col" class="center">WH Location</th>
+				
+				<% unless @vendor_access %>
+					<th scope="col" class="center">WH Location</th>
+				<% end %>
+				
 		        <th scope="col" class="center">QTY</th>
 				<th scope="col" class="center">Notes</th>
 		        <th scope="col">Title</th>
-		        <th scope="col" class="center">Unit Price</th>
-		        <th scope="col" class="center">Quantity Total</th>
+		
+				<% unless @vendor_access %>
+		        	<th scope="col" class="center">Unit Price</th>
+		        	<th scope="col" class="center">Quantity Total</th>
+				<% end %>
+				
 		      </tr>
 		    </thead>
 
@@ -104,9 +112,12 @@
 				
 				<tr>
 				
+				
 				  <td class="center"><%=h completed_order_line_item.product_manufacturer_number %></td>
 
+				<% unless @vendor_access %>
 				  <td class="center"><%=h completed_order_line_item.warehouse_location %></td>
+				<% end %>
 
 				  <td class="center"><%=h completed_order_line_item.quantity %></td>
 
@@ -119,12 +130,16 @@
 				  </td>
 
 				  <td><strong><%=h completed_order_line_item.item_name %></strong></td>
+				
+				<% unless @vendor_access %>
 				  <td class="center"><strong><%= number_to_currency completed_order_line_item.unit_price %></strong></td>
 				  <td class="center"><strong><%= number_to_currency completed_order_line_item.total %></strong></td>
+				<% end %>
+				
 				</tr>
 
 
-
+				<% unless @vendor_access %>
 
 				<% if completed_order_line_item.order_line_item_discounts.size > 0 %>
 
@@ -136,6 +151,8 @@
 					</td>
 				  </tr>
 
+				<% end %>
+				
 				<% end %>
 
 
@@ -206,7 +223,7 @@
 				
 			<% end %><!-- end for -->
 
-
+			<% unless @vendor_access %>
 		    <tr class="total-line" >
 		      <td colspan="6" >Sub Total</td>
 		      <td class="center" ><%= number_to_currency @order.subtotal  %></td>
@@ -241,6 +258,7 @@
 		      <td colspan="6" >Grand Total</td>
 		      <td class="center" ><%= number_to_currency @order.grand_total  %></td>
 		    </tr>
+		<% end %>
 
 		  </tbody>
 		</table>

@@ -348,6 +348,7 @@ class FrontController < ApplicationController
     end
 =end
     
+    @vendor_access = true
     render :partial => "shared/packing_list.html.erb", :layout => "packing_list"
   end #end method vendor_packing_list
   
