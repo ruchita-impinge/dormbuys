@@ -5,8 +5,10 @@ class ApplicationController < ActionController::Base
   include SslRequirement
   include AuthenticatedSystem  
   
-  BETA_USER_ID = "dormbuys"
-  BETA_PASSWORD = "whodat"
+
+  rescue_from ActionController::RoutingError, :with => :route_not_found
+  rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+  
 
   before_filter :set_current_user
 
@@ -70,6 +72,16 @@ class ApplicationController < ActionController::Base
   end #end method expire_general_caches
   
   
+  private
+
+  def route_not_found
+    render :text => 'What file you are looking for was not found.', :status => :not_found
+  end
+
+  def invalid_method
+    message = "#{request.request_method.to_s.upcase} is not allowed?"
+    render :text => message, :status => :method_not_allowed
+  end
 
   
-end
+end #end  class
