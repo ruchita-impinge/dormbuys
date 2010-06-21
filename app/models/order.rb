@@ -1247,7 +1247,7 @@ class Order < ActiveRecord::Base
         :zip      => attributes[:zip],
         :phone    => attributes[:phone]
       }
-      shipping_address[:company_name] = attributes[:company_name] if attributes[:company_name]
+      shipping_address[:company_name] = attributes[:company_name] unless attributes[:company_name].blank?
     
       length = attributes[:length].to_f
       width = attributes[:width].to_f
