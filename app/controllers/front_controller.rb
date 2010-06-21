@@ -341,11 +341,12 @@ class FrontController < ApplicationController
     end
     
     
-    
+=begin
     unless @vendor.orders.include? @order
       flash[:error] = "Invalid Order Selection"
       redirect_to root_path and return
     end
+=end
     
     render :partial => "shared/packing_list.html.erb", :layout => "packing_list"
   end #end method vendor_packing_list
