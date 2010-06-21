@@ -399,7 +399,7 @@
 			</div>
 			
 			<div class="field">
-				<%= f.select :courier_id, Courier.all.collect {|c| [c.courier_name, c.id]} %>
+				<%= f.select :courier_id, Courier.all.collect {|c| [c.courier_name, c.id]}, :selected => Courier.current_courier %>
 				<%= f.label :courier_id %>
 			</div>
 			

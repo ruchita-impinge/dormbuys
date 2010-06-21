@@ -5,7 +5,8 @@ class Order < ActiveRecord::Base
   
   before_validation :set_shipping_address
   
-  before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors
+  before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors,
+    :setup_shipping_numbers
   
   after_create :run_followup_tasks
   after_update :save_order_line_items, :save_shipping_labels #, :cancel_if_necessary
@@ -414,13 +415,7 @@ class Order < ActiveRecord::Base
   
   
   
-  def setup_order_shipping
-    
-    return if @setup_order_shipping_done
-    
-    #save the packing configuration
-    self.packing_configuration = self.shippments_as_html
-    
+  def setup_shipping_numbers
     
     #create shipping numbers for each individual product on the order
     self.order_line_items.each do |line_item|
@@ -428,7 +423,18 @@ class Order < ActiveRecord::Base
         line_item.shipping_numbers.build(:qty_description => "#{i} of #{line_item.quantity}")
       end
     end
+    
+  end #end method setup_shipping_numbers
   
+  
+  
+  def setup_order_shipping
+    
+    return if @setup_order_shipping_done
+    
+    #save the packing configuration
+    self.packing_configuration = self.shippments_as_html
+    
 
     # create & save the ship_request & label
     # this process loops over the cart shippments, regardless of wether

@@ -111,6 +111,12 @@ class AccountController < ApplicationController
   def logout
     @page_title = "Logout | Account"
     if logged_in?
+      
+      if session[:cart_id]
+        c = Cart.find(session[:cart_id])
+        c.destroy
+      end
+      
       logout_killing_session!
       flash[:notice] = "You have been logged out."
       redirect_back_or_default(account_logout_path)

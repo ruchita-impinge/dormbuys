@@ -14,7 +14,7 @@
 			<strong><%= truncate(rec_prod.product_name, :limit => 25) %></strong>
 		</div>
 		<div class="body">
-			<%= link_to image_tag(rec_prod.product_image(:recommended)).gsub("http://", "https://"), rec_prod.default_front_url %>
+			<%= link_to image_tag(rec_prod.product_image(:recommended).gsub("http://", "https://")), rec_prod.default_front_url %>
 			<p><%= truncate(rec_prod.product_overview, :length => 130) %></p>
 			<strong class="price"><em>our price:</em> $<%= rec_prod.retail_price %></strong>
 			<span class="see-more">
