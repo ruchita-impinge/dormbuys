@@ -61,6 +61,10 @@ class CartController < ApplicationController
       redirect_to cart_path and return
     end
     
+    
+    #final fail safe
+    redirect_to cart_path and return
+    
   end #end method add
   
   
