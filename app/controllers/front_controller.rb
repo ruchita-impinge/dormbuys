@@ -68,10 +68,15 @@ class FrontController < ApplicationController
     
     @category = @subcategory.category
     
+    pids = @subcategory.product_ids
+    sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1;)
+    
     if params[:view_all]
-      @products = @subcategory.visible_products
+      @products = Product.find_by_sql(sql)
+      #@products = @subcategory.visible_products
     else
-      @products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
+      @products = Product.find_by_sql(sql).paginate :per_page => 12, :page => params[:page]
+      #@products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
     end
     
     @page_title = @subcategory.name
