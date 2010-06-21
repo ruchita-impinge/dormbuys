@@ -37,7 +37,21 @@
 											<tr>
 												<td>
 													<% form_for :login, :url => account_submit_login_path, :html => {:id => 'cart_login_frm'} do |f| %>
+													
 														<fieldset>
+															
+															<div class="input-box">
+																<p class="field_error">
+																	Can't log in?  It's not you, it's us.  If you haven't noticed, we've 
+																	launched a brand new version of Dormbuys.com.  And it's not all cosmetic.  
+																	We've also updated our security features.  One of those updates requires 
+																	you to create a new password for your account.  If you created an account 
+																	before June 21, please click on the "Forgot Your Password" link and you'll 
+																	be able to reset it.  Sorry for the inconvenience.  ~ The DB Crew
+																</p>
+																<p>&nbsp;</p>
+															</div>
+															
 															<div class="input-box">
 																<%= f.text_field :email, :class => 'text', :id => 'email', :title => 'Email Address' %>
 																<%= f.label :email, 'Email Address:', :for => 'email' %>
