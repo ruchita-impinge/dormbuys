@@ -344,6 +344,7 @@ class Admin::ProductsController < Admin::AdminController
       go_to = edit_admin_product_path(@product)
     end
 
+=begin
     respond_to do |format|
                                    
       if @product.update_attributes(params[:product])
@@ -357,10 +358,21 @@ class Admin::ProductsController < Admin::AdminController
       end
       
     end #end respond_to
+=end
+                     
+    if @product.update_attributes(params[:product])
+              
+      flash[:notice] = 'Product was successfully updated.'
+      redirect_to(go_to) and return
+      
+    else
+      render go_to and return
+    end
+
     
     #failsafe
     flash[:error] = "There was somethink funky going on when you saved, maybe you should check your work."
-    redirect_to(edit_admin_product_path(@product))
+    redirect_to(edit_admin_product_path(@product)) and return
     
   end #end action
 
