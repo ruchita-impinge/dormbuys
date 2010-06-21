@@ -88,7 +88,7 @@
 											<tr>
 												<td class="item">
 													<div class="item-info">
-														<%= link_to image_tag(order_item.variation.product.product_image(:thumb)), order_item.variation.product.default_front_url %>
+														<%= link_to image_tag(order_item.variation.product.product_image(:thumb).gsub("http://", "https://")), order_item.variation.product.default_front_url %>
 														<div class="description">
 															<strong class="item-title"><%= order_item.variation.full_title %></strong>
 															<span class="item-desc">#<%= order_item.variation.product_number %></span>
