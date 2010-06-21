@@ -106,8 +106,14 @@
 
 		  <tbody>
 
+			<% if @vendor_access %>
+				<% @order_items = @order.order_line_items.reject {|i| i unless i.vendor_company_name == @vendor.company_name } %>
+			<% else %>
+				<% @order_items = @order.order_line_items %>
+			<% end %>
+
 			
-			<% for completed_order_line_item in @order.order_line_items %>
+			<% for completed_order_line_item in @order_items %>
 				
 				
 				<tr>
