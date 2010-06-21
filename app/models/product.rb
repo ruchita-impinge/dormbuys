@@ -257,47 +257,7 @@ class Product < ActiveRecord::Base
   
   def recommended_products
     
-=begin
-    sub = self.subcategories.first
-    cat = sub.category
-    
-    subs_group = cat.subcategories.reject {|s| s if s == sub}
-    subs_group << sub if subs_group.empty? #do this if the cat only has 1 sub anyway
-    
-    products = subs_group.collect {|s| s.visible_products }.flatten
-    
-    
-    #start w/ 1 initial random number
-    randoms = [rand(products.size)]
-    
-    #loop until we have 2
-    while randoms.size < 2
-      num = rand(products.size)
-      unless randoms.include? num
-        randoms << num
-      end
-    end
-    
-    recommended = []
-    randoms.each {|i| recommended << products[i] }
-    recommended
-=end
-    
-    #####################
-=begin
-    sub = self.subcategories.first
-    pids = sub.product_ids.reject {|p| p if p == self.id}
-    rec_ids = []
-    10.times { rec_ids << pids[rand(pids.size)]}
-    rec_ids.uniq!
-    until rec_ids.size <= 2
-      rec_ids.pop
-    end
-    recommended = Product.all(:conditions => {:id => rec_ids})
-=end
-
     pids = self.subcategories.first.product_ids.reject {|p| p if p == self.id}
-    #recommended = Product.all(:conditions => {:id => pids}, :limit => 2, :order => "RAND()")
     recommended = Product.find_by_sql(%(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1 ORDER BY RAND() LIMIT 2;))
     
   end #end method recommended_products
