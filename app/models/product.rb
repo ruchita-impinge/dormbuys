@@ -257,7 +257,7 @@ class Product < ActiveRecord::Base
   
   def recommended_products
     
-
+=begin
     sub = self.subcategories.first
     cat = sub.category
     
@@ -281,7 +281,7 @@ class Product < ActiveRecord::Base
     recommended = []
     randoms.each {|i| recommended << products[i] }
     recommended
-
+=end
     
     #####################
 =begin
@@ -295,6 +295,10 @@ class Product < ActiveRecord::Base
     end
     recommended = Product.all(:conditions => {:id => rec_ids})
 =end
+
+    pids = self.subcategories.first.product_ids.reject {|p| p if p == self.id}
+    #recommended = Product.all(:conditions => {:id => pids}, :limit => 2, :order => "RAND()")
+    recommended = Product.find_by_sql(%(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1 ORDER BY RAND() LIMIT 2;))
     
   end #end method recommended_products
   

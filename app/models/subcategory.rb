@@ -80,4 +80,5 @@ class Subcategory < ActiveRecord::Base
   end #end method visible_products
   
   
+  
 end
