@@ -7,7 +7,7 @@ class ThirdPartyFeedsController < ApplicationController
       # webgains CSV id=1
       if feed_id == 1
         
-        render :text => "This feed has been temporarily disabled.  Please call 502-254-4324.", :status => 500
+        render :text => "This feed has been temporarily disabled.  Please call 502-254-4324.", :status => 500 and return
       
         @products = Product.find(:all, :conditions => {:visible => true})
      

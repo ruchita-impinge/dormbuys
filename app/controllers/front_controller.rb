@@ -71,7 +71,7 @@ class FrontController < ApplicationController
     pids = @subcategory.product_ids
     sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1;)
     
-    unless @subcategory.has_children?
+    unless @subcategory.has_visible_children?
       if params[:view_all]
         @products = Product.find_by_sql(sql)
         #@products = @subcategory.visible_products
@@ -137,7 +137,7 @@ class FrontController < ApplicationController
       
     rescue => e
       HoptoadNotifier.notify(
-        :error_message => "Product Page Error: #{e.message}",
+        :error_message => "!!! - Product Page Error: #{e.message}",
         :parameters    => params
       )
       flash[:error] = "There was an error loading the product you requested"
@@ -151,9 +151,15 @@ class FrontController < ApplicationController
   
   def search
     @page_title = "Search"
-    found_products = Product.all(:conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"])
-    parsed_products = found_products.reject {|p| p if p.available_variations.empty? }
-    @products = parsed_products.paginate :per_page => 12, :page => params[:page]
+    
+    if params && params[:search] && params[:search][:search_term]
+      found_products = Product.all(:conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"])
+      parsed_products = found_products.reject {|p| p if p.available_variations.empty? }
+      @products = parsed_products.paginate :per_page => 12, :page => params[:page]
+    else
+      @products = [].paginate :per_page => 12, :page => params[:page]
+    end
+    
     render :layout => "search"
     
   end #end method search

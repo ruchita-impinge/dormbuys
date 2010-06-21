@@ -226,7 +226,7 @@ class ProductVariation < ActiveRecord::Base
       
     rescue => e
       HoptoadNotifier.notify(
-        :error_message => "Error in ProductVariation -> touch_products_n_subs: #{e.message}"
+        :error_message => "!!! - Error in ProductVariation -> touch_products_n_subs: #{e.message}"
       )
     end
     

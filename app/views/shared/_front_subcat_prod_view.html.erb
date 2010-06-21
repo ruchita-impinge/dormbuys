@@ -25,12 +25,16 @@
 		</div>
 		<div class="product-hold">
 			
-			<% @products.in_groups_of(6, false) do |row| %>
-				<ul>
-					<% for product in row %>
-						<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
-					<% end %>
-				</ul>
+			<% if @products.blank? %>
+				<h3>No products were found</h3>
+			<% else %>
+				<% @products.in_groups_of(6, false) do |row| %>
+					<ul>
+						<% for product in row %>
+							<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
+						<% end %>
+					</ul>
+				<% end %>
 			<% end %>
 			
 		</div>
