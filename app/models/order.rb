@@ -1327,7 +1327,8 @@ class Order < ActiveRecord::Base
       oli.product_number                = cart_item.product_variation.product_number
       oli.unit_price                    = cart_item.unit_price
       oli.total                         = cart_item.total_price
-      oli.product_drop_ship             = cart_item.product_variation.product.drop_ship
+      #oli.product_drop_ship             = cart_item.product_variation.product.drop_ship
+      oli.product_drop_ship             = Product.find(cart_item.product_variation.product_id).drop_ship
       oli.warehouse_location            = cart_item.product_variation.warehouse_location
       
       #set the wish_list and gift_registry tracking ids

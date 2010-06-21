@@ -258,7 +258,11 @@ class Product < ActiveRecord::Base
   def recommended_products
     
     pids = self.subcategories.first.product_ids.reject {|p| p if p == self.id}
-    recommended = Product.find_by_sql(%(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1 ORDER BY RAND() LIMIT 2;))
+    unless pids.empty?
+      recommended = Product.find_by_sql(%(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1 ORDER BY RAND() LIMIT 2;))
+    else
+      recommended = []
+    end
     
   end #end method recommended_products
   
