@@ -193,7 +193,10 @@
 													<input class="submit" type="image" src="/images/btn-go.gif" alt="go" />
 												</div>
 												<% unless @cart.coupon.blank? %>
-													<p class="coupon-discount">Coupon Discount: <span>-$<%= @cart.total_coupons %></span></p>
+													<p class="coupon-discount">
+														Coupon Discount: <span>-$<%= @cart.total_coupons %></span>
+														<br /> (Coupon #: <%= @cart.coupon.coupon_number %>)
+													</p>
 												<% end %>
 											</div>
 											<div class="sep-box">
