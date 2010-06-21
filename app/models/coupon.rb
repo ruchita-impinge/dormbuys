@@ -21,6 +21,10 @@ class Coupon < ActiveRecord::Base
     coupon_type_id == CouponType::TIERED_DOLLAR || coupon_type_id == CouponType::TIERED_PERCENTAGE
   end #end method is_tiered_coupon?
   
+  def is_expired?
+    self.expires && (Date.today > self.expiration_date)
+  end #end method is_expired?
+  
   
   def get_tiered_value(int_dollar_value)
     return 0 unless self.is_tiered_coupon?

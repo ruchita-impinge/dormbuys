@@ -1,6 +1,8 @@
 class CartController < ApplicationController
   
-  protect_from_forgery :except => :add
+  #protect_from_forgery :except => :add
+  skip_before_filter :verify_authenticity_token
+  
   
   ssl_required :login, :submit_login, :user_signup, :billing_shipping, 
     :save_billing_shipping, :review, :confirm
@@ -123,7 +125,19 @@ class CartController < ApplicationController
       render :action => 'index' and return
     end
     
-    @cart.coupon = @coupon
+    if @coupon.is_expired?
+      @coupon_error = "Coupon is expired"
+      render :action => 'index' and return
+    end
+    
+    if @cart.coupon
+      flash[:notice] = "Only 1 coupon per order.  Coupon: #{@coupon.coupon_number} added, Coupon: #{@cart.coupon.coupon_number} removed"
+      @cart.coupon = @coupon
+    else
+      @cart.coupon = @coupon
+    end
+    
+    
     @cart.save
     redirect_to cart_path
     

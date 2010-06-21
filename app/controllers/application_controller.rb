@@ -34,6 +34,12 @@ class ApplicationController < ActionController::Base
     if session[:cart_id]
       begin
         @cart = Cart.find(session[:cart_id])
+        if @cart && logged_in?
+          if @cart.user.blank?
+            @cart.user = current_user
+            @cart.save
+          end
+        end
       rescue
         @cart = Cart.create
       end
