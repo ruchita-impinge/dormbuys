@@ -256,6 +256,8 @@ class Product < ActiveRecord::Base
   
   
   def recommended_products
+    
+=begin
     sub = self.subcategories.first
     cat = sub.category
     
@@ -279,6 +281,18 @@ class Product < ActiveRecord::Base
     recommended = []
     randoms.each {|i| recommended << products[i] }
     recommended
+=end
+    
+    #####################
+    sub = self.subcategories.first
+    pids = sub.product_ids.reject {|p| p if p == self.id}
+    rec_ids = []
+    10.times { rec_ids << pids[rand(pids.size)]}
+    rec_ids.uniq!
+    until rec_ids.size <= 2
+      rec_ids.pop
+    end
+    recommended = Product.all(:conditions => {:id => rec_ids})
     
   end #end method recommended_products
   
