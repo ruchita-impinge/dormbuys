@@ -29,7 +29,15 @@ class GiftRegistryItem < ActiveRecord::Base
   
   
   def product_as_options
-    self.product_as_option_values ? self.product_as_option_values.split(FIELD_DIVIDER) : nil
+    if self.product_as_option_values.blank?
+      nil
+    elsif self.product_as_option_values.rindex(FIELD_DIVIDER)
+       self.product_as_option_values.split(FIELD_DIVIDER)
+    elsif self.product_as_option_values.rindex("|")
+      self.product_as_option_values.split("|")
+    else
+      nil
+    end
   end #end method product_as_options
   
   def product_as_options=(arr)
