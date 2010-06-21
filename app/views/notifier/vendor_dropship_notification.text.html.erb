@@ -2,8 +2,6 @@
 
 <p>A new drop ship order has been placed at Dormbuys.com.</p>
 
-<p>Click here, <%= link_to "http://www.dormbuys.com/vendor", "http://www.dormbuys.com/vendor" %> , to print packing slips and enter tracking information for this order.</p>
-
 <p>Click <a href="<%= @url %>">HERE</a>, 
 to view and print your packing slip directly.</p>
 
@@ -32,9 +30,7 @@ to view and print your packing slip directly.</p>
 			</tr>
 
 
-			<% if order_line_item.order_line_item_options.size > 0 || 
-				order_line_item.order_line_item_product_as_options.size > 0 || 
-				order_line_item.order_line_item_custom_options.size > 0 %>
+			<% if order_line_item.order_line_item_options.size > 0 || order_line_item.order_line_item_product_as_options.size > 0 %>
 
 			<tr>
 			  <td colspan="4">
@@ -74,31 +70,6 @@ to view and print your packing slip directly.</p>
 			    <% end %>
 
 
-
-
-
-			    <% if order_line_item.order_line_item_custom_options.length > 0 %>
-
-			    <!--[table:product_customizations]-->
-			    <table style="margin-right: 0; width: 40%;">
-
-			        <tr>
-			          <td scope="col">Cusomization</td>
-			        </tr>
-
-			        <!-- custom options -->
-			        <% for custom_option in order_line_item.order_line_item_custom_options %>
-			        <tr>
-			          <td>
-					  	<%= custom_option.custom_field_name.capitalize %>: 
-						<%= custom_option.custom_field_value %></td>
-			        </tr>
-			        <% end %>
-
-			    </table>
-			    <!--[eotable:product_customizations]-->        
-
-			    <% end %>
 
 
 

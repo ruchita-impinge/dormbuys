@@ -184,6 +184,9 @@ ActionController::Routing::Routes.draw do |map|
   map.legacy_category '/shop/category/:old_site_category_id', :controller => "front", :action => "category"
   map.legacy_subcategory '/shop/subcategory/:old_site_subcategory_id', :controller => "front", :action => "subcategory"
   
+  #vendor packing list
+  map.vendor_packing_list '/vendors/remote_packing_list', :controller => "front", :action => "vendor_packing_list"
+
 
   # The priority is based upon order of creation: first created -> highest priority.
 

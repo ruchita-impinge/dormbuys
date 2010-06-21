@@ -296,6 +296,62 @@ class FrontController < ApplicationController
   end #end method registry_add_to_cart
   
   
+#vendor packing list
+
+  def vendor_packing_list
+    
+    err_msg = "Unable to load order.  Try to cut and paste the full URL from the email into your browser."
+    
+    #figure out which decryption method do use
+    if params[:code].rindex("D")
+      data = Security::SecurityManager.simple_decrypt(params[:code])
+    else
+      begin
+        data = Security::SecurityManager.decrypt(params[:code])
+      rescue
+        flash[:error] = err_msg
+        redirect_to root_path and return
+      end
+    end
+      
+      
+    #make sure we decrypt right
+    vendor_id, order_id = data.split("-").collect {|id| id.to_i}
+    unless vendor_id && order_id
+      flash[:error] = "Vendor or Order could not be found."
+      redirect_to root_path and return
+    end
+
+
+    #make sure we have the order
+    begin
+      @order = Order.find(order_id.to_i)
+    rescue
+      flash[:error] = err_msg
+      redirect_to root_path and return
+    end
+    
+    
+    #make sure we have the vendor
+    begin
+      @vendor = Vendor.find(vendor_id.to_i)
+    rescue
+      flash[:error] = "Couldn't find the vendor for this order"
+      redirect_to root_path and return
+    end
+    
+    
+    
+    unless @vendor.orders.include? @order
+      flash[:error] = "Invalid Order Selection"
+      redirect_to root_path and return
+    end
+    
+    render :partial => "shared/packing_list.html.erb", :layout => "packing_list"
+  end #end method vendor_packing_list
+  
+  
+  
 #static pages
 
   def affiliates
