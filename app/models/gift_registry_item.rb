@@ -87,7 +87,11 @@ class GiftRegistryItem < ActiveRecord::Base
     
     unless self.product_options.blank?
       self.product_options.each do |pov_id|
-        pov = ProductOptionValue.find(pov_id)
+        begin
+          pov = ProductOptionValue.find(pov_id)
+        rescue
+          pov = nil
+        end
         if pov
           tmp_price += pov.price_increase
         end
@@ -96,7 +100,11 @@ class GiftRegistryItem < ActiveRecord::Base
       
     unless self.product_as_options.blank?
       self.product_as_options.each do |paov_id|
-        paov = ProductAsOptionValue.find(paov_id)
+        begin
+          paov = ProductAsOptionValue.find(paov_id)
+        rescue
+          paov = nil
+        end
         if paov
           tmp_price += (paov.product_variation.rounded_retail_price + paov.price_adjustment)
         end
