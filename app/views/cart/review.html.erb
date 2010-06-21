@@ -41,7 +41,7 @@
 											<tr>
 												<td class="item">
 													<div class="item-info">
-														<%= link_to image_tag(cart_item.thumbnail_url, :alt => cart_item.title), cart_item.product_link %>
+														<%= link_to image_tag(cart_item.thumbnail_url.gsub("http://", "https://"), :alt => cart_item.title), cart_item.product_link %>
 														<div class="description">
 															<strong class="item-title"><%= cart_item.title %></strong>
 															<span class="item-desc">#<%= cart_item.product_number %></span>
