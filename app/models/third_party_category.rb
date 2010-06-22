@@ -7,7 +7,7 @@ class ThirdPartyCategory < ActiveRecord::Base
   
   
   def self.grouped_options(third_party)
-    options = []
+    options = [["!! BLANK !!", ""]]
     
     ThirdPartyCategory.find_all_by_owner(third_party).group_by(&:parent).each do |parent, categories|
       
