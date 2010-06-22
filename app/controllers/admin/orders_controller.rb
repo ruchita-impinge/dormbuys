@@ -71,10 +71,15 @@ class Admin::OrdersController < Admin::AdminController
     if params[:credit][:credit_amount].to_money.cents <= 0
       @amount_error = true
     else
-      @refund = Payment::PaymentManager.make_partial_refund(
-        @order, 
-        params[:credit][:credit_amount].to_money, 
-        params[:credit][:credit_note])
+      begin
+        @refund = Payment::PaymentManager.make_partial_refund(
+          @order, 
+          params[:credit][:credit_amount].to_money, 
+          params[:credit][:credit_note])
+      rescue Exception => e
+          flash[:error] = "Error applying credit: #{e.message}"
+          redirect_to edit_admin_order_path(@order) and return
+      end
     end
     
     

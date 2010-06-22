@@ -346,9 +346,15 @@ class Payment::PaymentManager
     
       begin
         cc_num = Security::SecurityManager.decrypt(order.payment_transaction_data)
-      rescue Exception => e
-        raise "Decryption Error: #{e.message}"
-      end
+      rescue Exception => a
+        
+        begin
+          cc_num = Security::SecurityManager.legacy_decrypt(order.payment_transaction_data)
+        rescue Exception => b
+          raise "Decryption Error: #{a.message} -AND- #{b.message}"
+        end
+        
+      end #end
       
       options = {
         :card_number => cc_num, 

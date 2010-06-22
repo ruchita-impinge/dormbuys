@@ -15,6 +15,12 @@ class Security::SecurityManager
   end #end method decrypt(cypher_text)
   
   
+  def self.legacy_decrypt(cypher_text)
+    key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], APP_CONFIG['enc_salt'], :algorithm => 'blowfish')
+    key.decrypt(cypher_text)
+  end #end method decrypt(cypher_text)
+  
+  
   
   def self.encrypt_with_salt(plain_text, salt) 
     key = EzCrypto::Key.with_password(APP_CONFIG['enc_key'], salt, :algorithm => 'aes256')
