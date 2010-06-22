@@ -588,7 +588,7 @@ ul.subcat_mgmt .sub_cat_mgmt .clear{
 }
 #cat_mapper_main_cat{
 	float: left;
-	width: 25%;
+	width: 30%;
 }
 #cat_mapper_main_cat h3,
 #cat_mapper_other_cats h3{
@@ -599,7 +599,7 @@ ul.subcat_mgmt .sub_cat_mgmt .clear{
 }
 #cat_mapper_other_cats{
 	float: right;
-	width: 75%;
+	width: 70%;
 	overflow: auto;
 }
 .cat_mapper_other{
