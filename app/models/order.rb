@@ -781,15 +781,7 @@ class Order < ActiveRecord::Base
   
   
   def dropship_only?
-    ds_only = true
-    self.order_line_items.each do |line_item|
-
-      if line_item.product_drop_ship
-        ds_only = false
-        return ds_only
-      end
-    end
-    ds_only
+    !self.order_line_items.collect {|oli| oli.product_drop_ship }.include?(false)
   end #end method dropship_only?
   
   
