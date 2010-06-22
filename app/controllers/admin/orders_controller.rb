@@ -136,6 +136,7 @@ class Admin::OrdersController < Admin::AdminController
 
   def search
     
+    
     date = params[:search][:search_duration].to_i.days.ago
     
     case params[:search][:search_type]
@@ -181,7 +182,7 @@ class Admin::OrdersController < Admin::AdminController
         @orders = Order.find(
           :all, 
           :conditions => [
-            "((shipping_first_name LIKE ? AND shipping_last_name LIKE ?) OR ((billing_first_name LIKE ? AND billing_last_name LIKE ?)) AND order_date >= ?", 
+            "(((shipping_first_name LIKE ? AND shipping_last_name LIKE ?) OR (billing_first_name LIKE ? AND billing_last_name LIKE ?)) AND order_date >= ?)", 
             "%#{first_name}%", 
             "%#{last_name}%",
             "%#{first_name}%", 

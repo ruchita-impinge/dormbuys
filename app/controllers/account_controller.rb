@@ -401,8 +401,10 @@ class AccountController < ApplicationController
     @sort_cats = [["All Categories", 0]]
     @gift_registry.gift_registry_items.each do |item|
       if item.product_variation
-        item.product_variation.product.subcategories.each do |sub|
-          @sort_cats << [sub.category.name, sub.category.id]
+        if item.product_variation.product
+          item.product_variation.product.subcategories.each do |sub|
+            @sort_cats << [sub.category.name, sub.category.id]
+          end
         end
       end
     end
