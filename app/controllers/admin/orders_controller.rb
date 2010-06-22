@@ -99,21 +99,23 @@ class Admin::OrdersController < Admin::AdminController
       @vendor = Vendor.find(params[:vendor_id])
       
       if @order.send_individual_drop_ship_emails(@vendor)
-        flash[:notice] = "Drop ship emails are now being sent to #{@vendor.company_name}"
+        flash[:notice] = "Drop ship emails have been sent to: #{@vendor.company_name}"
         redirect_to edit_admin_order_path(@order)
       else
-        flash[:error] = "There was an error sending drop ship emails to #{@vendor.company_name} contact support."
-        redirect_to edit_admin_order_path(@order)
+        flash[:error] = "There was an error sending drop ship emails."
+        flash.discard
+        render :action => 'edit' and return
       end
       
     else
       
       if @order.send_drop_ship_emails
-        flash[:notice] = "All drop ship emails are now being sent"
+        flash[:notice] = "All drop ship emails have been sent"
         redirect_to edit_admin_order_path(@order)
       else
-        flash[:error] = "There was an error sending drop ship emails, contact support."
-        redirect_to edit_admin_order_path(@order)
+        flash[:error] = "There was an error sending drop ship emails."
+        flash.discard
+        render :action => 'edit' and return
       end
       
     end

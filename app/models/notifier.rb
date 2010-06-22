@@ -14,8 +14,8 @@ class Notifier < ActionMailer::Base
 
   def vendor_dropship_notification(user, vendor, order)
     subject        "New Drop Ship Order: Dormbuys.com"
-    body           :vendor => vendor, :order => order, :url => "http://#{APP_CONFIG['base_url']}/vendors/remote_packing_list?code=#{code}"
     code           = Security::SecurityManager.simple_encrypt("#{vendor.id}-#{order.id}")
+    body           :vendor => vendor, :order => order, :url => "http://#{APP_CONFIG['base_url']}/vendors/remote_packing_list?code=#{code}"
     recipients     RAILS_ENV == 'development' ? APP_CONFIG['dev_email'] : user.email
     from           'Dormbuys.com <support@dormbuys.com>'
     sent_on        Time.now

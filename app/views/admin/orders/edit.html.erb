@@ -504,12 +504,32 @@
 	
 		<div class="std_box_content_wrapper">
 			
-			<p><%= link_to '<span>Send *ALL* Drop Ship Emails</span>', notify_dropship_admin_order_path(@order), 
-				:class => 'button positive' %></p>
 			
-			<% for vendor in @order.drop_ship_vendors %>
-				<p><%= link_to "<span>Send #{vendor.company_name} Emails</span>", 
-					notify_dropship_admin_order_path(@order, :vendor_id => vendor.id), :class => 'button' %></p>
+			<% unless @order.has_dropship? %>
+				<h2>No drop ship vendors to notify. </h2>
+			<% else %>
+			
+				<p><%= link_to '<span>Send *ALL* Drop Ship Emails</span>', notify_dropship_admin_order_path(@order), 
+					:class => 'button positive' %>
+					<div class="clear"></div>
+				</p>
+			
+				<% for vendor in @order.drop_ship_vendors %>
+					<p><%= link_to "<span>Send #{vendor.company_name} Emails</span>", 
+						notify_dropship_admin_order_path(@order, :vendor_id => vendor.id), :class => 'button' %>
+						<div class="clear"></div>
+					</p>
+				<% end %>
+				
+				
+				<% unless @order.order_drop_ship_emails.empty? %>
+				<ul>
+					<% for ds_email in @order.order_drop_ship_emails %>
+						<li><%= "Sent to #{ds_email.email} at #{ds_email.vendor_company_name} on #{ds_email.created_at.to_s(:detail)}" %></li>
+					<% end %>
+				</ul>
+				<% end %>
+				
 			<% end %>
 			
 			<div class="clear"></div>

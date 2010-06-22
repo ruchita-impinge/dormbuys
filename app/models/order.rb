@@ -1142,18 +1142,25 @@ class Order < ActiveRecord::Base
       #loop over all the vendors that have items on the order
       self.drop_ship_vendors.each do |vendor|
       
+        if vendor.vendor_managers.empty?
+          self.errors.add_to_base("No managers to notify at: #{vendor.company_name}")
+          return false
+        end
+      
         #look up all vendor managers for a vendor
         vendor.vendor_managers.each do |manager|
         
           if manager.email
             
             #send the email
-            Notifier.send_later(:deliver_vendor_dropship_notification, manager, vendor, self)
+            Notifier.deliver_vendor_dropship_notification(manager, vendor, self)
 
             #create a drop_ship_email
-            self.order_drop_ship_emails.create(
+            eml = self.order_drop_ship_emails.build(
               :vendor_id => vendor.id,
-              :email => manager.email)
+              :email => manager.email,
+              :vendor_company_name => vendor.company_name)
+            eml.save!
             
           end #end if manager.user.email
         
@@ -1162,7 +1169,8 @@ class Order < ActiveRecord::Base
       end #end vendors.each
       
       
-    rescue
+    rescue Exception => e
+      self.errors.add_to_base("Drop Ship Email Error: #{e.to_s}")
       return false
     end
     
@@ -1185,22 +1193,30 @@ class Order < ActiveRecord::Base
         
       end #end vendor_managers.each
       
+      if send_to.empty?
+        self.errors.add_to_base("No managers to notify at vendor")
+        return false
+      end
+      
       #now that we have an error free list of emails to send
       # lets do it
       send_to.each do |user|
         
         #send the email
-        Notifier.send_later(:deliver_vendor_dropship_notification, user, vendor, self)
+        Notifier.deliver_vendor_dropship_notification(user, vendor, self)
     
         #create a drop_ship_email
-        self.order_drop_ship_emails.create(
+        eml = self.order_drop_ship_emails.build(
           :vendor_id => vendor.id,
-          :email => user.email)
+          :email => user.email,
+          :vendor_company_name => vendor.company_name)
+        eml.save!
           
       end #end send_to.each
       
 
     rescue
+      self.errors.add_to_base("Drop Ship Email Error: #{e.messsage}")
       return false
     end
     

@@ -1,8 +1,9 @@
 class ProductVariation < ActiveRecord::Base
   
-  attr_accessor :should_destroy, :skip_touch
+  attr_accessor :should_destroy, :skip_touch, :do_skip_validation
   
   after_update :save_product_packages, :touch_product_n_subs
+  before_destroy :skip_validation
   
   belongs_to :product
   has_many :product_packages
@@ -11,9 +12,9 @@ class ProductVariation < ActiveRecord::Base
   has_many :wish_list_items
   has_and_belongs_to_many :quantity_discounts
   
-  validates_uniqueness_of :product_number
-  validates_presence_of :title, :qty_on_hand, :qty_on_hold, :reorder_qty, :product_number
-  validates_presence_of :wh_row, :wh_bay, :wh_shelf, :wh_product, :unless => :drop_ship_product?
+  validates_uniqueness_of :product_number, :unless => :should_skip_validation?
+  validates_presence_of :title, :qty_on_hand, :qty_on_hold, :reorder_qty, :product_number, :unless => :should_skip_validation?
+  validates_presence_of :wh_row, :wh_bay, :wh_shelf, :wh_product, :unless => :should_skip_wh_validation?
   
   has_attached_file :image, 
     :styles => {
@@ -71,9 +72,23 @@ class ProductVariation < ActiveRecord::Base
     should_destroy.to_i == 1
   end #end method should_destroy?
   
+  def skip_validation
+    self.do_skip_validation = 1
+  end #end method skip_validation
+  
   def drop_ship_product?
-    self.product.drop_ship
+    self.product.drop_ship == true
   end #end method drop_ship_product?
+  
+  def should_skip_validation?
+    self.do_skip_validation.to_i == 1
+  end #end method should_skip_validation?
+  
+  def should_skip_wh_validation?
+    return true if should_skip_validation?
+    return true if drop_ship_product?
+    return false
+  end #end method should_skip_wh_validation?
   
   #depreciated method
   def fixed_shipping
