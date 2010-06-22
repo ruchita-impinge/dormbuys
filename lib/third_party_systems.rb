@@ -157,7 +157,7 @@ class ThirdPartySystems
     processed_product_ids = []
     
     clean_for_csv = Proc.new do |str|
-      str.gsub(/(\r\n|\r|\n|\t)/s, " ").gsub(","," ").gsub(/"/,"").gsub(/'/, "")
+      str.gsub(/(\r\n|\r|\n|\t)/s, " ").gsub(","," ") #.gsub(/"/,"").gsub(/'/, "")
     end
     
     
@@ -290,7 +290,12 @@ class ThirdPartySystems
       #row << "http://www.dormbuys.com#{variation.product.main_image}"
       unless processed_product_ids.include? variation.product.id
         processed_product_ids << variation.product.id
-        row << variation.product.additional_product_images.collect {|ai| "#{ai.image.url(:main)}"}.join("|")
+        
+        #row << variation.product.additional_product_images.collect {|ai| "#{ai.image.url(:main)}"}.join("|")
+        pimgs = []
+        pimgs << variation.product.product_image(:original).split("?").first
+        variation.product.additional_product_images.each {|ai| pimgs << ai.image(:original).split("?").first }
+        row << pimgs.join("|")
       end
       
       @rows << row
@@ -304,7 +309,8 @@ class ThirdPartySystems
     end
   
   
-    ftp_file = "#{RAILS_ROOT}/public/files/products/LNT_PRODUCTS.csv"
+    ftp_file = "#{RAILS_ROOT}/public/content/integrations/LNT_PRODUCTS.csv"
+    FileUtils.mkdir_p(File.dirname(ftp_file))
     fh = File.new(ftp_file, "w")
     fh.puts(file_content)
     fh.close
@@ -350,10 +356,6 @@ class ThirdPartySystems
     end
   
   
-    #ftp_file = "#{RAILS_ROOT}/public/files/products/LNT_INVENTORY_UPDATE.csv"
-    #fh = File.new(ftp_file, "w")
-    #fh.puts(file_content)
-    #fh.close
     
     fname = Time.now.strftime("DORM-INV-%m%d%y-%H%M%S.csv")
     
