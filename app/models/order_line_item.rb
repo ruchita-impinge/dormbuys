@@ -59,19 +59,22 @@ class OrderLineItem < ActiveRecord::Base
   
   
   def variation
-    return get_product_variation
+    @variation ||= get_product_variation
   end #end method variation
   
   
   def get_product_variation
+    @variation = ProductVariation.find_by_product_number(self.product_number)
     return @variation unless @variation.blank?
     
-    @variation = ProductVariation.find_by_product_number(self.product_number)
-    @variation = ProductVariation.find_by_manufacturer_number(self.product_manufacturer_number) unless self.product_manufacturer_number.blank? || variation
-		product = Product.find_by_product_name(self.item_name.split(" - ").first) unless variation
-		@variation = product.product_variations.first if product && variation.blank?
+    @variation = ProductVariation.find_by_manufacturer_number(self.product_manufacturer_number) unless self.product_manufacturer_number.blank?
+    return @variation unless @variation.blank? 
+    
+		product = Product.find_by_product_name(self.item_name.split(" - ").first) unless @variation
+		@variation = product.product_variations.first if product
+		return @variation unless @variation.blank?
 		
-    @variation
+    return nil
   end #end method get_product_variation
   
 
