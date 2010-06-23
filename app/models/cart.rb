@@ -395,7 +395,11 @@ class Cart < ActiveRecord::Base
     def setup_payment_display
       setup_cc_attributes
       c = self.credit_card
-      [c.name, c.type, c.display_number, "#{c.month}/#{c.year}"]
+      if c.blank?
+        ["Error", "Error", "Error", "Error"]
+      else
+        [c.name, c.type, c.display_number, "#{c.month}/#{c.year}"]
+      end
     end #end method setup_payment_display
   
   

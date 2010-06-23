@@ -288,6 +288,7 @@ class ThirdPartySystems
       
       #handle product image
       #row << "http://www.dormbuys.com#{variation.product.main_image}"
+=begin
       unless processed_product_ids.include? variation.product.id
         processed_product_ids << variation.product.id
         
@@ -296,6 +297,13 @@ class ThirdPartySystems
         pimgs << variation.product.product_image(:original).split("?").first
         variation.product.additional_product_images.each {|ai| pimgs << ai.image(:original).split("?").first }
         row << pimgs.join("|")
+      end
+=end
+
+      if variation.title == "default"
+        row << variation.product.product_image(:original).split("?").first
+      else
+        row << variation.image(:original).split("?").first
       end
       
       @rows << row
