@@ -303,7 +303,11 @@ class ThirdPartySystems
       if variation.title == "default"
         row << variation.product.product_image(:original).split("?").first
       else
-        row << variation.image(:original).split("?").first
+        if variation.image.file?
+          row << variation.image(:original).split("?").first
+        else
+          row << variation.product.product_image(:original).split("?").first
+        end
       end
       
       @rows << row
