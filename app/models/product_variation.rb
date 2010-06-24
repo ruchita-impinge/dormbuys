@@ -234,6 +234,7 @@ class ProductVariation < ActiveRecord::Base
     begin
       
       self.product.skip_all_callbacks = true
+      self.product.product_variations.collect {|pv| pv.do_skip_validation = true }
       self.product.touch
       self.product.subcategories.each do |sub|
         sub.touch
