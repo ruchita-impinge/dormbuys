@@ -217,7 +217,7 @@ class ThirdPartySystems
     
     @rows = []
   
-    @variations = ThirdPartySystems.get_lnt_product_variations
+    @variations = ThirdPartySystems.get_lnt_product_variations(:new_only => true)
     
     @variations.each do |variation|
       
@@ -524,11 +524,15 @@ class ThirdPartySystems
   end #end method self.update_packstream
   
   
-  def self.get_lnt_product_variations
+  def self.get_lnt_product_variations(options={})
     
     variations = []
     
-    products = Product.find(:all, :conditions => ['drop_ship = ? AND created_at >= ?', false, Time.parse("6/7/2010 12:01 AM")], :include => :product_variations)
+    if options[:new_only]
+      products = Product.find(:all, :conditions => ['drop_ship = ? AND created_at >= ?', false, Time.parse("6/7/2010 12:01 AM")], :include => :product_variations)
+    else
+      products = Product.find(:all, :conditions => ['drop_ship = ?', false], :include => :product_variations)
+    end
     
     products.each do |product|
       product.product_variations.each do |variation|
