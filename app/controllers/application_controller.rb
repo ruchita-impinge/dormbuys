@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::RoutingError, :with => :route_not_found
   rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+  rescue_from ActionController::UnknownHttpMethod, :with => :route_not_found
+  rescue_from REXML::ParseException, :with => :bad_xml
   
 
   before_filter :set_current_user
@@ -84,10 +86,16 @@ class ApplicationController < ActionController::Base
     render :text => 'What file you are looking for was not found.', :status => :not_found
   end
 
+
   def invalid_method
-    message = "#{request.request_method.to_s.upcase} is not allowed?"
+    message = "#{request.request_method.to_s.upcase} is not allowed"
     render :text => message, :status => :method_not_allowed
   end
+
+
+  def bad_xml
+    render :text => 'Your XML is malformed', :status => :unprocessable_entity
+  end #end method bad_xml
 
   
 end #end  class
