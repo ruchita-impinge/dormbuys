@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100608182249) do
+ActiveRecord::Schema.define(:version => 20100625145859) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -430,9 +430,6 @@ ActiveRecord::Schema.define(:version => 20100608182249) do
     t.integer "vendor_id"
   end
 
-  add_index "orders_vendors", ["order_id"], :name => "index_orders_vendors_on_order_id"
-  add_index "orders_vendors", ["vendor_id"], :name => "index_orders_vendors_on_vendor_id"
-
   create_table "product_as_option_values", :force => true do |t|
     t.integer  "product_variation_id"
     t.integer  "product_as_option_id"
@@ -678,6 +675,7 @@ ActiveRecord::Schema.define(:version => 20100608182249) do
     t.string   "parent"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "level",      :default => 0
   end
 
   create_table "users", :force => true do |t|

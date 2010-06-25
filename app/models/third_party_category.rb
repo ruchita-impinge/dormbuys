@@ -18,5 +18,6 @@ class ThirdPartyCategory < ActiveRecord::Base
     
     options
   end #end method grouped_options(third_party)
+
   
 end #end class

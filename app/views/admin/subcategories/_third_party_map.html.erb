@@ -15,10 +15,7 @@
 						<span class="name">
 							<%= hidden_field :subcategory, :id, :value => subcat.id, :name => 'subcategory[id][]' %>
 							<%= select_tag 'subcategory[third_party_category_ids][]',
-								grouped_options_for_select(
-									ThirdPartyCategory.grouped_options(third_party), 
-									subcat.third_party_cat(third_party)
-								) %>
+								third_party_select_options(third_party, subcat.third_party_cat(third_party)) %>
 						</span>
 						<span class="clear"></span>
 					</span>
@@ -30,10 +27,7 @@
 								<span class="name">
 									<%= hidden_field :subcategory, :id, :value => third.id, :name => 'subcategory[id][]' %>
 									<%= select_tag 'subcategory[third_party_category_ids][]',
-										grouped_options_for_select(
-											ThirdPartyCategory.grouped_options(third_party), 
-											third.third_party_cat(third_party)
-										) %>
+										third_party_select_options(third_party, subcat.third_party_cat(third_party)) %>
 								</span>
 								<span class="clear"></span>
 							</span>
