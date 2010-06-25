@@ -2,7 +2,7 @@ module SubcategoryHelper
   
   
   def third_party_select_options(third_party, selected_id)
-    return  @options unless  @options.blank?
+    #return  @options unless  @options.blank?
     
     
     @options = []
