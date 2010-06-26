@@ -319,13 +319,29 @@ class Order < ActiveRecord::Base
     pass = true
     
     #charge the user for the order
-    @payment_result = Payment::PaymentManager.make_payment(
-      self.grand_total, 
-      self.payment_provider_id, 
-      self.payment_info, 
-      self.get_payment_billing_address, 
-      self.get_payment_shipping_address,
-      self.order_id)
+    begin
+      @payment_result = Payment::PaymentManager.make_payment(
+        self.grand_total, 
+        self.payment_provider_id, 
+        self.payment_info, 
+        self.get_payment_billing_address, 
+        self.get_payment_shipping_address,
+        self.order_id)
+    rescue => e
+      
+      HoptoadNotifier.notify(
+        :error_class => "Order -> save_order_payment",
+        :error_message => "!!! - Error saving order payment: #{e.message}"
+      )
+      
+      @payment_result = {}
+      @payment_result[:success] = false
+      @payment_result[:transaction_number] = "-1"
+      @payment_result[:message] = "Unable to process payment, please call 1-866-502-DORM"
+      
+      self.errors.add_to_base(@payment_result[:message])
+      pass = false
+    end
     
     
     if RAILS_ENV == 'development'
