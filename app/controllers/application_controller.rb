@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
   private
 
   def route_not_found
-    render :text => 'What file you are looking for was not found.', :status => :not_found
+    render :text => "Hmmm... what are you looking for?  I couldn't find anything with that URL.", :status => :not_found
   end
 
 
