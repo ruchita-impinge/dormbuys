@@ -394,6 +394,14 @@ class Order < ActiveRecord::Base
     #alter the inventory of the order items & on_hold qty
     for item in self.order_line_items
       
+      if item.variation.blank? 
+        return false
+      end
+      
+      if item.variation.product.blank?
+        return false
+      end
+      
       #debit inventory 
       unless item.variation.product.drop_ship 
         new_onhand = item.variation.qty_on_hand - item.quantity #debit on-hand
@@ -421,6 +429,8 @@ class Order < ActiveRecord::Base
       
     end #end for item in @order.order_line_items
     
+    
+    return true
   end #end method adj_item_inventory
   
   
