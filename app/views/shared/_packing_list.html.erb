@@ -5,7 +5,14 @@
 	<div id="header">
 		
 		<div id="head1" class="left_fifty">
-			<h2><%= @order.order_vendor.name %></h2>
+			<% if @order.order_vendor.logo.file? %>
+				<div id="order_vendor_logo">
+					<%= image_tag @order.order_vendor.logo(:large) %>
+				</div>
+			<% else %>
+				<h2><%= @order.order_vendor.name %></h2>
+			<% end %>
+			
 		</div><!--[eo:left_fifty]-->
 		
 		<div id="head2" class="right_fifty">
