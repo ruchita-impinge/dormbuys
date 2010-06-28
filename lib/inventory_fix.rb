@@ -9,7 +9,7 @@ class InventoryFix
   
 
   def initialize
-    @source = Mysql.real_connect("localhost", "devuser", "2getmein2", "dormbuys_migration_test")
+    #@source = Mysql.real_connect("localhost", "devuser", "2getmein2", "dormbuys_migration_test")
   end #end method initialize
   
   
