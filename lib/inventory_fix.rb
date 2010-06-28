@@ -3345,7 +3345,8 @@ class InventoryFix
            end
 
          end #end for product_optional_variations
-       end #end for @orders
+       end #end for order_line_items
+     end #end for @orders
      
      
      
