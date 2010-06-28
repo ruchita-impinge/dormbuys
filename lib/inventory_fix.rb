@@ -3335,13 +3335,14 @@ class InventoryFix
          for ov in item.order_line_item_product_as_options
 
            optional_variation = ProductVariation.find_by_product_number(ov.product_number)
-
-           unless optional_variation.product.drop_ship
-             new_onhand = optional_variation.qty_on_hand - item.quantity #debit on-hand
-             #new_onhold = optional_variation.qty_on_hold + item.quantity #credit on-hold
-             #optional_variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
-             optional_variation.update_attributes(:qty_on_hand => new_onhand)
-             items << "#{optional_variation.product_number} ==> #{optional_variation.item_name}"
+           if optional_variation
+             unless optional_variation.product.drop_ship
+               new_onhand = optional_variation.qty_on_hand - item.quantity #debit on-hand
+               #new_onhold = optional_variation.qty_on_hold + item.quantity #credit on-hold
+               #optional_variation.update_attributes(:qty_on_hand => new_onhand, :qty_on_hold => new_onhold)
+               optional_variation.update_attributes(:qty_on_hand => new_onhand)
+               items << "#{optional_variation.product_number} ==> #{optional_variation.full_title}"
+             end
            end
 
          end #end for product_optional_variations
