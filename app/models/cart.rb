@@ -208,7 +208,11 @@ class Cart < ActiveRecord::Base
     return Money.new(0) unless self.subtotal >= self.coupon.min_purchase
     
     
-    if self.coupon.coupon_type_id == CouponType::DOLLAR
+    if self.coupon.coupon_type_id == CouponType::FREE_SHIPPING
+      
+      return self.shipping
+    
+    elsif self.coupon.coupon_type_id == CouponType::DOLLAR
       
       return self.coupon.value
       
