@@ -194,7 +194,12 @@
 												</div>
 												<% unless @cart.coupon.blank? %>
 													<p class="coupon-discount">
-														Coupon Discount: <span>-$<%= @cart.total_coupons %></span>
+														Coupon Discount: 
+														<% if @cart.coupon.coupon_type_id == CouponType::FREE_SHIPPING %>
+															<span>Free Shipping</span>
+														<% else %>
+															<span>-$<%= @cart.total_coupons %></span>
+														<% end %>
 														<br /> (Coupon #: <%= @cart.coupon.coupon_number %>)
 													</p>
 												<% end %>
