@@ -1,5 +1,12 @@
 <div class="tab" id="tab1">
-	<img src="/images/banners/banner-home-main.jpg" alt="image description" />
+	
+	<!-- hack bw -->
+	<% if Time.now >= Time.parse("06/30/2010 9:00 AM") %>
+		<img src="/images/banners/banner-free-shipping.jpg" alt="image description" />
+	<% else %>
+		<img src="/images/banners/banner-home-main.jpg" alt="image description" />
+	<% end %>
+	
 	
 	<div id="promo_form">
 		

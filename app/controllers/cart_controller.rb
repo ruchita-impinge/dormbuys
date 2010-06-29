@@ -13,6 +13,13 @@ class CartController < ApplicationController
   def index
     @page_title = "View Cart"
     find_cart
+    
+    #hack bw
+    if Time.now >= Time.parse("06/30/2010 9:00 AM")
+      @coupon = Coupon.find_by_coupon_number "ship4free"
+      @cart.coupon = @coupon if @cart.coupon.blank?
+    end
+    
   end
   
   
