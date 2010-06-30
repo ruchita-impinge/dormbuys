@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from REXML::ParseException, :with => :bad_xml
   
 
-  before_filter :set_current_user, :check_home_coupon_promo
+  before_filter :set_current_user
 
 
   helper :all # include all helpers, all the time
@@ -22,12 +22,6 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation, :vcode, :card_number,
     #:name_on_card, :exp_date, :card_type
   
-  
-  def check_home_coupon_promo
-    if Time.now >= Time.parse("06/30/2010 9:00 AM") && Time.now <= Time.parse("06/30/2010 9:05 AM")
-      expire_home_caches
-    end
-  end #end method check_home_coupon_promo
   
   
   def set_current_user
