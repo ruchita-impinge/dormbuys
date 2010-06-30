@@ -17,7 +17,10 @@ class CartController < ApplicationController
     #hack bw
     if Time.now >= Time.parse("06/30/2010 9:00 AM")
       @coupon = Coupon.find_by_coupon_number "ship4free"
-      @cart.coupon = @coupon if @cart.coupon.blank?
+      if @cart.coupon.blank?
+        @cart.coupon = @coupon 
+        @cart.save
+      end
     end
     
   end
