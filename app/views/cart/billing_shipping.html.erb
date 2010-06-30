@@ -212,7 +212,9 @@
 										<% unless @cart.coupon.blank? %>
 										<div class="item-subtotal">
 											<% if @cart.coupon.coupon_type_id == CouponType::FREE_SHIPPING %>
-												<strong class="price">Free Shipping</strong>
+												<% if @cart.subtotal >= @cart.coupon.min_purchase %>
+													<strong class="price">Free Shipping</strong>
+												<% end %>
 											<% else %>
 												<strong class="price">-$<%= @cart.total_coupons %></strong>
 											<% end %>

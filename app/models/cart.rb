@@ -176,7 +176,11 @@ class Cart < ActiveRecord::Base
   
   def shipping
 
-    return Money.new(0) if self.coupon && self.coupon.coupon_type_id == CouponType::FREE_SHIPPING
+    if self.coupon && self.coupon.coupon_type_id == CouponType::FREE_SHIPPING
+      if self.subtotal >= self.coupon.min_purchase
+        return Money.new(0)
+      end
+    end
     
     shipping_calc_total = Money.new(0)
     self.cart_items.each do |item|

@@ -196,7 +196,9 @@
 													<p class="coupon-discount">
 														Coupon Discount: 
 														<% if @cart.coupon.coupon_type_id == CouponType::FREE_SHIPPING %>
-															<span>Free Shipping</span>
+															<% if @cart.subtotal >= @cart.coupon.min_purchase %>
+																<span>Free Shipping</span>
+															<% end %>
 														<% else %>
 															<span>-$<%= @cart.total_coupons %></span>
 														<% end %>
