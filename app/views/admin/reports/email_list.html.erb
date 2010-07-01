@@ -1,0 +1,18 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th class="center">first_name</th>
+			<th class="center">last_name</th>
+			<th class="center">email</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for data in @output %>
+		<tr>
+			<td class="center"><%= data[0] %></td>
+			<td class="center"><%= data[1] %></td>
+			<td class="center"><%= data[2] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

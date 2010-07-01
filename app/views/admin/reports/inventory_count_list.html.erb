@@ -1,0 +1,34 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th>Line Number</th>
+			<th>Category</th>
+			<th>Subcategory</th>
+			<th>Product Name</th>
+			<th>Product Number</th>
+			<th>Count #</th>
+			<th>Qty On Hand</th>
+			<th>Qty On Hold</th>
+			<th>Current Price</th>
+			<th>Warehouse Location</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<% @variations.each_with_index do |variation, i| %>
+		<tr>
+			<td><%= i+1 %></td>
+			<td><%= variation.subcategory %></td>
+			<td><%= variation.category %></td>
+			<td><%= variation.full_title %></td>
+			<td><%= variation.product_number %></td>
+			<td>&nbsp;</td>
+			<td><%= variation.qty_on_hand %></td>
+			<td><%= variation.qty_on_hold %></td>
+			<td><%= variation.rounded_retail_price %></td>
+			<td><%= variation.warehouse_location %></td>
+		</tr>
+		<% end %>
+	</tbody>
+	
+</table>
