@@ -1,4 +1,4 @@
-<% cache([@subcategory, "page_#{params[:page].to_i}"], :expires_in => 5.minutes) do %>
+<% cache([@subcategory, "page_#{params[:page].to_i}", "#{params[:view_all].to_i}"], :expires_in => 5.minutes) do %>
 
 <div class="tab">
 	<div class="pager gallery-box">

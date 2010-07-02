@@ -40,7 +40,7 @@
 		    <%= content_tag :p, msg, :class => key %>
 		<% end %>
 	
-<% cache("front_large_banner_2", :expires_in => 5.minutes) do %>	
+<% cache(["front_large_banner_2", @category], :expires_in => 5.minutes) do %>	
 		
 		<%= render :partial => "shared/front_category_header", :object => @category %>
 		

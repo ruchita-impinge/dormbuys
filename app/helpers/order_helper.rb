@@ -31,7 +31,8 @@ module OrderHelper
       #{order.billing_address}<br />
       #{order.billing_address2.blank? ? '' : order.billing_address2 + '<br />'}
       #{order.billing_city}, #{order.billing_state.abbreviation} #{order.billing_zipcode}<br />
-      #{order.billing_country.country_name}
+      #{order.billing_country.country_name}<br />
+      #{order.billing_phone}
     EO_HTML
   end #end method print_billing_address_html(order)
   
@@ -56,7 +57,8 @@ module OrderHelper
         #{order.shipping_address}<br />
         #{order.shipping_address2.blank? ? '' : order.shipping_address2 + '<br />'}
         #{order.shipping_city}, #{order.shipping_state.abbreviation} #{order.shipping_zipcode}<br />
-        #{order.shipping_country.country_name}
+        #{order.shipping_country.country_name}<br />
+        #{order.shipping_phone}
       EO_HTML
     end
     out

@@ -359,7 +359,7 @@ function afterAutoComplete(e)
 		   type: "POST",
 		   dataType: 'script',
 		   url: "/admin/orders/product_staging",
-		   data: "product_name=" + escape(jQuery(e).val()),
+		   data: "product_name=" + encodeURIComponent(jQuery(e).val()),
 		 });
 	
 	}else if(jQuery(e).attr("name") == 'user_search_term'){

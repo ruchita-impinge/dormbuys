@@ -9,7 +9,7 @@
 	
 	<div class="std_box_content">
 		
-		<% form_for([:admin, @order]) do |f| %>
+		<% form_remote_for([:admin, @order]) do |f| %>
 		  <%= f.error_messages %>
 
 		  <%= render :partial => "order_form.html.erb", :locals => {:f => f} %>
@@ -27,5 +27,10 @@
 </div><!-- end .std_box -->
 
 
-<%= link_to '<span>Save</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+
+<%= link_to_function '<span>Save</span>', 
+	"$.ajax({data:$.param($('#new_order').serializeArray()) + '&authenticity_token=' + encodeURIComponent('#{form_authenticity_token}'), dataType:'script', type:'post', url:'/admin/orders'}); return false;",
+	:class => 'button positive' %>
+
+
 <%= link_to '<span>Cancel</span>', admin_orders_path, :class => 'button negative' %>

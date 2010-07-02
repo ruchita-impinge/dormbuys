@@ -1,7 +1,7 @@
 class Admin::OrdersController < Admin::AdminController
   require 'admin_order_builder.rb'
   include AdminOrderBulder
-
+  
 #ajax methods
   def complete_processing
     @order = Order.find(params[:id])
@@ -276,6 +276,18 @@ class Admin::OrdersController < Admin::AdminController
     @order.payment_info = "" if @order.grand_total.cents == 0
 
 
+    render :update do |page|
+      if @order.save
+        flash[:notice] = 'Order was successfully created.'
+        page << "window.location.href = '#{edit_admin_order_path(@order)}';"
+      else
+        msgs = @order.errors.full_messages.join('\n')
+        page << "alert(\"Errors:\\n#{msgs}\")"
+      end
+    end
+
+
+=begin
     respond_to do |format|
       if @order.save
         flash[:notice] = 'Order was successfully created.'
@@ -286,7 +298,9 @@ class Admin::OrdersController < Admin::AdminController
         format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
       end
     end
-  end
+=end
+    
+  end #end create action
 
 
 

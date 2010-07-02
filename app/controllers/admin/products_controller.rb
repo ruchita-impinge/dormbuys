@@ -249,7 +249,7 @@ class Admin::ProductsController < Admin::AdminController
   def search
     @products = Product.find(:all, 
       :conditions => ["product_name LIKE ?", "%#{params[:search][:search_term]}%"]
-      ).paginate :per_page => 10, :page => params[:page]
+      ).paginate :per_page => 50, :page => params[:page]
     
     render :action => :index
   end #end method search

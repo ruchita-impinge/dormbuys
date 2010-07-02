@@ -21,6 +21,12 @@ class Cart < ActiveRecord::Base
     :billing_state_id, :billing_zipcode, :billing_country_id, :shipping_first_name, :shipping_last_name, :shipping_address, 
     :shipping_city, :shipping_state_id, :shipping_zipcode, :shipping_country_id, :shipping_phone, :how_heard_option_id,
     :email, :billing_phone, :if => :should_validate?
+    
+  validates_format_of :billing_phone, :with => /^[0-9]{3,3}-[0-9]{3,3}-[0-9]{4,4}$/,
+      :message => "Phone number is not valid (xxx-xxx-xxxx).", :if => :should_validate?
+      
+  validates_format_of :shipping_phone, :with => /^[0-9]{3,3}-[0-9]{3,3}-[0-9]{4,4}$/,
+      :message => "Phone number is not valid (xxx-xxx-xxxx).", :if => :should_validate?
   
   validates_presence_of :how_heard_option_value, :message => "please let us know where you heard about Dormbuys", 
     :if => :how_heard_other_required?
@@ -65,6 +71,31 @@ class Cart < ActiveRecord::Base
     
   end #end method validate
   
+  
+  def shipping_phone=(_sphone)
+    return if _sphone.blank?
+    s_phone = _sphone.gsub(/[^0-9]/, "").gsub(/^([0-9]{0,3})([0-9]{0,3})([0-9]{0,})$/) do |match|
+      tmp = ""
+      tmp += $1 if $1.size > 0
+      tmp += "-" + $2 if $2.size > 0
+      tmp += "-" + $3 if $3.size > 0
+      tmp
+    end
+    write_attribute(:shipping_phone, s_phone)
+  end  
+  
+  
+  def billing_phone=(_bphone)
+    return if _bphone.blank?
+    b_phone = _bphone.gsub(/[^0-9]/, "").gsub(/^([0-9]{0,3})([0-9]{0,3})([0-9]{0,})$/) do |match|
+      tmp = ""
+      tmp += $1 if $1.size > 0
+      tmp += "-" + $2 if $2.size > 0
+      tmp += "-" + $3 if $3.size > 0
+      tmp
+    end
+    write_attribute(:billing_phone, b_phone)
+  end
   
   
   def should_validate?

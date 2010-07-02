@@ -7,7 +7,7 @@
 
 <%= periodically_call_remote(
 		:url => {:action => :inline_order_list, :page => params[:page]}, 
-		:frequency => '10', 
+		:frequency => '600', 
 		:update => 'orders_list') %>
 
 

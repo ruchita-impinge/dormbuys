@@ -1261,6 +1261,10 @@ class Order < ActiveRecord::Base
       end
     end
     
+    all_done = true
+    self.order_line_items.collect {|oli| oli.shipping_numbers.each {|sn| all_done = false if sn.tracking_number.blank? }}
+    self.order_status_id = Order::ORDER_STATUS_SHIPPED if all_done == true
+    
     Notifier.send_later(:deliver_updated_tracking, self)
     
   end #end method updated_shipping_number_attributes(shipping_num_attributes)
