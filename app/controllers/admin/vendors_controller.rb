@@ -53,7 +53,7 @@ class Admin::VendorsController < Admin::AdminController
   # GET /vendors/new.xml
   def new
     @vendor = Vendor.new
-    @vendor.drop_ship = false
+    @vendor.dropship = false
 
     respond_to do |format|
       format.html # new.html.erb
