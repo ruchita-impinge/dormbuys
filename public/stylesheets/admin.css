@@ -819,3 +819,9 @@ ul#admin_shipping_labels_list{
 	font-style: italic;
 	font-weight: normal;
 }
+.std_box_content{
+	overflow: auto;
+}
+#coupon_export_check{
+	margin-top: 5px;
+}

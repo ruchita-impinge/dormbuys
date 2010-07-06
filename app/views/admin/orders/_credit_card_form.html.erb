@@ -28,7 +28,7 @@
 		<div class="clear"></div>
 		
 		<div class="field shorter">
-			<%= c.date_select :exp_date, :order => [:month, :day, :year], :discard_day => true %>
+			<%= c.date_select :exp_date, :order => [:month, :day, :year], :discard_day => true, :end_year => (Time.now.year + 10) %>
 			<%= c.label :exp_date %>
 		</div>
 		

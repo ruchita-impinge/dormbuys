@@ -1,0 +1,134 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<div class="std_box span-24">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Report Date Range</h3>
+	
+	<div class="std_box_content">
+		
+
+		<% form_tag :action => :coupons_used do %>
+		
+
+		<div class="field shorter">
+			<%= text_field_tag :from_date, @from_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>From Date: <span>(Default is 1st)</span></label>
+		</div>
+		
+		<div class="field shorter">
+			<%= text_field_tag :to_date, @to_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>To Date: <span>(default is today)</span></label>
+		</div>
+		
+		<div class="field short">
+			<%= select_tag "coupon", options_for_select(@coupons, @selected_coupon) %>
+			<label>Coupon:</label>
+		</div>
+		
+		<div class="field check shorter" id="coupon_export_check">
+			<%= check_box_tag "export", true, false, :class => 'check' %>
+			<label>Export to Excel:</label>
+		</div>
+
+		
+		<div class="field">
+			<%= link_to '<span>Search</span>', 'javascript:document.forms[0].submit()', :class => 'button' %>
+		</div>
+		
+		<div class="clear"></div>
+
+		<% end %>
+
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		<% if @orders.empty? %>
+			Coupons Used Report
+		<% else %>
+			Coupons Used On Orders: <%= @from_date.strftime("%m/%d/%Y") %> - <%= @to_date.strftime("%m/%d/%Y") %>
+		<% end %>
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @orders.empty? %>
+			
+			<h3>No orders were found</h3>
+		
+		<% else %>
+		
+		<table class="std_box_table">
+			<thead>
+				<tr>
+					<th class="center">Coupon</th>
+					<th class="center">Order ID</th>
+					<th class="center">Customer</th>
+					<th class="center">Date</th>
+					<th class="center">Status</th>
+					<th class="center">Saved</th>
+					<th class="center">Subtotal</th>
+					<th class="center">Difference</th>
+					<th class="center">10%</th>
+					<th class="center">8%</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for order in @orders %>
+				<tr>
+					<td class="center"><%= order.coupon.coupon_number %></td>
+					<td class="center"><%= order.order_id %></td>
+					<td class="center"><%= order.billing_first_name %> <%= order.billing_last_name %></td>
+					<td class="center"><%= order.order_date.strftime("%m/%d/%Y") %></td>
+					<td class="center"><%= Order::ORDER_STATUS_OPTIONS[order.order_status_id].last %></td>
+					<td class="center"><%= number_to_currency order.total_coupon %></td>
+					<td class="center"><%= number_to_currency order.subtotal %></td>
+					<td class="center"><%= number_to_currency (order.subtotal - order.total_coupon) %></td>
+					<td class="center"><%= number_to_currency (order.subtotal * 0.10) %></td>
+					<td class="center"><%= number_to_currency (order.subtotal * 0.08) %></td>
+				</tr>
+				<% end %>
+				<tr>
+					<td colspan="5" class="right"><h3>Totals:</h3></td>
+					<td class="center"><h3><%= number_to_currency @total_saved %></h3></td>
+					<td class="center"><h3><%= number_to_currency @total_subtotal %></h3></td>
+					<td class="center"><h3><%= number_to_currency @total_difference %></h3></td>
+					<td class="center"><h3><%= number_to_currency @total_ten %></h3></td>
+					<td class="center"><h3><%= number_to_currency @total_eight %></h3></td>
+				</tr>
+			</tbody>
+		</table>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<div class="clear"></div>
+

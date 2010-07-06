@@ -1,0 +1,40 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th class="center">Coupon</th>
+			<th class="center">Order ID</th>
+			<th class="center">Customer</th>
+			<th class="center">Date</th>
+			<th class="center">Status</th>
+			<th class="center">Saved</th>
+			<th class="center">Subtotal</th>
+			<th class="center">Difference</th>
+			<th class="center">10%</th>
+			<th class="center">8%</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for order in @orders %>
+		<tr>
+			<td class="center"><%= order.coupon.coupon_number %></td>
+			<td class="center"><%= order.order_id %></td>
+			<td class="center"><%= order.billing_first_name %> <%= order.billing_last_name %></td>
+			<td class="center"><%= order.order_date.strftime("%m/%d/%Y") %></td>
+			<td class="center"><%= Order::ORDER_STATUS_OPTIONS[order.order_status_id].last %></td>
+			<td class="center">$<%= order.total_coupon %></td>
+			<td class="center">$<%= order.subtotal %></td>
+			<td class="center">$<%= (order.subtotal - order.total_coupon) %></td>
+			<td class="center">$<%= (order.subtotal * 0.10) %></td>
+			<td class="center">$<%= (order.subtotal * 0.08) %></td>
+		</tr>
+		<% end %>
+		<tr>
+			<td colspan="5" class="right"><h3>Totals:</h3></td>
+			<td class="center"><h3>$<%= @total_saved %></h3></td>
+			<td class="center"><h3>$<%= @total_subtotal %></h3></td>
+			<td class="center"><h3>$<%= @total_difference %></h3></td>
+			<td class="center"><h3>$<%= @total_ten %></h3></td>
+			<td class="center"><h3>$<%= @total_eight %></h3></td>
+		</tr>
+	</tbody>
+</table>

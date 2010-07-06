@@ -28,6 +28,7 @@
 					:discard_day => true,
 					:prompt => {:month => "Month", :year => "Year"},
 					:start_year => Date.today.year,
+					:end_year => (Time.now.year + 10),
 					:default => @cart.exp_date
 				}, 
 				{:class => 'select-t4 t5'} %>

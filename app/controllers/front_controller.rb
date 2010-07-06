@@ -69,7 +69,7 @@ class FrontController < ApplicationController
     @category = @subcategory.category
     
     pids = @subcategory.product_ids
-    sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 and p.visible = 1;)
+    sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 AND p.visible = 1 ORDER BY p.product_name ASC;)
     
     unless @subcategory.has_visible_children?
       if params[:view_all]
@@ -153,7 +153,9 @@ class FrontController < ApplicationController
     @page_title = "Search"
     
     if params && params[:search] && params[:search][:search_term]
-      found_products = Product.all(:conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"])
+      found_products = Product.all(
+        :order => "product_name ASC",
+        :conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"])
       parsed_products = found_products.reject {|p| p if p.available_variations.empty? }
       @products = parsed_products.paginate :per_page => 12, :page => params[:page]
     else
