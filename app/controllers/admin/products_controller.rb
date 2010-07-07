@@ -130,6 +130,7 @@ class Admin::ProductsController < Admin::AdminController
         }
         
         last.contents().find('.manufacturer_number').val(prev.contents().find('.manufacturer_number').val());
+        last.contents().find('.upc').val(prev.contents().find('.upc').val());
         last.contents().find('.wholesale_price').val(prev.contents().find('.wholesale_price').val());
         last.contents().find('.freight_in_price').val(prev.contents().find('.freight_in_price').val());
         last.contents().find('.drop_ship_fee').val(prev.contents().find('.drop_ship_fee').val());

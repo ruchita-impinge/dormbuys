@@ -42,7 +42,7 @@
 		
 		<div class="clear"></div>
 		
-		<div class="field">
+		<div class="field shorter">
 			<%= v.text_field :variation_group, :class => 'textfield variation_group' %>
 			<%= v.label :variation_group, nil, :for => "#{pre}__variation_group" %>
 		</div>
@@ -52,17 +52,21 @@
 			<%= v.label :product_number, nil, :for => "#{pre}__product_number" %>
 		</div>
 		
-		<div class="field shorter">
+		<div class="field shortest">
 			<%= v.text_field :manufacturer_number, :class => 'textfield manufacturer_number' %>
-			<%= v.label :manufacturer_number, nil, :for => "#{pre}__manufacturer_number" %>
+			<%= v.label :manufacturer_number, 'MFG #', :for => "#{pre}__manufacturer_number" %>
 		</div>
 		
 		
 		<div class="field shorter">
-			
 			<%= v.select :visible, [["Yes", 1], ["No", 0]].collect {|x| [x.first, x.last]} %>
 			<%= v.label :visible %>
-
+		</div>
+		<div class="clear"></div>
+		
+		<div class="field shorter">
+			<%= v.text_field :upc, :class => 'textfield upc' %>
+			<%= v.label :upc, nil, :for => "#{pre}__upc" %>
 		</div>
 		<div class="clear"></div>
 		
