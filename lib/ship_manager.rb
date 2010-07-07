@@ -34,6 +34,10 @@ class ShipManager
       
       _variation = item.variation
       
+      if _variation.blank? || _variation.product.blank?
+        break
+      end
+      
       if _variation.product.drop_ship
         drop_ship_cart_items << item
       else
