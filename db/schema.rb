@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100625145859) do
+ActiveRecord::Schema.define(:version => 20100707182430) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -507,6 +507,7 @@ ActiveRecord::Schema.define(:version => 20100625145859) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.string   "upc"
   end
 
   create_table "product_variations_quantity_discounts", :id => false, :force => true do |t|
