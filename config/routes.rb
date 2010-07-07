@@ -58,6 +58,7 @@ ActionController::Routing::Routes.draw do |map|
   map.notify_dropship_admin_order '/admin/orders/:id/notify_dropship', :controller => 'admin/orders', :action => 'notify_dropship'
   map.apply_credit_admin_order '/admin/orders/:id/apply_credit', :controller => 'admin/orders', :action => 'apply_credit'
   map.packing_list_admin_order '/admin/orders/:id/packing_list', :controller => 'admin/orders', :action => 'packing_list'
+  map.kill_labels_admin_order '/admin/orders/:id/kill_labels', :controller => 'admin/orders', :action => 'kill_labels'
   map.inline_order_list '/admin/orders/inline_order_list', :controller => "admin/orders", :action => "inline_order_list"
   
   map.admin_vendors_search '/admin/vendors/search', :controller => 'admin/vendors', :action => 'search'

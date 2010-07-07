@@ -233,11 +233,15 @@
 		
 	</h3>
 	
+	<a name="shipping_info"></a>
 	<div class="std_box_content">
 	
 		<div class="std_box_content_wrapper">
 			
-			<div><b>Shipping Labels:</b></div>
+			<div>
+				<b>Shipping Labels:</b> 
+				<%= link_to 'delete all labels', kill_labels_admin_order_path(@order), :confirm => "Are you sure?" %>
+			</div>
 			<ul id="admin_shipping_labels_list">
 				<% for shipping_label in @order.shipping_labels %>
 					<li><%= link_to shipping_label.tracking_number, shipping_label.label_url, :target => "_blank" %></li>
@@ -427,7 +431,9 @@
 
 <div class="span-24 last std_box_satcked_top">
 	
+	
 <!-- ORDER STATUS -->
+<a name="order_status"></a>
 <div class="std_box span-12">
 	
 	<h3 class="std_box_heading">Update Order Status</h3>
@@ -462,6 +468,8 @@
 		<% end %>
 		
 		<% form_for([:admin, @order], :html => {:id => 'status_form'}) do |f| %>
+		
+			<%= hidden_field_tag "status_form", 1 %>
 		
 			<% if @order.processing %>
 				<%= hidden_field_tag "processing", 1 %>

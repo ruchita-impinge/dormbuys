@@ -57,6 +57,16 @@ class Admin::OrdersController < Admin::AdminController
 
 
 #ancillary method
+  def kill_labels
+    @order = Order.find(params[:id])
+    if @order.kill_all_shipping_labels
+      redirect_to "#{request.referrer}#shipping_info"
+    else
+      render :action => 'edit'
+    end
+  end #end method kill_labels
+
+
   def packing_list
     @order = Order.find(params[:id])
     render :partial => "shared/packing_list.html.erb", :layout => "packing_list"
@@ -314,7 +324,13 @@ class Admin::OrdersController < Admin::AdminController
       
       if @order.save
         flash[:notice] = 'Order was successfully updated.'
-        format.html { redirect_to(edit_admin_order_path(@order)) }
+        format.html { 
+          
+          int_link = ""
+          int_link = "#order_status" if params[:status_form]
+          
+          redirect_to("#{edit_admin_order_path(@order)}#{int_link}") 
+        }
         format.xml  { head :ok }
       else
         
