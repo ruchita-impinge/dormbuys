@@ -1,4 +1,4 @@
-<% if object.product_variation %>
+<% unless object.product_variation.blank? || object.product_variation.product.blank? %>
 <% fields_for "wish_list[wish_list_item_attributes][]", object, :index => nil do |x| %>
 		
 		<%= x.hidden_field :id %>

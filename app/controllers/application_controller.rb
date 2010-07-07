@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
   rescue_from ActionController::UnknownHttpMethod, :with => :route_not_found
   rescue_from REXML::ParseException, :with => :bad_xml
+  rescue_from 'REXML::ParseException' do |exception|
+    render :text => 'Your XML is malformed', :status => :unprocessable_entity
+  end
+  
   
 
   before_filter :set_current_user

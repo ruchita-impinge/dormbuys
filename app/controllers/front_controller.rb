@@ -171,17 +171,23 @@ class FrontController < ApplicationController
   def email_list_signup
     render :update do |page|
 
-      mail_client = EmailListClient.find_by_email(params[:email_list][:email_address])
-      if mail_client
-        page.alert("You're already on the mailing list!")
-      else
-        new_mail_client = EmailListClient.new(:email => params[:email_list][:email_address])
-        if new_mail_client.save
-          page.alert("Thanks for signing up!")
+      if params && params[:email_list] && params[:email_list][:email_address]
+
+        mail_client = EmailListClient.find_by_email(params[:email_list][:email_address])
+        if mail_client
+          page.alert("You're already on the mailing list!")
         else
-          msgs = new_mail_client.errors.full_messages.join('\n')
-          page << "alert(\"Errors:\\n#{msgs}\")"
+          new_mail_client = EmailListClient.new(:email => params[:email_list][:email_address])
+          if new_mail_client.save
+            page.alert("Thanks for signing up!")
+          else
+            msgs = new_mail_client.errors.full_messages.join('\n')
+            page << "alert(\"Errors:\\n#{msgs}\")"
+          end
         end
+
+      else
+        page << "alert('Error: invalid data submitted')"
       end
       
     end
@@ -243,8 +249,10 @@ class FrontController < ApplicationController
     @sort_cats = [["All Categories", 0]]
     @gift_registry.gift_registry_items.each do |item|
       if item.product_variation
-        item.product_variation.product.subcategories.each do |sub|
-          @sort_cats << [sub.category.name, sub.category.id]
+        if item.product_variation.product
+          item.product_variation.product.subcategories.each do |sub|
+            @sort_cats << [sub.category.name, sub.category.id]
+          end
         end
       end
     end

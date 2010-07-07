@@ -169,9 +169,13 @@ module AdminOrderBulder
     @product_as_option_values.each {|paov| @total_price += (paov.product_variation.rounded_retail_price + paov.price_adjustment)}
     
     render :update do |page|
-      page.insert_html :bottom, "order_items", :partial => 'order_item'
-      page << %($("#product_staging").html(""); $(".product_search_field").val("").focus(); updateProductTotal();)
-      page << %(updateOrderTotals();)
+      if @product.vendor.blank? || @product.vendor.company_name.blank?
+        page.alert "Error: product's vendor is not set"
+      else
+        page.insert_html :bottom, "order_items", :partial => 'order_item'
+        page << %($("#product_staging").html(""); $(".product_search_field").val("").focus(); updateProductTotal();)
+        page << %(updateOrderTotals();)
+      end
     end
     
   end #end method insert_staged_product

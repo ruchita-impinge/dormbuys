@@ -496,7 +496,12 @@ class Cart < ActiveRecord::Base
       y = values["exp_date(1i)"]
       m = values["exp_date(2i)"]
       d = values["exp_date(3i)"].blank? ? 1 : values["exp_date(3i)"]
-      values[:exp_date] = Date.parse("#{m}/#{d}/#{y}")
+      
+      begin
+        values[:exp_date] = Date.parse("#{m}/#{d}/#{y}")
+      rescue
+        raise "Error with credit card expiration date"
+      end
       
       
       self.salt = make_token

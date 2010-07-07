@@ -281,7 +281,15 @@ class CartController < ApplicationController
     
     
     find_cart
-    saved = @cart.update_attributes(params[:cart])
+    
+    
+    begin
+      saved = @cart.update_attributes(params[:cart])
+    rescue => e
+      @cart.errors.add_to_base(e.message)
+      render :action => 'billing_shipping'
+    end
+    
     
     if @cart.should_validate? && saved
  
@@ -354,8 +362,15 @@ class CartController < ApplicationController
       redirect_to cart_path and return
     end
     
-    @order = Order.new_from_cart(@cart)
-    @order.client_ip_address = request.remote_ip
+    
+    begin
+      @order = Order.new_from_cart(@cart)
+      @order.client_ip_address = request.remote_ip
+    rescue => e
+      @cart.errors.add_to_base(e.message)
+      render :action => "billing_shipping" and return
+    end
+    
     
     if @order.save
       

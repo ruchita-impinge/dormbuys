@@ -124,10 +124,14 @@ class CartItem < ActiveRecord::Base
     #now subtract out any discounts
     temp_total -= self.discount_value
     
+    #sanity check on quantity
+    if self.quantity.blank?
+      self.quantity = 1
+    end
     
     #now set the prices
     self.unit_price = temp_total
-    self.total_price = temp_total * self.quantity
+    self.total_price = (temp_total * self.quantity)
     
   end #end method calculate_totals
 

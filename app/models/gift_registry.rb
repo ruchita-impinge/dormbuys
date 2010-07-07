@@ -47,6 +47,7 @@ class GiftRegistry < ActiveRecord::Base
   
   def items
     local_items = self.gift_registry_items.reject {|x| x if x.product_variation.blank? }
+    local_items = self.gift_registry_items.reject {|x| x if x.product_variation.product.blank? }
     local_items.sort{|x,y| x.product_variation.full_title <=> y.product_variation.full_title}
   end #end method items
   

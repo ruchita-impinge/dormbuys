@@ -35,6 +35,7 @@ class Product < ActiveRecord::Base
       :thumb => ["51x51#", :jpg]
     },
     :default_style => :list,
+    #:processors => [:product_picture],
     :storage => :s3,
     :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
     :path => ":class/:attachment/:id/:style_:basename.:extension"

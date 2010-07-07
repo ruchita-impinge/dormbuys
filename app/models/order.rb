@@ -1362,26 +1362,33 @@ class Order < ActiveRecord::Base
     #create order line items from cart items
     cart.cart_items.each do |cart_item|
     
-      #create the order line item
-      oli                               = order.order_line_items.build
-      oli.item_name                     = cart_item.product_variation.full_title
-      oli.quantity                      = cart_item.quantity
-      oli.vendor_company_name           = cart_item.product_variation.product.vendor.company_name
-      oli.product_manufacturer_number   = cart_item.product_variation.manufacturer_number
-      oli.product_number                = cart_item.product_variation.product_number
-      oli.unit_price                    = cart_item.unit_price
-      oli.total                         = cart_item.total_price
-      oli.product_drop_ship             = cart_item.product_variation.product.drop_ship
-      #oli.product_drop_ship             = Product.find(cart_item.product_variation.product_id).drop_ship
-      oli.warehouse_location            = cart_item.product_variation.warehouse_location
+      begin
+    
+        #create the order line item
+        oli                               = order.order_line_items.build
+        oli.item_name                     = cart_item.product_variation.full_title
+        oli.quantity                      = cart_item.quantity
+        oli.vendor_company_name           = cart_item.product_variation.product.vendor.company_name
+        oli.product_manufacturer_number   = cart_item.product_variation.manufacturer_number
+        oli.product_number                = cart_item.product_variation.product_number
+        oli.unit_price                    = cart_item.unit_price
+        oli.total                         = cart_item.total_price
+        oli.product_drop_ship             = cart_item.product_variation.product.drop_ship
+        #oli.product_drop_ship             = Product.find(cart_item.product_variation.product_id).drop_ship
+        oli.warehouse_location            = cart_item.product_variation.warehouse_location
       
-      #set the wish_list and gift_registry tracking ids
-      oli.wish_list_item_id             = cart_item.wish_list_item_id unless cart_item.wish_list_item_id.blank?
-      oli.gift_registry_item_id         = cart_item.gift_registry_item_id unless cart_item.gift_registry_item_id.blank?
+        #set the wish_list and gift_registry tracking ids
+        oli.wish_list_item_id             = cart_item.wish_list_item_id unless cart_item.wish_list_item_id.blank?
+        oli.gift_registry_item_id         = cart_item.gift_registry_item_id unless cart_item.gift_registry_item_id.blank?
       
-      #set produc options, and poducts as options
-      oli.pov_ids                       = cart_item.pov_ids
-      oli.paov_ids                      = cart_item.paov_ids
+        #set produc options, and poducts as options
+        oli.pov_ids                       = cart_item.pov_ids
+        oli.paov_ids                      = cart_item.paov_ids
+            
+      rescue => e
+        raise "Error saving #{cart_item.product_variation.full_title} to order. Please call 1-866-502-DORM"
+      end
+      
             
     end #end cart_items
     
