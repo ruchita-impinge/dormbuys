@@ -287,7 +287,7 @@ class CartController < ApplicationController
       saved = @cart.update_attributes(params[:cart])
     rescue => e
       @cart.errors.add_to_base(e.message)
-      render :action => 'billing_shipping'
+      render :action => 'billing_shipping'and return
     end
     
     
@@ -325,9 +325,9 @@ class CartController < ApplicationController
         
       end #end profile update
       
-      redirect_to cart_review_path
+      redirect_to cart_review_path and return
     else
-      render :action => 'billing_shipping'
+      render :action => 'billing_shipping' and return
     end
     
   end #end method save_billing_shipping

@@ -17,6 +17,7 @@ class AdditionalProductImage < ActiveRecord::Base
     :storage => :s3,
     :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
     :path => ":class/:attachment/:id/:style_:basename.:extension"
+    
     #:url => "/content/images/:class/:attachment/:id/:style_:basename.:extension",
     #:path => ":rails_root/public/content/images/:class/:attachment/:id/:style_:basename.:extension"
   
