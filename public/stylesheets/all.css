@@ -5143,7 +5143,7 @@ a.additional_image img{
 	color: #777;
 	position: absolute;
 	left: 87px;
-	background: transparent;
+	background: transparent url(../images/transparent.gif);
 	border: none;
 }
 #promo_form #Contact0FirstName{
