@@ -23,7 +23,7 @@ class ProductVariation < ActiveRecord::Base
       :thumb => ["50x50#", :jpg]
     },
     :default_style => :thumb,
-    #:processors => [:product_picture],
+    :processors => [:product_picture],
     :storage => :s3,
     :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
     :path => ":class/:attachment/:id/:style_:basename.:extension"
