@@ -79,6 +79,9 @@ class Admin::SubcategoriesController < Admin::AdminController
 
     respond_to do |format|
       if @subcategory.save
+        
+        expire_general_caches
+        
         flash[:notice] = 'Subcategory was successfully created.'
         format.html { redirect_to(admin_subcategories_path) }
         format.xml  { render :xml => @subcategory, :status => :created, :location => @subcategory }
@@ -96,6 +99,9 @@ class Admin::SubcategoriesController < Admin::AdminController
 
     respond_to do |format|
       if @subcategory.update_attributes(params[:subcategory])
+        
+        expire_general_caches
+        
         flash[:notice] = 'Subcategory was successfully updated.'
         format.html { redirect_to(admin_subcategories_path) }
         format.xml  { head :ok }
@@ -111,6 +117,8 @@ class Admin::SubcategoriesController < Admin::AdminController
   def destroy
     @subcategory = Subcategory.find(params[:id])
     @subcategory.destroy
+    
+    expire_general_caches
 
     respond_to do |format|
       format.html { redirect_to(admin_subcategories_url) }

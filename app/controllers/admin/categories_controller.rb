@@ -46,6 +46,9 @@ class Admin::CategoriesController < Admin::AdminController
 
     respond_to do |format|
       if @category.save
+        
+        expire_general_caches
+        
         flash[:notice] = 'Category was successfully created.'
         format.html { redirect_to(admin_categories_path) }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
@@ -63,6 +66,9 @@ class Admin::CategoriesController < Admin::AdminController
 
     respond_to do |format|
       if @category.update_attributes(params[:category])
+        
+        expire_general_caches
+        
         flash[:notice] = 'Category was successfully updated.'
         format.html { redirect_to(admin_categories_path) }
         format.xml  { head :ok }
@@ -78,6 +84,8 @@ class Admin::CategoriesController < Admin::AdminController
   def destroy
     @category = Category.find(params[:id])
     @category.destroy
+    
+    expire_general_caches
 
     respond_to do |format|
       format.html { redirect_to(admin_categories_url) }
