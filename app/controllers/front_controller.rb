@@ -82,10 +82,10 @@ class FrontController < ApplicationController
   
     unless @subcategory.has_visible_children?
       if params[:view_all]
-        @products = Product.find_by_sql(sql)
+        @products = Product.find_by_sql(sql) if sql
         #@products = @subcategory.visible_products
       else
-        @products = Product.find_by_sql(sql).paginate :per_page => 12, :page => params[:page]
+        @products = Product.find_by_sql(sql).paginate :per_page => 12, :page => params[:page] if sql
         #@products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
       end
     end
