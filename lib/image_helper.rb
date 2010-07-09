@@ -23,6 +23,7 @@ class ImageHelper
         p.product_image.reprocess!
         p.skip_all_callbacks = true
         p.save(false)
+        puts "Reprocessed [PRODUCT] id: #{p.id}, name: #{p.product_name}"
       end
     end
   end #end method self.reprocess_products
@@ -36,6 +37,7 @@ class ImageHelper
         v.image.reprocess!
         v.skip_touch
         v.save(false)
+        puts "Reprocessed [VARIATION] id: #{v.id}"
       end
     end
   end #end method self.reprocess_variations
@@ -48,6 +50,7 @@ class ImageHelper
       if ai.image.file?
         ai.image.reprocess!
         ai.save(false)
+        puts "Reprocessed [ALT-IMG] id: #{ai.id}"
       end
     end
   end #end method self.reprocess_additional_images
