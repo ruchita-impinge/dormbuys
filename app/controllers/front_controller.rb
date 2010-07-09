@@ -68,15 +68,18 @@ class FrontController < ApplicationController
     
     @category = @subcategory.category
     
-    pids = @subcategory.product_ids
     
-    if pids.empty?
-      flash[:error] = "Subcategory #{@subcategory.name} has no products"
-      redirect_to root_path and return
+    if !@subcategory.has_children?
+      pids = @subcategory.product_ids
+      
+      if pids.empty?
+        flash[:error] = "Subcategory #{@subcategory.name} has no products"
+        redirect_to root_path and return
+      end
+      
+      sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 AND p.visible = 1 ORDER BY p.product_name ASC;)
     end
-    
-    sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 AND p.visible = 1 ORDER BY p.product_name ASC;)
-    
+  
     unless @subcategory.has_visible_children?
       if params[:view_all]
         @products = Product.find_by_sql(sql)
