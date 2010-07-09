@@ -68,8 +68,9 @@ class FrontController < ApplicationController
     
     @category = @subcategory.category
     
-    
-    if !@subcategory.has_children?
+
+    unless @subcategory.has_visible_children?
+      
       pids = @subcategory.product_ids
       
       if pids.empty?
@@ -78,17 +79,16 @@ class FrontController < ApplicationController
       end
       
       sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 AND p.visible = 1 ORDER BY p.product_name ASC;)
-    end
-  
-    unless @subcategory.has_visible_children?
+      
+      
       if params[:view_all]
-        @products = Product.find_by_sql(sql) if sql
-        #@products = @subcategory.visible_products
+        @products = Product.find_by_sql(sql)
       else
-        @products = Product.find_by_sql(sql).paginate :per_page => 12, :page => params[:page] if sql
-        #@products = @subcategory.visible_products.paginate :per_page => 12, :page => params[:page]
+        @products = Product.find_by_sql(sql).paginate :per_page => 12, :page => params[:page]
       end
-    end
+      
+      
+    end #end if has_visible_children
     
     @page_title = @subcategory.name
     render :layout => "front_large_banner"
