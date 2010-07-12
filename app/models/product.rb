@@ -58,6 +58,15 @@ class Product < ActiveRecord::Base
     if self.subcategories.empty?
       self.errors.add_to_base "Must have at least one subcategory."
     end
+    
+    if self.vendors.empty?
+      self.errors.add_to_base "Must have a vendor"
+    end
+    
+    if self.warehouses.empty?
+      self.errors.add_to_base "Must have a warehouse"
+    end
+    
   end #end method validate
   
   

@@ -5194,7 +5194,7 @@ a.additional_image img{
 	width: 78px;
 	height: 22px;
 	z-index: 100;
-	background: transparent;
+	background: transparent url(../images/transparent.gif);
 	border: none;
 	text-indent: -999999px;
 }

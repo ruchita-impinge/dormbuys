@@ -529,23 +529,25 @@ class ThirdPartySystems
     variations = []
     
     if options[:new_only]
-      products = Product.find(:all, :conditions => ['drop_ship = ? AND created_at >= ?', false, 7.days.ago.beginning_of_day], :include => :product_variations)
+      product_variations = ProductVariation.find(:all, :conditions => ['products.drop_ship = ? AND product_variations.created_at >= ?', false, 7.days.ago.beginning_of_day], :include => [:product])
+      #products = Product.find(:all, :conditions => ['drop_ship = ? AND created_at >= ?', false, 7.days.ago.beginning_of_day], :include => :product_variations)
     else
-      products = Product.find(:all, :conditions => ['drop_ship = ?', false], :include => :product_variations)
+      product_variations = ProductVariation.find(:all, :conditions => ['products.drop_ship = ?', false], :include => [:product])
+      #products = Product.find(:all, :conditions => ['drop_ship = ?', false], :include => :product_variations)
     end
     
-    products.each do |product|
-      product.product_variations.each do |variation|
-        
-        #product cost is greater than 2.98 and weight is less than 25 lbs
-        if variation.rounded_retail_price > (2.98).to_money && variation.product_packages.collect.sum {|pp| pp.weight } < 25
-          variations << variation
-        end #end if
-        
-      end #end each variation
-    end #end each product
+    
+    product_variations.each do |variation|
+      
+      #product cost is greater than 2.98 and weight is less than 25 lbs
+      if variation.rounded_retail_price > (2.98).to_money && variation.product_packages.collect.sum {|pp| pp.weight } < 25
+        variations << variation
+      end #end if
+      
+    end #end each variation
     
     variations
+    
     
   end #end method self.get_lnt_product_variations
 
