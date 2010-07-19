@@ -216,9 +216,13 @@ class Admin::OrdersController < Admin::AdminController
   end #end method search
 
     
+  def get_orders
+    @orders = Order.find(:all, :include => [{:order_line_items => :shipping_numbers}, :shipping_labels, :order_drop_ship_emails], :order => 'orders.order_date DESC', :limit => 300).paginate :per_page => 100, :page => params[:page]
+  end #end method get_orders
+
 
   def index
-    @orders = Order.find(:all, :include => [:order_line_items], :order => 'orders.order_date DESC', :limit => 300).paginate :per_page => 100, :page => params[:page]
+    get_orders
 
     respond_to do |format|
       format.html # index.html.erb
@@ -229,7 +233,7 @@ class Admin::OrdersController < Admin::AdminController
 
 
   def inline_order_list
-    @orders = Order.find(:all, :include => [:order_line_items], :order => 'orders.order_date DESC', :limit => 300).paginate :per_page => 100, :page => params[:page]
+    get_orders
     render :partial => "orders_list", :layout => false and return
   end #end method inline_order_list
 
@@ -260,18 +264,15 @@ class Admin::OrdersController < Admin::AdminController
 
   def edit
     @order = Order.find(params[:id])
+    
     if request.path =~ /process/
       @order.skip_all_callbacks = true
       @order.processed = false
       @order.processing = true
       @order.save(false)
-    else
-      if @order.processing
-        flash[:error] = "You can't update this order while it is being processed!!!"
-        flash.discard
-      end
     end
-  end
+    
+  end #end edit
 
 
 
