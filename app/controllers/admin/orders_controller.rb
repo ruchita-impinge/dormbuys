@@ -217,7 +217,14 @@ class Admin::OrdersController < Admin::AdminController
 
     
   def get_orders
-    @orders = Order.find(:all, :include => [{:order_line_items => :shipping_numbers}, :shipping_labels, :order_drop_ship_emails], :order => 'orders.order_date DESC', :limit => 300).paginate :per_page => 100, :page => params[:page]
+    @orders = Order.find(
+      :all, 
+      :include => [
+        {:order_line_items => :shipping_numbers}, 
+        :shipping_labels, 
+        :order_drop_ship_emails], 
+      :order => 'orders.order_date DESC', :limit => 300
+    ).paginate :per_page => 100, :page => params[:page]
   end #end method get_orders
 
 

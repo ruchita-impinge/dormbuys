@@ -5,13 +5,18 @@ class Order < ActiveRecord::Base
   
   before_validation :set_shipping_address
   
-  before_create :set_order_user, :run_final_qty_checks, :save_order_payment, :adj_item_inventory, :set_vendors,
-    :setup_shipping_numbers
+  before_create :set_order_user, :set_vendors, :setup_shipping_numbers,
+    :run_final_qty_checks, 
+    :save_order_payment
   
-  after_create :run_followup_tasks
-  after_update :save_order_line_items, :save_shipping_labels #, :cancel_if_necessary
+  after_create :adj_item_inventory, :run_followup_tasks
+  
   
   before_update :cancel_if_necessary
+  
+  after_update :save_order_line_items, :save_shipping_labels #, :cancel_if_necessary
+  
+  
   
   belongs_to :order_vendor
   belongs_to :user
@@ -175,14 +180,13 @@ class Order < ActiveRecord::Base
     return if self.skip_all_callbacks
     return if self.skip_new_callbacks
 
+    Notifier.send_later(:deliver_customer_order_notification, self)
+    self.send_later(:track_item_sold_counts)
+    self.send_later(:setup_order_shipping)
     
     self.track_coupons_used
     self.track_gift_cards_used
-    
-    self.send_later(:setup_order_shipping)
-    self.send_later(:track_item_sold_counts)
-    self.send_later(:update_gift_registry_wish_list)
-    Notifier.send_later(:deliver_customer_order_notification, self)
+    self.update_gift_registry_wish_list
     
   end #end method run_followup_tasks
 
@@ -284,6 +288,8 @@ class Order < ActiveRecord::Base
       self.user = usr if usr
     end
     
+    return true
+    
   end #end method set_order_user
 
 
@@ -298,7 +304,11 @@ class Order < ActiveRecord::Base
 
     self.order_line_items.each do |li|
       unless li.variation.product.drop_ship
+        
+        # we call in this way as opposed to li.variation.qty_on_hand
+        # so that we get the most recent data
         avail_qty = ProductVariation.find(li.variation.id).qty_on_hand
+        
         if avail_qty < li.quantity
           self.errors.add_to_base("The maximum available quantity of ''#{li.variation.full_title}' is #{avail_qty} please call 1-866-502-DORM for special orders")
           pass = false
@@ -316,7 +326,7 @@ class Order < ActiveRecord::Base
     return if self.skip_all_callbacks
     return if self.skip_new_callbacks
     
-    pass = true
+    pass = false
     
     #charge the user for the order
     begin
@@ -329,10 +339,10 @@ class Order < ActiveRecord::Base
         self.order_id)
     rescue => e
       
-      HoptoadNotifier.notify(
-        :error_class => "Order -> save_order_payment",
-        :error_message => "!!! - Error saving order payment: #{e.message}"
-      )
+      #HoptoadNotifier.notify(
+      #  :error_class => "Order -> save_order_payment",
+      #  :error_message => "!!! - Error saving order payment: #{e.message}"
+      #)
       
       @payment_result = {}
       @payment_result[:success] = false
@@ -340,7 +350,6 @@ class Order < ActiveRecord::Base
       @payment_result[:message] = "Unable to process payment, please call 1-866-502-DORM"
       
       self.errors.add_to_base(@payment_result[:message])
-      pass = false
     end
     
     
@@ -351,7 +360,7 @@ class Order < ActiveRecord::Base
     end
     
     
-    if @payment_result[:success]
+    if @payment_result[:success] == true
       
       #Make the order_date the time the payment source was billed
       self.order_date = Time.now
@@ -374,9 +383,10 @@ class Order < ActiveRecord::Base
         
       end #end if grand_total == 0
 
+      pass = true
+
     else
       self.errors.add_to_base(@payment_result[:message])
-      pass = false
     end
     
     
@@ -437,6 +447,7 @@ class Order < ActiveRecord::Base
   
   def set_vendors
     self.vendors = self.all_vendors_from_line_items
+    return true
   end #end method set_vendors
   
   
@@ -449,6 +460,8 @@ class Order < ActiveRecord::Base
         line_item.shipping_numbers.build(:qty_description => "#{i} of #{line_item.quantity}")
       end
     end
+    
+    return true
     
   end #end method setup_shipping_numbers
   
@@ -723,11 +736,21 @@ class Order < ActiveRecord::Base
 
 
   def payment_info
+    
     if @payment_values.class == Array
-      @payment_values.first
+      val_hash = @payment_values.first
     else
-      @payment_values
+      val_hash = @payment_values
     end
+    
+    val_hash.each do |k,v|
+      if k =~ /exp_date/
+        val_hash[k.gsub("exp_date", "expiration_date")] = v
+      end
+    end
+    
+    return val_hash
+    
   end #end method store_payment_info(values)
   
   
