@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   
   
   def check_standalone
-    if request.domain == "dailydormdeal.com"
+    if request.domain == "dailydormdeal.com" && request.path != add_to_cart_path
       @deal = DailyDormDeal.current_deal
       render :layout => "standalone/daily_dorm_deal" and return
     end

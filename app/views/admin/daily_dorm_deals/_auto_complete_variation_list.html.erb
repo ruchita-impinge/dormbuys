@@ -1,5 +1,5 @@
 <ul id="auto_complete_variations">
 <% for v in @variations %>
-  <li id="<%= v.id %>" title="<%= v.product.product_overview %>" rel="<%= v.qty_on_hand %>" name="<%= v.rounded_retail_price %>"><%= v.full_title %></li>
+  <li id="<%= v.id %>" title="<%=h v.product.product_overview %>" rel="<%= v.qty_on_hand %>" name="<%= v.rounded_retail_price %>"><%=h v.full_title %></li>
 <% end %>
 </ul>

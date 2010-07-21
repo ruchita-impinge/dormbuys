@@ -6,6 +6,7 @@ class DailyDormDealController < ApplicationController
   
   def index
     @deal = DailyDormDeal.current_deal
+    fresh_when(:etag => @deal, :last_modified => @deal.updated_at.utc, :public => true)
   end
   
   def email_signup

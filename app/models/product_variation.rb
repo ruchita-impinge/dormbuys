@@ -2,7 +2,7 @@ class ProductVariation < ActiveRecord::Base
   
   attr_accessor :should_destroy, :skip_touch, :do_skip_validation
   
-  after_update :save_product_packages, :touch_product_n_subs
+  after_update :save_product_packages, :touch_product_n_subs, :touch_daily_dorm_deals
   before_destroy :skip_validation
   
   belongs_to :product
@@ -10,6 +10,7 @@ class ProductVariation < ActiveRecord::Base
   has_many :product_as_option_values
   has_many :gift_registry_items
   has_many :wish_list_items
+  has_many :daily_dorm_deals
   has_and_belongs_to_many :quantity_discounts
   
   validates_uniqueness_of :product_number, :unless => :should_skip_validation?
@@ -249,6 +250,14 @@ class ProductVariation < ActiveRecord::Base
     end
     
   end #end method touch_product_n_subs
+  
+  
+  
+  def touch_daily_dorm_deals
+    self.daily_dorm_deals.each do |deal|
+      deal.touch
+    end
+  end #end method touch_daily_dorm_deals
   
   
 end #end class

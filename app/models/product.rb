@@ -6,7 +6,7 @@ class Product < ActiveRecord::Base
   before_save :set_attachment_filenames
   
   after_update :save_additional_product_images, :save_product_options, :save_product_restrictions,
-    :save_product_variations, :save_product_as_options, :touch_subcategories
+    :save_product_variations, :save_product_as_options, :touch_subcategories, :touch_daily_dorm_deals
   
   has_and_belongs_to_many :vendors
   has_and_belongs_to_many :warehouses
@@ -17,6 +17,7 @@ class Product < ActiveRecord::Base
   has_many :product_restrictions
   has_many :product_variations
   has_many :product_as_options
+  has_many :daily_dorm_deals
   
   validates_presence_of :product_name, :product_overview
   validates_associated :additional_product_images
@@ -324,6 +325,13 @@ class Product < ActiveRecord::Base
       sub.touch
     end
   end #end method touch_subcategories
+  
+  
+  def touch_daily_dorm_deals
+    self.daily_dorm_deals.each do |deal|
+      deal.touch
+    end
+  end #end method
   
   
   
