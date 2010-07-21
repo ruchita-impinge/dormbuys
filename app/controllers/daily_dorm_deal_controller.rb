@@ -1,6 +1,8 @@
 class DailyDormDealController < ApplicationController
   
-  before_filter :authenticate
+  skip_before_filter :verify_authenticity_token
+  
+  #before_filter :authenticate  
   
   layout "standalone/daily_dorm_deal"
   
@@ -10,7 +12,8 @@ class DailyDormDealController < ApplicationController
       flash[:error] = "Daily Dorm Deal could not be found"
       redirect_to "http://dormbuys.com" and return
     end
-    fresh_when(:etag => @deal, :last_modified => @deal.updated_at.utc, :public => true)
+    
+    set_cache_buster
   end
   
   def email_signup

@@ -104,7 +104,7 @@ class DailyDormDeal < ActiveRecord::Base
   
   def discount_percentage
     begin
-      percent = (((price.cents * 1.0) / original_price.cents) * 100).round
+      percent = 100 - (((price.cents * 1.0) / original_price.cents) * 100).round
     rescue
       percent = 'ERR'
     end
@@ -161,8 +161,7 @@ class DailyDormDeal < ActiveRecord::Base
 # accessor methods that are independent of product or variation 
   def price
     return self.product_variation.rounded_retail_price unless self.product_variation.blank?
-    return self.product.retail_price unless self.product.blank?
-    return "123456910.78".to_money #error catch_all
+    return self.product.product_variations.sort {|a,b| a.rounded_retail_price <=> b.rounded_retail_price }.first.rounded_retail_price unless self.product.blank?
   end #end method price
   
   

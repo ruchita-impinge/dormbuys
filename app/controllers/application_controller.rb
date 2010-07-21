@@ -40,11 +40,21 @@ class ApplicationController < ActionController::Base
         flash[:error] = "Daily Dorm Deal could not be found"
         redirect_to "http://dormbuys.com" and return true
       end
+      
+      set_cache_buster
       render :layout => "standalone/daily_dorm_deal" and return true
     end
     
     return true
   end #end method check_standalone
+  
+  
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+  
   
   
   
