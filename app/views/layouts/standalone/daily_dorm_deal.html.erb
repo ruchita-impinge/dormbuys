@@ -24,11 +24,11 @@
 	<body>
 		
 		<% if @deal.is_active? %>
-			<%= hidden_field_tag "countdown_seconds", @deal.seconds_left %>
-			<%= hidden_field_tag "percent_sold", @deal.percent_sold %>
+			<div id="countdown_seconds" style="display: none;"><%=  @deal.seconds_left %></div>
+			<div id="percent_sold" style="display: none;"><%= @deal.percent_sold %></div>
 		<% else %>
-			<%= hidden_field_tag "countdown_seconds", @deal.next_deal ? @deal.next_deal.seconds_until_start : 0 %>
-			<%= hidden_field_tag "percent_sold", 100 %>
+			<div id="countdown_seconds" style="display: none;"><%=   @deal.next_deal ? @deal.next_deal.seconds_until_start : 0 %></div>
+			<div id="percent_sold" style="display: none;">100</div>
 		<% end %>
 		
 		<% flash.each do |key, msg| %>

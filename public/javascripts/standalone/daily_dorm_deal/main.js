@@ -8,7 +8,7 @@ var original_link_text;
 $(document).ready(function(){
 	
 	//setup the countdown timer
-	countdown_seconds 	 = Number($("#countdown_seconds").val());
+	countdown_seconds 	 = Number($("#countdown_seconds").text());
 	setTimeLeft();
 	
 	//setup the sellout meter
@@ -81,7 +81,7 @@ function leadZero(num)
 
 function setupSelloutMeter()
 {
-	var percent_sold = Number($("#percent_sold").val());
+	var percent_sold = Number($("#percent_sold").text());
 	var all_sold_width = 223;
 	var new_width;
 	
