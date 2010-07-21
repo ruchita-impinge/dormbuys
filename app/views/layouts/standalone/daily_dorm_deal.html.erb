@@ -50,7 +50,7 @@
 				
 				<!-- EMAIL SIGNUP FORM -->
 				<a name="email_form"></a>
-				<% form_remote_for :ddd_email_signup, :url => daily_dorm_deal_email_path, :html => {:class => 'search-frm'} do |f| %>
+				<% form_remote_for :ddd_email_signup, :url => "http://dormbuys.com/dailydeal/email_signup", :html => {:class => 'search-frm'} do |f| %>
 					<fieldset>
 						<span class="text">
 							<%= f.text_field :email, :value => "Get the Daily Deals by Email", :id => "email" %>
@@ -79,7 +79,7 @@
 						
 						
 						<!-- ADD TO CART FORM -->
-						<% form_for :cart_item, :url => add_to_cart_path, :html => {:id => 'cart_form', :class => 'option-frm'} do |f| %>
+						<% form_for :cart_item, :url => "http://dormbuys.com/cart/add", :html => {:id => 'cart_form', :class => 'option-frm'} do |f| %>
 							<fieldset>
 
 								<% if @deal.product_variation %>
