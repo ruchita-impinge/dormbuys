@@ -34,18 +34,24 @@ class ApplicationController < ActionController::Base
   
   
   def check_standalone
-    if request.domain == "dailydormdeal.com" && request.path !=~ /email_signup/
+    if request.domain == "dailydormdeal.com"
       
-      @deal = DailyDormDeal.current_deal
+      unless  request.path =~ /email_signup/
       
-      unless @deal
-        flash[:error] = "Daily Dorm Deal could not be found"
-        redirect_to "http://dormbuys.com" and return true
+        @deal = DailyDormDeal.current_deal
+      
+        unless @deal
+          flash[:error] = "Daily Dorm Deal could not be found"
+          redirect_to "http://dormbuys.com" and return true
+        end
+      
+        set_cache_buster
+      
+        render :file => "daily_dorm_deal/index.html.erb", :layout => "standalone/daily_dorm_deal" and return true
+        
+      else
+        return true
       end
-      
-      set_cache_buster
-      
-      render :file => "daily_dorm_deal/index.html.erb", :layout => "standalone/daily_dorm_deal" and return true
     end
     
     return true
