@@ -34,7 +34,8 @@ class ApplicationController < ActionController::Base
   
   
   def check_standalone
-    if request.domain == "dailydormdeal.com"
+    if request.domain == "dailydormdeal.com" && request.path !=~ /email_signup/
+      
       @deal = DailyDormDeal.current_deal
       unless @deal
         flash[:error] = "Daily Dorm Deal could not be found"
