@@ -66,19 +66,19 @@
 							<%= f.select :variation_id, product_variations_for_select(@deal.product),
 							 		{:prompt => "Select #{@deal.product.available_variations.first.variation_group}"},
 									{:class => 'sel', :title => 'options'} %>
-									
-	
-							<!-- Product Options Selection -->
-							<% unless @deal.product.blank? %>
-								<% if @deal.product.product_options.size > 0 %>
-									<% for po in @deal.product.product_options %>
 
-										<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['sel']) %>
+						<% end %>
+						
+						
+						<!-- Product Options Selection -->
+						<% unless @deal.product.blank? %>
+							<% if @deal.product.product_options.size > 0 %>
+								<% for po in @deal.product.product_options %>
 
-									<% end %>
+									<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['sel']) %>
+
 								<% end %>
 							<% end %>
-							
 						<% end %>
 						
 

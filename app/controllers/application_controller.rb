@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
     if request.domain == "dailydormdeal.com" && request.path !=~ /email_signup/
       
       @deal = DailyDormDeal.current_deal
+      
       unless @deal
         flash[:error] = "Daily Dorm Deal could not be found"
         redirect_to "http://dormbuys.com" and return true
