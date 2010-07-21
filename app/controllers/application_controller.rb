@@ -42,7 +42,8 @@ class ApplicationController < ActionController::Base
       end
       
       set_cache_buster
-      render :layout => "standalone/daily_dorm_deal" and return true
+      
+      render :action => "daily_dorm_deals/index", :layout => "standalone/daily_dorm_deal" and return true
     end
     
     return true

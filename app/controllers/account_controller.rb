@@ -343,9 +343,7 @@ class AccountController < ApplicationController
       flash[:notice] = "Wish list successfully updated"
       redirect_to account_wish_list_path and return
     else
-      
-      raise "test"
-      
+            
       render :action => "wish_list"
     end
     
