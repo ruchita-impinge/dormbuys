@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  start_time: 2010-07-12 18:08:28
+  type_id: 1
+  product_id: 1
+  product_variation_id: 1
+  title: MyString
+  description: MyText
+  initial_qty: 1
+
+two:
+  start_time: 2010-07-12 18:08:28
+  type_id: 1
+  product_id: 1
+  product_variation_id: 1
+  title: MyString
+  description: MyText
+  initial_qty: 1

@@ -1,0 +1,577 @@
+body{
+	margin:0;
+	color:#c9cbcc;
+	font:12px/15px Arial, Helvetica, sans-serif;
+	background:#231f20 url(/images/standalone/daily_dorm_deal/bg-body.gif) repeat-x 0 100%;
+}
+img{border-style:none;}
+a{
+	text-decoration:none;
+	color:#c9cbcc;
+}
+a:hover{text-decoration:underline;}
+input,textarea, select{
+	font:100% arial,sans-serif;
+	vertical-align:middle;
+	color:#000;
+}
+form,fieldset{
+	margin:0;
+	padding:0;
+	border-style:none;
+}
+
+#wrapper{
+	width:960px;
+	margin:18px auto 0;
+	/*overflow:hidden;*/
+	background:url(/images/standalone/daily_dorm_deal/bg-wrapper.gif) repeat-y;
+	position: relative;
+}
+#wrapper #soldout-banner{
+	position: absolute;
+	top: 327px;
+	right:-20px;
+	z-index: 100;
+	background:url(/images/standalone/daily_dorm_deal/sold-out-banner.png) no-repeat;
+	width: 505px;
+	height: 167px;
+}
+#wrapper .logo{
+	margin:0;
+	font-size:0;
+	line-height:0;
+	position:absolute;
+	top:18px;
+	left:21px;
+	z-index:2;
+}
+#wrapper .logo a{
+	background:url(/images/standalone/daily_dorm_deal/logo.png) no-repeat;
+	display:block;
+	width:257px;
+	height:214px;
+	text-indent:-9999px;
+	overflow:hidden;
+	cursor:pointer;
+}
+#wrapper .logo a#db_logo_link{
+	background: none;
+	width: 115px;
+	height: 30px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: 5;
+}
+#header{
+	background:url(/images/standalone/daily_dorm_deal/bg-header.gif) repeat-x;
+	height:196px;
+	width:100%;
+	position:relative;
+}
+#header:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.search-frm{
+	float:right;
+	margin:14px 12px 0 0;
+	display:inline;
+}
+.search-frm fieldset{
+	float:left;
+}
+.search-frm fieldset .text{
+	float:left;
+	background:url(/images/standalone/daily_dorm_deal/bg-input-search.gif) no-repeat;
+	width:194px;
+	height:27px;
+}
+.search-frm fieldset .text input{
+	color:#949494;
+	float:left;
+	width:180px;
+	padding:6px 7px 7px;
+	border:none;
+	background:none;
+	height:14px;
+}
+.search-frm fieldset .btn-submit{
+	float:left;
+	background:url(/images/standalone/daily_dorm_deal/btn-subscribe.gif) no-repeat;
+	width:70px;
+	height:27px;
+	text-indent:-9999px;
+	overflow:hidden;
+	font-size:0;
+	line-height:0;
+	border:none;
+	padding:0;
+	cursor:pointer;
+}
+.slogan{
+	float:right;
+	clear:both;
+	text-align:right;
+	font-size:17px;
+	line-height:21px;
+	color:#fff;
+	padding:59px 15px 0 0;
+}
+.slogan strong.dally-dorm{
+	background:url(/images/standalone/daily_dorm_deal/text-dally-dorm.png) no-repeat;
+	display:block;
+	width:500px;
+	height:22px;
+	text-indent:-9999px;
+	overflow:hidden;
+	text-align:left;
+}
+.slogan em{
+	display:block;
+	margin:2px 39px 0 0;
+}
+#main{
+	width:100%;
+	overflow:hidden;
+}
+.intro{
+	width:100%;
+	overflow:hidden;
+	background:url(/images/standalone/daily_dorm_deal/bg-intro.gif) repeat-x;
+	min-height:279px
+}
+* html .intro{
+	height:279px;
+	overflow:visible;
+}
+.intro .caption{
+	width:100%;
+	font-size:18px;
+	line-height:22px;
+}
+.intro .caption:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.intro .todays-dorm{
+	float:right;
+	margin:7px 13px 0 87px;
+	background:url(/images/standalone/daily_dorm_deal/text-todays-dorm.png) no-repeat;
+	width:289px;
+	height:54px;
+	text-indent:-9999px;
+	overflow:hidden;
+}
+.intro .caption em{
+	float:right;
+	color:#fff;
+	margin:9px 0 0;
+}
+.intro .info-section{
+	float:right;
+	width:275px;
+	font-size:17px;
+	line-height:21px;
+	margin:5px 0 0;
+}
+.intro .info-section em{
+	color:#000;
+	margin:0 0 0 35px;
+}
+.intro .info-section .price{
+	display:block;
+	color:#b71e2d;
+	font-size:60px;
+	line-height:66px;
+	margin:-3px 0 0;
+	letter-spacing:2px;
+	width: 228px;
+	text-align: center;
+}
+.option-frm{
+	height:1%;
+	padding:0 0 0 39px;
+}
+.option-frm:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.option-frm fieldset{
+	float:left;
+}
+.option-frm select{
+	float:left;
+	width:142px;
+}
+.drop-sel{
+	width:179px !important;
+	color:#666 !important;
+	font-size:10px !important;
+	background:none !important;
+	border:none !important;
+	margin:-19px 0 0 21px !important;
+}
+.drop-sel ul{
+	padding:12px 17px 0 14px !important;
+	background:url(/images/standalone/daily_dorm_deal/bg-drop-t.png) no-repeat;
+	height:1%;
+	overflow:hidden;
+}
+.drop-sel ul li{
+	position:relative;
+	background:url(/images/standalone/daily_dorm_deal/bg-doted.gif) repeat-x;
+	line-height:11px;
+	width:100%;
+	float:left;
+}
+.drop-sel ul li:first-child{background:none}
+.drop-sel ul li a{padding:5px 0;}
+.drop-sel ul li a:hover{text-decoration:none;}
+.drop-sel .select-bottom{
+	background:url(/images/standalone/daily_dorm_deal/bg-drop-b.png) no-repeat;
+	height:16px;
+	overflow:hidden;
+}
+.option-frm .arrow{
+	float:right;
+	background:url(/images/standalone/daily_dorm_deal/ico-arrow.png) no-repeat;
+	width:74px;
+	height:92px;
+	margin:-13px 13px 0 0;
+	display:inline;
+	position:relative;
+	z-index:1;
+}
+.option-frm .btn-submit{
+	background:url(/images/standalone/daily_dorm_deal/btn-buy.png) no-repeat;
+	width:174px;
+	height:57px;
+	overflow:hidden;
+	text-indent:-9999px;
+	font-size:0;
+	line-height:0;
+	border:none;
+	padding:0;
+	cursor:pointer;
+	float:left;
+	margin:-45px 0 0 -17px;
+	position:relative;
+	z-index:2;
+}
+.intro .social-list{
+	list-style:none;
+	margin:-1px 0 0 44px;
+	padding:0;
+	float:left;
+	display:inline;
+}
+.intro .social-list li{
+	float:left;
+	font-size:13px;
+	line-height:16px;
+	padding:0 2px 0 5px;
+}
+.intro .social-list li:first-child{padding-right:0;}
+.intro .social-list li span{
+	float:left;
+	padding:8px 0 0;
+	color:#231f20;
+}
+.intro .social-list li a{
+	float:left;
+	text-indent:-9999px;
+	overflow:hidden;
+	width:30px;
+	height:30px;
+	cursor:pointer;
+}
+.intro .social-list li a.mail{background:url(/images/standalone/daily_dorm_deal/ico-mail.png) no-repeat;}
+.intro .social-list li a.facebook{background:url(/images/standalone/daily_dorm_deal/ico-facebook.png) no-repeat;}
+.intro .social-list li a.twitter{background:url(/images/standalone/daily_dorm_deal/ico-twitter.png) no-repeat;}
+.intro .social-list li a.share{background:url(/images/standalone/daily_dorm_deal/ico-share.png) no-repeat;}
+.intro .left-to-buy{
+	float:left;
+	width:310px;
+}
+.intro .left-to-buy .counter{
+	background:url(/images/standalone/daily_dorm_deal/bg-counter.png) no-repeat;
+	width:280px;
+	height:102px;
+	text-align:center;
+	margin:0 0 0 21px;
+	padding:29px 4px 0 0;
+}
+.intro .left-to-buy .counter .time-left,
+.intro .left-to-buy .counter .time-until{
+	display:block;
+	background:url(/images/standalone/daily_dorm_deal/text-time-left.png) no-repeat;
+	width:145px;
+	height:21px;
+	text-indent:-9999px;
+	overflow:hidden;
+	margin:0 auto -9px;
+}
+.intro .left-to-buy .counter .time-until{
+	background:url(/images/standalone/daily_dorm_deal/text-time-to-next-deal.png) no-repeat;
+	width: 230px;
+	margin:0 auto -7px;
+}
+.intro .left-to-buy .counter strong{
+	font-size:48px;
+	color:#e74036;
+	display:block;
+	line-height:52px;
+	letter-spacing:2px;
+	text-shadow:3px 3px 3px #000;
+}
+.intro .left-to-buy .slider{
+	height:57px;
+	padding:0 0 0 19px;
+	margin:-7px 0 0;
+}
+.intro .left-to-buy .slider:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+.intro .left-to-buy .slider .left-prt{
+	float:left;
+	background:url(/images/standalone/daily_dorm_deal/bg-slider-l.png) no-repeat;
+	width:44px;
+	height:57px;
+	overflow:hidden;
+}
+.intro .left-to-buy .slider .slid-bg{
+	float:left;
+	background:url(/images/standalone/daily_dorm_deal/bg-slider-right.png) no-repeat;
+	width:246px;
+	height:57px;
+}
+.intro .left-to-buy .slider .top-slide{
+	width:150px;
+	height:43px;
+	background:url(/images/standalone/daily_dorm_deal/bg-slider-top.png) no-repeat;
+	margin:3px 0 0;
+	position:relative;
+}
+.intro .left-to-buy .slider .pointer{
+	position:absolute;
+	top:0;
+	left:100%;
+	margin:0 0 0 -11px;
+	background:url(/images/standalone/daily_dorm_deal/bg-pointer.gif) no-repeat;
+	width:24px;
+	padding:55px 0 0;
+}
+.intro .left-to-buy .slider .pointer .value{
+	width:100px;
+	font-size:21px;
+	line-height:25px;
+	color:#000;
+	display:block;
+	margin:0 -38px 0 -38px;
+	position:relative;
+}
+#content{
+	width:100%;
+	padding:0 0 11px;
+}
+#content:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+#content .prime{
+	float:right;
+	width:547px;
+	padding:24px 55px 0 33px;
+}
+.prime .gallery-holder{
+	float:left;
+	margin:-246px 23px 15px -37px;
+	position:relative;
+	display:inline;
+	text-align:center;
+}
+* html .prime .gallery-holder{margin-right:20px;}
+.prime .gallery-holder .img-holder{
+	background:url(/images/standalone/daily_dorm_deal/bg-img-holder.png) no-repeat;
+	width:308px;
+	height:307px;
+	padding:21px 0 0 20px;
+	margin:0 0 -6px;
+}
+.prime .gallery-holder .img-holder img{float:left;}
+.prime .gallery-holder a.btn-enlarge{
+	color:#808080;
+	font-size:11px;
+	margin:0px;
+	text-decoration:underline;
+}
+.prime .gallery-holder a.btn-enlarge:hover{text-decoration:none;}
+.prime .gallery-holder .slide-frame{
+	width:285px;
+	overflow:hidden;
+	clear:both;
+	padding:6px 0 0 15px;
+	text-align:center;
+}
+
+.slide-frame a{
+	width: 33px;
+	height: 33px;
+	
+}
+.slide-frame a img{
+	width: 33px;
+	height: 33px;
+	border:2px solid #96989b;
+}
+/*
+.slide-frame ul{
+	list-style:none;
+	display: block;
+	margin:0 auto;
+	padding:0;
+	width: auto;
+}
+.slide-frame ul li{
+	float:left;
+	margin:0 0 0 3px;
+	display:inline;
+}
+.slide-frame ul li a{
+	float:left;
+	display: block;
+	border:2px solid #96989b;
+}
+.slide-frame ul li a img{
+	display:block;
+	width: 33px;
+	height: 33px;
+}
+*/
+.prime .gallery-holder .sunny{
+	position:absolute;
+	background:url(/images/standalone/daily_dorm_deal/ico-sunny.png) no-repeat;
+	width:138px;
+	height:100px;
+	top:-16px;
+	right:-49px;
+	font-size:31px;
+	line-height:26px;
+	font-weight:bold;
+	color:#fff;
+	padding:43px 0 0 5px;
+}
+.prime h2{
+	margin:0 0 17px;
+	font-size:18px;
+	line-height:18px;
+	color:#fff;
+	float:left;
+	width:215px;
+}
+.prime h2 span{
+	background:url(/images/standalone/daily_dorm_deal/ico-arrow2.gif) no-repeat 0 3px;
+	float:left;
+	margin:0 0 0 -16px;
+	padding:0 0 0 16px;
+	position:relative;
+}
+* html .prime h2 span{
+	margin-left:-13px;
+}
+.prime p{
+	margin:0 0 18px;
+	font-size:14px;
+	line-height:18px;
+}
+.prime p span{display:block;}
+#footer{
+	width:100%;
+	background:#5e803c url(/images/standalone/daily_dorm_deal/bg-footer.gif) repeat-x;
+}
+#footer:after{
+	content:"";
+	display:block;
+	clear:both;
+}
+#footer a{cursor:pointer;}
+#footer .cord{
+	float:right;
+	background:url(/images/standalone/daily_dorm_deal/ico-cord.png) no-repeat;
+	width:143px;
+	height:86px;
+	margin:-17px 0 0;
+	position:relative;
+	text-indent:-9999px;
+	overflow:hidden;
+}
+#footer .powered{
+	float:right;
+	background:url(/images/standalone/daily_dorm_deal/ico-powewred.png) no-repeat;
+	width:164px;
+	height:13px;
+	text-indent:-999px;
+	overflow:hidden;
+	margin:32px -31px 0 0;
+}
+#footer p{
+	float:left;
+	font-size:10px;
+	margin:33px 92px 0 25px;
+	display:inline;
+	color:#c9cbcc;
+}
+#footer p.links{
+	float:right;
+	font-size:10px;
+	margin:33px 3px 0 0;
+	display:inline;
+	color:#fff;
+}
+
+#hidden_stuff{
+	display: none;
+}
+#ddd_info{
+	width: 549px;
+	height: 394px;
+	background: url(/images/standalone/daily_dorm_deal/Info-overlay-blank.png) no-repeat;
+	padding: 75px;
+	font-size: 13px;
+	line-height: 19px;
+}
+#ddd_info h2{
+	font-size: 32px;
+	text-align: center;
+	color: #fb8600;
+	margin: 40px 0px 30px 0px;
+}
+#ddd_info a{
+	color: #597b4c;
+}
+#ddd_info_link {
+	font-size:10px;
+	font-weight:normal;
+	left:885px;
+	position:absolute;
+	top:45px;
+	z-index:500;
+	color: #FFF;
+	text-decoration: underline;
+}
+p.error, p.notice, p.success {
+	padding:.8em;margin-bottom:1.6em;border:2px solid #ddd;
+	width: 935px;
+	margin: 0px auto;
+	margin-top: 20px;
+}
+p.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+p.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}

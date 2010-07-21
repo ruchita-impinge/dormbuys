@@ -1,0 +1,62 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@daily_dorm_deals) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Daily Dorm Deals</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @daily_dorm_deals.empty? %>
+			
+			<h3>No daily dorm deals were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+                        <th>Start</th>
+						<th>End</th>
+                        <th class="center">Type</th>
+                        <th>Product</th>
+						<th class="center">Sold</th>
+                        <th colspan="2" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for daily_dorm_deal in @daily_dorm_deals %>
+			  		<tr class="<%= daily_dorm_deal == DailyDormDeal.current_deal ? 'bold' : '' %>">
+                        <td><%=h daily_dorm_deal.start_time.to_s(:detail) %></td>
+						<td><%=h daily_dorm_deal.end_time.to_s(:detail) %></td>
+                        <td class="center">
+							<%= daily_dorm_deal.type_id == DailyDormDeal::TYPE_VARIATION ? "V" : "P" %>
+						</td>
+                        <td><%=h daily_dorm_deal.product_title %></td>
+						<td class="center"><%= daily_dorm_deal.percent_sold %>%</td>
+                        <td class="center"><%= link_to 'Edit', edit_admin_daily_dorm_deal_path(daily_dorm_deal), :class => "tbl_lnk_edit" %></td>
+                        <td class="center"><%= link_to 'Delete', admin_daily_dorm_deal_path(daily_dorm_deal), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Daily Dorm Deal</span>', new_admin_daily_dorm_deal_path, :class => 'button positive' %>

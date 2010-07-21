@@ -1,0 +1,148 @@
+<% content_for :head do %>
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	
+	<% javascript_tag do %>
+	
+		$(document).ready(function(){
+			setup_type_selector();
+			
+			$("#daily_dorm_deal_type_id").change(function(){
+				setup_type_selector();
+			});//end change
+			
+		});//end ready
+	
+		function setup_type_selector(){
+			
+			var val = $("#daily_dorm_deal_type_id").val();
+			var variation = <%= DailyDormDeal::TYPE_VARIATION %>;
+			var product = <%= DailyDormDeal::TYPE_PRODUCT %>;
+			
+			if(val == variation){
+				
+				$("#product_search").hide();
+				$("#product_variation_search").show();
+				
+			} else {
+				
+				$("#product_search").show();
+				$("#product_variation_search").hide();
+				
+			}
+			
+		}//end function
+		
+		
+		
+		var last_auto_var_id;
+		var title;
+		var desc;
+		var qty;
+		var price;
+		
+		function beforeAutoComplete(e)
+		{
+			last_auto_var_id = jQuery(e).attr("id");
+			title = jQuery(e).text();
+			desc = jQuery(e).attr("title");
+			qty = jQuery(e).attr("rel");
+			price = jQuery(e).attr("name");
+		}//end 
+
+		function afterAutoComplete(e)
+		{
+			if(Number($("#daily_dorm_deal_type_id").val()) == <%= DailyDormDeal::TYPE_PRODUCT %>)
+			{
+				$("#daily_dorm_deal_product_variation_id").val("");
+				$("#daily_dorm_deal_product_id").val(last_auto_var_id);
+			}
+			else if(Number($("#daily_dorm_deal_type_id").val()) == <%= DailyDormDeal::TYPE_VARIATION %>)
+			{
+				$("#daily_dorm_deal_product_variation_id").val(last_auto_var_id);
+				$("#daily_dorm_deal_product_id").val("");
+			}
+			
+			$("#daily_dorm_deal_title").val(title);
+			$("#daily_dorm_deal_description").val(desc);
+			$("#daily_dorm_deal_initial_qty").val(qty);
+			$("#cur_price").text("Current: " + price);
+			$("#daily_dorm_deal_original_price").val(formatCurrency(Number(price) * 1.5));
+
+		}//end afterAutoComplete
+	
+	<% end %>
+	
+<% end %>
+
+
+  <%= f.hidden_field :product_id, :value => (@daily_dorm_deal.product_id || '') %>
+  <%= f.hidden_field :product_variation_id, :value => (@daily_dorm_deal.product_variation_id || '') %>
+
+  <div class="field shorter">
+    <%= f.datetime_select :start_time, :order => [:month, :day, :year] %>
+    <%= f.label :start_time %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field shorter">
+    <%= f.datetime_select :end_time, :order => [:month, :day, :year] %>
+    <%= f.label :end_time %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field">
+    <%= f.select :type_id, DailyDormDeal::TYPES.collect {|x| [x.last, x.first]} %>
+    <%= f.label :type_id %>
+  </div>
+  <div class="clear"></div>
+
+
+
+  	<div class="field long" id="product_search">
+		<%= unique_text_field_with_auto_complete :product, :product_name, 
+			{
+				:name => "product_search_term",
+				:class => 'textfield autocompletebox',
+				:value => (@daily_dorm_deal.product.blank? ? "" : @daily_dorm_deal.product.product_name)
+			} %>
+		<label>Select Product</label>
+	</div>
+	
+	<div class="field long" id="product_variation_search">
+		<%= unique_text_field_with_auto_complete :product, :product_name, 
+			{
+				:name => "product_variation_search_term",
+				:class => 'textfield autocompletebox',
+				:value => (@daily_dorm_deal.product_variation.blank? ? "" : @daily_dorm_deal.product_variation.full_title)
+			} %>
+		<label>Select Product Variation</label>
+	</div>	
+	<div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_field :title, :class => 'textfield' %>
+    <%= f.label :title %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :description %>
+    <%= f.label :description %>
+  </div>
+  <div class="clear"></div>
+
+  <div class="field shortest">
+  	<%= f.text_field :original_price, :class => 'textfield' %>
+    <%= f.label :original_price, "Original Price <br /> <span id='cur_price'>Current: #{@daily_dorm_deal.price}</span>" %>
+  </div>
+
+
+  <div class="field shortest">
+    <%= f.text_field :initial_qty, :class => 'textfield' %>
+    <%= f.label :initial_qty %>
+  </div>
+  <div class="clear"></div>
+

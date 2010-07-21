@@ -40,6 +40,20 @@ class Admin::ReportsController < Admin::AdminController
   end #end method email_list
   
   
+  def daily_dorm_deal_email_list
+    @emails = DailyDormDealEmailSubscriber.find(:all).collect(&:email)
+    
+    @output = "Emails\n"
+    
+    @emails.each {|e| @output += "#{e}\n" }
+    
+		headers['Content-Type'] = "application/csv" 
+    headers['Content-Disposition'] = 'attachment; filename="daily-dorm-deal.csv"'
+    headers['Cache-Control'] = ''
+    
+    render :text => @output
+  end #end method daily_dorm_deal_email_list
+  
   
   def coupons_used
     

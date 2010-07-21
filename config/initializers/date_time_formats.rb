@@ -8,6 +8,7 @@ Time::DATE_FORMATS.merge!(
   },
   :full => '%B %d, %Y at %I:%M %p',
   :full_short => '%m/%d/%Y at %I:%M %p',
+  :full_short_24hr => '%m/%d/%Y at %H:%M',
   :md => '%m/%d',
   :mdy => '%m/%d/%y',
   :mdY => '%m/%d/%Y',

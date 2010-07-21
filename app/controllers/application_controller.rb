@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   
   
 
-  before_filter :set_current_user
+  before_filter :set_current_user, :check_standalone
 
 
   helper :all # include all helpers, all the time
@@ -31,6 +31,15 @@ class ApplicationController < ActionController::Base
   def set_current_user
     User.current_user = self.current_user
   end #end method set_current_user
+  
+  
+  def check_standalone
+    if request.domain == "dailydormdeal.com"
+      @deal = DailyDormDeal.current_deal
+      render :layout => "standalone/daily_dorm_deal" and return
+    end
+  end #end method check_standalone
+  
   
   
   def find_cart

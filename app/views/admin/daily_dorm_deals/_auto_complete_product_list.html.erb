@@ -1,0 +1,5 @@
+<ul id="auto_complete_products">
+<% for p in @products %>
+  <li id="<%= p.id %>" title="<%= p.product_overview %>" rel="<%= p.product_variations.collect {|pv| pv.qty_on_hand }.sum %>" name="<%= p.retail_price %>"><%= p.product_name %></li>
+<% end %>
+</ul>

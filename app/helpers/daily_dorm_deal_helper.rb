@@ -1,0 +1,2 @@
+module DailyDormDealHelper
+end

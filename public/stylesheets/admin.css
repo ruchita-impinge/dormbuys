@@ -124,6 +124,9 @@ table.std_box_table,
 .container .std_box_table th a{
 	color: #47652f;
 }
+.std_box_table tr.bold td{
+	font-weight: bold;
+}
 
 /* standard buttons */
 .container a.button{

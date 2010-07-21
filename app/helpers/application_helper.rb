@@ -82,6 +82,10 @@ module ApplicationHelper
     
     url += "?object=#{object}&method=#{method}"
     
+    if completion_options[:extra_params]
+      url += "&#{completion_options[:extra_params]}"
+    end
+    
     
     all_options = {:id => id, :name => name, :size => size, :value => value, :style => style, :class => klass}
     use_options = {}
@@ -97,7 +101,7 @@ module ApplicationHelper
     end
     output += " />\n"
     
-    
+
     output += <<-EOJS
       <div class="auto_complete" id="#{div_id}"></div>
       <script type="text/javascript">
@@ -125,8 +129,8 @@ module ApplicationHelper
   
   
   
-  def select_product_options(po, name, selected)
-    out = %(<select name=#{name} class="inner-select2" title="select">)
+  def select_product_options(po, name, selected, css_classes = [])
+    out = %(<select name=#{name} class="#{css_classes.empty? ? 'inner-select2' : css_classes.join(" ")}" title="select">)
     out += %(<option value="">Select #{po.option_name}...</option>)
     for value in po.product_option_values
       out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>

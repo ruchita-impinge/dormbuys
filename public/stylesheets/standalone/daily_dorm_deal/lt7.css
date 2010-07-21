@@ -1,0 +1,90 @@
+#wrapper .logo a {
+	background-position:-9999px -9999px;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/logo.png', sizingmethod='crop');
+}
+.slogan strong.dally-dorm {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/text-dally-dorm.png', sizingmethod='crop');
+}
+.intro .todays-dorm {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/text-todays-dorm.png', sizingmethod='crop');
+}
+.selectArea .left {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/select-right.png', sizingmethod='crop');
+}
+.selectArea a.selectButton {
+	background-position:-9999px -9999px;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/select-button.png', sizingmethod='crop');
+}
+.selectArea .center {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/select-center.png', sizingmethod='scale');
+}
+.drop-sel ul {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bg-drop-t.png', sizingmethod='crop');
+}
+.drop-sel .select-bottom {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bg-drop-b.png', sizingmethod='crop');
+}
+.drop-sel ul li{background-image:expression((this===this.parentNode.childNodes[0]) ? "none" : "auto");}
+.option-frm .arrow {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-arrow.png', sizingmethod='crop');
+}
+.option-frm .btn-submit {
+	background-position:-9999px -9999px;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/btn-buy.png', sizingmethod='crop');
+}
+.intro .social-list li{padding-right:expression((this===this.parentNode.childNodes[0]) ? "0" : "2px");}
+.intro .social-list li a.mail {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-mail.png', sizingmethod='crop');
+}
+.intro .social-list li a.facebook {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-facebook.png', sizingmethod='crop');
+}
+.intro .social-list li a.twitter {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-twitter.png', sizingmethod='crop');
+}
+.intro .social-list li a.share {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-share.png', sizingmethod='crop');
+}
+.intro .left-to-buy .counter {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bg-counter.png', sizingmethod='crop');
+}
+.intro .left-to-buy .counter .time-left {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/text-time-left.png', sizingmethod='crop');
+}
+.intro .left-to-buy .slider .left-prt {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bg-slider-l.png', sizingmethod='crop');
+}
+.intro .left-to-buy .slider .slid-bg {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bg-slider-right.png', sizingmethod='crop');
+}
+.prime .gallery-holder .img-holder {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bg-img-holder.png', sizingmethod='crop');
+}
+#footer .cord {
+	background-position:-9999px -9999px;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-cord.png', sizingmethod='crop');
+}
+.prime .gallery-holder .sunny {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-sunny.png', sizingmethod='crop');
+}
+#footer .powered {
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-powewred.png', sizingmethod='crop');
+}

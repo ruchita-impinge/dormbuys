@@ -6,6 +6,11 @@ ActionController::Routing::Routes.draw do |map|
   #      :controller => ':controller',
   #      :action => ':action'
 
+  map.ddd_auto_complete_product_name '/admin/daily_dorm_deals/auto_complete_for_product_product_name',
+    :conditions => {:method => :get},
+    :controller => 'admin/daily_dorm_deals',
+    :action => 'auto_complete_for_product_product_name'
+
   map.product_auto_complete_product_name '/admin/products/auto_complete_for_product_product_name',
     :conditions => {:method => :get},
     :controller => 'admin/products',
@@ -173,12 +178,13 @@ ActionController::Routing::Routes.draw do |map|
 
   
   
-  #TEMPORARY named routes
+  #SPECIALTY named routes
   map.pie_mask '/pie-mask', :controller => 'promo', :action => 'piemask'
   map.dormbucks '/bucks', :controller => 'promo', :action => 'dormbucks'
   map.check_bucks '/check_dorm_bucks', :controller => 'promo', :action => 'check_dorm_bucks'
   map.sale '/sale', :controller => "front", :action => "subcategory", :subcategory_permalink_handle => "sale"
-  
+  map.daily_dorm_deal_email '/dailydeal/email_signup', :controller => 'daily_dorm_deal', :action => 'email_signup'
+  map.daily_dorm_deal '/dailydeal', :controller => 'daily_dorm_deal', :action => 'index'
   
   #legacy URLs
   map.legacy_product '/shop/product/:old_site_product_id', :controller => "front", :action => "product"
@@ -245,6 +251,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :wish_lists
     admin.resources :gift_registries
     admin.resources :state_shipping_rates
+    admin.resources :daily_dorm_deals
   end
   
   
