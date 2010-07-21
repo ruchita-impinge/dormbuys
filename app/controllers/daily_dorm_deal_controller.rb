@@ -6,6 +6,10 @@ class DailyDormDealController < ApplicationController
   
   def index
     @deal = DailyDormDeal.current_deal
+    unless @deal
+      flash[:error] = "Daily Dorm Deal could not be found"
+      redirect_to "http://dormbuys.com" and return
+    end
     fresh_when(:etag => @deal, :last_modified => @deal.updated_at.utc, :public => true)
   end
   
