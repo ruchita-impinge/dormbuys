@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
       
       set_cache_buster
       
-      render :action => "daily_dorm_deals/index", :layout => "standalone/daily_dorm_deal" and return true
+      render :file => "daily_dorm_deal/index.html.erb", :layout => "standalone/daily_dorm_deal" and return true
     end
     
     return true
