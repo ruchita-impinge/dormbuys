@@ -1,7 +1,5 @@
 class DailyDormDeal < ActiveRecord::Base
-  
-  cattr_accessor :_current_deal
-  
+    
   TYPE_VARIATION = 1
   TYPE_PRODUCT   = 2
   TYPES = [
@@ -113,13 +111,12 @@ class DailyDormDeal < ActiveRecord::Base
   
   
   def self.current_deal
-    return self._current_deal unless self._current_deal.blank?
-    
-    self._current_deal = DailyDormDeal.find(:first, :conditions => ["start_time <= ?", Time.now.utc], :order => 'start_time DESC')
-    unless self._current_deal
-      self._current_deal = DailyDormDeal.find(:first, :order => 'start_time DESC')
+
+    deal = DailyDormDeal.find(:first, :conditions => ["start_time <= ?", Time.now.utc], :order => 'start_time DESC')
+    unless deal
+      deal = DailyDormDeal.find(:first, :order => 'start_time DESC')
     end
-    self._current_deal
+    deal
   end #end method self.current_deal
   
   
