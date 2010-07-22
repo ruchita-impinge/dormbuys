@@ -129,9 +129,9 @@ module ApplicationHelper
   
   
   
-  def select_product_options(po, name, selected, css_classes = [])
+  def select_product_options(po, name, selected, css_classes = [], use_select_word = true)
     out = %(<select name=#{name} class="#{css_classes.empty? ? 'inner-select2' : css_classes.join(" ")}" title="select">)
-    out += %(<option value="">Select #{po.option_name}...</option>)
+    out += %(<option value="">#{use_select_word ? 'Select ' : ''}#{po.option_name}...</option>)
     for value in po.product_option_values
       out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>
         #{h value.option_value} #{value.price_increase.cents > 0 ? '(+ $' + value.price_increase.to_s + ')' : ''}

@@ -207,7 +207,6 @@ form,fieldset{
 .option-frm select{
 	float:left;
 	width:163px;
-	margin-left: -15px;
 }
 .drop-sel{
 	width:179px !important;
