@@ -1,18 +1,81 @@
 <!-- box-holder -->
 <div class="box-holder">
 
-	<!--
+	<% content_for :head do %>
+		<% javascript_tag do %>
+		var countdown_seconds;
+		var timer;
+		
+		$(document).ready(function(){
+			countdown_seconds 	 = Number($("#countdown_seconds").text());
+			setTimeLeft();
+		});
+		
+		function setTimeLeft()
+		{
+			if(countdown_seconds > 0)
+			{
+				var h = Math.floor(countdown_seconds / 60 / 60);
+				var m = Math.floor((countdown_seconds - (3600 * h)) / 60);
+				var s = Math.floor(countdown_seconds - (3600 * h) - (60 * m));
+
+				var text = leadZero(h) + ":" + leadZero(m) + ":" + leadZero(s);
+				$("#countdown_clock").text(text);
+				countdown_seconds = countdown_seconds - 1;
+				timer = setTimeout("setTimeLeft();", 1000);
+
+			} else {
+
+				$("#countdown_clock").text("00:00:00");
+
+				clearTimeout(timer);
+
+			}//end if-else
+
+		}//end function setTimeLeft
+
+
+
+		function leadZero(num)
+		{
+			if(num >= 10)
+				return num.toString();
+			else
+				return "0" + num.toString();
+
+		}//end leadZero
+		
+		<% end %>
+	<% end %>
+	
+	
+<% if Time.now >= Time.parse("07/23/2010 00:00:00") %>
+
 	<div class="box">
 		<h2><span>DailyDeal</span></h2>
 		<div class="box-content">
-			<a href="#"><img src="/images/img10.jpg" alt="image description" /></a>
-			<em>Time Left:<span>6:52</span></em>
-			<strong><a href="#">PRODUCT NAME</a></strong>
-			<p>Insert dummy copy here, to give an aidea of style and length of copy to be inserted. This is not to be read.</p>
-			<a href="#" class="buy">BUY ME!!!</a>
+			
+			<% if @deal.is_active? %>
+				<div id="countdown_seconds" style="display: none;"><%=  @deal.seconds_left %></div>
+			<% else %>
+				<div id="countdown_seconds" style="display: none;"><%=   @deal.next_deal ? @deal.next_deal.seconds_until_start : 0 %></div>
+			<% end %>
+			
+			<a href="http://dailydormdeal.com">
+				<%= image_tag(@deal.main_image.url(:main)) %>
+			</a>
+			<em><%= @deal.is_active? ? "Time Left:" : "Next Deal:" %><span id="countdown_clock">00:00:00</span></em>
+			<strong>
+				<a href="http://dailydormdeal.com">
+					<%= truncate @deal.title, :length => 25 %>
+				</a>
+			</strong>
+			<p><%= truncate @deal.description, :length => 105 %></p>
+			<a href="http://dailydormdeal.com" class="buy">BUY ME!!!</a>
 		</div>
 	</div>
-	-->
+
+<% else %>
 	
 	<div class="box">
 		<h2><span>DailyDeal</span></h2>
@@ -26,6 +89,8 @@
 			</p>
 		</div>
 	</div>
+
+<% end %>
 
 
 	<div class="box other">

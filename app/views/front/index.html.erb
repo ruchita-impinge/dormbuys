@@ -1,0 +1,52 @@
+	
+<% cache("home_page_1", :expires_in => 5.minutes) do %>
+<!-- page -->
+<div id="page">
+	<!-- main -->
+	<div id="main">
+		<h1><%= link_to 'Dormbuys.com', root_path %></h1>
+		
+		
+		<%= render :partial => 'shared/front_main_nav' %>
+<% end %>
+
+		<% flash.each do |key, msg| %>
+		    <%= content_tag :p, msg, :class => key %>
+		<% end %>
+		
+<% cache("home_page_2", :expires_in => 5.minutes) do %>		
+		
+		<%= render :partial => 'front/home_banner_area' %>
+<% end %>		
+		
+		<%= render :partial => 'front/home_middle_boxes' %>
+		
+<% cache("home_page_3", :expires_in => 5.minutes) do %>		
+		
+		
+		<!-- middle -->
+		<div class="middle">
+			<%= render :partial => "front/home_feat_prod_area" %>
+			
+			<%= render :partial => "shared/front_footer_gift_blog" %>
+
+		</div>
+		
+		<%= render :partial => "shared/front_footer_green_bar" %>
+	
+	</div>
+	
+	<%= render :partial => "shared/front_main_header" %>
+	
+	<div class="popup-holder">
+		<%= yield :home_banner_product_popups %>
+	</div>
+
+</div>
+<%= render :partial => "shared/front_main_footer_nav" %>
+
+
+<%= yield :eo_page %>
+<%= render :partial => "shared/tracking_codes" %>
+
+<% end %>

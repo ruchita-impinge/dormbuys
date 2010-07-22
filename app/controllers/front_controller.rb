@@ -4,7 +4,9 @@ class FrontController < ApplicationController
   def index
     @page_title = "Home"
     
-    unless read_fragment("home_page_2")
+    @deal = DailyDormDeal.current_deal
+    
+    unless read_fragment("home_page_3")
       if RAILS_ENV == "development"
         @featured_products = Product.all(:limit => 20)
         @featured_products.reject!{|p| p if p.available_variations.empty? }
