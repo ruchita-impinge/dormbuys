@@ -59,6 +59,7 @@
 	padding:0 0 0 6px;
 	background: url(/images/standalone/daily_dorm_deal/select-center.png) repeat-x;
 	overflow:hidden;
+	white-space: nowrap;
 }
 .selectArea .center img {
 	float:left;
