@@ -114,13 +114,7 @@
 									<h3><%=h @product.product_name %></h3>
 							
 									<p><%=h(@product.product_overview).gsub("\n", "<br />") %></p>
-							
-									<% unless @product.product_details.blank? %>
-										<strong>Description:</strong>
-										<p><%= h(@product.product_details).gsub("\n", "<br />") %></p>
-									<% end %>
-							
-							
+	
 							
 									<!-- text print of options -->
 									<% if @product.has_options? %>
