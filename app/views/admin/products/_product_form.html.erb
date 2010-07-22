@@ -123,31 +123,65 @@
 
 	  </fieldset>
 	
+<% content_for :head do %>
+	<% javascript_tag do %>
+	
+		$(document).ready(function(){
+			
+			$("#product_description_area .field").hide();
+			$($("#description_tabs li a.selected").attr("href")).show();
+			
+			$("#description_tabs li a").click(function(e){
+				e.preventDefault();
+				var id = $(this).attr("href");
+				
+				$("#product_description_area .field").hide();
+				$("#description_tabs li a.selected").removeClass("selected");
+				
+				$(this).addClass("selected");
+				$(id).show();
+				
+			});//end click
+			
+			
+		});//end ready
+	
+	<% end %>
+<% end %>
+	<ul id="description_tabs">
+		<li><%= link_to "Dorm Desc.", "#desc_dorm", :class => "selected" %></li>
+		<li><%= link_to "General Desc.", "#desc_general" %></li>
+		<li><%= link_to "Meta Keywords", "#desc_keywords" %></li>
+		<li><%= link_to "Meta Desc.", "#desc_meta_desc" %></li>
+	</ul>
+
+	<div id="product_description_area">
+
+	  <div class="field long" id="desc_dorm">
+	    <%= f.text_area :product_overview %>
+	    <%= f.label :product_overview %>
+	  </div>
+	  <div class="clear"></div>
 
 
-  <div class="field long">
-    <%= f.text_area :product_overview %>
-    <%= f.label :product_overview %>
-  </div>
-  <div class="clear"></div>
+	  <div class="field long" id="desc_general">
+	    <%= f.text_area :description_general %>
+	    <%= f.label :description_general %>
+	  </div>
+	  <div class="clear"></div>
 
 
-  <div class="field long">
-    <%= f.text_area :product_details %>
-    <%= f.label :product_details %>
-  </div>
-  <div class="clear"></div>
+	  <div class="field long" id="desc_keywords">
+	    <%= f.text_area :meta_keywords %>
+	    <%= f.label :meta_keywords %>
+	  </div>
+	  <div class="clear"></div>
 
 
-  <div class="field long">
-    <%= f.text_area :meta_keywords %>
-    <%= f.label :meta_keywords %>
-  </div>
-  <div class="clear"></div>
+	  <div class="field long" id="desc_meta_desc">
+	    <%= f.text_area :meta_description %>
+	    <%= f.label :meta_description %>
+	  </div>
+	  <div class="clear"></div>
 
-
-  <div class="field long">
-    <%= f.text_area :meta_description %>
-    <%= f.label :meta_description %>
-  </div>
-  <div class="clear"></div>
+	</div><!-- end #product_description_area -->

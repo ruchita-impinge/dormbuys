@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100715153657) do
+ActiveRecord::Schema.define(:version => 20100722182742) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -539,7 +539,6 @@ ActiveRecord::Schema.define(:version => 20100715153657) do
     t.string   "product_name"
     t.string   "option_text"
     t.text     "product_overview"
-    t.text     "product_details"
     t.text     "meta_keywords"
     t.text     "meta_description"
     t.boolean  "charge_tax",                 :default => true
@@ -556,6 +555,7 @@ ActiveRecord::Schema.define(:version => 20100715153657) do
     t.integer  "product_image_file_size"
     t.datetime "product_image_updated_at"
     t.string   "permalink_handle"
+    t.text     "description_general"
   end
 
   add_index "products", ["permalink_handle"], :name => "index_products_on_permalink_handle"

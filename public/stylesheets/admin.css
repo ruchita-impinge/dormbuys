@@ -611,7 +611,15 @@ ul.subcat_mgmt .sub_cat_mgmt .clear{
 }
 
 /* product management menu */
-ul#product_menu{
+#product_description_area{
+	border: 1px solid #aaa;
+	padding: 10px;
+}
+#product_description_area textarea{
+	width: 887px;
+}
+ul#product_menu, 
+ul#description_tabs{
 	width: 100%;
 	display: block;
 	background: #ccc;
@@ -620,12 +628,15 @@ ul#product_menu{
 	border-bottom: 1px solid #aaa;
 }
 ul#product_menu,
-ul#product_menu li{
+ul#description_tabs,
+ul#product_menu li,
+ul#description_tabs li{
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
 }
-ul#product_menu li a{
+ul#product_menu li a,
+ul#description_tabs li a{
 	display: block;
 	float: left;
 	padding: 10px 17px;
@@ -634,11 +645,13 @@ ul#product_menu li a{
 	font-weight: bold;
 	text-decoration: none;
 }
-ul#product_menu li a:hover{
+ul#product_menu li a:hover,
+ul#description_tabs li a:hover{
 	background: #C87C20;
 	color: #fff;
 }
-ul#product_menu li a.selected{
+ul#product_menu li a.selected,
+ul#description_tabs li a.selected{
 	background: #aaa;
 	color: #487051;
 }
