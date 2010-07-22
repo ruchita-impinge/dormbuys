@@ -77,6 +77,8 @@ class Coupon < ActiveRecord::Base
   
   
   def set_value
+    return if self.temp_value.blank?
+    
     if self.coupon_type_id == CouponType::DOLLAR
       
       self.int_value = self.temp_value.to_money.cents
