@@ -75,7 +75,7 @@
 							<% if @deal.product.product_options.size > 0 %>
 								<% for po in @deal.product.product_options %>
 
-									<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['sel']) %>
+									<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['sel'], false) %>
 
 								<% end %>
 							<% end %>
