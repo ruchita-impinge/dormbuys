@@ -578,11 +578,11 @@ p.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 
 #facebook_link,
 #twitter_link{
-	width: 285px;
-	height: 67px;
+	width: 226px;
+	height: 37px;
 	text-indent: -999999px;
 	position: absolute;
-	left: 22px;
+	left: 45px;
 	top: 490px;
 }
 #facebook_link{
@@ -590,5 +590,5 @@ p.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 }
 #twitter_link{
 	background: url(/images/standalone/daily_dorm_deal/bar-twitter.png) no-repeat;
-	top: 555px;
+	top: 540px;
 }

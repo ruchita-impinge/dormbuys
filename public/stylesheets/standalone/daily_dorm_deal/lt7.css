@@ -88,3 +88,14 @@
 	background:none;
 	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/ico-powewred.png', sizingmethod='crop');
 }
+#wrapper #soldout-banner{
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/sold-out-banner.png', sizingmethod='crop');
+}
+#facebook_link{
+	background:none;
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bar-facebook.png', sizingmethod='crop');
+}
+#twitter_link{
+	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bar-twitter.png', sizingmethod='crop');
+}
