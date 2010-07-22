@@ -97,5 +97,6 @@
 	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bar-facebook.png', sizingmethod='crop');
 }
 #twitter_link{
+	background: none;
 	filter: progid:dximagetransform.microsoft.alphaimageloader(src='/images/standalone/daily_dorm_deal/bar-twitter.png', sizingmethod='crop');
 }
