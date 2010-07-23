@@ -240,8 +240,38 @@
 			
 			<div>
 				<b>Shipping Labels:</b> 
-				<%= link_to 'delete all labels', kill_labels_admin_order_path(@order), :confirm => "Are you sure?" %>
+				<%= link_to 'delete all labels', kill_labels_admin_order_path(@order), 
+						:confirm => "Are you sure you want to DELETE all the shipping labels?" %>&nbsp; 
+						
+
+				<% content_for :head do %>
+					<% javascript_tag do %>
+						var recreate_labels_running = false;
+						function confirmLabelReCreate()
+						{
+							
+							if(recreate_labels_running == true)
+							{
+								alert("FAIL! - this action is already running, please be patient, if it is taking a SUPER long time just reload the order-edit page, but you may have a partially created label group.");
+								return;
+								
+							}//end if
+							
+							var url = "<%= recreate_labels_admin_order_path(@order) %>";
+							var conf = confirm("Are you sure you want to RE-CREATE all the shipping labels, this could take a minute?");
+							if(conf)
+							{
+								recreate_labels_running = true;
+								$("#recreate_labels").text("Ok, please hold");
+								window.location.href = url;
+								
+							}//end if
+						}//end function
+					<% end %>
+				<% end %>
+				<%= link_to_function 're-create labels', 'javascript:confirmLabelReCreate();', :id => "recreate_labels" %>
 			</div>
+			
 			<ul id="admin_shipping_labels_list">
 				<% for shipping_label in @order.shipping_labels %>
 					<li><%= link_to shipping_label.tracking_number, shipping_label.label_url, :target => "_blank" %></li>

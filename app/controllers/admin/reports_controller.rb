@@ -109,4 +109,24 @@ class Admin::ReportsController < Admin::AdminController
   
   
   
+  
+  def late_shippers
+    
+    if request.post? || request.put?
+      @from_date = Time.parse(params[:from_date])
+      @to_date   = Time.parse(params[:to_date])
+    else  
+      @from_date = 6.days.ago
+      @to_date   = Time.now
+    end #end if request.post?
+    
+    @orders = Order.find(:all, 
+      :conditions => ['order_date >= ? AND order_date <= ? AND (order_status_id = ? OR order_status_id = ?)',
+        @from_date, @to_date, Order::ORDER_STATUS_WAITING, Order::ORDER_STATUS_PARTIAL],
+      :order => 'order_date DESC')
+    
+  end #end method late_shippers
+  
+  
+  
 end #end class

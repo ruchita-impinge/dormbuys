@@ -67,6 +67,29 @@ class Admin::OrdersController < Admin::AdminController
   end #end method kill_labels
 
 
+  def recreate_labels
+    @order = Order.find(params[:id])
+    if @order.kill_all_shipping_labels
+      
+      #delete all the shipping_numbers b/c they will get re-created next.
+      @order.shipping_numbers.each {|sn| sn.destroy }
+      
+      begin
+        @order.setup_order_shipping
+      rescue Exception => e
+        @order.errors.add_to_base("ERROR CALCULATING SHIPPING - " + e.message)
+        render :action => 'edit' and return
+      end
+      
+      redirect_to "#{request.referrer}#shipping_info" and return
+      
+    else
+      # error w/ kill_all_shipping_labels
+      render :action => 'edit' and return
+    end
+  end #end method recreate_labels
+
+
   def packing_list
     @order = Order.find(params[:id])
     render :partial => "shared/packing_list.html.erb", :layout => "packing_list"

@@ -1,0 +1,110 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<div class="std_box span-24">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Report Date Range</h3>
+	
+	<div class="std_box_content">
+		
+
+		<% form_tag :action => :late_shippers do %>
+		
+
+		<div class="field shorter">
+			<%= text_field_tag :from_date, @from_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>From Date: <span>(Def: 6 days ago)</span></label>
+		</div>
+		
+		<div class="field shorter">
+			<%= text_field_tag :to_date, @to_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>To Date: <span>(Def: today)</span></label>
+		</div>
+		
+		<div class="field">
+			<%= link_to '<span>Search</span>', 'javascript:document.forms[0].submit()', 
+					:class => 'button', :style => "margin-top: -1px;" %>
+		</div>
+		
+		<div class="clear"></div>
+
+		<% end %>
+
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		<% if @orders.empty? %>
+			Late Shippers Report
+		<% else %>
+			Late Shippers: <%= @from_date.strftime("%m/%d/%Y") %> - <%= @to_date.strftime("%m/%d/%Y") %>
+		<% end %>
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @orders.empty? %>
+			
+			<h3>No orders were found</h3>
+		
+		<% else %>
+		
+		<table class="std_box_table">
+			<thead>
+				<tr>
+					<th class="center">Order Date</th>
+					<th class="center">Order ID</th>
+					<th class="center">Who?</th>
+					<th class="center">Order Total</th>
+					<th class="center">Status</th>
+					<th class="center">View</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for order in @orders %>
+				<tr>
+					<td class="center"><%= order.order_date.strftime("%m/%d/%Y") %></td>
+					<td class="center"><%= order.order_id %></td>
+					<td class="center"><%= order.late_shipper_names.join("<br />") %></td>
+					<td class="center"><%= order.grand_total %></td>
+					<td class="center"><%= Order::ORDER_STATUS_OPTIONS.detect {|x| x.first == order.order_status_id }.last %></td>
+					<td class="center">
+						<%= link_to 'Manage', edit_admin_order_path(order), :class => "tbl_lnk_edit", :target => "_blank" %>
+					</td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<div class="clear"></div>
+

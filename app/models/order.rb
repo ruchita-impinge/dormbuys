@@ -1446,6 +1446,25 @@ class Order < ActiveRecord::Base
     end
     nums.uniq
   end #end method tracking_numbers
+  
+  
+  def late_shipper_names
+    
+    names = []
+    
+    order_line_items.each do |line_item|
+      
+      line_item.shipping_numbers.each do |shipping_number|
+        if shipping_number.tracking_number.blank?
+          names << line_item.vendor_company_name
+        end
+      end #end shipping_number loop
+      
+    end #end line_items loop
+    
+    names.uniq
+    
+  end #end method late_shipper_names
 
 
 end #end class
