@@ -23,6 +23,10 @@
 	
 	<body>
 		
+		<% flash.each do |key, msg| %>
+		    <%= content_tag :p, msg, :class => key %>
+		<% end %>
+		
 		<%= yield %>
 		
 	</body>

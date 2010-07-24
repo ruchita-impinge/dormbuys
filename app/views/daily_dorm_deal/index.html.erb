@@ -6,10 +6,6 @@
 	<div id="percent_sold" style="display: none;">100</div>
 <% end %>
 
-<% flash.each do |key, msg| %>
-    <%= content_tag :p, msg, :class => key %>
-<% end %>
-
 <div id="wrapper">
 	
 	<% unless @deal.is_active? %>
