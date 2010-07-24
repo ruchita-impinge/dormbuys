@@ -1,4 +1,4 @@
-class Admin::DailyDormDealsController < ApplicationController
+class Admin::DailyDormDealsController < Admin::AdminController
   
   
   def auto_complete_for_product_product_name

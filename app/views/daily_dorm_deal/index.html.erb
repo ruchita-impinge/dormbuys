@@ -71,13 +71,15 @@
 						
 						
 						<!-- Product Options Selection -->
-						<% unless @deal.product.blank? %>
-							<% if @deal.product.product_options.size > 0 %>
-								<% for po in @deal.product.product_options %>
+						<%
+							p = @deal.product unless @deal.product.blank?
+							p = @deal.product_variation.product unless @deal.product_variation.blank?
+						%>
+						<% if p.product_options.size > 0 %>
+							<% for po in p.product_options %>
 
-									<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['sel'], false) %>
+								<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['sel'], false) %>
 
-								<% end %>
 							<% end %>
 						<% end %>
 						

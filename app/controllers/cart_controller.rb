@@ -39,6 +39,16 @@ class CartController < ApplicationController
       redirect_to request.referrer and return
     end
     
+
+    #DAILY DEAL VALIDATION
+    if request.referrer =~ /dailydeal/ || request.referrer =~ /dailydormdeal/
+      if params[:cart_item][:product_option_values].first[:id].blank?
+        flash[:error] = "Please select a value for all drop down lists"
+        redirect_to request.referrer and return
+      end
+    end
+    
+
     if params[:cart_item][:qty].blank?
       flash[:error] = "You must specify a quantity"
       redirect_to request.referrer and return
