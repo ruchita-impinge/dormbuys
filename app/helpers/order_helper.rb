@@ -49,7 +49,7 @@ module OrderHelper
         <span class="field_error">#{order.shipping_country.country_name}</span><br />
         <span class="field_error">#{order.shipping_phone}</span><br />
         <span class="field_error">Ship: #{order.when_to_dorm_ship}</span><br />
-        #{order.dorm_ship_not_assigned ? "<span class="field_error"><b>Note:</b> Customer has not been assigned a box / building / or room number.  They need to be contacted to get this information.</span>" : ""}
+        #{order.dorm_ship_not_assigned ? '<span class="field_error"><b>Note:</b> Customer has not been assigned a box / building / or room number.  They need to be contacted to get this information.</span>' : ''}
       EO_HTML
     else
       out = <<-EO_HTML
