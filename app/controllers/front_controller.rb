@@ -6,7 +6,7 @@ class FrontController < ApplicationController
     
     @deal = DailyDormDeal.current_deal
     
-    unless read_fragment("home_page_3")
+    unless read_fragment("home_page_featured")
       if RAILS_ENV == "development"
         @featured_products = Product.all(:limit => 20)
         @featured_products.reject!{|p| p if p.available_variations.empty? }
@@ -14,6 +14,9 @@ class FrontController < ApplicationController
         @featured_products = Product.random_featured_products(10)
       end
     end
+    
+    #never cache this
+    @recently_viewed_products = Product.find(:all, :conditions => {:id => recent_product_ids})
     
     render :layout => 'home'
   end #end index
@@ -82,11 +85,26 @@ class FrontController < ApplicationController
       
       sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND p.id IN (#{pids.join(",")}) AND pv.visible = 1 AND pv.qty_on_hand >= 1 AND p.visible = 1 ORDER BY p.product_name ASC;)
       
+    
+      tmp_products = Product.find_by_sql(sql)
+    
+      sort_on = (params[:sort] && params[:sort][:sort_type]) ? params[:sort][:sort_type] : ""
+      case sort_on
+        when ""
+          #do nothing
+        when "price_desc"
+          tmp_products.sort!{|x,y| y.retail_price <=> x.retail_price }
+        when "price_asc"
+          tmp_products.sort!{|x,y| x.retail_price <=> y.retail_price }
+        when "best_selling"
+          tmp_products.sort!{|x,y| y.product_variations.collect {|pv| pv.sold_count }.sum <=> x.product_variations.collect {|pv| pv.sold_count }.sum }
+      end
+    
       
       if params[:view_all]
-        @products = Product.find_by_sql(sql)
+        @products = tmp_products
       else
-        @products = Product.find_by_sql(sql).paginate :per_page => 12, :page => params[:page]
+        @products = tmp_products.paginate :per_page => 12, :page => params[:page]
       end
       
       
@@ -120,6 +138,10 @@ class FrontController < ApplicationController
       flash[:error] = "This product is currently unavailable"
       redirect_to root_path and return
     end
+    
+    
+    log_product_viewed(@product)
+    
     
     begin
       
@@ -168,6 +190,20 @@ class FrontController < ApplicationController
         :order => "product_name ASC",
         :conditions => ["visible = ? AND product_name LIKE ?", true, "%#{params[:search][:search_term]}%"])
       parsed_products = found_products.reject {|p| p if p.available_variations.empty? }
+      
+      sort_on = (params[:sort] && params[:sort][:sort_type]) ? params[:sort][:sort_type] : ""
+      case sort_on
+        when ""
+          #do nothing
+        when "price_desc"
+          parsed_products.sort!{|x,y| y.retail_price <=> x.retail_price }
+        when "price_asc"
+          parsed_products.sort!{|x,y| x.retail_price <=> y.retail_price }
+        when "best_selling"
+          parsed_products.sort!{|x,y| y.product_variations.collect {|pv| pv.sold_count }.sum <=> x.product_variations.collect {|pv| pv.sold_count }.sum }
+      end
+      
+      
       @products = parsed_products.paginate :per_page => 12, :page => params[:page]
     else
       @products = [].paginate :per_page => 12, :page => params[:page]

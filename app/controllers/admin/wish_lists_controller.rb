@@ -1,5 +1,29 @@
 class Admin::WishListsController < Admin::AdminController
 
+
+  def search
+    
+    term = params[:search][:search_term]
+    
+    case params[:search][:search_type]
+
+      when "owner_name":
+        name_ids = User.find(:all, :conditions => ["last_name LIKE ?", "%#{term}%"]).collect{|u| u.id} if term.split(" ").length == 1
+        name_ids = User.find(:all, :conditions => ["first_name LIKE ? AND last_name LIKE ?", "%#{term.split(" ")[0]}%", "%#{term.split(" ")[1]}%"]).collect{|u| u.id} if term.split(" ").length > 1
+        name_ids << 0
+        @wish_lists = WishList.find(:all, 
+          :conditions => ["user_id IN (#{name_ids.join(",")})"]).paginate :per_page => 20, :page => params[:page]
+          
+      when "owner_email":
+        email_ids = User.find(:all, :conditions => ["email LIKE ?", "%#{term}%"]).collect{|u| u.id}
+        email_ids << 0
+        @wish_lists = WishList.find(:all, 
+          :conditions => ["user_id IN (#{email_ids.join(",")})"]).paginate :per_page => 20, :page => params[:page]
+    end #end case
+    
+    render :action => :index
+    
+  end #end method search
   
   
   def auto_complete_for_product_product_name
@@ -20,7 +44,7 @@ class Admin::WishListsController < Admin::AdminController
   # GET /wish_lists
   # GET /wish_lists.xml
   def index
-    @wish_lists = WishList.find(:all, :order => 'created_at DESC').paginate :per_page => 10, :page => params[:page]
+    @wish_lists = WishList.find(:all, :order => 'created_at DESC').paginate :per_page => 20, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

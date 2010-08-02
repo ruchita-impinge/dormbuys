@@ -2,20 +2,26 @@
 	<div class="pager gallery-box">
 		<div class="quote-box">
 			
-			<!--
-			<form action="#">
-				<fieldset>
-					<select title="select">
-						<option>SORT BY</option>
-						<option>Price (highest to lowest)</option>
-						<option>Price (lowest to highest)</option>
-						<option>Best Selling (most popular)</option>
-						<option>Highest Rated</option>
-					</select>
-					<input type="submit" value="Submit" class="hidden" />
-				</fieldset>
-			</form>
-			-->
+			<% form_for :sort, :url => request.path, :html => {:id => 'sort_form', :method => "get"} do |f| %>
+			
+			
+				<%= hidden_field_tag "search[search_term]", params[:search] ? params[:search][:search_term] : "" %>
+			
+				<%= f.select :sort_type, 
+					[
+						["SORT BY", ""],
+						["Price (Highest to lowest)", "price_desc"],
+						["Price (lowest to highest)", "price_asc"],
+						["Best Selling (most popular)", "best_selling"]
+					],
+					{
+						:selected => (params[:sort] ? params[:sort][:sort_type] : "")
+					},
+					{
+						:onchange => "document.forms['sort_form'].submit();"
+					}
+					 %>
+			<% end %>
 			
 			<ul class="breadcrumbs">
 				<li><h3>Search Results</h3></li>

@@ -71,6 +71,8 @@ ActionController::Routing::Routes.draw do |map|
   map.admin_giftcard_search '/admin/gift_cards/search', :controller => 'admin/gift_cards', :action => 'search'
   map.admin_coupons_search '/admin/coupons/search', :controller => 'admin/coupons', :action => 'search'
   map.admin_products_search '/admin/products/search', :controller => 'admin/products', :action => 'search'
+  map.admin_gift_registries_search '/admin/gift_registries/search', :controller => 'admin/gift_registries', :action => 'search'
+  map.admin_wish_lists_search '/admin/wish_lists/search', :controller => 'admin/wish_lists', :action => 'search'
 
   #HARD CODED URLS
   map.buy_gift_card '/college/grab_a_gift_card', :controller => 'front', :action => 'product', :product_permalink_handle => "dormbuys-branded-gift-card"

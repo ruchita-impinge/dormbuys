@@ -30,7 +30,7 @@ class ThirdPartySystems
       
       #setup vars
       id = variation.product_number
-      link = "http://www.dormbuys.com" + "#{variation.product.default_front_url}"
+      link = "http://dormbuys.com" + "#{variation.product.default_front_url}"
       title = variation.full_title[0,80]
       
       description = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
@@ -117,19 +117,19 @@ class ThirdPartySystems
       _manufacturer_model = variation.manufacturer_number.blank? ? "0" : variation.manufacturer_number
       _MPN = variation.manufacturer_number.blank? ? "0" : variation.manufacturer_number
       _merchant_category = variation.subcategories.first.name
-      _brand = "" #variation.product.vendor.company_name rescue "Dormbuys.com"
+      _brand = variation.product.brands.empty? ? "" : variation.product.brands.first.name  #variation.product.vendor.company_name rescue "Dormbuys.com"
       _current_price = variation.rounded_retail_price.to_s
       _in_stock = variation.qty_on_hand > 0 ? 1 : 0
 
       begin
-        _reference_image_url = "#{variation.product.product_image.url(:main)}"
+        _reference_image_url = "#{variation.image.file? ? variation.image.url(:main) : variation.product.product_image.url(:main)}"
       rescue
-        _reference_image_url = "http://www.dormbuys.com"
+        _reference_image_url = "http://dormbuys.com"
       end
       
       _offer_name = variation.full_title.gsub("|", "-")
       _offer_description = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "").gsub("|","-")
-      _action_url = "http://www.dormbuys.com" + #{variation.product.default_front_url}"
+      _action_url = "http://dormbuys.com" + #{variation.product.default_front_url}"
       
 
       #add the line to the output
@@ -405,7 +405,7 @@ class ThirdPartySystems
             order_xml += <<-ENDXML
             <item>
               <productNumber>#{oli.product_number}</productNumber>
-              <productId>#{oli.get_product_variation.product.id}</productId>
+              <productId>#{oli.variation.product.id}</productId>
               <itemName>#{oli.item_name}</itemName>
               <quantity>#{oli.quantity}</quantity>
               <unitPrice>#{oli.unit_price}</unitPrice>
@@ -457,7 +457,9 @@ class ThirdPartySystems
         http.request(req)
       }
     
-      @order.update_attributes(:sent_to_packstream => true)
+      @order.skip_all_callbacks
+      @order.sent_to_packstream = true
+      @order.save(false)
     
    end #end for loop
     
@@ -481,7 +483,7 @@ class ThirdPartySystems
       xml += %(<image_url><![CDATA[#{p.product_image.url(:main)}]]></image_url>)
       xml += %(<price>#{p.retail_price}</price>)
       xml += %(<msrp>#{p.list_price}</msrp>)
-      xml += %(<url><![CDATA[http://www.dormbuys.com#{p.default_front_url}]]></url>)
+      xml += %(<url><![CDATA[http://dormbuys.com#{p.default_front_url}]]></url>)
       xml += %(<visible>#{p.visible}</visible>)
       
       xml += %(<recommendations>)
@@ -489,11 +491,10 @@ class ThirdPartySystems
         xml += %(<product_id>#{r.id}</product_id>\n)
         xml += %(<product_name>#{CGI::escapeHTML(r.product_name)}</product_name>)
         xml += %(<product_overview>#{CGI::escapeHTML(r.product_overview)}</product_overview>)
-        rimage = r.main_image rescue ""
-        xml += %(<image_url><![CDATA[http://www.dormbuys.com#{rimage}]]></image_url>)
-        xml += %(<price>#{r.our_price}</price>)
+        xml += %(<image_url><![CDATA[#{r.product_image.url(:main)}]]></image_url>)
+        xml += %(<price>#{r.retail_price}</price>)
         xml += %(<msrp>#{r.list_price}</msrp>)
-        xml += %(<url><![CDATA[http://www.dormbuys.com/shop/product/#{r.id}]]></url>)
+        xml += %(<url><![CDATA[http://dormbuys.com#{r.default_front_url}]]></url>)
         xml += %(<visible>#{r.visible}</visible>)
       end
       xml += %(</recommendations>)
@@ -516,7 +517,7 @@ class ThirdPartySystems
     xml += %(</products>)
     
     
-    ftp_file = "#{RAILS_ROOT}/public/files/products/packstream_products.xml"
+    ftp_file = "#{RAILS_ROOT}/public/content/files/packstream_products.xml"
     fh = File.new(ftp_file, "w")
     fh.puts(xml)
     fh.close

@@ -129,4 +129,53 @@ class Admin::ReportsController < Admin::AdminController
   
   
   
+  def cogs
+    
+    if request.post? || request.put?
+      
+      @from_date = Time.parse(params[:from_date])
+      @to_date   = Time.parse(params[:to_date])
+      
+      orders = Order.find(:all, :conditions => ['order_date >= ? AND order_date <= ? AND (order_status_id != ?)', 
+          @from_date, @to_date, Order::ORDER_STATUS_CANCELED], :order => 'order_date DESC')
+      
+      @output = []
+      
+      line_items = orders.collect {|o| o.order_line_items }.flatten
+      
+      line_items.group_by(&:product_number).each do |pnum, items|
+        
+        variation = ProductVariation.find_by_product_number(pnum)
+        
+        data = {}
+        data[:qty] = items.collect {|x| x.quantity }.sum
+        data[:name] = items.first.item_name
+        data[:wholesale_price] = variation.wholesale_price
+        data[:freight_in_price] = variation.freight_in_price
+        data[:cogs_unit] = data[:wholesale_price] + data[:freight_in_price]
+        data[:unit_price] = variation.rounded_retail_price
+        data[:cogs_total] = data[:cogs_unit] * data[:qty]
+        data[:total_sales] = data[:unit_price] * data[:qty].to_i
+        
+        ts = data[:total_sales].cents / 100.0
+        tc = data[:cogs_total].cents / 100.0
+        data[:margin] = (((ts-tc) / ts) * 100).round(2)
+        
+        
+        @output << data
+        
+      end #end each
+      
+      @output.sort!{|x,y| y[:qty] <=> x[:qty]}
+      
+    else
+      @from_date = Time.now.beginning_of_month
+      @to_date   = Time.now
+      @output = []
+    end
+    
+  end #end method cogs
+  
+  
+  
 end #end class

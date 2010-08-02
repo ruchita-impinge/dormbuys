@@ -1,5 +1,48 @@
 class Admin::GiftRegistriesController < Admin::AdminController
 
+  def search
+    
+    term = params[:search][:search_term]
+    
+    case params[:search][:search_type]
+      
+      when "registry_number":
+        @gift_registries = GiftRegistry.find(:all, 
+          :conditions => ['registry_number LIKE ?', "%#{term}%"], 
+          :order => 'event_date DESC').paginate :per_page => 20, :page => params[:page]
+        
+      when "owner_name":
+        name_ids = User.find(:all, :conditions => ["last_name LIKE ?", "%#{term}%"]).collect{|u| u.id} if term.split(" ").length == 1
+        name_ids = User.find(:all, :conditions => ["first_name LIKE ? AND last_name LIKE ?", "%#{term.split(" ")[0]}%", "%#{term.split(" ")[1]}%"]).collect{|u| u.id} if term.split(" ").length > 1
+        name_ids << 0
+        @gift_registries = GiftRegistry.find(:all, 
+          :conditions => ["user_id IN (#{name_ids.join(",")})"], 
+          :order => 'event_date DESC').paginate :per_page => 20, :page => params[:page]
+        
+      when "owner_email":
+        email_ids = User.find(:all, :conditions => ["email LIKE ?", "%#{term}%"]).collect{|u| u.id}
+        email_ids << 0
+        @gift_registries = GiftRegistry.find(:all, 
+          :conditions => ["user_id IN (#{email_ids.join(",")})"], 
+          :order => 'event_date DESC').paginate :per_page => 20, :page => params[:page]
+        
+      when "registered_name":
+        names = GiftRegistryName.find(:all, :conditions => ["last_name LIKE ?", "%#{term}%"]) if term.split(" ").length == 1
+        names = GiftRegistryName.find(:all, :conditions => ["first_name LIKE ? AND last_name LIKE ?", "%#{term.split(" ")[0]}%", "%#{term.split(" ")[1]}%"]) if term.split(" ").length > 1
+        names << GiftRegistryName.new(:id => 0)
+        @gift_registries = GiftRegistry.find(:all, 
+          :conditions => ['id IN (?)', names.collect{|n| n.gift_registry_id}], 
+          :order => 'event_date DESC').paginate :per_page => 20, :page => params[:page]
+    
+  
+    end #end case
+    
+    render :action => :index
+    
+  end #end method search
+
+
+
   
   def auto_complete_for_product_product_name
 
@@ -19,7 +62,7 @@ class Admin::GiftRegistriesController < Admin::AdminController
   # GET /gift_registries
   # GET /gift_registries.xml
   def index
-    @gift_registries = GiftRegistry.find(:all, :order => 'created_at DESC').paginate :per_page => 10, :page => params[:page]
+    @gift_registries = GiftRegistry.find(:all, :order => 'event_date DESC').paginate :per_page => 20, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

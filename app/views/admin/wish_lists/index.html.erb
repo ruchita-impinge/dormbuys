@@ -4,7 +4,7 @@
 
 <%= will_paginate(@wish_lists) %>
 
-<div class="std_box">
+<div class="std_box span-16">
 	
 	<h3 class="std_box_heading">Wish Lists</h3>
 	
@@ -56,4 +56,51 @@
 </div><!-- end .std_box -->
 
 
+
+<div class="span-8 last">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Search</h3>
+	
+	<div class="std_box_content">
+		
+		<% form_for(:search, :url => admin_wish_lists_search_path, :html => {:method => :get}) do |f| %>
+		
+			<div class="field">
+				<%= f.text_field :search_term, :class => 'textfield', 
+					:value => (params[:search] ? params[:search][:search_term] : "") %>
+				<%= f.label :search_term %>
+			</div>
+
+			
+			<div class="field">
+				<%= f.select :search_type, 
+					[
+						["Owner Name", "owner_name"],
+						["Owner Email", "owner_email"]
+					],
+					:selected => (params[:search] ? params[:search][:search_type] : "") %>
+				<%= f.label :search_type, 'Search for a match on' %>
+			</div>
+
+			
+			<div class="field">
+				<%= link_to '<span>Search</span>', 'javascript:document.forms[0].submit()', :class => 'button' %>
+			</div>
+			
+			<div class="clear"></div>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
 <%= link_to '<span>New Wish List</span>', new_admin_wish_list_path, :class => 'button positive' %>
+</div>

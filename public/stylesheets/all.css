@@ -5242,3 +5242,10 @@ a.registry_continue_link{
 	position: relative;
 	z-index: 1000;
 }
+#no_recent_viewed_msg{
+	font-size: 14px;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #787568;
+}

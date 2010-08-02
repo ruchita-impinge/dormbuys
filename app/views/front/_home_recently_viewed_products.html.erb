@@ -1,0 +1,18 @@
+<% unless @recently_viewed_products.empty? %>
+<ul>
+	<% for product in @recently_viewed_products %>
+		<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
+	<% end %>
+</ul>
+<% else %>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p id="no_recent_viewed_msg">No products have been viewed!</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+<% end %>

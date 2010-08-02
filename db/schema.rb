@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100722182742) do
+ActiveRecord::Schema.define(:version => 20100722215503) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -443,6 +443,7 @@ ActiveRecord::Schema.define(:version => 20100722182742) do
     t.datetime "updated_at"
     t.integer  "order_vendor_id"
     t.text     "payment_transaction_data"
+    t.boolean  "sent_to_packstream",         :default => false
   end
 
   create_table "orders_vendors", :id => false, :force => true do |t|

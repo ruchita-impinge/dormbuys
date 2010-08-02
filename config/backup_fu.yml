@@ -1,0 +1,23 @@
+defaults: &defaults
+  s3_bucket: dormbuys-website-backups
+  aws_access_key_id: AKIAITUMHCVC5TMOWCGA
+  aws_secret_access_key: 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
+
+
+development:
+  <<: *defaults
+  app_name: dormbuys_development
+  dump_path: /usr/local/mysql/bin/mysqldump
+  static_paths: "public"
+  verbose: true
+
+  
+production:
+  <<: *defaults
+  app_name: dormbuys_production
+  dump_path: /usr/bin/mysqldump
+  static_paths: "public"
+  dump_base_path: /tmp
+  keep_backups: 10
+  enable_nice: true
+  nice_level: 15

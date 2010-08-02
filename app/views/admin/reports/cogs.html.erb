@@ -1,0 +1,169 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<div class="std_box span-24">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Report Date Range</h3>
+	
+	<div class="std_box_content">
+		
+
+		<% form_tag :action => :cogs do %>
+		
+
+		<div class="field shorter">
+			<%= text_field_tag :from_date, @from_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>From Date: <span>(Def: 6 days ago)</span></label>
+		</div>
+		
+		<div class="field shorter">
+			<%= text_field_tag :to_date, @to_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>To Date: <span>(Def: today)</span></label>
+		</div>
+		
+		<div class="field">
+			<%= link_to '<span>Search</span>', 'javascript:document.forms[0].submit()', 
+					:class => 'button', :style => "margin-top: -1px;" %>
+		</div>
+		
+		<div class="clear"></div>
+
+		<% end %>
+
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		<% if @output.empty? %>
+			COGS Report
+		<% else %>
+			COGS: <%= @from_date.strftime("%m/%d/%Y") %> - <%= @to_date.strftime("%m/%d/%Y") %>
+		<% end %>
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @output.empty? %>
+			
+			<h3>No data was found</h3>
+		
+		<% else %>
+		
+		<table class="std_box_table">
+			<thead>
+				<tr>
+					<th class="center">Qty</th>
+					<th>Name</th>
+					<th class="center">Cost</th>
+					<th class="center">Freight In</th>
+					<th class="center">COGS Unit</th>
+					<th class="center">Unit Price</th>
+					<th class="center">COGS Total</th>
+					<th class="center">Total Sales</th>
+					<th class="center">Margin</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for data in @output %>
+				<tr>
+					<td class="center"><%= data[:qty] %></td>
+					<td><%= data[:name] %></td>
+					<td class="center">$<%= data[:wholesale_price] %></td>
+					<td class="center">$<%= data[:freight_in_price] %></td>
+					<td class="center">$<%= data[:cogs_unit] %></td>
+					<td class="center">$<%= data[:unit_price] %></td>
+					<td class="center">$<%= data[:cogs_total] %></td>
+					<td class="center">$<%= data[:total_sales] %></td>
+					<td class="center"><%= data[:margin] %>%</td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		COGS Totals
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @output.empty? %>
+			
+			<h3>No data was found</h3>
+		
+		<% else %>
+		
+		<table class="std_box_table">
+			<thead>
+				<tr>
+					<th class="center">Wholesale</th>
+					<th class="center">Freight In</th>
+					<th class="center">COGS</th>
+					<th class="center">Sales</th>
+					<th class="center">Discounts</th>
+					<th class="center">Gross Margin</th>
+					<th class="center">Net Margin</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="center">$<%= @output.collect {|x| x[:wholesale_price]}.sum %></td>
+					<td class="center">$<%= @output.collect {|x| x[:freight_in_price]}.sum %></td>
+					<td class="center">$<%= @output.collect {|x| x[:cogs_total]}.sum %></td>
+					<td class="center">$<%= @output.collect {|x| x[:total_sales]}.sum %></td>
+					<td class="center">$--</td>
+					<td class="center">%</td>
+					<td class="center">%</td>
+				</tr>
+			</tbody>
+		</table>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<div class="clear"></div>
+

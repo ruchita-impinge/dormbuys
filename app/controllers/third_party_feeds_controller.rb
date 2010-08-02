@@ -7,15 +7,13 @@ class ThirdPartyFeedsController < ApplicationController
       # webgains CSV id=1
       if feed_id == 1
         
-        render :text => "This feed has been temporarily disabled.  Please call 502-254-4324.", :status => 500 and return
-      
         @products = Product.find(:all, :conditions => {:visible => true})
      
         output = %("Name","Deeplink","Category","Price","ProductId","description","image_URL","thumbnail_image_URL","delivery_time","delivery_cost","related_product_ids"\n)
 
         for product in @products
             name = product.product_name
-            deeplink = "http://www.dormbuys.com#{product.default_front_url}"
+            deeplink = "http://dormbuys.com#{product.default_front_url}"
             category = product.subcategories.collect{|sub| sub.category.name}.first
             price = product.retail_price.to_s
             product_id = product.id
@@ -23,12 +21,12 @@ class ThirdPartyFeedsController < ApplicationController
             begin
               image_url = product.product_image(:main)
             rescue
-              image_url = "http://www.dormbuys.com"
+              image_url = "http://dormbuys.com"
             end
             begin
               thumbnail_image_URL = product.product_image(:thumb)
             rescue
-              thumbnail_image_URL = "http://www.dormbuys.com"
+              thumbnail_image_URL = "http://dormbuys.com"
             end
             delivery_time = "varies by location"
             delivery_cost = "varies by location"
@@ -40,7 +38,7 @@ class ThirdPartyFeedsController < ApplicationController
         headers['Content-Type'] = "application/csv" 
         headers['Content-Disposition'] = "attachment; filename=\"current_products.csv\""
         headers['Cache-Control'] = ''
-        render :text => output
+        render :text => output and return
         
       #packstream order to label feed id=2
       elsif feed_id == 2
@@ -50,7 +48,7 @@ class ThirdPartyFeedsController < ApplicationController
         for slabel in order.shipping_labels
           labelXML += %(<label>)
             labelXML += %(<trackingNumber>#{slabel.tracking_number}</trackingNumber>)
-            labelXML += %(<labelUrl>http://www.dormbuys.com#{slabel.graphic_url}</labelUrl>)
+            labelXML += %(<labelUrl>http://dormbuys.com#{slabel.graphic_url}</labelUrl>)
           labelXML += %(</label>)
         end
         
@@ -63,7 +61,7 @@ class ThirdPartyFeedsController < ApplicationController
         </orderLabelInfo>
         EOXML
         
-        render :xml => out
+        render :xml => out and return
         
       end #end if feed_id == X
       
