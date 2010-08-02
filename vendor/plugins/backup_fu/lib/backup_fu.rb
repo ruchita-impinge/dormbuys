@@ -1,7 +1,8 @@
 require 'yaml'
 require 'active_support'
 require 'mime/types'
-require 'right_aws'
+#require 'right_aws'
+require 'right_aws' unless defined?(RightAws)
 require 'erb'
 
 class BackupFuConfigError < StandardError; end

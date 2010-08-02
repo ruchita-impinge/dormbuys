@@ -26,6 +26,7 @@ Rails::Initializer.run do |config|
   config.gem "ghazel-daemons", :lib => "daemons", :source => "http://gems.gitgub.com"
   gem "ghazel-daemons"
   require "daemons"
+  config.gem "aws-s3", :lib => "aws/s3", :version => '>= 0.6.2'
   
 
   # Only load the plugins named here, in the order given (default is alphabetical).
