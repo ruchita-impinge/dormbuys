@@ -50,6 +50,21 @@ class Cart < ActiveRecord::Base
   end #end method gift_registry_items
   
   
+  def gift_registry
+    gr_item = self.cart_items.find(:first, :conditions => {:is_gift_registry_item => true})
+    if gr_item
+      begin
+        gr = gr_item.gift_registry_item.gift_registry
+        return gr
+      rescue
+        return nil
+      end
+    else
+      return nil
+    end
+  end #end method gift_registry
+  
+  
 
   def validate
     unless self.gc_errors.blank?

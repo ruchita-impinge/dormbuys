@@ -42,14 +42,14 @@ module OrderHelper
     if order.user_profile_type_id == Order::ADDRESS_DORM
       out = <<-EO_HTML
         #{order.shipping_first_name} #{order.shipping_last_name}<br />
-        #{order.dorm_ship_college_name}<br />
-        #{order.shipping_address}<br />
-        #{order.shipping_address2.blank? ? '' : (order.dorm_ship_not_part ? '' : order.shipping_address2 + '<br />')}
-        #{order.shipping_city}, #{order.shipping_state.abbreviation} #{order.shipping_zipcode}<br />
-        #{order.shipping_country.country_name}<br />
-        #{order.shipping_phone}<br />
-        Ship: #{order.when_to_dorm_ship}<br />
-        #{order.dorm_ship_not_assigned ? "<b>Note:</b> Customer has not been assigned a box / building / or room number.  They need to be contacted to get this information." : ""}
+        <span class="field_error">#{order.dorm_ship_college_name}</span><br />
+        <span class="field_error">#{order.shipping_address}</span><br />
+        #{order.shipping_address2.blank? ? '' : (order.dorm_ship_not_part ? '' : '<span class="field_error">' + order.shipping_address2 + '</span><br />')}
+        <span class="field_error">#{order.shipping_city}, #{order.shipping_state.abbreviation} #{order.shipping_zipcode}</span><br />
+        <span class="field_error">#{order.shipping_country.country_name}</span><br />
+        <span class="field_error">#{order.shipping_phone}</span><br />
+        <span class="field_error">Ship: #{order.when_to_dorm_ship}</span><br />
+        #{order.dorm_ship_not_assigned ? "<span class="field_error"><b>Note:</b> Customer has not been assigned a box / building / or room number.  They need to be contacted to get this information.</span>" : ""}
       EO_HTML
     else
       out = <<-EO_HTML

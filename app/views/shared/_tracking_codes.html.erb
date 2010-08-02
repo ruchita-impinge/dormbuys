@@ -24,6 +24,13 @@ pageTracker._trackPageview();
 <% end %>
 
 
+<% if controller.controller_name == "cart" && controller.action_name == "confirm" %>
+	<iframe src='https://pixel.fetchback.com/serve/fb/pdc?cat=&name=success&sid=3324' scrolling='no' width='1' height='1' marginheight='0' marginwidth='0' frameborder='0'></iframe>
+<% else %>
+	<iframe src='https://pixel.fetchback.com/serve/fb/pdc?cat=&name=landing&sid=3324' scrolling='no' width='1' height='1' marginheight='0' marginwidth='0' frameborder='0'></iframe>
+<% end %>
+
+
 <script type="text/javascript">
 var _sf_async_config={uid:4092,domain:"dormbuys.com"};
 (function(){

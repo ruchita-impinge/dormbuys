@@ -1,4 +1,4 @@
-<% if gift_registry_item.product_variation %>
+<% if gift_registry_item.product_variation && gift_registry_item.product_variation.product %>
 
 <% fields_for "gift_registry[gift_registry_item_attributes][]", gift_registry_item, :index => nil do |x| %>
 <tr class="main_row">

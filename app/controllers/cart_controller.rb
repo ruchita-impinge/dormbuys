@@ -42,7 +42,7 @@ class CartController < ApplicationController
 
     #DAILY DEAL VALIDATION
     if request.referrer =~ /dailydeal/ || request.referrer =~ /dailydormdeal/
-      if params[:cart_item][:product_option_values].first[:id].blank?
+      if params[:cart_item][:product_option_values].blank? || params[:cart_item][:product_option_values].first[:id].blank?
         flash[:error] = "Please select a value for all drop down lists"
         redirect_to request.referrer and return
       end
@@ -257,6 +257,21 @@ class CartController < ApplicationController
     end #end billing address
     
     
+    #handle shipping gift_registry
+    gr = @cart.gift_registry
+    if @cart.shipping_address.blank? && gr
+      @cart.shipping_first_name  = gr.user.first_name
+      @cart.shipping_last_name   = gr.user.last_name
+      @cart.shipping_address     = gr.shipping_address   
+      @cart.shipping_address2    = gr.shipping_address2  
+      @cart.shipping_city        = gr.shipping_city      
+      @cart.shipping_state_id    = gr.shipping_state_id  
+      @cart.shipping_zipcode     = gr.shipping_zip_code   
+      @cart.shipping_country_id  = gr.shipping_country_id
+      @cart.shipping_phone       = gr.shipping_phone
+    end #end gift_registry_address
+    
+
     if @cart.shipping_address.blank? && logged_in?
       
       @cart.shipping_first_name  = current_user.shipping_first_name

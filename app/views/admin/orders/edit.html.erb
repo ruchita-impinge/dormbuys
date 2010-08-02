@@ -548,13 +548,14 @@
 			<% else %>
 			
 				<p><%= link_to '<span>Send *ALL* Drop Ship Emails</span>', notify_dropship_admin_order_path(@order), 
-					:class => 'button positive' %>
+					:class => 'button positive', :onclick => "doneProcessing = true;" %>
 					<div class="clear"></div>
 				</p>
 			
 				<% for vendor in @order.drop_ship_vendors %>
 					<p><%= link_to "<span>Send #{vendor.company_name} Emails</span>", 
-						notify_dropship_admin_order_path(@order, :vendor_id => vendor.id), :class => 'button' %>
+						notify_dropship_admin_order_path(@order, :vendor_id => vendor.id), :class => 'button',
+						:onclick => "doneProcessing = true;" %>
 						<div class="clear"></div>
 					</p>
 				<% end %>

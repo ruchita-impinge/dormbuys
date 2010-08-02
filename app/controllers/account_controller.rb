@@ -338,6 +338,8 @@ class AccountController < ApplicationController
   def update_wish_list
     @page_title = "Wish List"
     @wish_list = current_user.wish_list
+    @items = @wish_list.wish_list_items
+    @items.reject! {|i| i if i.product_variation.blank? }
     
     if @wish_list.update_attributes(params[:wish_list])
       flash[:notice] = "Wish list successfully updated"

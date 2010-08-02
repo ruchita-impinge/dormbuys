@@ -79,13 +79,13 @@
   <%= f.hidden_field :product_variation_id, :value => (@daily_dorm_deal.product_variation_id || '') %>
 
   <div class="field shorter">
-    <%= f.datetime_select :start_time, :order => [:month, :day, :year] %>
+    <%= f.datetime_select :start_time, :order => [:month, :day, :year], :default => (Time.now.beginning_of_day + 6.hours) %>
     <%= f.label :start_time %>
   </div>
   <div class="clear"></div>
 
   <div class="field shorter">
-    <%= f.datetime_select :end_time, :order => [:month, :day, :year] %>
+    <%= f.datetime_select :end_time, :order => [:month, :day, :year], :default => (Time.now.beginning_of_day + 30.hours) %>
     <%= f.label :end_time %>
   </div>
   <div class="clear"></div>

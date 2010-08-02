@@ -6,6 +6,8 @@ class CartItem < ActiveRecord::Base
   
   belongs_to :cart
   belongs_to :product_variation
+  belongs_to :wish_list_item
+  belongs_to :gift_registry_item
   
   validates_presence_of :cart_id
   

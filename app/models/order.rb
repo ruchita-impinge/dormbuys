@@ -258,7 +258,9 @@ class Order < ActiveRecord::Base
       if item.gift_registry_item
       
         #update the received quantity of the registry item to the item the user is purchasing
-        item.gift_registry_item.update_attributes(:received_qty => (item.gift_registry_item.received_qty += item.quantity))
+        # => item.gift_registry_item.update_attributes(:received_qty => (item.gift_registry_item.received_qty += item.quantity))
+        item.gift_registry_item.received_qty = (item.gift_registry_item.received_qty += item.quantity)
+        item.gift_registry_item.save(false)
         
       end #end if item.gift_registry_item
       
@@ -267,7 +269,9 @@ class Order < ActiveRecord::Base
       if item.wish_list_item
         
         #update the got qty
-        item.wish_list_item.update_attributes(:got_qty => (item.wish_list_item.got_qty += item.quantity))
+        # => item.wish_list_item.update_attributes(:got_qty => (item.wish_list_item.got_qty += item.quantity))
+        item.wish_list_item.got_qty = (item.wish_list_item.got_qty += item.quantity)
+        item.wish_list_item.save(false)
         
       end #end if item.wish_list_item
       

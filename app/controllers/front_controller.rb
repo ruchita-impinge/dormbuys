@@ -249,7 +249,7 @@ class FrontController < ApplicationController
   
   def registry_search
     @page_title = "Gift Registry"
-    if params[:gift_registry_search].values.all?(&:blank?)
+    if params.blank? || params[:gift_registry_search].blank? || params[:gift_registry_search].values.all?(&:blank?)
       flash[:error] = "You must enter a some search terms"
       redirect_to main_gift_registry_path and return
     else
