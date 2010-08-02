@@ -1,0 +1,7 @@
+development:
+  aws_access_key_id: AKIAITUMHCVC5TMOWCGA
+  aws_secret_access_key: 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
+
+production:
+  aws_access_key_id: AKIAITUMHCVC5TMOWCGA
+  aws_secret_access_key: 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
