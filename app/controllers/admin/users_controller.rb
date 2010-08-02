@@ -1,4 +1,10 @@
 class Admin::UsersController < Admin::AdminController
+
+  def impersonate
+    u = User.find(params[:id])
+    self.current_user = u
+    redirect_to account_path
+  end #end method impersonate
   
   
   def search
