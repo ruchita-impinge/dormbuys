@@ -34,7 +34,7 @@ class Admin::OrdersController < Admin::AdminController
     render :update do |page|
       page << %( $("#processing_status").text("Processed"); )
       page << %( doneProcessing = true; )
-      page << %( window.location.href = "#{admin_orders_path}" )
+      page << %( window.location.href = "#{admin_orders_path(:page => session[:order_page_num])}" )
     end
     
   end #end method complete_processing
@@ -50,7 +50,7 @@ class Admin::OrdersController < Admin::AdminController
     render :update do |page|
       page << %( $("#processing_status").text("Processing Canceled"); )
       page << %( doneProcessing = true; )
-      page << %( window.location.href = "#{admin_orders_path}" )
+      page << %( window.location.href = "#{admin_orders_path(:page => session[:order_page_num])}" )
     end
     
   end #end method cancel_processing
@@ -301,6 +301,9 @@ class Admin::OrdersController < Admin::AdminController
       @order.processing = true
       @order.save(false)
     end
+    
+    #set the order page num callback.
+    session[:order_page_num] = params[:page] ? params[:page].to_i : 1
     
   end #end edit
 

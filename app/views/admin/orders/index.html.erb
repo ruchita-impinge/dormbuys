@@ -17,7 +17,11 @@
 	
 	<div class="std_box_content" id="orders_list">
 		
-		<%= render :partial => "orders_list" %>
+		<% if controller.action_name =~ /search/ %>
+			<%= render :partial => "orders_search" %>
+		<% else %>
+			<%= render :partial => "orders_list" %>
+		<% end %>
 		
 	</div><!-- end .std_box_content -->
 	
