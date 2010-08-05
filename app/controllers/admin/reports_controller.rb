@@ -80,6 +80,8 @@ class Admin::ReportsController < Admin::AdminController
       :conditions => [conditions.transpose.first.join(' AND '), *conditions.transpose.last],
       :order => 'order_date DESC, coupon_id ASC')
       
+    @orders.reject! {|o| o if o.coupon.blank? }
+    
     # build the ddl of coupons, we want the DDL to only have coupon numbers
     # for the date range, but to keep the whole list, if we drill down into one,
     # so that we can drill down into another
