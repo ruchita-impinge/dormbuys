@@ -88,6 +88,8 @@ class Admin::ReportsController < Admin::AdminController
       :conditions => ["order_date >= ? AND order_date <= ? AND order_status_id != ? AND coupon_id IS NOT NULL",
         @from_date, @to_date, Order::ORDER_STATUS_CANCELED],
       :order => 'order_date DESC, coupon_id ASC')
+      
+    @coupon_orders.reject! {|o| o if o.coupon.blank? }
     @coupon_orders.each {|o| @coupons << [o.coupon.coupon_number, o.coupon_id]}
     @coupons.uniq!
     @coupons.sort!{|x,y| x.first <=> y.first}
