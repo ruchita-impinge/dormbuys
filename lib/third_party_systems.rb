@@ -358,7 +358,7 @@ class ThirdPartySystems
         row << variation.rounded_retail_price.to_s
       
         #product image url
-        row << variation.image.file? ? variation.image(:large) : variation.product.product_image(:large)
+        row << (variation.image.file? ? variation.image(:large) : variation.product.product_image(:large))
       
         #product page url
         row << "http://dormbuys.com#{variation.product.default_front_url rescue '/'}"
