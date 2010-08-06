@@ -297,9 +297,7 @@ class CartController < ApplicationController
   
   
   def save_billing_shipping
-    
-    debugger
-        
+            
     @cart_step = "billing_shipping"
     @page_title = "Order Billing and Shipping"
     
