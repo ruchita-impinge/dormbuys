@@ -367,7 +367,7 @@ li.over ul { /* lists nested under hovered list items */
 	width: 53px;
 }
 select.date_select_box{
-	width: 84px;
+	width: 80px;
 	margin-right: 1px;
 }
 select.time_select_box{

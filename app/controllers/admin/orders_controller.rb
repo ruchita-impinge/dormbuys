@@ -169,6 +169,12 @@ class Admin::OrdersController < Admin::AdminController
     
     render :update do |page|
       page.replace_html "shipping_address", :partial => "edit_shipping_addy"
+      if @order.user_profile_type_id == Order::ADDRESS_DORM
+				page << %($("#shipping_address_2_field").hide();)
+      else
+        page << %($(".dormship").hide();)
+				page << %($("#dorm_shipping_address_2_field").hide();)
+      end
     end
   end #end method edit_shipping
 

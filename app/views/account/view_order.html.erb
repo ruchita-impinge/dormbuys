@@ -109,7 +109,7 @@
 																<em class="price d-qty"><%= order_item.quantity %></em>
 																
 																<strong class="item-title">
-																	<% if order_item.variation %>
+																	<% if order_item.variation && order_item.variation.product %>
 																		<%= link_to order_item.item_name, order_item.variation.product.default_front_url %>
 																	<% else %>
 																		<%= order_item.item_name %>

@@ -18,11 +18,63 @@
 	</div>
 	<div class="clear"></div>
 	
-	<div class="field">
+	<div class="field" id="shipping_address_2_field">
 		<%= f.text_field :shipping_address2, :class => 'textfield' %>
 		<%= f.label :shipping_address2 %>
 	</div>
 	<div class="clear"></div>
+	
+	
+	
+	
+	<!-- -->
+	
+	
+	<div class="field dormship">
+		<%= f.select :dorm_ship_time_id, Order::DORM_SHIP_OPTIONS.collect{|o| [o.last, o.first]},
+		 	{}, :class => 't6' %>
+		<%= f.label :dorm_ship_time_id, 'Ship to Dorm' %>
+	</div>
+
+
+	 <div class="field fieldlength date_select dormship">
+	   	<%= f.date_select :dorm_ship_ship_date, {:order => [:month, :day, :year], :use_month_numbers => true}, 
+			{:class => 'date_select_box'} %>
+		<%= f.label :dorm_ship_ship_date, '*Ship to Dorm on this date' %>
+	 </div>
+
+
+
+	 <div class="field dormship">
+		<%= f.text_field :dorm_ship_college_name, :class => 'textfield' %>
+		<%= f.label :dorm_ship_college_name, '&nbsp;&nbsp;&nbsp;*College Name' %>
+	 </div>
+
+
+	  <div class="field dormship" id="dorm_shipping_address_2_field">
+	    <%= f.text_field :dorm_shipping_address2, :class => 'textfield', :id => 'college_box_building_room' %>
+		<%= f.label :dorm_shipping_address2, '*Box # / Building / Room #', :for => 'college_box_building_room' %>
+	  </div>
+
+
+	 <div class="field check dormship">
+	   <%= f.label :dorm_ship_not_assigned, 'Box / Building / Room has not been assigned yet:', :class => 'inline' %>
+		<%= f.check_box :dorm_ship_not_assigned, :class => 'inline' %>
+	 </div>
+	 <div class="clear"></div>
+
+
+	 <div class="field check dormship">
+		<%= f.label :dorm_ship_not_part, 'Box / Building / Room is not part of the address:', :class => 'inline' %>
+	   <%= f.check_box :dorm_ship_not_part, :class => 'inline' %>
+	 </div>
+	 <div class="clear"></div>
+	
+	
+	<!-- -->
+	
+	
+	
 	
 	<div class="field">
 		<%= f.text_field :shipping_city, :class => 'textfield' %>

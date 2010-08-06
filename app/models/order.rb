@@ -1469,6 +1469,15 @@ class Order < ActiveRecord::Base
     names.uniq
     
   end #end method late_shipper_names
+  
+  
+  def dorm_shipping_address2=(ds_addy2)
+    self.shipping_address2 = ds_addy2
+  end #end method dorm_shipping_address2
+  
+  def dorm_shipping_address2
+    self.shipping_address2
+  end #end method dorm_shipping_address2
 
 
 end #end class

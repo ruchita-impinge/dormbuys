@@ -169,6 +169,16 @@ class User < ActiveRecord::Base
   end #end send_new_password
   
   
+  
+  def dorm_shipping_address2=(ds_addy2)
+    self.shipping_address2 = ds_addy2
+  end #end method dorm_shipping_address2
+  
+  def dorm_shipping_address2
+    self.shipping_address2
+  end #end method dorm_shipping_address2
+  
+  
 
   protected
     
