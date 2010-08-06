@@ -342,29 +342,28 @@ class ThirdPartySystems
     
     @rows = []
     
-    @variations = ProductVariation.find(:all, :conditions => {:visible => true})
+    @products = Product.find(:all, :conditions => {:visible => true}, :include => [:product_variations])
     
-    @variations.each do |variation|
-      if variation.product
+    @products.each do |product|
+      if product.available_variations.size > 0
         row = []  
-      
+    
         #product id
-        row << variation.product_number
-      
+        row << product.id
+    
         #product name
-        row << variation.full_title
-      
+        row << product.product_name
+    
         #product price
-        row << variation.rounded_retail_price.to_s
-      
+        row << product.retail_price
+    
         #product image url
-        row << (variation.image.file? ? variation.image(:large) : variation.product.product_image(:large))
-      
+        row << product.product_image(:large)
+    
         #product page url
-        row << "http://dormbuys.com#{variation.product.default_front_url rescue '/'}"
-      
+        row << "http://dormbuys.com#{product.default_front_url rescue '/'}"
+    
         @rows << row
-        
       end
     end #end each variation
   

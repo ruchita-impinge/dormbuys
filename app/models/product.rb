@@ -90,6 +90,12 @@ class Product < ActiveRecord::Base
   def set_attachment_filenames
     self.product_image.instance_write(:file_name, "product_image.jpg") if self.product_image.dirty?
   end #end method set_attachment_filenames
+  
+  
+  def self.available
+    sql = %(select distinct p.* from products p, product_variations pv where pv.product_id = p.id AND pv.visible = 1 AND pv.qty_on_hand >= 1 AND p.visible = 1 ORDER BY p.product_name ASC;)
+    Product.find_by_sql(sql)
+  end #end method self.available
     
     
   def vendor
