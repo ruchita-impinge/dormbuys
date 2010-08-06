@@ -330,6 +330,62 @@ class ThirdPartySystems
   end #end method self.update_lnt
   
   
+  
+  def self.update_fetchback
+    
+    @headings = [] 
+    @headings << "Product ID"
+    @headings << "Product Name"
+    @headings << "Product Price"
+    @headings << "Product Image URL"
+    @headings << "Product Page URL"
+    
+    @rows = []
+    
+    @variations = ProductVariation.find(:all, :conditions => {:visible => true})
+    
+    @variations.each do |variation|
+      if variation.product
+        row = []  
+      
+        #product id
+        row << variation.product_number
+      
+        #product name
+        row << variation.full_title
+      
+        #product price
+        row << variation.rounded_retail_price.to_s
+      
+        #product image url
+        row << variation.image.file? ? variation.image(:large) : variation.product.product_image(:large)
+      
+        #product page url
+        row << "http://dormbuys.com#{variation.product.default_front_url rescue '/'}"
+      
+        @rows << row
+        
+      end
+    end #end each variation
+  
+  
+    file_content = @headings.join(",") + "\n"
+    for row in @rows
+      file_content += row.join(",") + "\n"
+    end
+  
+  
+    ftp_file = "#{RAILS_ROOT}/public/content/integrations/FETCHBACK.csv"
+    FileUtils.mkdir_p(File.dirname(ftp_file))
+    fh = File.new(ftp_file, "w")
+    fh.puts(file_content)
+    fh.close
+    
+  end #end method self.update_fetchback
+  
+  
+  
+  
   def self.update_lnt_inventory
 
     @headings = [] 
