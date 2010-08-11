@@ -1,0 +1,55 @@
+<h2>Totals</h2>
+<table border="1">
+	<thead>
+		<th class="center">Total Item Count</th>
+		<th class="center">Total Cost</th>
+		<th class="center">Total Freight In</th>
+		<th class="center">Total Wholesale Cost</th>
+		<th class="center">Total Retail Value</th>
+		<th class="center">Total Margin</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="center"><%= @t_count %></td>
+			<td class="center"><%= @t_wholesale %></td>
+			<td class="center"><%= @t_freight_in %></td>
+			<td class="center"><%= @t_cog %></td>
+			<td class="center"><%= @t_retail %></td>
+			<td class="center"><%= @t_margin %></td>
+		</tr>
+	</tbody>
+</table>
+
+<br />
+
+<h2>Cost / Value By Product Variation</h2>
+<table border="1">
+	<thead>
+		<th>Name</th>
+		<th class="center"># On Hand</th>
+		<th class="center">Cost</th>
+		<th class="center">Freight In</th>
+		<th class="center">Total Cost</th>
+		<th class="center">Unit Price</th>
+		<th class="center">Margin</th>
+	</thead>
+	<tbody>
+		<% for v in @variations %>
+		<tr>
+			<td><%= v.full_title %></td>
+			<td class="center"><%= v.qty_on_hand %></td>
+			<td class="center"><%= v.wholesale_price %></td>
+			<td class="center"><%= v.freight_in_price %></td>
+			<td class="center"><%= v.wholesale_price + v.freight_in_price %></td>
+			<td class="center"><%= v.rounded_retail_price %></td>
+			<td class="center">
+				<% if v.rounded_retail_price.to_s.to_f > 0 %>
+					<%= (((v.rounded_retail_price.to_s.to_f-(v.wholesale_price + v.freight_in_price).to_s.to_f) / v.rounded_retail_price.to_s.to_f) * 100).round(2) %>
+				<% else %>
+					0.00
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

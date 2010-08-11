@@ -1,6 +1,5 @@
 class Admin::ReportsController < Admin::AdminController
   
-  
   def inventory_count_list
     
     @file_name = "inventory_count_inv_products_only"
@@ -20,7 +19,6 @@ class Admin::ReportsController < Admin::AdminController
     render :layout => false
     
   end #end method inventory_count_list
-  
   
   
   def email_list
@@ -112,8 +110,6 @@ class Admin::ReportsController < Admin::AdminController
   end #end method coupons_used
   
   
-  
-  
   def late_shippers
     
     if request.post? || request.put?
@@ -131,8 +127,7 @@ class Admin::ReportsController < Admin::AdminController
     
   end #end method late_shippers
   
-  
-  
+   
   def cogs
     
     if request.post? || request.put?
@@ -140,8 +135,15 @@ class Admin::ReportsController < Admin::AdminController
       @from_date = Time.parse(params[:from_date])
       @to_date   = Time.parse(params[:to_date])
       
-      orders = Order.find(:all, :conditions => ['order_date >= ? AND order_date <= ? AND (order_status_id != ?)', 
-          @from_date, @to_date, Order::ORDER_STATUS_CANCELED], :order => 'order_date DESC')
+      orders = Order.find(:all, 
+        :conditions => [
+          'order_date >= ? AND order_date <= ? AND (order_status_id != ?)', 
+          @from_date, 
+          @to_date, 
+          Order::ORDER_STATUS_CANCELED
+        ], 
+        :include => [:order_line_items],
+        :order => 'order_date DESC')
       
       @output = []
       
@@ -150,28 +152,48 @@ class Admin::ReportsController < Admin::AdminController
       line_items.group_by(&:product_number).each do |pnum, items|
         
         variation = ProductVariation.find_by_product_number(pnum)
+        if variation
+          
+          begin
+            data = {}
+            data[:qty] = items.collect {|x| x.quantity }.sum
+            data[:name] = items.first.item_name
+            data[:wholesale_price] = variation.wholesale_price
+            data[:freight_in_price] = variation.freight_in_price
+            data[:cogs_unit] = data[:wholesale_price] + data[:freight_in_price]
+            data[:unit_price] = variation.rounded_retail_price
+            data[:cogs_total] = data[:cogs_unit] * data[:qty]
+            data[:total_sales] = data[:unit_price] * data[:qty].to_i
         
-        data = {}
-        data[:qty] = items.collect {|x| x.quantity }.sum
-        data[:name] = items.first.item_name
-        data[:wholesale_price] = variation.wholesale_price
-        data[:freight_in_price] = variation.freight_in_price
-        data[:cogs_unit] = data[:wholesale_price] + data[:freight_in_price]
-        data[:unit_price] = variation.rounded_retail_price
-        data[:cogs_total] = data[:cogs_unit] * data[:qty]
-        data[:total_sales] = data[:unit_price] * data[:qty].to_i
+            ts = data[:total_sales].cents / 100.0
+            tc = data[:cogs_total].cents / 100.0
+            if ts > 0
+              data[:margin] = (((ts-tc) / ts) * 100).round(2)
+            else
+              data[:margin] = 0.00
+            end
+          rescue
+            raise data.collect {|elm| "#{elm.first} = #{elm.last}" }.join(", ")
+          end
         
-        ts = data[:total_sales].cents / 100.0
-        tc = data[:cogs_total].cents / 100.0
-        data[:margin] = (((ts-tc) / ts) * 100).round(2)
-        
-        
-        @output << data
+          @output << data
+          
+        end #end if
         
       end #end each
       
+      #sort by quantity
       @output.sort!{|x,y| y[:qty] <=> x[:qty]}
       
+      #calc totals
+      @t_wholesale    = @output.collect {|x| x[:wholesale_price]}.sum.to_s.to_f
+      @t_freight_in   = @output.collect {|x| x[:freight_in_price]}.sum.to_s.to_f
+      @t_cogs         = @output.collect {|x| x[:cogs_total]}.sum.to_s.to_f
+      @t_sales        = @output.collect {|x| x[:total_sales]}.sum.to_s.to_f
+      @t_discounts    = orders.collect {|o| o.total_coupon }.sum.to_s.to_f
+      @t_gross_margin = (((@t_sales-@t_cogs) / @t_sales) * 100).round(2)
+      @t_net_margin   = (((@t_sales-@t_discounts-@t_cogs) / @t_sales) * 100).round(2)
+
     else
       @from_date = Time.now.beginning_of_month
       @to_date   = Time.now
@@ -180,6 +202,32 @@ class Admin::ReportsController < Admin::AdminController
     
   end #end method cogs
   
+  
+  def inventory_cost
+    @variations = ProductVariation.all(
+      :conditions => ["qty_on_hand > 0"], 
+      :order => "qty_on_hand DESC",
+      :include => [:product])
+      
+    @variations.reject!{|v| v if v.product.blank? }
+    @variations.reject!{|v| v if v.product.drop_ship }
+    
+    @t_count         = @variations.size
+    @t_wholesale    = @variations.collect {|x| x.wholesale_price }.sum
+    @t_freight_in   = @variations.collect {|x| x.freight_in_price }.sum
+    @t_cog          = (@t_wholesale + @t_freight_in).to_s.to_f
+    @t_retail       = @variations.collect {|x| x.rounded_retail_price }.sum.to_s.to_f
+    @t_margin       = (((@t_retail-@t_cog) / @t_retail) * 100).round(2)
+
+    @file_name = "inventory_cost-#{Time.now.strftime("%Y-%m-%d")}"
+
+    headers['Content-Type'] = "application/vnd.ms-excel" 
+    headers['Content-Disposition'] = "attachment; filename=\"#{@file_name}.xls\""
+    headers['Cache-Control'] = ''
+    
+    render :layout => false
+
+  end #end method inventory_cost
   
   
 end #end class

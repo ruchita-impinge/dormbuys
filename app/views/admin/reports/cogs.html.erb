@@ -15,7 +15,7 @@
 
 		<div class="field shorter">
 			<%= text_field_tag :from_date, @from_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
-			<label>From Date: <span>(Def: 6 days ago)</span></label>
+			<label>From Date: <span>(Def: 1st of month)</span></label>
 		</div>
 		
 		<div class="field shorter">
@@ -43,6 +43,65 @@
 	
 </div><!-- end .std_box -->
 </div>
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		<% if @output.empty? %>
+			COGS Totals
+		<% else %>
+			COGS Totals: <%= @from_date.strftime("%m/%d/%Y") %> - <%= @to_date.strftime("%m/%d/%Y") %>
+		<% end %>
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @output.empty? %>
+			
+			<h3>No data was found</h3>
+		
+		<% else %>
+		
+		<table class="std_box_table">
+			<thead>
+				<tr>
+					<th class="center">Wholesale</th>
+					<th class="center">Freight In</th>
+					<th class="center">COGS</th>
+					<th class="center">Sales</th>
+					<th class="center">Discounts</th>
+					<th class="center">Gross Margin</th>
+					<th class="center">Net Margin</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="center">$<%= @t_wholesale %></td>
+					<td class="center">$<%= @t_freight_in %></td>
+					<td class="center">$<%= @t_cogs %></td>
+					<td class="center">$<%= @t_sales %></td>
+					<td class="center">$<%= @t_discounts %></td>
+					<td class="center"><%= @t_gross_margin %>%</td>
+					<td class="center"><%= @t_net_margin %>%</td>
+				</tr>
+			</tbody>
+		</table>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
 <div class="clear"></div>
 
 <br />
@@ -109,61 +168,3 @@
 	
 </div><!-- end .std_box -->
 <div class="clear"></div>
-
-<br />
-
-<div class="std_box span-24">
-	
-	<h3 class="std_box_heading">
-		COGS Totals
-	</h3>
-	
-	<div class="std_box_content">
-		
-		<% if @output.empty? %>
-			
-			<h3>No data was found</h3>
-		
-		<% else %>
-		
-		<table class="std_box_table">
-			<thead>
-				<tr>
-					<th class="center">Wholesale</th>
-					<th class="center">Freight In</th>
-					<th class="center">COGS</th>
-					<th class="center">Sales</th>
-					<th class="center">Discounts</th>
-					<th class="center">Gross Margin</th>
-					<th class="center">Net Margin</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="center">$<%= @output.collect {|x| x[:wholesale_price]}.sum %></td>
-					<td class="center">$<%= @output.collect {|x| x[:freight_in_price]}.sum %></td>
-					<td class="center">$<%= @output.collect {|x| x[:cogs_total]}.sum %></td>
-					<td class="center">$<%= @output.collect {|x| x[:total_sales]}.sum %></td>
-					<td class="center">$--</td>
-					<td class="center">%</td>
-					<td class="center">%</td>
-				</tr>
-			</tbody>
-		</table>
-
-		
-		<% end %>
-		
-	</div><!-- end .std_box_content -->
-	
-	
-	<div class="std_box_header_left"></div>
-	<div class="std_box_header_right"></div>
-	<div class="std_box_footer_left"></div>
-	<div class="std_box_footer_right"></div>
-	
-</div><!-- end .std_box -->
-
-
-<div class="clear"></div>
-
