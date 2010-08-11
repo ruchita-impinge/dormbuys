@@ -40,7 +40,7 @@
 			<td class="center"><%= v.qty_on_hand %></td>
 			<td class="center"><%= v.wholesale_price %></td>
 			<td class="center"><%= v.freight_in_price %></td>
-			<td class="center"><%= v.wholesale_price + v.freight_in_price %></td>
+			<td class="center"><%= (v.wholesale_price + v.freight_in_price) * v.qty_on_hand %></td>
 			<td class="center"><%= v.rounded_retail_price %></td>
 			<td class="center">
 				<% if v.rounded_retail_price.to_s.to_f > 0 %>
