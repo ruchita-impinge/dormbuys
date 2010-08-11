@@ -1,8 +1,7 @@
 <h2>Totals</h2>
 <table border="1">
 	<thead>
-		<th class="center">Total Item Count</th>
-		<th class="center">Total Cost</th>
+		<th class="center">Total Wholesale</th>
 		<th class="center">Total Freight In</th>
 		<th class="center">Total Wholesale Cost</th>
 		<th class="center">Total Retail Value</th>
@@ -10,7 +9,6 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td class="center"><%= @t_count %></td>
 			<td class="center"><%= @t_wholesale %></td>
 			<td class="center"><%= @t_freight_in %></td>
 			<td class="center"><%= @t_cog %></td>
@@ -41,7 +39,7 @@
 			<td class="center"><%= v.wholesale_price %></td>
 			<td class="center"><%= v.freight_in_price %></td>
 			<td class="center"><%= (v.wholesale_price + v.freight_in_price) * v.qty_on_hand %></td>
-			<td class="center"><%= v.rounded_retail_price %></td>
+			<td class="center"><%= v.rounded_retail_price * v.qty_on_hand %></td>
 			<td class="center">
 				<% if v.rounded_retail_price.to_s.to_f > 0 %>
 					<%= (((v.rounded_retail_price.to_s.to_f-(v.wholesale_price + v.freight_in_price).to_s.to_f) / v.rounded_retail_price.to_s.to_f) * 100).round(2) %>

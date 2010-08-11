@@ -212,11 +212,10 @@ class Admin::ReportsController < Admin::AdminController
     @variations.reject!{|v| v if v.product.blank? }
     @variations.reject!{|v| v if v.product.drop_ship }
     
-    @t_count         = @variations.size
-    @t_wholesale    = @variations.collect {|x| x.wholesale_price }.sum
-    @t_freight_in   = @variations.collect {|x| x.freight_in_price }.sum
-    @t_cog          = ((@t_wholesale + @t_freight_in) * @variations.size).to_s.to_f
-    @t_retail       = @variations.collect {|x| x.rounded_retail_price }.sum.to_s.to_f
+    @t_wholesale    = @variations.collect {|x| x.wholesale_price * x.qty_on_hand }.sum
+    @t_freight_in   = @variations.collect {|x| x.freight_in_price * x.qty_on_hand }.sum
+    @t_cog          = (@t_wholesale + @t_freight_in).to_s.to_f
+    @t_retail       = @variations.collect {|x| x.rounded_retail_price * x.qty_on_hand }.sum.to_s.to_f
     @t_margin       = (((@t_retail-@t_cog) / @t_retail) * 100).round(2)
 
     @file_name = "inventory_cost-#{Time.now.strftime("%Y-%m-%d")}"
