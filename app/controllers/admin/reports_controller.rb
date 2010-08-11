@@ -186,8 +186,8 @@ class Admin::ReportsController < Admin::AdminController
       @output.sort!{|x,y| y[:qty] <=> x[:qty]}
       
       #calc totals
-      @t_wholesale    = @output.collect {|x| x[:wholesale_price]}.sum.to_s.to_f
-      @t_freight_in   = @output.collect {|x| x[:freight_in_price]}.sum.to_s.to_f
+      @t_wholesale    = @output.collect {|x| x[:wholesale_price] * x[:qty]}.sum.to_s.to_f
+      @t_freight_in   = @output.collect {|x| x[:freight_in_price] * x[:qty]}.sum.to_s.to_f
       @t_cogs         = @output.collect {|x| x[:cogs_total]}.sum.to_s.to_f
       @t_sales        = @output.collect {|x| x[:total_sales]}.sum.to_s.to_f
       @t_discounts    = orders.collect {|o| o.total_coupon }.sum.to_s.to_f
