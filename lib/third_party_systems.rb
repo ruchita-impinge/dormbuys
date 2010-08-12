@@ -352,7 +352,7 @@ class ThirdPartySystems
         row << product.id
     
         #product name
-        row << product.product_name
+        row << product.product_name.gsub(",","")
     
         #product price
         row << product.retail_price
