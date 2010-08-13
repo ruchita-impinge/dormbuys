@@ -471,10 +471,19 @@ function innerInitoPopup(){
 			return false;
 		});
 	});
+	
+	/////////////////////////////////////
+	/////////////////////////////////////
+	// This is the main UI for popups
+	/////////////////////////////////////
+	/////////////////////////////////////
 	$('div.gallery-box').each(function(){
 		var _btn = $(this).find('a.open');
-		var _popup = $(_btn.attr('href'));
+
 		_btn.click(function(){
+			
+			var _popup = $($(this).attr("href"));
+
 			var hFlag = false;
 			var _Top = $(window).scrollTop();
 			_popup.css('top', _Top + 200);

@@ -16,40 +16,7 @@
 		
 		<% else %>
 
-			<table class="std_box_table">
-				<thead>
-			  		<tr>
-			    		<th>Product name</th>
-			    		<th class="center">Visible</th>
-						<th class="center">Variations</th>
-						<th class="center">Price</th>
-						<th colspan="3" class="center">Manage</th>
-			  		</tr>
-				</thead>
-				<tbody>
-
-				<% for product in @products %>
-			  		<tr>
-			    		<td>
-							<%=h product.product_name %>
-							<% if product.available_variations.empty? %>
-								<br /><small class="field_error">No available variations</small>
-							<% end %>
-						</td>
-			    		<td class="center"><%= product.visible ? "YES" : "<span class='field_error'>NO</span>" %></td>
-						<td class="center"> <%= product.product_variations.size %> </td>
-						<td class="center"> <%= product.retail_price %> </td>
-						<!--
-						<td class="center"><%= link_to 'View', admin_product_path(product), :class => "tbl_lnk_show" %></td>
-						-->
-						<td class="center"><%= link_to 'View', product.default_front_url, :target => "_blank", :class => "tbl_lnk_show" %></td>
-			    		<td class="center"><%= link_to 'Edit', edit_admin_product_path(product), :class => "tbl_lnk_edit" %></td>
-			    		<td class="center"><%= link_to 'Delete', admin_product_path(product), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
-			  		</tr>
-			<% end %>
-
-				</tbody>
-			</table>
+			<%= render :partial => "products_table", :object => @products %>
 		
 		<% end %>
 		

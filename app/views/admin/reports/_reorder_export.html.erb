@@ -1,0 +1,30 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th class="center">Name</th>
+			<th class="center">Product Number</th>
+			<th class="center">Qty On Hand</th>
+			<th class="center">Qty On Hold</th>
+			<th class="center">Re-Order Qty</th>
+			<th class="center">Warehouse Location</th>
+			<th class="center">Vendor</th>
+			<th class="center">Vendor Phone</th>
+			<th class="center">Vendor Account #</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for pv in @product_variations %>
+		<tr>
+			<td class="center"><%= pv.full_title %></td>
+			<td class="center"><%= pv.product_number %></td>
+			<td class="center"><%= pv.qty_on_hand %></td>
+			<td class="center"><%= pv.qty_on_hold %></td>
+			<td class="center"><%= pv.reorder_qty %></td>
+			<td class="center"><%= pv.warehouse_location %></td>
+			<td class="center"><%= pv.product.vendor.company_name %></td>
+			<td class="center"><%= pv.product.vendor.phone %></td>
+			<td class="center"><%= pv.product.vendor.account_number %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

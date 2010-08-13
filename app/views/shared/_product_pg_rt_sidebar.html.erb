@@ -10,9 +10,11 @@
 				<strong><%=h rproduct.product_name %></strong>
 			</div>
 			<div class="body">
+
 				<!--
-				<a class="open" href="#lightbox<%= rproduct.id %>">
+				<a class="open" href="#lightbox<%= rproduct.id %>">Quick View</a>
 				-->
+				
 				<a class="" href="<%= rproduct.default_front_url %>">
 					<%= image_tag rproduct.product_image(:recommended), :alt => strip_tags(rproduct.product_name) %>
 				</a>

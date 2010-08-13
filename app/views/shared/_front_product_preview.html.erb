@@ -7,15 +7,12 @@
 				product.default_front_url, :title => product.product_name %>
 		<p><%= truncate(product.product_overview, :length => 140) %></p>
 		<em>our price: <span>$<%= product.retail_price %></span></em>
-		<!--
 		<a href="#lightbox<%= product.id %>" class="btn open">Quick View</a>
-		-->
 	</div>
 </li>
 
 <% content_for :eo_page do %>
 
-<% if 1 == 2 %>
 <div class="quick-popup" id="lightbox<%= product.id %>">
 	<div class="popup-top"><a href="#" class="close">close</a></div>
 	<div class="popup-c">
@@ -40,7 +37,7 @@
 								<div class="select-row">
 									<%= f.select :variation_id, product_variations_for_select(product),
 									 		{:prompt => "Select #{product.available_variations.first.variation_group}"},
-											{:class => 'inner-select2 required', :title => 'select'} %>
+											{:class => 'inner-select required', :title => 'select'} %>
 
 									<span class="arrow">arrow</span>
 								</div>
@@ -53,7 +50,7 @@
 								<% for po in product.product_options %>
 
 									<div class="select-row">
-										<%= select_product_options(po, "cart_item[product_option_values][][id]", nil) %>
+										<%= select_product_options(po, "cart_item[product_option_values][][id]", nil, ['inner-select']) %>
 										<span class="arrow">arrow</span>
 									</div>
 
@@ -66,7 +63,7 @@
 								<% for pao in product.product_as_options %>
 
 									<div class="select-row">
-										<%= select_product_as_options(pao, "cart_item[product_as_option_values][][id]", nil) %>
+										<%= select_product_as_options(pao, "cart_item[product_as_option_values][][id]", nil, ['inner-select']) %>
 										<span class="arrow">arrow</span>
 									</div>
 
@@ -140,6 +137,5 @@
 	</div>
 	<div class="popup-btm"></div>
 </div>
-<% end %>
 
 <% end %>

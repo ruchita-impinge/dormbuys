@@ -1,6 +1,7 @@
 class OrderVendor < ActiveRecord::Base
   
   DORMBUYS = 1
+  LNT = 2
   
   has_many :orders
   

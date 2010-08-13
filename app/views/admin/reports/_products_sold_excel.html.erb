@@ -1,0 +1,23 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th>Line Number</th>
+			<th>Product Name</th>
+			<th>Qty Sold</th>
+			<th>Manufacturer Number</th>
+			<th>Price</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<% @line_items.each_with_index do |oli, i| %>
+		<tr>
+			<td><%= i+1 %></td>
+			<td><%= oli[:item_name] %></td>
+			<td><%= oli[:qty_sold] %></td>
+			<td><%= oli[:mf_num].blank? ? "--" : oli[:mf_num] %></td>
+			<td><%= oli[:price] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

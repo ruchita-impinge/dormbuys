@@ -1,0 +1,105 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<div class="std_box span-24">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Reorder Report</h3>
+	
+	<div class="std_box_content">
+		
+
+		<% form_tag :action => :reorder do %>
+		
+		<div class="field check">
+			<label class="check">Export to Excel:</label>
+			<%= check_box_tag "export", true, false, :class => "check" %>
+		</div>
+		
+		<div class="field">
+			<%= link_to '<span>Run Export</span>', 'javascript:document.forms[0].submit()', 
+					:class => 'button', :style => "margin-top: -1px;" %>
+		</div>
+		
+		<div class="clear"></div>
+
+		<% end %>
+
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		Re-Order Report: <%= Time.now.strftime("%m/%d/%Y") %>
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% unless @product_variations %>
+			
+			<h3>No data was found</h3>
+		
+		<% else %>
+		
+		<table class="std_box_table">
+			<thead>
+				<tr>
+					<th class="center">Name</th>
+					<th class="center">Product Number</th>
+					<th class="center">Qty On Hand</th>
+					<th class="center">Qty On Hold</th>
+					<th class="center">Re-Order Qty</th>
+					<th class="center">Warehouse Location</th>
+					<th class="center">Vendor</th>
+					<th class="center">Vendor Phone</th>
+					<th class="center">Vendor Account #</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for pv in @product_variations %>
+				<tr>
+					<td class="center">
+						<%= link_to pv.full_title, {:controller => :products, :action => :edit, :id => pv.product} %>
+					</td>
+					<td class="center"><%= pv.product_number %></td>
+					<td class="center"><%= pv.qty_on_hand %></td>
+					<td class="center"><%= pv.qty_on_hold %></td>
+					<td class="center"><%= pv.reorder_qty %></td>
+					<td class="center"><%= pv.warehouse_location %></td>
+					<td class="center">
+						<%= link_to pv.product.vendor.company_name, {:controller => :vendors, :action => :edit, :id => pv.product.vendor} %>
+					</td>
+					<td class="center"><%= pv.product.vendor.phone %></td>
+					<td class="center"><%= pv.product.vendor.account_number %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>

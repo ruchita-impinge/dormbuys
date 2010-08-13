@@ -1,0 +1,45 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th>Product Number</th>
+			<th>MFG Number</th>
+			<th>Product Name</th>
+			<th>Vendor</th>
+			<th>Wholesale Price</th>
+			<th>Freight In</th>
+			<th>Drop Ship Fee</th>
+			<th style="color: red;">Total Wholesale Price</th>
+			<th>Markup</th>
+			<th style="color: red;">Retail Price</th>
+			<th>Shipping In Price</th>
+			<th style="color: red;">Total Retail Price</th>
+			<th style="color: red;">Rounded Retail Price</th>
+			<th style="color: red;">Previous Price</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<% @variations.each_with_index do |variation, i| %>
+		<%
+		cnum = i + 2
+		%>
+		<tr>
+			<td><%= variation.product_number %></td>
+			<td><%= variation.manufacturer_number %></td>
+			<td><%= variation.full_title %></td>
+			<td><%= variation.product.vendor.company_name rescue "UNKNOWN" %></td>
+			<td><%= variation.wholesale_price %></td>
+			<td><%= variation.freight_in_price %></td>
+			<td><%= variation.drop_ship_fee %></td>
+			<td style="color: red;">=E<%= cnum %>+F<%= cnum %>+G<%= cnum %></td>
+			<td><%= variation.markup.blank? ? "0.00" : variation.markup %></td>
+			<td style="color: red;">=ROUND(($H<%= cnum %>/(1-$I<%= cnum %>)),2)</td>
+			<td><%= variation.shipping_in_price %></td>
+			<td style="color: red;">=J<%= cnum %>+K<%= cnum %></td>
+			<td style="color: red;">=IF($L<%= cnum %>>0,IF((ROUND($L<%= cnum %>,0)-0.01)<$L<%= cnum %>,(ROUND($L<%= cnum %>,0)+0.49),(ROUND($L<%= cnum %>,0)-0.01)),0)</td>
+			<td style="color: red;"><%= variation.rounded_retail_price %></td>
+		</tr>
+		<% end %>
+	</tbody>
+	
+</table>

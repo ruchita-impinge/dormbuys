@@ -1480,4 +1480,25 @@ class Order < ActiveRecord::Base
   end #end method dorm_shipping_address2
 
 
+  # T || F as to wether order has a giftcard on it
+  def has_gift_card?
+    
+    has_gc = false
+    
+    #search line item product names for "gift card"
+    order_line_items.each do |line_item|
+      
+        found = line_item.item_name.downcase =~ /gift card/
+        
+        if found
+          has_gc = true
+          break
+        end
+        
+    end
+    
+    has_gc
+    
+  end #end method has_gift_card?
+
 end #end class

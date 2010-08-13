@@ -143,8 +143,8 @@ module ApplicationHelper
   
   
   
-  def select_product_as_options(pao, name, selected)
-    out = %(<select name=#{name} class="inner-select2" title="select">)
+  def select_product_as_options(pao, name, selected, css_classes = [])
+    out = %(<select name=#{name} class="#{css_classes.empty? ? 'inner-select2' : css_classes.join(" ")}" title="select">)
     out += %(<option value="">Select "#{pao.option_name}"...</option>)
     for value in pao.product_as_option_values
       out += %(<option value="#{value.id}"#{' selected' if value.id == selected}>

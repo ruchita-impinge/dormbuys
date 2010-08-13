@@ -1,0 +1,36 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@products) %>
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		Products not visible
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @products.empty? %>
+			
+			<h3>No data was found</h3>
+		
+		<% else %>
+		
+			<%= render :partial => "admin/products/products_table", :object => @products %>
+
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+

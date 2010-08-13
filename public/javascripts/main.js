@@ -86,7 +86,9 @@ if (window.addEventListener)
 	window.addEventListener("load", initTabs, false);
 else if (window.attachEvent && !window.opera)
 	window.attachEvent("onload", initTabs);
-	function initPopups()
+
+/*
+function initPopups()
 {
 	initPopup({
 		openEvent:'click'
@@ -95,6 +97,8 @@ else if (window.attachEvent && !window.opera)
 		popupHolderClass:'popup-hover'
 	});
 }
+*/
+
 /*
 if (window.addEventListener)
 	window.addEventListener("load", initPopups, false);
@@ -102,6 +106,7 @@ else if (window.attachEvent)
 	window.attachEvent("onload", initPopups);
 */
 	
+/*
 function initPopup(_popup) {
 	if (!_popup.popupHolderTag) _popup.popupHolderTag = 'li';
 	if (!_popup.popupTag) _popup.popupTag = 'div';
@@ -177,6 +182,7 @@ function initPopup(_popup) {
 		}
 	}
 }
+*/
 function initNav() {
 	initNavIndexes();
 }
