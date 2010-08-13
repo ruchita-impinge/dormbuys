@@ -7,12 +7,14 @@
 				product.default_front_url, :title => product.product_name %>
 		<p><%= truncate(product.product_overview, :length => 140) %></p>
 		<em>our price: <span>$<%= product.retail_price %></span></em>
+		<!--
 		<a href="#lightbox<%= product.id %>" class="btn open">Quick View</a>
+		-->
 	</div>
 </li>
 
 <% content_for :eo_page do %>
-
+<% if 1 == 2 %>
 <div class="quick-popup" id="lightbox<%= product.id %>">
 	<div class="popup-top"><a href="#" class="close">close</a></div>
 	<div class="popup-c">
@@ -137,5 +139,6 @@
 	</div>
 	<div class="popup-btm"></div>
 </div>
+<% end %>
 
 <% end %>
