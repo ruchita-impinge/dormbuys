@@ -1,0 +1,82 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<div class="std_box span-24">
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Expired Gift Card Date Range</h3>
+	
+	<div class="std_box_content">
+		
+
+		<% form_tag :action => :giftcard_report do %>
+		
+
+		<div class="field shorter">
+			<%= text_field_tag :from_date, @from_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>From Date: <span>(def is 1st)</span></label>
+		</div>
+		
+		<div class="field shorter">
+			<%= text_field_tag :to_date, @to_date.strftime("%m/%d/%Y"), :class => 'textfield' %>
+			<label>To Date: <span>(def is end of month)</span></label>
+		</div>
+		
+		
+		<div class="field">
+			<%= link_to '<span>Search</span>', 'javascript:document.forms[0].submit()', :class => 'button' %>
+		</div>
+		
+		<div class="clear"></div>
+
+		<% end %>
+
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+</div>
+<div class="clear"></div>
+
+<br />
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		Gift Cards Total &amp; Cards Expired In: <%= @from_date.strftime("%m/%d/%Y") %> - <%= @to_date.strftime("%m/%d/%Y") %>
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+			
+			<p>
+				Total <b>available</b> balance of <em>valid</em> gift cards to date: $<%= @valid.collect {|gc| gc.current_amount }.sum %>
+			</p>
+			<p>
+				Card balance total that expired between <b><%= @from_date.strftime("%m/%d/%Y") %></b> and <b><%= @to_date.strftime("%m/%d/%Y") %></b>:
+				$<%= @expired.collect {|gc| gc.current_amount }.sum %>
+			</p>
+			
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<div class="clear"></div>
+
