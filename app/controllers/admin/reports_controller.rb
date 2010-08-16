@@ -491,7 +491,7 @@ class Admin::ReportsController < Admin::AdminController
     
     
     @valid = GiftCard.all(:conditions => ["int_current_amount > 0 AND ((expires = 1 AND expiration_date > ?) OR (expires = 0))", Date.today])
-    @expired = GiftCard.all(:conditions => ["int_current_amount > 0 AND expires = 1 AND expiration_date <= ? AND expiration_date <= ?", @from_date, @to_date])
+    @expired = GiftCard.all(:conditions => ["int_current_amount > 0 AND expires = 1 AND expiration_date >= ? AND expiration_date <= ?", @from_date, @to_date])
     
   end #end method giftcard_report
   
