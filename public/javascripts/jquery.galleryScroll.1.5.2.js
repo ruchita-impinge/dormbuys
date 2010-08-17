@@ -356,6 +356,7 @@ function initoPopup(){
 }
 
 function innerInitoPopup(){
+	
 	var change_speed = 1000;
 	var _fader = $('<div id="jquery-overlay"></div>');
 	$('body').append(_fader);
@@ -524,5 +525,5 @@ $(document).ready(function(){
 		});
 		initCenter();
 		initoPopup();
-		innerInitoPopup()
+		innerInitoPopup();
 	});
