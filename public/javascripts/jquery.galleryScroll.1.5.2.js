@@ -438,6 +438,8 @@ function innerInitoPopup(){
 			return false;
 		});
 	});
+	
+	/*
 	$('div.slide').each(function(){
 		var _btn = $(this).find('a.open');
 		var _popup = $(_btn.attr('href'));
@@ -460,18 +462,11 @@ function innerInitoPopup(){
 					_popup.css('top', -9999);
 					return false;
 				});
-/*
-				$('body').click(function(){
-					if (!hFlag) {
-						_fader.fadeOut();
-						_popup.css('top', -9999);
-					}
-				});
-
-*/			
+		
 			return false;
 		});
 	});
+	*/
 	
 	/////////////////////////////////////
 	/////////////////////////////////////
@@ -479,40 +474,45 @@ function innerInitoPopup(){
 	/////////////////////////////////////
 	/////////////////////////////////////
 	$('div.gallery-box').each(function(){
-		var _btn = $(this).find('a.open');
+		//var _btn = $(this).find('a.open');
+		
+		$(this).find('a.open').each(function(){
 
-		_btn.click(function(){
-			
-			var _popup = $($(this).attr("href"));
+			var _btn = $(this);
 
-			var hFlag = false;
-			var _Top = $(window).scrollTop();
-			_popup.css('top', _Top + 200);
-			var position = _popup.position();
-			_fader.show();
-			_fader.animate({opacity: 0.6}, {queue:false, duration:change_speed});
+			_btn.click(function(){
 			
-				$('div.quick-popup').mouseover(function(){
-					hFlag =true;
-				}).mouseout(function(){
-					hFlag =false;
-				});
-				var _closer = _popup.find('a.close');
-				_closer.click(function(){
-					_fader.fadeOut();
-					_popup.css('top', -9999);
-					return false;
-				});
-/*
-				$('body').click(function(){
-					if (!hFlag) {
+				var _popup = $($(this).attr("href"));
+				var hFlag = false;
+				var _Top = $(window).scrollTop();
+				
+				_popup.css('top', _Top + 200);
+				//var position = _popup.position();
+				_fader.show();
+				_fader.animate({opacity: 0.6}, {queue:false, duration:change_speed});
+			
+					$('div.quick-popup').mouseover(function(){
+						hFlag =true;
+					}).mouseout(function(){
+						hFlag =false;
+					});
+					var _closer = _popup.find('a.close');
+					_closer.click(function(){
 						_fader.fadeOut();
 						_popup.css('top', -9999);
-					}
-				});
+						return false;
+					});
+/*
+					$('body').click(function(){
+						if (!hFlag) {
+							_fader.fadeOut();
+							_popup.css('top', -9999);
+						}
+					});
 */
 			
-			return false;
+				return false;
+			});	
 		});
 	});
 }
