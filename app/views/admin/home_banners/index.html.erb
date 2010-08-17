@@ -1,0 +1,57 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@home_banners) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Home Banners</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @home_banners.empty? %>
+			
+			<h3>No home banners were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+                       
+					   <th>Image</th>
+					   <th class="center">Main</th>
+                       <th colspan="3" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for home_banner in @home_banners %>
+			  		<tr>
+                        
+						<td><%= image_tag home_banner.image(:thumb) %></td>
+						<td class="center"><b><%=h home_banner.is_main ? "*" : "" %></b></td>
+                        <td class="center"><%= link_to 'View', admin_home_banner_path(home_banner), :class => "tbl_lnk_show" %></td>
+                        <td class="center"><%= link_to 'Edit', edit_admin_home_banner_path(home_banner), :class => "tbl_lnk_edit" %></td>
+                        <td class="center"><%= link_to 'Delete', admin_home_banner_path(home_banner), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Home Banner</span>', new_admin_home_banner_path, :class => 'button positive' %>

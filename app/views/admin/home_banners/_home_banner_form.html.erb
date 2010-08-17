@@ -1,0 +1,18 @@
+
+<div class="field">
+	<%= f.file_field :image, :class => 'filefield textfield' %>
+	<%= f.label :image %>
+</div>
+
+<% unless @home_banner.new_record? %>
+<div class="field">
+	<%= image_tag @home_banner.image(:thumb) %>
+</div>
+<% end %>
+
+  <div class="field check">
+    <%= f.check_box :is_main, :class => 'check' %>
+    <%= f.label :is_main, nil, :class => 'check' %>
+  </div>
+  <div class="clear"></div>
+

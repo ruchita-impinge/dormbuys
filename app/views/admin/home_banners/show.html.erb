@@ -1,0 +1,37 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Home Banner</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+			<p>
+				<%= image_tag @home_banner.image(:main) %>
+			</p>
+		
+			<p>
+			  <b>Is main:</b>
+			  <%=h @home_banner.is_main ? "YES" : "NO" %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_home_banners_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_home_banner_path(@home_banner), :class => 'button' %>

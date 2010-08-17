@@ -6,6 +6,10 @@ class FrontController < ApplicationController
     
     @deal = DailyDormDeal.current_deal
     
+    unless read_fragment("home_page_2")
+      @home_banner = HomeBanner.main
+    end
+    
     unless read_fragment("home_page_featured")
       if RAILS_ENV == "development"
         @featured_products = Product.all(:limit => 20)

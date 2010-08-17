@@ -147,6 +147,15 @@ class ApplicationController < ActionController::Base
   end #end method expire_home_caches
   
   
+  def expire_home_banner_caches
+    %w(home_page_2).each do |frag|
+      if fragment_exist? frag
+        expire_fragment frag
+      end
+    end
+  end #end method expire_home_banner_caches
+  
+  
   private
 
   def route_not_found
