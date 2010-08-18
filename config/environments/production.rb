@@ -27,7 +27,7 @@ config.action_view.cache_template_loading            = true
 # Enable threaded mode
 # config.threadsafe!
 
-ENV["RAILS_ASSET_ID"] = '201008181144'
+ENV["RAILS_ASSET_ID"] = '201008181215'
 
 
 # CACHE KEYS IN PLAY

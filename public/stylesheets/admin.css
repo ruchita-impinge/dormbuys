@@ -504,6 +504,17 @@ form .subcategory_picker div{
 	width: 516px;
 }
 
+.container a.add_variation_link{
+	width: 91px;
+	float: left;
+}
+.container a.copy_prices_link{
+	width: 170px;
+	float: left;
+	display: block;
+	margin-right: 10px;
+}
+
 /* qty discount form */
 #qty_discount_builder_text span{
 	font-size: 22px;
