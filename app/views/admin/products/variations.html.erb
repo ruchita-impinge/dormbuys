@@ -136,10 +136,14 @@
 		<fieldset id="fieldset_variations">
 			<legend>Variations</legend>
 
+			<%= link_to "Copy 1st variation prices to all.", "javascript:copyVariationPrices();", :class => "fieldset_add_link", :style => "float: left; margin-right: 10px;" %>
+
 			<%= link_to_remote 'Add A Variation', 
 					:url => {:action => :add_variation},
 					:html => {:class => 'fieldset_add_link'},
 					:with => %('pp_count=' + $(".variation").eq($(".variation").length-1).contents().find(".product_package").length) %>
+
+
 
 			<div id="product_variations">
 				<%= render :partial => 'product_variation', :collection => @product.product_variations %>	

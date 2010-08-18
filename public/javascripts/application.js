@@ -113,3 +113,36 @@ function formatCurrency(num) {
 	num.substring(num.length-(4*i+3));
 	return (((sign)?'':'-') + num + '.' + cents);
 }
+
+
+function copyVariationPrices(){
+
+
+	if($(".variation").length > 0){
+		
+		var first = $(".variation").eq(0);
+		var wh_price	= first.contents().find('.wholesale_price').val();
+		var fi_price	= first.contents().find('.freight_in_price').val();
+		var ds_fee		= first.contents().find('.drop_ship_fee').val();
+		var si_price	= first.contents().find('.shipping_in_price').val();
+		var markup		= first.contents().find('.markup').val();
+		var list_price 	= first.contents().find('.list_price').val();
+		
+		for(var i=1; i < $(".variation").length; i++)
+		{
+			$(".variation").eq(i).contents().find('.wholesale_price').val(wh_price);
+			$(".variation").eq(i).contents().find('.freight_in_price').val(fi_price);
+			$(".variation").eq(i).contents().find('.drop_ship_fee').val(ds_fee);
+			$(".variation").eq(i).contents().find('.shipping_in_price').val(si_price);
+			$(".variation").eq(i).contents().find('.markup').val(markup);
+			$(".variation").eq(i).contents().find('.list_price').val(list_price);
+			
+		}//end for loop
+		
+	}//end if variations > 0
+	else
+	{
+		alert("You must have at least one variation");
+	}
+
+}//end function copyVariationPrices
