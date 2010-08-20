@@ -487,6 +487,8 @@ function innerInitoPopup(){
 				var _Top = $(window).scrollTop();
 				
 				_popup.css('top', _Top + 200);
+				_popup.hide();
+				_popup.fadeIn(change_speed);
 				//var position = _popup.position();
 				_fader.show();
 				_fader.animate({opacity: 0.6}, {queue:false, duration:change_speed});
@@ -498,8 +500,11 @@ function innerInitoPopup(){
 					});
 					var _closer = _popup.find('a.close');
 					_closer.click(function(){
-						_fader.fadeOut();
-						_popup.css('top', -9999);
+						_fader.fadeOut(change_speed);
+						_popup.fadeOut(change_speed, function(){
+							_popup.css('top', -9999);
+						});
+						
 						return false;
 					});
 /*

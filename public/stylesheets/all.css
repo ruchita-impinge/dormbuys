@@ -5249,3 +5249,21 @@ a.registry_continue_link{
 	font-weight: bold;
 	color: #787568;
 }
+.quick-popup a.additional_image{
+	display: block;
+	float: left;
+	border: 1px solid #b7b2a1;
+	margin: 2px 2px 0px 2px;
+}
+.quick-popup a.additional_image img{
+	width: 20px;
+	height: 20px;
+}
+.quick-popup .additional_product_images{
+	margin-left: 12px;
+	margin-top: 10px;
+}
+.quick-popup .column img{
+	width: 130px;
+	height: 132px;
+}

@@ -57,7 +57,7 @@
 							
 							<div class="input-row">
 								<label for="qty_<%= product.id %>">Qty:</label>
-								<%= f.text_field :qty, :id => "qty_#{product.id}" %>
+								<%= f.text_field :qty, :id => "qty_#{product.id}", :value => 1 %>
 								<%= f.hidden_field :is_gift_registry_item, :value => 0, :id => "is_gift_registry_item_#{product.id}" %>
 								<%= f.hidden_field :is_wish_list_item, :value => 0, :id => "is_wish_list_item_#{product.id}" %>
 								<%= link_to 'Add To Cart', "javascript:document.forms['cart_form_popup_#{product.id}'].submit();", :class => 'btn' %>
@@ -69,7 +69,9 @@
 				</div>
 			</div>
 			<div class="column">
-				<%= image_tag product.product_image(:list), :alt => product.product_name %>
+				
+				<!-- PRODUCT IMAGE -->
+				<%= image_tag product.product_image(:list), :alt => product.product_name, :class => 'popup-main-img' %>
 				
 				<!--
 				<span class="stars">stars</span>
@@ -94,12 +96,9 @@
 							
 						}//end if
 						)
-						#page << %($("#is_wish_list_item_#{product.id}").val("1");)
-						#page << "document.forms['cart_form_popup_#{product.id}'].submit();"
 					end %>
 					
 					<%= link_to_function "add to my Registry" do |page|
-						
 						page << %(
 						if($("#qty_#{product.id}").val() == "")
 						{ 
@@ -112,13 +111,34 @@
 							
 						}//end if
 						)
-						
-						#page << %($("#is_gift_registry_item_#{product.id}").val("1");)
-						#page << "document.forms['cart_form_popup_#{product.id}'].submit();"
 					end %>
-				</div>
-			</div>
-		</div>
-	</div>
+				</div><!-- end .link-box -->
+				
+				
+				<div class="additional_product_images">
+					<%
+					additional_images = []					
+					product.additional_product_images.each {|aimg| additional_images << {:thumb => aimg.image(:thumb), :main => aimg.image(:main), :large => aimg.image(:large), :title => aimg.description, :sort => 1} }
+        			product.available_variations.each {|v| additional_images << {:thumb => v.image(:thumb), :main => v.image(:main), :large => v.image(:large), :title => v.title, :sort => 2} if v.image.file? }
+        			additional_images.sort! {|x,y| x[:sort] <=> y[:sort]}
+					%>
+					
+					<% additional_images.in_groups_of(4, false) do |image_group| %>
+						<% image_group.each do |aimg| %>
+							<%= link_to image_tag(aimg[:thumb]), aimg[:large],
+									:target => "_blank", 
+									:class => "additional_image lightwindow", 
+									:rel => aimg[:main],
+									:title => aimg[:title]  %>
+						<% end %>
+						<div class="clear"></div>
+					<% end %>
+					
+				</div><!-- end .additional_product_images -->
+				
+				
+			</div><!-- end .column -->
+		</div><!-- end .popup-content -->
+	</div><!-- end .popup-c -->
 	<div class="popup-btm"></div>
-</div>
+</div><!-- end .quick-popup -->

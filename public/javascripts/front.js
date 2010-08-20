@@ -3,6 +3,7 @@ $(document).ready(function(){
 	$("a.lightwindow").colorbox();
 	$('a#learn_more_secure, a.learn_more_dorm_ship, a.learn_more_gift').colorbox({width:'700px'});
 	$('a#what_is_vcode').colorbox({innerWidth:'311px', innerHeight:'255px'});
+	swapPopupImage();
 });//end ready
 
 //function to mark items that are JS removed for real delete
@@ -28,3 +29,31 @@ function setupHomePageCatBannerNav()
 	});
 	
 }//end function
+
+
+
+function swapPopupImage()
+{	
+	$(".quick-popup").each(function(){
+		
+		var popup = $(this)
+		var img = popup.find('.popup-main-img')
+		var oSource = img.attr("src");
+		
+		popup.find('a.additional_image').each(function(){
+			
+			var imgLink = $(this);
+			
+			imgLink.mouseover(function(){
+				img.attr("src", imgLink.attr("rel"));
+			});//end mouseover
+			
+			imgLink.mouseout(function(){
+				img.attr("src", oSource);
+			});//end mouseout
+			
+		});//end each link
+		
+	});//end each
+
+}//end function swapPopupImage
