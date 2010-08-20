@@ -35,7 +35,7 @@
 		<h1><%= link_to 'Dormbuys.com', root_path %></h1>
 <% end %>
 
-<% cache(@category || "front_large_banner_1", :expires_in => 5.minutes) do %>		
+<% cache([@category || "front_large_banner_1", "menu"], :expires_in => 5.minutes) do %>		
 		<%= render :partial => 'shared/front_main_nav' %>
 <% end %>	
 
