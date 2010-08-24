@@ -1,0 +1,56 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@variations) %>
+
+<div class="std_box span-24">
+	
+	<h3 class="std_box_heading">
+		Product Variations with 0 - 3 inventory count
+	</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @variations.empty? %>
+			
+			<h3>No data was found</h3>
+		
+		<% else %>
+		
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+			    		<th>Full Title</th>
+			    		<th class="center">Qty On Hand</th>
+						<th class="center">Qty On Hold</th>
+						<th class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for v in @variations %>
+			  		<tr>
+						<td><%= v.full_title %></td>
+			    		<td class="center"><%= v.qty_on_hand %></td>
+						<td class="center"> <%= v.qty_on_hold %> </td>
+			    		<td class="center"><%= link_to 'Edit', variations_admin_product_path(v.product), :class => "tbl_lnk_edit" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+<div class="clear"></div>
+

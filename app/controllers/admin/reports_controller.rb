@@ -495,4 +495,12 @@ class Admin::ReportsController < Admin::AdminController
     
   end #end method giftcard_report
   
+  
+  def low_inventory
+    vtemp = ProductVariation.all(:conditions => ["qty_on_hand >= 0 AND qty_on_hand <= 3"], :include => [:product])
+    vtemp.reject!{|v| v if v.product.blank? }
+    @variations = vtemp.paginate :per_page => 20, :page => params[:page]
+  end #end method low_inventory
+  
+  
 end #end class
