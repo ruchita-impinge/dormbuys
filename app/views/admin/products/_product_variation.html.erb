@@ -59,7 +59,7 @@
 		
 		
 		<div class="field shorter">
-			<%= v.select :visible, [["Yes", 1], ["No", 0]].collect {|x| [x.first, x.last]} %>
+			<%= v.select :visible, [["Yes", 1], ["No", 0]].collect {|x| [x.first, x.last]}, {:selected => (product_variation.visible ? 1 : 0)} %>
 			<%= v.label :visible %>
 		</div>
 		<div class="clear"></div>
