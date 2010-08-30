@@ -23,36 +23,36 @@ class ThirdPartySystems
     output = "id\tlink\ttitle\tdescription\timage_link\tprice\tcondition\n"
     
     #fetch all the products to put into the file
-    @product_variations = ProductVariation.find(:all, :conditions => {:visible => true})
+    @product_variations = ProductVariation.find(:all, :conditions => {:visible => true}, :include => [:product])
     
     #loop through products and add to file
     for variation in @product_variations
+      if variation.product
+        #setup vars
+        id = variation.product_number
+        link = "http://dormbuys.com" + "#{variation.product.default_front_url}"
+        title = variation.full_title[0,80]
       
-      #setup vars
-      id = variation.product_number
-      link = "http://dormbuys.com" + "#{variation.product.default_front_url}"
-      title = variation.full_title[0,80]
+        description = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
+        #description.gsub!(/”/, "&quote;")
+        #description.gsub!(/"/, "&quote;")
+        #description.gsub!(/'/, "&rsquo;")
+        #title.gsub!(/”/, "&quote;")
+        #title.gsub!(/"/, "&quote;")
+        #title.gsub!(/'/, "&rsquo;")
       
-      description = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
-      #description.gsub!(/”/, "&quote;")
-      #description.gsub!(/"/, "&quote;")
-      #description.gsub!(/'/, "&rsquo;")
-      #title.gsub!(/”/, "&quote;")
-      #title.gsub!(/"/, "&quote;")
-      #title.gsub!(/'/, "&rsquo;")
+        begin
+          img_lnk = "#{variation.product.product_image.url(:main)}"
+        rescue
+          img_lnk = "http://www.dormbuys.com"
+        end
       
-      begin
-        img_lnk = "#{variation.product.product_image.url(:main)}"
-      rescue
-        img_lnk = "http://www.dormbuys.com"
+        price = variation.rounded_retail_price.to_s
+        condition = "new"
+      
+        #add the line to the output
+        output += "#{id}\t#{link}\t#{title}\t#{description}\t#{img_lnk}\t#{price}\t#{condition}\n"
       end
-      
-      price = variation.rounded_retail_price.to_s
-      condition = "new"
-      
-      #add the line to the output
-      output += "#{id}\t#{link}\t#{title}\t#{description}\t#{img_lnk}\t#{price}\t#{condition}\n"
-      
     end #end for loop
     
     
