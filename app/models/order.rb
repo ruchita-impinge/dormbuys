@@ -935,8 +935,10 @@ class Order < ActiveRecord::Base
   def cancel_order
     
     #del the order's shipping labels
-    unless kill_all_shipping_labels
-      return false
+    if self.shipping_labels.size > 0
+      unless kill_all_shipping_labels
+        return false
+      end
     end
     
     
@@ -1058,6 +1060,8 @@ class Order < ActiveRecord::Base
       label.destroy
       
     end #end labels.each
+    
+    return true
     
   end #end method kill_all_shipping_labels
   
