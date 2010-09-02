@@ -25,7 +25,9 @@
 				<% cache("home_page_featured-1", :expires_in => 5.minutes) do %>				
 					<ul>
 						<% for product in @featured_products %>
-							<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
+							<% if product.available_variations.size > 0 %>
+								<%= render :partial => "shared/front_product_preview", :locals => {:product => product} %>
+							<% end %>
 						<% end %>
 					</ul>
 				<% end %>			
@@ -34,7 +36,9 @@
 				<% content_for :eo_page do %>
 					<% cache("home_page_featured-2", :expires_in => 5.minutes) do %>
 						<% @featured_products.each do |prod| %>
-							<%= render :partial => "shared/front_product_preview_pop", :locals => {:product => prod} %>
+							<% if product.available_variations.size > 0 %>
+								<%= render :partial => "shared/front_product_preview_pop", :locals => {:product => prod} %>
+							<% end %>
 						<% end %>
 					<% end %>
 				<% end %>
