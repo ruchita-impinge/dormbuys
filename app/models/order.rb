@@ -183,12 +183,38 @@ class Order < ActiveRecord::Base
     Notifier.send_later(:deliver_customer_order_notification, self)
     self.send_later(:track_item_sold_counts)
     self.send_later(:setup_order_shipping)
+    self.send_later(:send_to_infusionsoft)
     
     self.track_coupons_used
     self.track_gift_cards_used
     self.update_gift_registry_wish_list
     
   end #end method run_followup_tasks
+  
+  
+  
+  def send_to_infusionsoft
+    begin
+      ifs = Infusionsoft.new
+      if self.user
+        fname = self.user.first_name
+        lname = self.user.last_name
+        email = self.user.email
+        whoami = self.user.whoami
+      else
+        fname = self.billing_first_name
+        lname = self.billing_last_name
+        email = self.email
+        whoami = self.whoami
+      end
+      ifs.find_or_create_then_p_to_c(fname, lname, email, whoami)
+    rescue => e
+      HoptoadNotifier.notify(
+        :error_class => "Order(#{self.id})",
+        :error_message => "!!! - Error sending to Infusionsoft (#{self.id}): #{e.message}"
+      )
+    end
+  end #end method send_to_infusionsoft
 
 
   
