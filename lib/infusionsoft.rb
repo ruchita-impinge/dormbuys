@@ -58,14 +58,18 @@ class Infusionsoft
   ENCRYPTION_KEY = "afded28471fb672d0cacb4b0b1417f9f"
   SERVICE_URL = "https://dormbuys.infusionsoft.com/api/xmlrpc"
   
-  TAG_PROSPECT                    = 92
-  TAG_CUSTOMER                    = 93
-  TAG_NEWSLETTER_SUBSCRIBER       = 91
-  TAG_10_PERCENT_COUPON           = 98
-  TAG_PARENT                      = 100
-  TAG_COLLEGE_STUDENT             = 102
-  TAG_HIGH_SCHOOL_STUDENT         = 104
-  TAG_OTHER                       = 106
+  TAG_PROSPECT                      = 92
+  TAG_CUSTOMER                      = 93
+  TAG_NEWSLETTER_SUBSCRIBER         = 91
+  TAG_10_PERCENT_COUPON             = 98
+  TAG_P_PARENT                      = 100
+  TAG_P_COLLEGE_STUDENT             = 102
+  TAG_P_HIGH_SCHOOL_STUDENT         = 104
+  TAG_P_OTHER                       = 106
+  TAG_C_PARENT                      = 158
+  TAG_C_COLLEGE_STUDENT             = 156
+  TAG_C_HIGH_SCHOOL_STUDENT         = 160
+  TAG_C_OTHER                       = 162
   
   SEQUENCE_PROSPECT_TO_CUSTOMER   = 166
   
@@ -146,15 +150,15 @@ class Infusionsoft
   def get_who_am_i_constant(form_value)
     case form_value.downcase
       when /college student/
-        TAG_COLLEGE_STUDENT
+        TAG_C_COLLEGE_STUDENT
       when /high school student/
-        TAG_HIGH_SCHOOL_STUDENT
+        TAG_C_HIGH_SCHOOL_STUDENT
       when /parent/
-        TAG_PARENT
+        TAG_C_PARENT
       when /other/
-        TAG_OTHER
+        TAG_C_OTHER
       else
-        TAG_OTHER
+        TAG_C_OTHER
     end
   end #end method get_who_am_i_constant(form_value)
   
