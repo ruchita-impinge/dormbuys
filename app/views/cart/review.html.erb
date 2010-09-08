@@ -147,7 +147,7 @@
 										<span><%= @cart.shipping_first_name %> <%= @cart.shipping_last_name %></span>
 										<span><%= @cart.dorm_ship_college_name %></span>
 										<span><%= @cart.shipping_address %></span>
-										<% if @cart.shipping_address2 %>
+										<% unless @cart.shipping_address2.blank? %>
 											<% unless @cart.dorm_ship_not_part %>
 												<span><%= @cart.shipping_address2 %></span>
 											<% end %>
@@ -155,7 +155,7 @@
 										<span><%= @cart.shipping_city %>, <%= @cart.shipping_state.abbreviation %> <%= @cart.shipping_zipcode %></span>
 										<span><%= @cart.shipping_country.country_name %></span>
 										<span><%= @cart.shipping_phone %></span>
-										<span>Ship: #{order.when_to_dorm_ship</span>
+										<span>Ship: <%= Order::DORM_SHIP_OPTIONS.detect {|x| x.first == @cart.dorm_ship_time_id }.last %></span>
 									<% else %>
 										<span><%= @cart.shipping_first_name %> <%= @cart.shipping_last_name %></span>
 										<span><%= @cart.shipping_address %></span>

@@ -359,6 +359,7 @@ class Admin::OrdersController < Admin::AdminController
     @order = Order.find(params[:id])
     @order.skip_new_callbacks = true
     @order.attributes = params[:order]
+    @order.dorm_shipping_address2 = params[:order][:dorm_shipping_address2] unless params[:order][:dorm_shipping_address2].blank?
 
     respond_to do |format|
       

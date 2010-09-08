@@ -297,6 +297,7 @@ class CartController < ApplicationController
   
   
   def save_billing_shipping
+          
             
     @cart_step = "billing_shipping"
     @page_title = "Order Billing and Shipping"
@@ -310,7 +311,9 @@ class CartController < ApplicationController
     
     
     begin
-      saved = @cart.update_attributes(params[:cart])
+      @cart.attributes = params[:cart]
+      @cart.dorm_shipping_address2 = params[:cart][:dorm_shipping_address2] unless params[:cart][:dorm_shipping_address2].blank?
+      saved = @cart.save
     rescue => e
       @cart.errors.add_to_base(e.message)
       render :action => 'billing_shipping'and return

@@ -139,24 +139,18 @@ class Cart < ActiveRecord::Base
   
   def set_shipping_address
 
-    case self.user_profile_type_id
-      
-      when Order::ADDRESS_SAME
-        self.shipping_first_name  = self.billing_first_name
-        self.shipping_last_name   = self.billing_last_name
-        self.shipping_address     = self.billing_address
-        self.shipping_address2    = self.billing_address2
-        self.shipping_city        = self.billing_city
-        self.shipping_state_id    = self.billing_state_id
-        self.shipping_zipcode     = self.billing_zipcode
-        self.shipping_country_id  = self.billing_country_id
-        self.shipping_phone       = self.billing_phone
-      when Order::ADDRESS_DIFFERENT
-        # use form vars
-      when Order::ADDRESS_DORM
-        # use form vars
-    end #end case statement
+    return unless self.user_profile_type_id == Order::ADDRESS_SAME
     
+    self.shipping_first_name  = self.billing_first_name
+    self.shipping_last_name   = self.billing_last_name
+    self.shipping_address     = self.billing_address
+    self.shipping_address2    = self.billing_address2
+    self.shipping_city        = self.billing_city
+    self.shipping_state_id    = self.billing_state_id
+    self.shipping_zipcode     = self.billing_zipcode
+    self.shipping_country_id  = self.billing_country_id
+    self.shipping_phone       = self.billing_phone
+
   end #end method set_shipping_address
   
   
