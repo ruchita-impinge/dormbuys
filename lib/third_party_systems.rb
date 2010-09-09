@@ -331,6 +331,173 @@ class ThirdPartySystems
   
   
   
+  def self.update_lnt_unspacious
+    
+    processed_product_ids = []
+    
+    clean_for_csv = Proc.new do |str|
+      str.gsub(/(\r\n|\r|\n|\t)/s, " ").gsub(","," ") #.gsub(/"/,"").gsub(/'/, "")
+    end
+    
+    
+    
+    hdr = {
+      :product_code => "Product Code", #required
+      :is_unique => "Is the Product Code Unique?",  #torrey commerce only
+      :sku => "SKU",
+      :is_sku_unique => "Is the SKU Unique?", #torrey commerce only
+      :barcode => "Barcode",
+      :product_availability => "Product Availability",
+      :product_parent_name => "Product Parent Name", #required
+      :product_parent_description => "Product Parent Description",
+      :product_bullet_1 => "Product Description Bullet Point 1",
+      :product_bullet_2 => "Product Description Bullet Point 2",
+      :product_bullet_3 => "Product Description Bullet Point 3",
+      :product_bullet_4 => "Product Description Bullet Point 4",
+      :product_bullet_5 => "Product Description Bullet Point 5",
+      :product_child_name => "Product Child Name", #required
+      :has_a_parent => "Has a Parent?", #torrey commerce only
+      :product_child_description => "Product Child Description",
+      :child_bullet_1 => "Child Description Bullet Point 1",
+      :child_bullet_2 => "Child Description Bullet Point 2",
+      :child_bullet_3 => "Child Description Bullet Point 3",
+      :child_bullet_4 => "Child Description Bullet Point 4",
+      :child_bullet_5 => "Child Description Bullet Point 5",
+      :brand_name => "Brand Name", #required
+      :category_name => "Category Name", #required
+      :product_type => "Product Type",
+      :product_size => "Product Size",
+      :product_color => "Product Color", #required
+      :product_quantity => "Product Quantity", #required
+      :product_retail_price => "Product Retail Price", #required
+      :product_comparison_price => "Product Comparison Price",
+      :additional_charge => "Additional Charge",
+      :additional_charge_description => "Additional Charge Description",
+      :product_parent_image_url => "Product Parent Image URL",
+      :product_child_image_url => "Product Child Image URL"
+    }
+  
+    # setup the output headers
+    #
+    @headings = [] 
+    @headings << hdr[:product_code]
+    @headings << hdr[:product_parent_name]
+    @headings << hdr[:product_parent_description]
+    @headings << hdr[:brand_name]
+    @headings << hdr[:category_name]
+    @headings << hdr[:product_size]
+    @headings << "Product Name"
+    @headings << "Product Description"
+    @headings << "Attribute Name"
+    @headings << hdr[:product_quantity]
+    @headings << hdr[:product_retail_price]
+    @headings << hdr[:product_comparison_price]
+    @headings << hdr[:product_parent_image_url]
+    
+    @rows = []
+  
+    @variations = ThirdPartySystems.get_lnt_product_variations(:new_only => false)
+    
+    @variations.each do |variation|
+      
+      row = []
+      
+      row << "#{clean_for_csv.call variation.product_number}"
+      row << "#{clean_for_csv.call variation.full_title}"
+      row << "#{clean_for_csv.call variation.product.description_general}"
+      
+      
+      #add brand
+      row << "Dormbuys.com"
+      
+      #add LNT category
+      unless variation.product.subcategories.first.blank?
+        lnt_cat_id = variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::LNT)
+        if lnt_cat_id
+          lnt_cat = ThirdPartyCategory.find(lnt_cat_id)
+          row << "#{lnt_cat.name}"
+        else
+          row << "UNKNOWN"
+        end
+        
+      else
+        row << "UNKNOWN"
+      end
+      
+      
+      
+      #handle product_size
+      if variation.title != "default"
+        
+        if variation.variation_group.downcase =~ /size/
+          row << "#{clean_for_csv.call variation.title.split("/").first}"
+        else
+          row << ""
+        end
+        
+      else
+        row << ""
+      end #end if-child
+      
+      
+      #handle product name and product description
+      row << "#{clean_for_csv.call variation.full_title}"
+      row << "#{clean_for_csv.call variation.product.product_overview}"
+      
+      
+      #handle 'attribute name'
+      if variation.title != "default"
+        
+        row << "#{clean_for_csv.call variation.title.split("/").last}"
+        
+      else
+        row << ""
+      end #end if-child
+      
+      
+      #product qty
+      row << "#{variation.qty_on_hand}"
+      
+      
+      #product price
+      row << "#{ThirdPartySystems.get_lnt_price(variation)}"
+      
+      #handle the comparison price
+      row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
+      
+
+      #handle product image
+      if variation.title == "default"
+        row << variation.product.product_image(:original).split("?").first
+      else
+        if variation.image.file?
+          row << variation.image(:original).split("?").first
+        else
+          row << variation.product.product_image(:original).split("?").first
+        end
+      end
+      
+      @rows << row
+      
+    end #end each variation
+  
+  
+    file_content = @headings.join(",") + "\n"
+    for row in @rows
+      file_content += row.join(",") + "\n"
+    end
+  
+  
+    ftp_file = "#{RAILS_ROOT}/public/content/integrations/LNT_UNSPACIOUS_PRODUCTS.csv"
+    FileUtils.mkdir_p(File.dirname(ftp_file))
+    fh = File.new(ftp_file, "w")
+    fh.puts(file_content)
+    fh.close
+    
+  end #end method self.update_lnt_unspacious
+  
+  
+  
   def self.update_fetchback
     
     @headings = [] 
