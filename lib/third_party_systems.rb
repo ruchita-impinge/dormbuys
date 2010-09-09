@@ -336,6 +336,7 @@ class ThirdPartySystems
     processed_product_ids = []
     
     clean_for_csv = Proc.new do |str|
+      return "" if str.blank?
       str.gsub(/(\r\n|\r|\n|\t)/s, " ").gsub(","," ") #.gsub(/"/,"").gsub(/'/, "")
     end
     
@@ -404,7 +405,7 @@ class ThirdPartySystems
       
       row << "#{clean_for_csv.call variation.product_number}"
       row << "#{clean_for_csv.call variation.full_title}"
-      row << "#{clean_for_csv.call variation.product.description_general}"
+      row << "#{variation.product.description_general.blank? ? "" : clean_for_csv.call(variation.product.description_general)}"
       
       
       #add brand
