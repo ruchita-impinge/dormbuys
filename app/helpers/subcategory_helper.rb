@@ -1,15 +1,25 @@
 module SubcategoryHelper
   
+  CATS_CACHE = {}
+  HTML_CACHE = {}
   
-  def third_party_select_options(third_party, selected_id)
-    #return  @options unless  @options.blank?
+  def get_the_cats(third_party)
+    return CATS_CACHE[third_party] unless CATS_CACHE[third_party].blank?
+    CATS_CACHE[third_party] = ThirdPartyCategory.find(:all, :conditions => {:owner => third_party}, :include => [:subcategories])
+    return CATS_CACHE[third_party]
+  end #end method get_the_cats(third_party)
+  
+  
+  def third_party_select_options(third_party, selected_id=nil)
+    return  HTML_CACHE[third_party] unless  HTML_CACHE[third_party].blank?
     
     
     @options = []
     @options << %(<option value="">!! BLANK !!</option>)
     
 
-    cats = ThirdPartyCategory.find_all_by_owner(third_party)
+    #cats = ThirdPartyCategory.find_all_by_owner(third_party)
+    cats = get_the_cats(third_party)
     
     level_one_cats = cats.reject {|c| c unless c.level == 1 }
     
@@ -87,8 +97,8 @@ module SubcategoryHelper
       
     end #end loop over top level cats
     
-    
-    return @options
+    HTML_CACHE[third_party] = @options
+    return HTML_CACHE[third_party]
   end #end method third_party_select_@options
   
   

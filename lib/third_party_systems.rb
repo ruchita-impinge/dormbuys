@@ -331,7 +331,7 @@ class ThirdPartySystems
   
   
   
-  def self.update_lnt_unspacious
+  def self.update_lnt_generic
     
     processed_product_ids = []
     
@@ -413,7 +413,7 @@ class ThirdPartySystems
       
       #add LNT category
       unless variation.product.subcategories.first.blank?
-        lnt_cat_id = variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::LNT)
+        lnt_cat_id = variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::LNT2)
         if lnt_cat_id
           lnt_cat = ThirdPartyCategory.find(lnt_cat_id)
           row << "#{lnt_cat.name}"
@@ -489,13 +489,13 @@ class ThirdPartySystems
     end
   
   
-    ftp_file = "#{RAILS_ROOT}/public/content/integrations/LNT_UNSPACIOUS_PRODUCTS.csv"
+    ftp_file = "#{RAILS_ROOT}/public/content/integrations/LNT_GENERIC_PRODUCTS.csv"
     FileUtils.mkdir_p(File.dirname(ftp_file))
     fh = File.new(ftp_file, "w")
     fh.puts(file_content)
     fh.close
     
-  end #end method self.update_lnt_unspacious
+  end #end method self.update_lnt_generic
   
   
   

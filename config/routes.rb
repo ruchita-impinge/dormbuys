@@ -239,7 +239,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :categories
     admin.resources :subcategories, 
       :collection => {
-        :mapper => :get,
+        :lnt1 => :get,
+        :lnt2 => :get,
         :save_map => :put
       }
     admin.resources :products, 

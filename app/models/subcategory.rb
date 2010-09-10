@@ -9,6 +9,8 @@ class Subcategory < ActiveRecord::Base
   belongs_to :category, :touch => true
   has_and_belongs_to_many :products
   has_and_belongs_to_many :third_party_categories
+  has_many :all_children, :class_name => "Subcategory", :foreign_key => "parent_id"
+  has_many :visible_children, :class_name => "Subcategory", :foreign_key => "parent_id", :conditions => {:visible => true}
   
   validates_presence_of :name, :description, :keywords, :unless => :skip_validation?
   
@@ -55,16 +57,6 @@ class Subcategory < ActiveRecord::Base
     visible_children.size > 0
   end #end method has_visible_children?
   
-  
-  def visible_children
-    Subcategory.find(:all, :conditions => {:parent_id => self.id, :visible => true})
-  end #end method 
-  
-  
-  def all_children
-    Subcategory.find(:all, :conditions => {:parent_id => self.id})
-  end #end method 
-
 
   def is_tertiary?
     !self.parent_id.blank?

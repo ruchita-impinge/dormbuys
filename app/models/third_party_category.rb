@@ -1,6 +1,7 @@
 class ThirdPartyCategory < ActiveRecord::Base
   
   LNT = "Linens-N-Things"
+  LNT2 = "Linens-N-Things ALL"
   
   validates_presence_of :name, :owner
   has_and_belongs_to_many :subcategories

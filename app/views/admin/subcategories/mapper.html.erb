@@ -2,6 +2,32 @@
 	<%= render "shared/admin_main_nav" %>
 <% end %>
 
+<% content_for :head do %>
+	<% unless @map_saved %>
+	<% javascript_tag do %>
+		$(document).ready(function(){
+			selectTPOptions();
+		});
+		
+		function selectTPOptions()
+		{
+			$("input.tp_cat_value").each(function(){
+				
+				var third_party_cat_id = $(this).val();
+				if(third_party_cat_id != "")
+				{
+					$(this).next("select.tp_cat_select").val(third_party_cat_id);
+					
+				}//end if
+				
+			});//end each
+			
+			alert("Select boxes have been populated, you may now proceed :-)");
+			
+		}//end function selectTPOptions
+	<% end %>
+	<% end %>
+<% end %>
 
 <div class="std_box">
 	
@@ -10,8 +36,14 @@
 	<div class="std_box_content">
 		
 		
+		<% if @map_saved %>
 		
-		<% if @categories.empty? %>
+			<div class="std_box_content_wrapper">
+				<h4>The mapping was saved, we've spared you the time of rendering all those select boxes again.</h4>
+				<p>If you need to get back to the mapping tool, just use the top menu ;-)</p>
+			</div>
+		
+		<% elsif @categories.empty? %>
 			
 			<h3>No categories were found</h3>
 		
@@ -66,7 +98,7 @@
 
 				<div id="cat_mapper_other_cats">
 
-					<%= render :partial => 'third_party_map', :locals => {:third_party => ThirdPartyCategory::LNT} %>
+					<%= render :partial => 'third_party_map', :locals => {:third_party => @third_party} %>
 
 				</div><!-- end #cat_mapper_other_cats -->
 				<div class="clear"></div>
@@ -90,5 +122,7 @@
 	
 </div><!-- end .std_box -->
 
-<%= link_to '<span>Save</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
-<%= link_to '<span>Cancel</span>', admin_subcategories_path, :class => 'button negative' %>
+<% unless @map_saved %>
+	<%= link_to '<span>Save</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+	<%= link_to '<span>Cancel</span>', admin_subcategories_path, :class => 'button negative' %>
+<% end %>

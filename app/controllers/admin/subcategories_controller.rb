@@ -1,9 +1,17 @@
 class Admin::SubcategoriesController < Admin::AdminController
   
   
-  def mapper
-    @categories = Category.all    
-  end #end method mapper
+  def lnt1
+    @categories = Category.all(:include => [:subcategories => {:all_children, :third_party_categories}])  
+    @third_party = ThirdPartyCategory::LNT
+    render 'mapper.html.erb'
+  end #end method lnt1
+  
+  def lnt2
+    @categories = Category.all(:include => [:subcategories => {:all_children, :third_party_categories}])  
+    @third_party = ThirdPartyCategory::LNT2
+    render 'mapper.html.erb'
+  end #end method lnt2
   
   
   def save_map
@@ -28,7 +36,8 @@ class Admin::SubcategoriesController < Admin::AdminController
     end
     
     flash[:notice] = "Category mapping has successfully been updated"
-    redirect_to mapper_admin_subcategories_path
+    @map_saved = true
+    render 'mapper.html.erb'
     
   end #end method save_map
   

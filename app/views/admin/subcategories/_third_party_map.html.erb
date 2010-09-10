@@ -14,8 +14,8 @@
 						<span class="image"></span>
 						<span class="name">
 							<%= hidden_field :subcategory, :id, :value => subcat.id, :name => 'subcategory[id][]' %>
-							<%= select_tag 'subcategory[third_party_category_ids][]',
-								third_party_select_options(third_party, subcat.third_party_cat(third_party)) %>
+							<%= hidden_field_tag 'thrid_party_subcategory', subcat.third_party_cat(third_party), :class => 'tp_cat_value'  %>
+							<%= select_tag 'subcategory[third_party_category_ids][]', third_party_select_options(third_party), :class => 'tp_cat_select' %>
 						</span>
 						<span class="clear"></span>
 					</span>
@@ -26,8 +26,8 @@
 								<span class="image"></span>
 								<span class="name">
 									<%= hidden_field :subcategory, :id, :value => third.id, :name => 'subcategory[id][]' %>
-									<%= select_tag 'subcategory[third_party_category_ids][]',
-										third_party_select_options(third_party, subcat.third_party_cat(third_party)) %>
+									<%= hidden_field_tag 'thrid_party_subcategory', subcat.third_party_cat(third_party), :class => 'tp_cat_value'  %>
+									<%= select_tag 'subcategory[third_party_category_ids][]', third_party_select_options(third_party), :class => 'tp_cat_select' %>
 								</span>
 								<span class="clear"></span>
 							</span>
