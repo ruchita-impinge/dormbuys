@@ -1,6 +1,6 @@
 class State < ActiveRecord::Base
   
-  named_scope :us_states, :conditions => {:id => (1..51).to_a}
+  named_scope :us_states, :conditions => {:id => ((1..51).to_a | (65..67).to_a)}
   named_scope :ca_provinces, :conditions => {:id => (52..64).to_a}
   
   has_many :state_shipping_rates

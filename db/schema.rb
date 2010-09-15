@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100817135449) do
+ActiveRecord::Schema.define(:version => 20100915164827) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"

@@ -896,6 +896,7 @@ class Order < ActiveRecord::Base
     keywords = ["AFO", "Box", "BOX", "PO", "P.O.", "PO Box", "APO", "AFO", "AP"]
     keywords.each {|k| alert = true if self.shipping_address.rindex(k)}
     keywords.each {|k| alert = true if self.shipping_city.rindex(k)}
+    alert = true if (65..67).to_a.include? self.shipping_state_id
     alert
   end #end method invalid_address_alert?
   
