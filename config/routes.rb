@@ -264,6 +264,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :state_shipping_rates
     admin.resources :daily_dorm_deals
     admin.resources :home_banners
+    admin.resources :sears_transmissions
     
   end
   

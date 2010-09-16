@@ -1,0 +1,48 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Sears Transmission</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Sent at:</b>
+			  <%=h @sears_transmission.sent_at %>
+			</p>
+
+						<p>
+			  <b>Variations:</b>
+			  <%=h @sears_transmission.variations %>
+			</p>
+
+						<p>
+			  <b>Description:</b>
+			  <%=h @sears_transmission.description %>
+			</p>
+
+						<p>
+			  <b>Sync inventory:</b>
+			  <%=h @sears_transmission.sync_inventory %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_sears_transmissions_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_sears_transmission_path(@sears_transmission), :class => 'button' %>

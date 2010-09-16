@@ -1,0 +1,27 @@
+
+  <div class="field shorter">
+    <%= f.datetime_select :sent_at, :order => [:month, :day, :year] %>
+    <%= f.label :sent_at %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+	<h2># Variations: <%= @sears_transmission.variation_count %></h2>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :description %>
+    <%= f.label :description %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field check">
+    <%= f.check_box :sync_inventory, :class => 'check' %>
+    <%= f.label :sync_inventory, "Should Sync Inventory?" %>
+  </div>
+  <div class="clear"></div>
+

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  sent_at: 2010-09-16 10:06:02
+  variations: MyText
+  description: MyText
+  sync_inventory: false
+
+two:
+  sent_at: 2010-09-16 10:06:02
+  variations: MyText
+  description: MyText
+  sync_inventory: false

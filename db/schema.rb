@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100915202959) do
+ActiveRecord::Schema.define(:version => 20100916140602) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -622,6 +622,15 @@ ActiveRecord::Schema.define(:version => 20100915202959) do
 
   add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
   add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
+
+  create_table "sears_transmissions", :force => true do |t|
+    t.datetime "sent_at"
+    t.text     "variations"
+    t.text     "description"
+    t.boolean  "sync_inventory"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "shipping_containers", :force => true do |t|
     t.string  "title",              :limit => 100,                    :null => false
