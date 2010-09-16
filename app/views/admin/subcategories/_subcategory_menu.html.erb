@@ -1,0 +1,19 @@
+<ul id="product_menu">
+	<li><%= link_to 'General Information', 
+			edit_admin_subcategory_path(@subcategory),
+			:class => ('selected' if request.path =~ /edit/) %></li>
+			
+	<li><%= link_to '3rd Pty: LNT BTS Mapping',
+	 		lnt_map_admin_subcategory_path(@subcategory),
+			:class => ('selected' if request.path =~ /lnt_map/)%></li>
+			
+	<li><%= link_to '3rd Pty: LNT ALL Mapping',
+	 		lnt2_map_admin_subcategory_path(@subcategory),
+			:class => ('selected' if request.path =~ /lnt2_map/)%></li>
+			
+	<li><%= link_to '3rd Pty: Sears Mapping',
+	 		sears_map_admin_subcategory_path(@subcategory),
+			:class => ('selected' if request.path =~ /sears/)%></li>
+			
+</ul>
+<div class="clear"></div>

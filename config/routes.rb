@@ -187,6 +187,8 @@ ActionController::Routing::Routes.draw do |map|
   map.check_bucks '/check_dorm_bucks', :controller => 'promo', :action => 'check_dorm_bucks'
   map.sale '/sale', :controller => "front", :action => "subcategory", :subcategory_permalink_handle => "sale"
   map.daily_dorm_deal_email '/dailydeal/email_signup', :controller => 'daily_dorm_deal', :action => 'email_signup'
+  map.daily_dorm_deal_deal_signup '/deal_signup', :controller => 'daily_dorm_deal', :action => 'deal_signup'
+  map.daily_dorm_deal_deal_signup_save '/deal_signup_save', :controller => 'daily_dorm_deal', :action => 'deal_signup_save'
   map.daily_dorm_deal '/dailydeal', :controller => 'daily_dorm_deal', :action => 'index'
   
   #legacy URLs
@@ -237,7 +239,12 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :shipping_containers
     admin.resources :shipping_rates_tables
     admin.resources :categories
-    admin.resources :subcategories, 
+    admin.resources :subcategories,
+      :member => {
+        :lnt_map => :get,
+        :lnt2_map => :get,
+        :sears_map => :get
+      },
       :collection => {
         :lnt1 => :get,
         :lnt2 => :get,

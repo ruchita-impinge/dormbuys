@@ -42,6 +42,19 @@ class Admin::SubcategoriesController < Admin::AdminController
   end #end method save_map
   
   
+  def lnt_map
+    @subcategory = Subcategory.find(params[:id], :include => [:third_party_categories])
+  end #end method lnt_map
+  
+  def lnt2_map
+    @subcategory = Subcategory.find(params[:id], :include => [:third_party_categories])
+  end #end method lnt2_map
+  
+  def sears_map
+    @subcategory = Subcategory.find(params[:id], :include => [:third_party_categories])
+  end #end method sears_map
+
+  
   # GET /subcategories
   # GET /subcategories.xml
   def index
@@ -107,15 +120,45 @@ class Admin::SubcategoriesController < Admin::AdminController
     @subcategory = Subcategory.find(params[:id])
 
     respond_to do |format|
-      if @subcategory.update_attributes(params[:subcategory])
+      
+      if request.referrer =~ /lnt_map/ || request.referrer =~ /lnt2_map/ || request.referrer =~ /sears_map/
+        third_id = params[:subcategory][:third_party_category_ids].first.to_i
+        tpc = ThirdPartyCategory.find(third_id)
+        unless tpc.blank?
+          existing_tpcs = @subcategory.third_party_categories.reject {|c| c if c.owner == tpc.owner}
+          existing_tpc_ids = existing_tpcs.collect {|c| c.id }
+          existing_tpc_ids << tpc.id
+          @subcategory.third_party_category_ids = existing_tpc_ids
+          updated = true
+        else
+          updated = false
+          @subcategory.errors.add_to_base("Third Party Category was not found")
+        end
+      else
+        updated = @subcategory.update_attributes(params[:subcategory])
+      end #end 3rd party mapping
+      
+      if updated
         
         expire_general_caches
         
+        #setup the end action for redirects & renders
+        if params[:end_action]
+          go_to = {:action => params[:end_action].to_sym, :id => @subcategory }
+          error_action = params[:end_action]
+        else
+          go_to = edit_admin_subcategory_path(@subcategory)
+          error_action = "edit"
+        end
+        
+        
         flash[:notice] = 'Subcategory was successfully updated.'
-        format.html { redirect_to(admin_subcategories_path) }
+        #format.html { redirect_to(admin_subcategories_path) }
+        format.html { redirect_to(edit_admin_subcategory_path(@subcategory))}
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        #format.html { render :action => "edit" }
+        format.html { render :action => error_action }
         format.xml  { render :xml => @subcategory.errors, :status => :unprocessable_entity }
       end
     end

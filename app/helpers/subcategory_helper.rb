@@ -1,7 +1,7 @@
 module SubcategoryHelper
   
   CATS_CACHE = {}
-  HTML_CACHE = {}
+  @@HTML_CACHE = {}
   
   def get_the_cats(third_party)
     return CATS_CACHE[third_party] unless CATS_CACHE[third_party].blank?
@@ -11,7 +11,7 @@ module SubcategoryHelper
   
   
   def third_party_select_options(third_party, selected_id=nil)
-    return  HTML_CACHE[third_party] unless  HTML_CACHE[third_party].blank?
+    return  @@HTML_CACHE[third_party] unless  @@HTML_CACHE[third_party].blank?
     
     
     @options = []
@@ -97,8 +97,8 @@ module SubcategoryHelper
       
     end #end loop over top level cats
     
-    HTML_CACHE[third_party] = @options
-    return HTML_CACHE[third_party]
+    @@HTML_CACHE[third_party] = @options
+    return @@HTML_CACHE[third_party]
   end #end method third_party_select_@options
   
   

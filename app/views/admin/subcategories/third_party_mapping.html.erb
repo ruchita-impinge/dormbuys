@@ -1,0 +1,62 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">3rd Party Mappings for &quot;<%= @subcategory.name %>&quot</h3>
+	
+	<div class="std_box_content">
+		
+		<%= render "subcategory_menu" %>
+		
+		<% form_for([:admin, @subcategory], :html => {:multipart => true}) do |f| %>
+		  <%= f.error_messages %>
+
+			<div class="field long">
+				<%= select_tag 'subcategory[third_party_category_ids][]', 
+						third_party_select_options(ThirdPartyCategory::LNT, @subcategory.third_party_cat(ThirdPartyCategory::LNT)), 
+						:class => 'tp_cat_select' %>
+				<label>LNT Back To School:</label>
+			</div>
+			<div class="clear"></div>
+			
+			
+			
+			<div class="field long">
+				<%= select_tag 'subcategory[third_party_category_ids][]', 
+						third_party_select_options(ThirdPartyCategory::LNT2, @subcategory.third_party_cat(ThirdPartyCategory::LNT2)), 
+						:class => 'tp_cat_select' %>
+				<label>LNT ALL:</label>
+			</div>
+			<div class="clear"></div>
+			
+			
+			
+			<div class="field long">
+				<%= select_tag 'subcategory[third_party_category_ids][]', 
+						third_party_select_options(ThirdPartyCategory::SEARS, @subcategory.third_party_cat(ThirdPartyCategory::SEARS)), 
+						:class => 'tp_cat_select' %>
+				<label>Sears:</label>
+			</div>
+			<div class="clear"></div>
+			
+			
+			<%= hidden_field_tag :end_action, "third_party_mapping" %>
+
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>Update</span>', 'javascript:document.forms[0].submit();', :class => 'button positive' %>
+<%= link_to '<span>Cancel</span>', admin_subcategories_path, :class => 'button negative' %>

@@ -5,7 +5,7 @@
 
 <div class="std_box">
 	
-	<h3 class="std_box_heading">Editing &quot;<%= @subcategory.name %>&quot; Subcategory (holds <%= @subcategory.products.count %> products)</h3>
+	<h3 class="std_box_heading">LNT (ALL) 3rd Party Mappings for &quot;<%= @subcategory.name %>&quot;</h3>
 	
 	<div class="std_box_content">
 		
@@ -14,7 +14,20 @@
 		<% form_for([:admin, @subcategory], :html => {:multipart => true}) do |f| %>
 		  <%= f.error_messages %>
 
-		  <%= render :partial => "subcategory_form.html.erb", :locals => {:f => f} %>
+			<div class="field long">
+				<%= select_tag 'subcategory[third_party_category_ids][]', third_party_select_options(ThirdPartyCategory::LNT2), :class => 'tp_cat_select' %>
+				<label>
+					LNT ALL: 
+					<% tpc = @subcategory.third_party_cat_obj(ThirdPartyCategory::LNT2) %>
+					<% if tpc %>
+						<%= tpc.print_tree %>
+					<% end %>
+				</label>
+			</div>
+			<div class="clear"></div>
+			
+			
+			<%= hidden_field_tag :end_action, "lnt2_map" %>
 
 		<% end %>
 		

@@ -48,6 +48,12 @@ class Subcategory < ActiveRecord::Base
   end #end method third_party_cat(third_party)
   
   
+  def third_party_cat_obj(third_party)
+    cat = self.third_party_categories.reject {|c| c unless c.owner == third_party }.first
+    cat ? cat : nil
+  end #end method third_party_cat(third_party)
+  
+  
   def has_children?
     all_children.size > 0
   end #end method has_children?
