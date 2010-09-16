@@ -403,7 +403,7 @@ class ThirdPartySystems
       
       row = []
       
-      row << "#{clean_for_csv.call variation.product_number}"
+      row << "#{clean_for_csv.call variation.product_number}A"
       row << "#{clean_for_csv.call variation.full_title}"
       row << "#{variation.product.description_general.blank? ? "" : clean_for_csv.call(variation.product.description_general)}"
       
