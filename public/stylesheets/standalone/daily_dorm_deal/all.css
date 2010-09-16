@@ -651,7 +651,9 @@ p.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 	position: absolute;
 	background: transparent url(/images/transparent.gif);
 	cursor: pointer;
-	opacity: 0;
+	opacity: 0.0; /* Safari, Opera */
+	-moz-opacity:0.0; /* FireFox */
+	filter: alpha(opacity=0); /* IE */
 	color: #fff;
 	z-index: 9;
 }
