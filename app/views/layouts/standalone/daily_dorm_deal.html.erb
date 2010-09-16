@@ -11,11 +11,12 @@
 	
 		<%= javascript_include_tag "jquery-1.4.2.min.js" %>
 		<%= javascript_include_tag "jrails.js" %>
-		<%= javascript_include_tag "jquery.colorbox-min.js" %>
-		<%= javascript_include_tag "/javascripts/standalone/daily_dorm_deal/form.js" %>
-		<%= javascript_include_tag "/javascripts/standalone/daily_dorm_deal/main.js" %>
-
-		<script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=eb1a43af-3a18-44ab-9fb2-5392dbe63e2f&amp;type=website&amp;button=false"></script>
+		<% unless controller.action_name =~ /deal_signup/ %>
+			<%= javascript_include_tag "jquery.colorbox-min.js" %>
+			<%= javascript_include_tag "/javascripts/standalone/daily_dorm_deal/form.js" %>
+			<%= javascript_include_tag "/javascripts/standalone/daily_dorm_deal/main.js" %>
+			<script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=eb1a43af-3a18-44ab-9fb2-5392dbe63e2f&amp;type=website&amp;button=false"></script>
+		<% end %>
 	
 		<!--[if lt IE 7]><%= stylesheet_link_tag "/stylesheets/standalone/daily_dorm_deal/lt7.css" %><![endif]-->
 	</head>
@@ -25,6 +26,10 @@
 		
 		<% flash.each do |key, msg| %>
 		    <%= content_tag :p, msg, :class => key %>
+		<% end %>
+		
+		<% if params[:signup_thanks] %>
+			<p class="notice">Thanks for signing up!</p>
 		<% end %>
 		
 		<%= yield %>

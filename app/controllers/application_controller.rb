@@ -34,10 +34,11 @@ class ApplicationController < ActionController::Base
   
   
   def check_standalone
-    if request.domain == "dailydormdeal.com"
+    if request.domain.downcase == "dailydormdeal.com"
       
-      unless  request.path =~ /email_signup/
-      
+      if request.path =~ /email_signup/ || request.path =~ /deal_signup/
+        return true
+      else
         @deal = DailyDormDeal.current_deal
       
         unless @deal
@@ -49,8 +50,6 @@ class ApplicationController < ActionController::Base
       
         render :file => "daily_dorm_deal/index.html.erb", :layout => "standalone/daily_dorm_deal" and return true
         
-      else
-        return true
       end
     end
     

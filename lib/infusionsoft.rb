@@ -70,6 +70,7 @@ class Infusionsoft
   TAG_C_COLLEGE_STUDENT             = 156
   TAG_C_HIGH_SCHOOL_STUDENT         = 160
   TAG_C_OTHER                       = 162
+  TAG_DAILY_DEAL                    = 174
   
   SEQUENCE_PROSPECT_TO_CUSTOMER   = 166
   
@@ -148,6 +149,11 @@ class Infusionsoft
   
   
   def get_who_am_i_constant(form_value)
+    get_who_am_i_constant_customer(form_value)
+  end #end method get_who_am_i_constant(form_value)
+  
+  
+  def get_who_am_i_constant_customer(form_value)
     case form_value.downcase
       when /college student/
         TAG_C_COLLEGE_STUDENT
@@ -160,11 +166,42 @@ class Infusionsoft
       else
         TAG_C_OTHER
     end
-  end #end method get_who_am_i_constant(form_value)
+  end #end method get_who_am_i_constant_customer(form_value)
+  
+  
+  def get_who_am_i_constant_prospect(form_value)
+    case form_value.downcase
+      when /college student/
+        TAG_P_COLLEGE_STUDENT
+      when /high school student/
+        TAG_P_HIGH_SCHOOL_STUDENT
+      when /parent/
+        TAG_P_PARENT
+      when /other/
+        TAG_P_OTHER
+      else
+        TAG_P_OTHER
+    end
+  end #end method get_who_ami_constant_prospect(form_value)
   
   
   
 ####[ Custom functionality implementation ]####
+
+  def find_or_create(first_name, last_name, email)
+    id = find(first_name, last_name, email)
+    if id
+      return id
+    else
+      new_id = add_contact(first_name, last_name, email)
+      if new_id
+        return new_id
+      else
+        return nil
+      end
+    end
+  end #end method find_or_create(first_name, last_name, email)
+
 
   ##
   # Create a new customer & get ID or retrieve existing customer's ID.  Then run prospect to customer sequence.

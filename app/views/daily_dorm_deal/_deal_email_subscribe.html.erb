@@ -1,0 +1,10 @@
+<!-- EMAIL SIGNUP FORM -->
+		<a name="email_form"></a>
+		<% form_for :ddd_email_signup, :url => "/dailydeal/email_signup", :html => {:class => 'search-frm'} do |f| %>
+			<fieldset>
+				<span class="text">
+					<%= f.text_field :email, :value => "Get the Daily Deals by Email", :id => "email" %>
+				</span>
+				<input type="submit" value="SUBSCRIBE" class="btn-submit" />
+			</fieldset>
+		<% end %>

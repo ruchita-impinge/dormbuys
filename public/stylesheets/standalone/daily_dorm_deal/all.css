@@ -21,12 +21,16 @@ form,fieldset{
 	border-style:none;
 }
 
-#wrapper{
+#wrapper, #wrapper_no_bg{
 	width:960px;
 	margin:18px auto 0;
 	/*overflow:hidden;*/
 	background:url(/images/standalone/daily_dorm_deal/bg-wrapper.gif) repeat-y;
 	position: relative;
+}
+#wrapper_no_bg{
+	background: #000;
+	background-image: none;
 }
 #wrapper #soldout-banner{
 	position: absolute;
@@ -37,7 +41,8 @@ form,fieldset{
 	width: 505px;
 	height: 167px;
 }
-#wrapper .logo{
+#wrapper .logo,
+#wrapper_no_bg .logo{
 	margin:0;
 	font-size:0;
 	line-height:0;
@@ -46,7 +51,8 @@ form,fieldset{
 	left:21px;
 	z-index:2;
 }
-#wrapper .logo a{
+#wrapper .logo a,
+#wrapper_no_bg .logo a{
 	background:url(/images/standalone/daily_dorm_deal/logo.png) no-repeat;
 	display:block;
 	width:257px;
@@ -55,7 +61,8 @@ form,fieldset{
 	overflow:hidden;
 	cursor:pointer;
 }
-#wrapper .logo a#db_logo_link{
+#wrapper .logo a#db_logo_link,
+#wrapper_no_bg .logo a#db_logo_link{
 	background: none;
 	width: 115px;
 	height: 30px;
@@ -145,6 +152,13 @@ form,fieldset{
 }
 * html .intro{
 	height:279px;
+	overflow:visible;
+}
+#wrapper_no_bg .intro{
+	min-height: 40px;
+}
+*html #wrapper_no_bg .intro{
+	height: 40px;
 	overflow:visible;
 }
 .intro .caption{
@@ -591,4 +605,89 @@ p.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 #twitter_link{
 	background: url(/images/standalone/daily_dorm_deal/bar-twitter.png) no-repeat;
 	top: 540px;
+}
+.standalone_content{
+	background: #000;
+	margin: 20px;
+	position: relative;
+}
+#deal_signup_form{
+	background: url(/images/standalone/daily_dorm_deal/deal_signup_bg.jpg) no-repeat;
+	width: 577px;
+	height: 599px;
+	margin-left: 180px;
+}
+#deal_signup_form h3,
+#deal_signup_form p,
+#deal_signup_form label {
+	display: none;
+}
+#deal_signup_form input{
+	background: transparent url(/images/transparent.gif);
+	font-size: 18px;
+	position: absolute;
+	border: none;
+}
+#deal_signup_form input#ddd_deal_signup_first_name{
+	width: 113px;
+	top: 167px;
+	left: 317px;
+}
+#deal_signup_form input#ddd_deal_signup_last_name{
+	width: 175px;
+	top: 167px;
+	left: 486px;
+}
+#deal_signup_form input#ddd_deal_signup_email{
+	width: 345px;
+	left: 317px;
+	top: 209px;
+}
+#deal_signup_form select#ddd_deal_signup_who_are_you{
+	width: 285px;
+	top: 251px;
+	left: 377px;
+	font-size: 18px;
+	position: absolute;
+	background: transparent url(/images/transparent.gif);
+	cursor: pointer;
+	opacity: 0;
+	color: #fff;
+	z-index: 9;
+}
+#ddd_deal_signup_who_are_you_lbl{
+	font-size: 18px;
+	color: #fff;
+	position: absolute;
+	top: 255px;
+	left: 383px;
+	z-index: 10;
+	text-transform: capitalize;
+}
+#deal_signup_form #ddd_deal_signup_submit{
+	width: 100px;
+	top: 307px;
+	left: 416px;
+	text-indent: -999999px;
+	cursor: pointer;
+}
+.standalone_content a#facebook_link,
+.standalone_content a#twitter_link{
+	position: absolute;
+	width: 136px;
+	height: 30px;
+	background: transparent url(/images/transparent.gif);
+	top: 566px;
+	left: 322px;
+}
+.standalone_content a#twitter_link{
+	left: 472px;
+}
+.standalone_content #take_me{
+	font-size: 11px;
+	margin-left: 331px;
+	margin-top: 5px;
+}
+.standalone_content #take_me a{
+	text-decoration: underline;
 }

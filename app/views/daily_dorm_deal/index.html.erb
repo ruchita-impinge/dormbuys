@@ -19,16 +19,7 @@
 		</h1>
 		
 		
-		<!-- EMAIL SIGNUP FORM -->
-		<a name="email_form"></a>
-		<% form_remote_for :ddd_email_signup, :url => "/dailydeal/email_signup", :html => {:class => 'search-frm'} do |f| %>
-			<fieldset>
-				<span class="text">
-					<%= f.text_field :email, :value => "Get the Daily Deals by Email", :id => "email" %>
-				</span>
-				<input type="submit" value="SUBSCRIBE" class="btn-submit" />
-			</fieldset>
-		<% end %>
+		<%= render :partial => "daily_dorm_deal/deal_email_subscribe.html.erb" %>
 		
 		
 		<div class="slogan">

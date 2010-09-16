@@ -1,0 +1,91 @@
+<div id="wrapper_no_bg">
+
+	<div id="header">
+		<h1 class="logo">
+			<a href="http://dailydormdeal.com">DailyDormDeal</a>
+			<a href="http://dormbuys.com" id="db_logo_link">Dormbuys.com</a>
+		</h1>
+		
+		
+		<%= render :partial => "deal_email_subscribe.html.erb" %>
+		
+		
+		<div class="slogan">
+			<strong class="dally-dorm">Daily dorm stuff at explosively low prices.</strong>
+		</div>
+	</div>
+	<div id="main">
+		<div class="intro"></div>
+		<div class="standalone_content">
+			
+
+			<div id="deal_signup_form">
+				
+				<h3>Welcome to the madness.</h3>
+				<p>
+					If you're looking for daily deals on dorm stuff that are so stupidly low that you'll think we're
+					totally nuts, then you've come to the right place.  Just fill out the form below and we'll add
+					you to our little group of dorm wheelers and dealers, where you can share in the madness of
+					uber-cool dorm stuff at lunatic-low prices.  Straight jackets not included.
+				</p>
+				
+				<% form_remote_for :ddd_deal_signup, :url => daily_dorm_deal_deal_signup_save_path do |f| %>
+					<div class="frow">
+						<span>
+							<%= f.label :first_name, "First:" %>
+							<%= f.text_field :first_name %>
+						</span>
+						<span>
+							<%= f.label :last_name, "Last:" %>
+							<%= f.text_field :last_name %>
+						</span>
+					</div>
+					<div class="frow">
+						<span>
+							<%= f.label :email, "Email:" %>
+							<%= f.text_field :email, :value => @email %>
+						</span>
+					</div>
+					<div class="frow">
+						<span id="ddd_deal_signup_who_are_you_lbl"></span>
+						<%= f.label :who_are_you, "Who are you?" %>
+						<%= f.select :who_are_you, [
+								["Parent", "parent"],
+								["College Student", "college student"],
+								["High School Student", "high school student"],
+								["Other", "other"]
+								].collect {|x| [x.first, x.last]}, 
+							{},
+						 	{
+								:onchange => "document.getElementById('ddd_deal_signup_who_are_you_lbl').innerHTML = this.value;"
+							}%>	
+					</div>
+					<div class="frow">
+						<%= f.submit "Submit" %>
+					</div>
+				<% end %>
+				
+			</div><!--end #deal_signup_form -->
+			
+			<%= link_to "Follow us on Facebook", "http://www.facebook.com/pages/DailyDormDealcom/134196429950624?ref=ts", :id => "facebook_link", :target => "_blank" %>
+			<%= link_to "Follow us on Twitter", "http://twitter.com/dailydormdeal", :id => "twitter_link", :target => "_blank" %>
+			<div id="take_me">
+				take me to: <%= link_to "DAILYDORMDEAL.com", "http://dailydormdeal.com" %> | 
+				<%= link_to "DORMBUYS.com", "http://dormbuys.com" %>
+			</div>
+		
+		</div><!-- end .standalone_content -->
+	</div><!-- end #main -->
+	
+	<div id="footer">
+		<a href="http://dormbuys.com">
+			<span class="cord">&nbsp;</span>
+			<span class="powered">powered by dormbuys.com</span>
+		</a>
+		<p>&copy;<%= Time.now.year %> DailyDormDeal.com. All rights reserved.</p>
+	</div>
+	
+	
+	
+</div>
+<!-- end wrapper -->
