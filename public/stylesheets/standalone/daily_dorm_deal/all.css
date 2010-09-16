@@ -654,7 +654,7 @@ p.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 	opacity: 0.0; /* Safari, Opera */
 	-moz-opacity:0.0; /* FireFox */
 	filter: alpha(opacity=0); /* IE */
-	color: #fff;
+	color: #000;
 	z-index: 9;
 }
 #ddd_deal_signup_who_are_you_lbl{
