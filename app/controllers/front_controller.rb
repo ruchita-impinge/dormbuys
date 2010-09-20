@@ -130,7 +130,11 @@ class FrontController < ApplicationController
         @product = nil
       end
     else
-      @product = Product.find_by_permalink_handle(params[:product_permalink_handle])
+      begin
+        @product = Product.find_by_permalink_handle(params[:product_permalink_handle])
+      rescue
+        @product = nil
+      end
     end
     
     if @product.blank?
