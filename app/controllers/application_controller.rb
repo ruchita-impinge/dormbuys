@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   
   
   def check_standalone
-    if request.domain.downcase == "dailydormdeal.com"
+    if "#{request.domain}".downcase == "dailydormdeal.com"
       
       if request.path =~ /email_signup/ || request.path =~ /deal_signup/
         return true

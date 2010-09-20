@@ -55,49 +55,51 @@
 													<% else %>
 													
 														<% for cart_item in @cart.items %>
-														<tr>
-															<td class="item">
-																<div class="item-info">
-																	<%= link_to image_tag(cart_item.thumbnail_url, :alt => cart_item.title), cart_item.product_link %>
-																	<div class="description">
-																		<strong class="item-title">
-																			<%= link_to cart_item.title, cart_item.product_link %>
-																		</strong>
-																		<span class="item-desc">#<%= cart_item.product_number %></span>
+															<% if cart_item.is_valid? %>
+																<tr>
+																	<td class="item">
+																		<div class="item-info">
+																			<%= link_to image_tag(cart_item.thumbnail_url, :alt => cart_item.title), cart_item.product_link %>
+																			<div class="description">
+																				<strong class="item-title">
+																					<%= link_to cart_item.title, cart_item.product_link %>
+																				</strong>
+																				<span class="item-desc">#<%= cart_item.product_number %></span>
 																		
-																		<% cart_item.product_options.group_by(&:product_option).each do |option, values| %>
-																			<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:option_value_display) %></span>
-																		<% end %>
+																				<% cart_item.product_options.group_by(&:product_option).each do |option, values| %>
+																					<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:option_value_display) %></span>
+																				<% end %>
 																	
-																		<% cart_item.product_as_options.group_by(&:product_as_option).each do |option, values| %>
-																			<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:full_display_value) %></span>
-																		<% end %>
+																				<% cart_item.product_as_options.group_by(&:product_as_option).each do |option, values| %>
+																					<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:full_display_value) %></span>
+																				<% end %>
 																		
-																	</div>
-																</div>
-															</td>
-															<td class="details align-c">
-																<div>Price: <em class="price">$<%= cart_item.unit_price %></em></div>
-																<div>Qty: <input class="qty" id="qty_<%= cart_item.id %>" type="text" value="<%= cart_item.quantity %>" title="qty"/></div>
-															</td>
-															<td class="cost">
-																<em class="price">$<%= cart_item.total_price %></em>
-															</td>
-															<td class="actions align-r">
-																<ul class="actions-list">
-																	<!--
-																	<li><strong><a href="#">EDIT</a></strong></li>
-																	<li><a href="#">Save</a></li>
-																	-->
-																	<li><strong>
-																		<%= link_to 'UPDATE', update_cart_path(cart_item), 
-																		 		:onclick => "jQuery(this).attr('href', jQuery(this).attr('href')+'?qty=' + jQuery('#qty_#{cart_item.id}').val() );" %>
-																	</strong></li>
-																	<li><%= link_to 'Remove', remove_from_cart_path(cart_item), :confirm => "Are you sure?" %></li>
-																</ul>
-															</td>
-														</tr>
+																			</div>
+																		</div>
+																	</td>
+																	<td class="details align-c">
+																		<div>Price: <em class="price">$<%= cart_item.unit_price %></em></div>
+																		<div>Qty: <input class="qty" id="qty_<%= cart_item.id %>" type="text" value="<%= cart_item.quantity %>" title="qty"/></div>
+																	</td>
+																	<td class="cost">
+																		<em class="price">$<%= cart_item.total_price %></em>
+																	</td>
+																	<td class="actions align-r">
+																		<ul class="actions-list">
+																			<!--
+																			<li><strong><a href="#">EDIT</a></strong></li>
+																			<li><a href="#">Save</a></li>
+																			-->
+																			<li><strong>
+																				<%= link_to 'UPDATE', update_cart_path(cart_item), 
+																				 		:onclick => "jQuery(this).attr('href', jQuery(this).attr('href')+'?qty=' + jQuery('#qty_#{cart_item.id}').val() );" %>
+																			</strong></li>
+																			<li><%= link_to 'Remove', remove_from_cart_path(cart_item), :confirm => "Are you sure?" %></li>
+																		</ul>
+																	</td>
+																</tr>
 													
+															<% end %>
 														<% end %>
 														
 													<% end %>

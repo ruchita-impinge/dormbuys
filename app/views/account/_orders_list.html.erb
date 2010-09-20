@@ -66,7 +66,7 @@
 					
 						<% for order_item in order.order_line_items %>
 						<div class="item-info">
-							<% if order_item.variation && order_item.variation.product %>
+							<% if order_item.variation && order_item.variation.product && order_item.variation.product.product_image.file? %>
 								<%= link_to image_tag(order_item.variation.product.product_image(:thumb)), order_item.variation.product.default_front_url %>
 							<% end %>
 							<div class="description">

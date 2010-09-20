@@ -14,7 +14,7 @@ class Admin::OrdersController < Admin::AdminController
 
       variation = item.get_product_variation
 
-      if variation
+      if variation && variation.product
 
         #alter inventory 
         unless variation.product.drop_ship 

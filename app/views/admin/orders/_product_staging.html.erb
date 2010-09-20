@@ -1,7 +1,9 @@
 <div id="product_stage">
 	
 	<div class="col1">
-		<%= image_tag @product.product_image.url(:featured) %>
+		<% if @product.product_image.file? %>
+			<%= image_tag @product.product_image.url(:featured) %>
+		<% end %>
 	</div><!--end col1 -->
 	
 	<div class="col2">

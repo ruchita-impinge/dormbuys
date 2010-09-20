@@ -173,10 +173,12 @@ class FrontController < ApplicationController
       end #end read fragment
       
     rescue => e
+=begin
       HoptoadNotifier.notify(
         :error_message => "!!! - Product Page Error: #{e.message}",
         :parameters    => params
       )
+=end
       flash[:error] = "There was an error loading the product you requested"
       redirect_to root_path and return
     end
@@ -253,10 +255,16 @@ class FrontController < ApplicationController
   
   def registry_search
     @page_title = "Gift Registry"
-    if params.blank? || params[:gift_registry_search].blank? || params[:gift_registry_search].values.all?(&:blank?)
+    if params.blank? || params[:gift_registry_search].blank?
       flash[:error] = "You must enter a some search terms"
       redirect_to main_gift_registry_path and return
     else
+      
+      if params[:gift_registry_search].values.all?(&:blank?)
+        flash[:error] = "You must enter a some search terms"
+        redirect_to main_gift_registry_path and return
+      end
+      
       if !params[:gift_registry_search][:registry_number].blank?
         temp_registries = GiftRegistry.all(:conditions => ["registry_number LIKE ?", "#{params[:gift_registry_search][:registry_number]}%"])
       else
@@ -312,6 +320,7 @@ class FrontController < ApplicationController
     @sort_cats.unshift(["All Categories", 0])
     
     @items = @gift_registry.gift_registry_items
+    @items.reject! {|i| i unless i.valid? }
     
     #detect if sort was run
     unless params[:options].blank?

@@ -35,6 +35,12 @@ class CartItem < ActiveRecord::Base
   end #end method title
   
   
+  def is_valid?
+    return false if self.product_variation.blank?
+    return false if self.product_variation.product.blank?
+  end #end method is_valid?
+  
+  
   
   def thumbnail_url
     self.product_variation.product.product_image(:thumb)

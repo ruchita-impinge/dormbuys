@@ -80,8 +80,15 @@ class Product < ActiveRecord::Base
     @handle
   end #end method default_front_url
   
+  
+  def invalid_permalink_handle?
+    return true if self.permalink_handle =~ /[^\sa-zA-Z\-\_\d]/
+    return false
+  end #end method invalid_permalink_handle?
+  
+  
   def save_permalink_handle
-    hand = self.product_name.downcase.gsub(/[^\w\.\_]/,'-').gsub(".", "-").gsub("/","-")
+    hand = self.product_name.downcase.gsub(/[^\sa-zA-Z]/,'-').gsub(".", "-").gsub("/","-")
     found = Product.find(:all, :conditions => ['permalink_handle LIKE ?', hand])
     self.permalink_handle = (found.size > 0 ? "#{hand}-#{found.size + 1}" : hand)
   end #end method save_permalink_handle
@@ -217,7 +224,7 @@ class Product < ActiveRecord::Base
         product_variations.build(pv_attributes.first)
       else
         variation = product_variations.detect {|x| x.id == pv_attributes.first[:id].to_i}
-        variation.attributes = pv_attributes.first
+        variation.attributes = pv_attributes.first if variation
       end
       
     end #end loop

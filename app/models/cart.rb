@@ -318,16 +318,20 @@ class Cart < ActiveRecord::Base
   
   
   def recommended_products(count=1)
-    actual_count = self.cart_items.last.product_variation.product.recommended_products.size
-    count = actual_count if count > actual_count
+    begin
+      actual_count = self.cart_items.last.product_variation.product.recommended_products.size
+      count = actual_count if count > actual_count
     
-    rec = []
-    self.cart_items.last.product_variation.product.recommended_products.each do |rprod|
-      rec << rprod
-      break if rec.length == count
+      rec = []
+      self.cart_items.last.product_variation.product.recommended_products.each do |rprod|
+        rec << rprod
+        break if rec.length == count
+      end
+    
+      rec
+    rescue
+      return []
     end
-    
-    rec
     
   end #end method recommended_products
   

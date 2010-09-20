@@ -81,6 +81,10 @@ class GiftRegistryItem < ActiveRecord::Base
     cats.uniq
   end #end method categories
   
+  def is_valid?
+    return false if self.product_variation.blank?
+    return false if self.product_variation.product.blank?
+  end #end method is_valid?
   
   def price
     tmp_price = self.product_variation.rounded_retail_price

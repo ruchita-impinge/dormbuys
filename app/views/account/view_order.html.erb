@@ -116,8 +116,8 @@
 																	<% end %>
 																</strong>
 																
-																<span class="item-desc">#<%= order_item.variation.product_number %></span>
-																<span class="item-desc"><%= truncate(order_item.variation.product.product_overview, :length => 40) %></span>
+																<span class="item-desc">#<%= order_item.product_number %></span>
+																<span class="item-desc"><%= truncate(order_item.variation.product.product_overview, :length => 40) rescue "" %></span>
 
 																<% order_item.order_line_item_options.group_by(&:option_name).each do |option, values| %>
 																	<span class="item-desc"><%= option %>: <%= values.collect(&:option_value) %></span>

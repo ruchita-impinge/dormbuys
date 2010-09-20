@@ -28,7 +28,7 @@ class AccountController < ApplicationController
       redirect_to forgot_password_path
     end
     
-    @user = User.find_by_email(params[:login][:email])
+    @user = User.find_by_email(params[:login][:email]) rescue nil
     
     if @user
       
@@ -63,7 +63,7 @@ class AccountController < ApplicationController
     @page_title = "Account Login"
     @user = User.new
     logout_keeping_session!
-    user = User.authenticate(params[:login][:email], params[:login][:password])
+    user = User.authenticate(params[:login][:email], params[:login][:password]) rescue nil
     if user
       # Protects against session fixation attacks, causes request forgery
       # protection if user resubmits an earlier form using back
@@ -217,7 +217,7 @@ class AccountController < ApplicationController
       
     elsif params[:remove]
       found = EmailListClient.find_by_email(current_user.email)
-      found.destroy
+      found.destroy if found
       flash[:notice] = "Your address was successfully removed"
       redirect_to account_email_path
     end

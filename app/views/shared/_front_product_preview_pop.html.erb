@@ -21,7 +21,7 @@
 							
 								<div class="select-row">
 									<%= f.select :variation_id, product_variations_for_select(product),
-									 		{:prompt => "Select #{product.available_variations.first.variation_group}"},
+									 		{:prompt => "Select #{product.available_variations.first.variation_group rescue "ERROR"}"},
 											{:class => 'inner-select required', :title => 'select'} %>
 
 									<span class="arrow">arrow</span>

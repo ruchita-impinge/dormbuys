@@ -63,8 +63,8 @@
 															<% unless @user.billing_address2.blank? %>
 																<%= @user.billing_address2 %><br />
 															<% end %>
-															<%= @user.billing_city %>, <%= @user.billing_state.abbreviation %> <%= @user.billing_zipcode %><br />
-															<%= @user.billing_country.abbreviation %>
+															<%= @user.billing_city %>, <%= @user.billing_state.abbreviation rescue "" %> <%= @user.billing_zipcode %><br />
+															<%= @user.billing_country.abbreviation rescue "" %>
 														</dd>
 														
 														<dt>Phone:</dt>
@@ -103,8 +103,8 @@
 																	<%= @user.shipping_address2 %><br />
 																<% end %>
 															<% end %>
-															<%= @user.shipping_city %>, <%= @user.shipping_state.abbreviation %> <%= @user.shipping_zipcode %><br />
-															<%= @user.shipping_country.abbreviation %>
+															<%= @user.shipping_city %>, <%= @user.shipping_state.abbreviation rescue "" %> <%= @user.shipping_zipcode %><br />
+															<%= @user.shipping_country.abbreviation rescue "" %>
 														</dd>
 														
 														<dt>Phone:</dt>

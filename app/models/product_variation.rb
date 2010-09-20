@@ -87,6 +87,7 @@ class ProductVariation < ActiveRecord::Base
   end #end method should_skip_validation?
   
   def should_skip_wh_validation?
+    return true if self.product.blank?
     return true if should_skip_validation?
     return true if drop_ship_product?
     return false
@@ -243,10 +244,12 @@ class ProductVariation < ActiveRecord::Base
       end
       
     rescue => e
+=begin      
       HoptoadNotifier.notify(
         :error_class => "ProductVariation(#{self.id})",
         :error_message => "!!! - Error touching product (#{self.product.id}): #{e.message}"
       )
+=end
     end
     
   end #end method touch_product_n_subs

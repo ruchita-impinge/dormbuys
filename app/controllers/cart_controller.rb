@@ -324,7 +324,7 @@ class CartController < ApplicationController
  
       
       #if update the user's profile
-      if params[:update_profile].to_i == 1
+      if params[:update_profile].to_i == 1 && !current_user.blank?
         
         current_user.user_profile_type_id   = @cart.user_profile_type_id
         current_user.billing_first_name     = @cart.billing_first_name
