@@ -38,6 +38,7 @@ class CartItem < ActiveRecord::Base
   def is_valid?
     return false if self.product_variation.blank?
     return false if self.product_variation.product.blank?
+    return true
   end #end method is_valid?
   
   
