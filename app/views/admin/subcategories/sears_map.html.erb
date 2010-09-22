@@ -36,7 +36,7 @@
 		
 			<div class="field extralong">
 				<% tpc = @subcategory.third_party_cat_obj(ThirdPartyCategory::SEARS) %>
-				<% txt_val = tpc.blank? ? "" : tpc.tree %>	
+				<% txt_val = tpc.blank? ? "" : "#{tpc.owner}: #{tpc.tree}" %>	
 				<% id_val = tpc.blank? ? "" : tpc.id %>
 				<%= unique_text_field_with_auto_complete :third_party_category, :tree, 
 					{
@@ -45,7 +45,7 @@
 						:class => 'textfield'
 					},
 					{
-						:url => tpc_auto_complete_tree_path
+						:url => tpc_auto_complete_sears_tree_path
 					} %>
 				<label>Sears</label>
 				<%= hidden_field_tag 'subcategory[third_party_category_ids][]', id_val, :class => 'tpc_id' %>

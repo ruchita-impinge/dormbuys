@@ -1,5 +1,5 @@
 <ul>
 	<% for c in @cats %>
-	  <li id="<%= c.id %>"><%= c.tree %></li>
+	  <li id="<%= c.id %>"><%= "#{c.owner}: #{c.tree}" %></li>
 	<% end %>
 </ul>

@@ -16,6 +16,39 @@ class Admin::SubcategoriesController < Admin::AdminController
   end #end auto_complete_for_sears_tpc_tree
   
   
+  def auto_complete_for_lnt1_tpc_tree
+    search_term = params[:third_party_cat_search_term]
+
+    @cats = ThirdPartyCategory.find(:all, 
+      :conditions => ["owner = ? AND LOWER(#{params[:method]}) LIKE ?",
+      ThirdPartyCategory::LNT,
+      '%' + search_term.downcase + '%'], 
+      :order => "#{params[:method]} ASC",
+      :limit => 20)
+
+    render :partial => 'tpc_auto_complete_list', :object => @cats
+  end #end auto_complete_for_lnt1_tpc_tree
+  
+  
+  def auto_complete_for_lnt2_tpc_tree
+    search_term = params[:third_party_cat_search_term]
+
+    @cats = ThirdPartyCategory.find(:all, 
+      :conditions => ["owner = ? AND LOWER(#{params[:method]}) LIKE ?",
+      ThirdPartyCategory::LNT2,
+      '%' + search_term.downcase + '%'], 
+      :order => "#{params[:method]} ASC",
+      :limit => 20)
+
+    render :partial => 'tpc_auto_complete_list', :object => @cats
+  end #end auto_complete_for_lnt2_tpc_tree
+  
+  
+  
+  
+  
+  
+  
   def lnt1
     @categories = Category.all(:include => [:subcategories => {:all_children, :third_party_categories}])  
     @third_party = ThirdPartyCategory::LNT

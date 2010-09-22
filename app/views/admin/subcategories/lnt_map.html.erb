@@ -2,6 +2,25 @@
 	<%= render "shared/admin_main_nav" %>
 <% end %>
 
+<% content_for :head do %>
+	<%= javascript_include_tag 'jrails.autocomplete' %>
+	<% javascript_tag do %>
+		var last_auto_var_id;
+		function beforeAutoComplete(e)
+		{
+			last_auto_var_id = jQuery(e).attr("id");
+	
+		}//end 
+		
+		function afterAutoComplete(e)
+		{
+			jQuery(e).parents(".field").children(".tpc_id").attr("value", last_auto_var_id);
+			
+		}//end
+		
+	<% end %>
+<% end %>
+
 
 <div class="std_box">
 	
@@ -13,16 +32,23 @@
 		
 		<% form_for([:admin, @subcategory], :html => {:multipart => true}) do |f| %>
 		  <%= f.error_messages %>
-
-			<div class="field long">
-				<%= select_tag 'subcategory[third_party_category_ids][]', third_party_select_options(ThirdPartyCategory::LNT), :class => 'tp_cat_select' %>
-				<label>
-					LNT Back To School: 
-					<% tpc = @subcategory.third_party_cat_obj(ThirdPartyCategory::LNT) %>
-					<% if tpc %>
-						<%= tpc.print_tree %>
-					<% end %>
-				</label>
+		
+		
+			<div class="field extralong">
+				<% tpc = @subcategory.third_party_cat_obj(ThirdPartyCategory::LNT) %>
+				<% txt_val = tpc.blank? ? "" : "#{tpc.owner}: #{tpc.tree}" %>	
+				<% id_val = tpc.blank? ? "" : tpc.id %>
+				<%= unique_text_field_with_auto_complete :third_party_category, :tree, 
+					{
+						:name => "third_party_cat_search_term",
+				 		:value => txt_val, 
+						:class => 'textfield'
+					},
+					{
+						:url => tpc_auto_complete_lnt1_tree_path
+					} %>
+				<label>LNT Back To School:</label>
+				<%= hidden_field_tag 'subcategory[third_party_category_ids][]', id_val, :class => 'tpc_id' %>
 			</div>
 			<div class="clear"></div>
 			
