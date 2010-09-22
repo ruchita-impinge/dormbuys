@@ -320,6 +320,11 @@ li.over ul { /* lists nested under hovered list items */
 	position: absolute;
 	margin-left: 3px;
 }
+.extralong input.textfield,
+.extralong textarea,
+.extralong label{
+	width: 905px;
+}
 .long input.textfield,
 .long textarea,
 .long label{

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100916140602) do
+ActiveRecord::Schema.define(:version => 20100922131828) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -718,7 +718,10 @@ ActiveRecord::Schema.define(:version => 20100916140602) do
     t.datetime "updated_at"
     t.integer  "level",      :default => 0
     t.string   "data"
+    t.string   "tree"
   end
+
+  add_index "third_party_categories", ["owner"], :name => "index_third_party_categories_on_owner"
 
   create_table "users", :force => true do |t|
     t.string   "email",                     :limit => 100

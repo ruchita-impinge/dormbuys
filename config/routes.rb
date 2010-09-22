@@ -36,6 +36,11 @@ ActionController::Routing::Routes.draw do |map|
     :controller => 'admin/vendors',
     :action => 'auto_complete_for_user_email'
 
+  map.tpc_auto_complete_tree '/admin/subcategories/auto_complete_for_sears_tpc_tree',
+    :conditions => {:method => :get},
+    :controller => 'admin/subcategories',
+    :action => 'auto_complete_for_sears_tpc_tree'
+
 #-------order builder-------
   map.order_auto_complete_product_name '/admin/orders/auto_complete_for_product_product_name',
     :conditions => {:method => :get},
