@@ -10,6 +10,13 @@ class SearsAPI
   UPDATE_INVENTORY_URL = "https://seller.marketplace.sears.com/SellerPortal/api/inventory/fbm/v1?email={emailaddress}&password={password}"
   POST_ITEMS_URL = "https://seller.marketplace.sears.com/SellerPortal/api/catalog/fbm/v1?email={emailaddress}&password={password}"
   
+  def self.test
+    api = SearsAPI.new
+    products = Product.all(:limit => 5)
+    xml = api.create_xml_for_items(products)
+    api.api_put(api.items_url, xml)
+  end #end method self.test
+  
   def post_all_products
     products = Product.all(:include => [:product_variations, :subcategories])
     xml = create_xml_for_items(products)
@@ -20,7 +27,7 @@ class SearsAPI
     uri = URI.parse(url)
     
     req = Net::HTTP::Put.new(uri.request_uri)
-    req.form_data = {:data => order_xml}
+    req.form_data = data
     
     http_session = Net::HTTP.new(uri.host, uri.port)
     http_session.use_ssl = true
