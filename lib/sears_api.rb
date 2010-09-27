@@ -1,5 +1,7 @@
 require "builder"
 require "rexml/document"
+require 'net/https'
+require 'open-uri'
 
 class SearsAPI
   
@@ -7,6 +9,27 @@ class SearsAPI
   PASSWORD = "xavier01"
   UPDATE_INVENTORY_URL = "https://seller.marketplace.sears.com/SellerPortal/api/inventory/fbm/v1?email={emailaddress}&password={password}"
   POST_ITEMS_URL = "https://seller.marketplace.sears.com/SellerPortal/api/catalog/fbm/v1?email={emailaddress}&password={password}"
+  
+  def post_all_products
+    products = Product.all(:include => [:product_variations, :subcategories])
+    xml = create_xml_for_items(products)
+    api_put(items_url, xml)
+  end #end method post_all_products
+  
+  def api_put(url, data)
+    uri = URI.parse(url)
+    
+    req = Net::HTTP::Put.new(uri.request_uri)
+    req.form_data = {:data => order_xml}
+    
+    http_session = Net::HTTP.new(uri.host, uri.port)
+    http_session.use_ssl = true
+    http_session.start { |http| 
+      http.request(req)
+    }
+  end #end method api_put(url, data)
+  
+###[ Methods below are component methods used for the functions above ] ###  
   
   def items_url
     POST_ITEMS_URL.gsub("{emailaddress}", EMAIL).gsub("{password}", PASSWORD)
@@ -38,6 +61,21 @@ class SearsAPI
   end #end method get_category(subcategory)
   
   
+  def create_inventory_xml(variations)
+    xml = get_builder
+    xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8" 
+    xml.tag!('inventory-feed', "xsi:schemaLocation" => "http://seller.marketplace.sears.com/SellerPortal/s/schema/inventory/fbm/inventory-xml-feed-v1.xsd") do
+      xml.tag!('fbm-catalog') do 
+        for variation in variations 
+          xml.tag! "item", "item-id" => variation.product_number do 
+            xml.quantity variation.qty_on_hand
+          end
+        end
+      end
+    end
+  end #end method create_inventory_xml(variations)
+  
+  
   def create_xml_for_items(products)
     xml = get_builder
     xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8" 
@@ -63,7 +101,7 @@ class SearsAPI
                 xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width
                 xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth
                 xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight
-                xml.tag! "restricted-product", is_restricted(product)
+#                xml.tag! "restricted-product", is_restricted(product)
                 xml.tag! "image-url" do 
                   xml.url product.product_image(:large)
                   product.additional_product_images.each do |ai|
@@ -86,7 +124,7 @@ class SearsAPI
                 xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width
                 xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth
                 xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight
-                xml.tag! "restricted-product", is_restricted(product)
+#                xml.tag! "restricted-product", is_restricted(product)
                 xml.tag! "image-url" do 
                   xml.url product.product_image(:large)
                   product.additional_product_images.each do |ai|
@@ -102,8 +140,11 @@ class SearsAPI
                           xml.url variation.image(:large)
                         end #end image-url
                       end #end if variation.image
-                      
-                      if 1 == 2
+
+#############
+#############
+#############                      
+if 1 == 2
                       xml.tag! "variation-attributes" do 
                         xml.tag! "variation-attribute" do 
                           xml.tag! "attribute", "name" => "#{get_attribute_name(variation.variation_group)}" do 
@@ -111,7 +152,10 @@ class SearsAPI
                           end
                         end #end variation-attribute
                       end #end variation-attributes
-                      end #end kill-block
+end #end kill-block
+#############
+#############
+#############
                       
                     end #end variation-item
                   end #end for loop on product_variations
