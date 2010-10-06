@@ -409,7 +409,7 @@ class ThirdPartySystems
       
       
       #add brand
-      row << "Dormbuys.com"
+      row << "SpaceItUp"
       
       #add LNT category
       unless variation.product.subcategories.first.blank?
@@ -553,7 +553,7 @@ class ThirdPartySystems
   
   
   
-  def self.update_lnt_inventory
+  def self.update_lnt_inventory(for_generic=nil)
 
     @headings = [] 
     @headings << "Product SKU"
@@ -569,7 +569,11 @@ class ThirdPartySystems
       
       row = []  
       
-      row << "#{variation.product_number}"
+      if for_generic
+        row << "#{variation.product_number}A"
+      else
+        row << "#{variation.product_number}"
+      end
       
       #product price
       row << "#{ThirdPartySystems.get_lnt_price(variation)}"
@@ -780,32 +784,36 @@ class ThirdPartySystems
   def self.get_lnt_price(variation)
     
     weight = variation.product_packages.collect.sum {|pp| pp.weight}
+    starting_price = (variation.rounded_retail_price * 1.10)
+    ending_price = starting_price
     
     if weight <= 5
       
-      return variation.rounded_retail_price + (8.00).to_money
+      ending_price = starting_price + (8.00).to_money
       
     elsif weight > 5 && weight <= 10
       
-      return variation.rounded_retail_price + (9.00).to_money
+      ending_price = starting_price + (9.00).to_money
       
     elsif weight > 10 && weight <= 15
      
-     return variation.rounded_retail_price + (9.00).to_money
+     ending_price = starting_price + (9.00).to_money
      
     elsif weight > 15 && weight <= 20
       
-      return variation.rounded_retail_price + (10.50).to_money
+      ending_price = starting_price + (10.50).to_money
       
     elsif weight > 20 && weight <= 25
       
-      return variation.rounded_retail_price + (12.00).to_money
+      ending_price = starting_price + (12.00).to_money
       
     else
       
-      return variation.rounded_retail_price + (12.00).to_money
+      ending_price = starting_price + (12.00).to_money
       
     end
+    
+    return ending_price
   
   end #end get_lnt_price
   
@@ -814,32 +822,36 @@ class ThirdPartySystems
   def self.get_lnt_comparison_price(variation)
     
     weight = variation.product_packages.collect.sum {|pp| pp.weight}
+    starting_price = variation.list_price
+    ending_price = starting_price
     
     if weight <= 5
       
-      return variation.list_price + (8.00).to_money
+      ending_price = starting_price + (8.00).to_money
       
     elsif weight > 5 && weight <= 10
       
-      return variation.list_price + (9.00).to_money
+      ending_price = starting_price + (9.00).to_money
       
     elsif weight > 10 && weight <= 15
      
-     return variation.list_price + (9.00).to_money
+     ending_price = starting_price + (9.00).to_money
      
     elsif weight > 15 && weight <= 20
       
-      return variation.list_price + (10.50).to_money
+      ending_price = starting_price + (10.50).to_money
       
     elsif weight > 20 && weight <= 25
       
-      return variation.list_price + (12.00).to_money
+      ending_price = starting_price + (12.00).to_money
       
     else
       
-      return variation.list_price + (12.00).to_money
+      ending_price = starting_price + (12.00).to_money
       
     end
+    
+    return ending_price
   
   end #end get_lnt_price
   

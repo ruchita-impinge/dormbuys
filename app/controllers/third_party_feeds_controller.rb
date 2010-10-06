@@ -1,5 +1,9 @@
 class ThirdPartyFeedsController < ApplicationController
   
+  def test
+    render :text => "1"
+  end #end method test
+  
   def data_feeds
     if params[:id]
       feed_id = params[:id].to_i

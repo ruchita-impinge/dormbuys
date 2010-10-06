@@ -5,17 +5,23 @@ require 'open-uri'
 
 class SearsAPI
   
+  DEBUG = true
+  
   EMAIL = "deryl@dormbuys.com"
   PASSWORD = "xavier01"
-  UPDATE_INVENTORY_URL = "https://seller.marketplace.sears.com/SellerPortal/api/inventory/fbm/v1?email={emailaddress}&password={password}"
-  POST_ITEMS_URL = "https://seller.marketplace.sears.com/SellerPortal/api/catalog/fbm/v1?email={emailaddress}&password={password}"
+  
+  UPDATE_INVENTORY_URL = "https://seller.marketplace.sears.com/SellerPortal/api/inventory/fbm-lmp/v2?email={emailaddress}&password={password}"
+  POST_ITEMS_URL = "https://seller.marketplace.sears.com/SellerPortal/api/catalog/fbm/v4?email={emailaddress}&password={password}"
+  PROCESSING_REPORT_URL = "https://seller.marketplace.sears.com/SellerPortal/api/reports/v1/processing-report/{documentid}?email={emailaddress}&password={password}"
   
   def self.test
     api = SearsAPI.new
     products = Product.all(:limit => 5)
+    products.reject! {|x| x if x.available_variations.empty? }
     xml = api.create_xml_for_items(products)
     api.api_put(api.items_url, xml)
   end #end method self.test
+  
   
   def post_all_products
     products = Product.all(:include => [:product_variations, :subcategories])
@@ -23,18 +29,53 @@ class SearsAPI
     api_put(items_url, xml)
   end #end method post_all_products
   
+  
   def api_put(url, data)
     uri = URI.parse(url)
     
-    req = Net::HTTP::Put.new(uri.request_uri)
-    req.form_data = data
-    
+    puts "Sending PUT #{uri.request_uri} to #{uri.host}:#{uri.port}"
     http_session = Net::HTTP.new(uri.host, uri.port)
     http_session.use_ssl = true
-    http_session.start { |http| 
-      http.request(req)
-    }
+    http_session.start do |http|
+      headers = {'Content-Type' => 'application/xml; charset=utf-8'}
+      put_data = data
+      response = http.send_request('PUT', uri.request_uri, put_data, headers)
+      #puts "\nResponse #{response.code} #{response.message}: #{response.body}\n\n"
+      
+      puts "\nResponse #{response.code}: #{response.message}"
+      puts "#{'-'*25}\n\n\n"
+      doc = REXML::Document.new(response.body)
+      error = doc.elements.collect("api-response/error-detail") {|e| e.text() }.join
+      doc_id = doc.elements.collect("api-response/document-id") {|e| e.text() }.join
+      
+
+      #output payload
+      if DEBUG == true
+        puts "Payload Data was:\n"
+        puts "#{'-'*18}\n"
+        puts data
+      end
+      
+      if doc_id
+        puts "\n\n\nProcessing report available @: #{processing_report_url(doc_id)}\n"
+        puts "#{'-'*160}\n"
+        puts "\n\n\nResponse Data:\n"
+        puts "#{'-'*15}\n"
+        puts "#{response.body}\n\n"
+      elsif error
+        puts "\n\n\nError Description:\n"
+        puts "#{'-'*18}\n"
+        puts error
+      else
+        puts "\n\n\nResponse Data:\n"
+        puts "#{'-'*15}\n"
+        puts "#{response.body}\n\n"
+      end
+    end
+
   end #end method api_put(url, data)
+  
+  
   
 ###[ Methods below are component methods used for the functions above ] ###  
   
@@ -46,12 +87,16 @@ class SearsAPI
     UPDATE_INVENTORY_URL.gsub("{emailaddress}", EMAIL).gsub("{password}", PASSWORD)
   end #end method inventory_url
   
+  def processing_report_url(doc_id)
+    PROCESSING_REPORT_URL.gsub("{documentid}", doc_id).gsub("{emailaddress}", EMAIL).gsub("{password}", PASSWORD)
+  end #end method processing_report_url
+  
   def get_builder
     return Builder::XmlMarkup.new(:target => "", :indent => 1)
   end #end method get_builder
   
   def is_restricted(product)
-    "No"
+    false
   end #end method is_restricted(product)
   
   def get_attribute_name(variation_group_name)
@@ -71,22 +116,25 @@ class SearsAPI
   def create_inventory_xml(variations)
     xml = get_builder
     xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8" 
-    xml.tag!('inventory-feed', "xsi:schemaLocation" => "http://seller.marketplace.sears.com/SellerPortal/s/schema/inventory/fbm/inventory-xml-feed-v1.xsd") do
-      xml.tag!('fbm-catalog') do 
-        for variation in variations 
-          xml.tag! "item", "item-id" => variation.product_number do 
-            xml.quantity variation.qty_on_hand
-          end
-        end
-      end
-    end
+    xml.tag!('store-inventory', "xsi:schemaLocation" => "http://seller.marketplace.sears.com/catalog/v2 http://seller.marketplace.sears.com/SellerPortal/s/schema/rest/inventory/import/v2/store-inventory.xsd", "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance", "xmlns" => "http://seller.marketplace.sears.com/catalog/v2") do
+      for variation in variations
+        xml.tag! "item", "item-id" => variation.product_number do 
+          xml.locations do 
+            xml.tag! "location", "location-id" => "825738839" do #DB warehouse ID w/ Sears
+              xml.quantity variation.qty_on_hand
+              xml.tag! "pick-up-now-eligible", false
+            end #end location tag
+          end #end locations tag
+        end #end item
+      end #end loop over variations
+    end #end tag store-inventory
   end #end method create_inventory_xml(variations)
   
   
   def create_xml_for_items(products)
     xml = get_builder
     xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8" 
-    xml.tag!('catalog-feed', "xsi:schemaLocation" => "http://seller.marketplace.sears.com/SellerPortal/s/catalog/item-xml-feed-v1.xsd", "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance", "xmlns" => "http://seller.marketplace.sears.com/catalog/v1") do
+    xml.tag!('catalog-feed', "xsi:schemaLocation" => "http://seller.marketplace.sears.com/catalog/v4 ../../../../../rest/catalog/import/v4/lmp-item.xsd", "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance", "xmlns" => "http://seller.marketplace.sears.com/catalog/v4") do
       xml.tag!('fbm-catalog') do 
         xml.items do 
     
@@ -96,7 +144,7 @@ class SearsAPI
               xml.item("item-id" => product.product_variations.first.product_number) do 
                 xml.title product.product_name
                 xml.tag! "short-desc", product.product_overview
-                xml.upc product.product_variations.first.product_number
+                xml.upc "00#{product.product_variations.first.product_number}"
                 xml.tags do 
                   xml.primary get_category(product.subcategories.first)
                 end #end tags
@@ -108,16 +156,27 @@ class SearsAPI
                 xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width
                 xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth
                 xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight
-#                xml.tag! "restricted-product", is_restricted(product)
+                xml.tag! "local-marketplace-flags" do
+                  xml.tag! "is-restricted", is_restricted(product)
+                  xml.tag! "perishable", false
+                  xml.tag! "requires-refrigeration", false
+                  xml.tag! "requires-freezing", false
+                  xml.tag! "contains-alcohol", false
+                  xml.tag! "contains-tobacco", false
+                end #end local-marketplace-flags tag
                 xml.tag! "image-url" do 
-                  xml.url product.product_image(:large)
-                  product.additional_product_images.each do |ai|
-                    xml.url ai.image(:large)
-                  end #end for loop on additional_images
-                end #end image-url
+                  xml.url product.product_image(:large).split("?").first
+                end #end image-url                
+                product.additional_product_images.reject {|x| x unless x.image.file? }.each_with_index do |ai, i|
+                  if i < 6
+                    xml.tag! "feature-image-url" do 
+                      xml.url ai.image(:large).split("?").first
+                    end #end feature-image-url
+                  end #end if
+                end #end for loop on additional_images
               end #end item
               
-            else # <= multiple variations
+            else # <= multiple variations ##########################################################################
               
               xml.tag! "variation-group", "variation-group-id" => product.id do 
                 xml.title product.product_name
@@ -131,39 +190,53 @@ class SearsAPI
                 xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width
                 xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth
                 xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight
-#                xml.tag! "restricted-product", is_restricted(product)
+                xml.tag! "local-marketplace-flags" do
+                  xml.tag! "is-restricted", is_restricted(product)
+                  xml.tag! "perishable", false
+                  xml.tag! "requires-refrigeration", false
+                  xml.tag! "requires-freezing", false
+                  xml.tag! "contains-alcohol", false
+                  xml.tag! "contains-tobacco", false
+                end #end local-marketplace-flags tag
                 xml.tag! "image-url" do 
-                  xml.url product.product_image(:large)
-                  product.additional_product_images.each do |ai|
-                    xml.url ai.image(:large)
-                  end #end for loop on additional_images
-                end #end image-url
+                  xml.url product.product_image(:large).split("?").first
+                end #end image-url                
+                product.additional_product_images.reject {|x| x unless x.image.file? }.each_with_index do |ai, i|
+                  if i < 6
+                    xml.tag! "feature-image-url" do 
+                      xml.url ai.image(:large).split("?").first
+                    end #end feature-image-url
+                  end #end if
+                end #end for loop on additional_images
                 xml.tag! "variation-items" do 
                   for variation in product.product_variations
                     xml.tag! "variation-item", "item-id" => variation.product_number do 
+                      xml.upc "00#{variation.product_number}"
                       xml.tag! "standard-price", variation.rounded_retail_price
                       if variation.image.file?
                         xml.tag! "image-url" do 
                           xml.url variation.image(:large)
                         end #end image-url
+                      else
+                        xml.tag! "image-url" do 
+                          xml.url variation.product.product_image(:large).split("?").first
+                        end #end image-url
                       end #end if variation.image
-
+                      xml.tag! "variation-attributes" do 
+                        xml.tag! "variation-attribute" do 
 #############
 #############
 #############                      
 if 1 == 2
-                      xml.tag! "variation-attributes" do 
-                        xml.tag! "variation-attribute" do 
                           xml.tag! "attribute", "name" => "#{get_attribute_name(variation.variation_group)}" do 
                             variation.title
                           end
-                        end #end variation-attribute
-                      end #end variation-attributes
 end #end kill-block
 #############
 #############
 #############
-                      
+                        end #end variation-attribute
+                      end #end variation-attributes
                     end #end variation-item
                   end #end for loop on product_variations
                 end #end variation-items
@@ -175,8 +248,6 @@ end #end kill-block
         end #end items
       end #end fbm-catalog
     end #end catalog-feed
-    
-    return xml
   end #end method create_xml_for_items(products)
   
   
