@@ -123,7 +123,11 @@ class Product < ActiveRecord::Base
   end #end method retail_price
   
   def list_price
-    self.sort {|a,b| a.list_price <=> b.list_price }.first.list_price
+    begin
+      self.available_variations.sort {|a,b| a.list_price <=> b.list_price }.first.list_price
+    rescue
+      "123456.78".to_money
+    end
   end #end method list_price
   
 
