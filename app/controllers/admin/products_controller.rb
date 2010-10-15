@@ -10,6 +10,21 @@ class Admin::ProductsController < Admin::AdminController
   ###########################################################################################
   ###########################################################################################
   
+  
+  def sears_name_attributes
+    sears_cat = ThirdPartyCategory.find(params[:sears_cat_id])
+    if sears_cat
+      tag = sears_cat.data
+      api = SearsAPI.new
+      result = api.get_variation_name_attributes(tag)
+    else
+      
+    end
+  end #end method sears_name_attributes
+  
+  
+  
+  
 
   def auto_complete_for_product_product_name
 

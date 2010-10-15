@@ -13,6 +13,7 @@ class SearsAPI
   UPDATE_INVENTORY_URL = "https://seller.marketplace.sears.com/SellerPortal/api/inventory/fbm-lmp/v2?email={emailaddress}&password={password}"
   POST_ITEMS_URL = "https://seller.marketplace.sears.com/SellerPortal/api/catalog/fbm/v4?email={emailaddress}&password={password}"
   PROCESSING_REPORT_URL = "https://seller.marketplace.sears.com/SellerPortal/api/reports/v1/processing-report/{documentid}?email={emailaddress}&password={password}"
+  VARIATION_PAIR_URL = "https://seller.marketplace.sears.com/SellerPortal/api/attribute/v1/{tag}/attributes?email={emailaddress}&password={password}"
   
   def self.test
     api = SearsAPI.new
@@ -78,6 +79,10 @@ class SearsAPI
   
   
 ###[ Methods below are component methods used for the functions above ] ###  
+
+  def variation_pairs_url(tag)
+    VARIATION_PAIR_URL.gsub("{tag}", tag).gsub("{emailaddress}", EMAIL).gsub("{password}", PASSWORD)
+  end #end method variation_pairs_url(tag)
   
   def items_url
     POST_ITEMS_URL.gsub("{emailaddress}", EMAIL).gsub("{password}", PASSWORD)
@@ -111,6 +116,38 @@ class SearsAPI
       "UNKNOWN"
     end
   end #end method get_category(subcategory)
+  
+  
+  def get_variation_name_attributes(tag)
+
+    uri = URI.parse(variation_pairs_url(tag))
+    
+    puts "Sending GET #{uri.request_uri} to #{uri.host}:#{uri.port} ==> #{Time.now}"
+    http_session = Net::HTTP.new(uri.host, uri.port)
+    http_session.use_ssl = true
+    http_session.start do |http|
+      response = http.send_request('GET', uri.request_uri)
+
+      puts "\nResponse #{response.code}: #{response.message}.... now parsing the xml.... "
+      doc = REXML::Document.new(response.body)
+      puts "\nXML successfully parsed, constructing hash"
+      
+      attribute_data = []
+      
+      doc.elements.collect("attributeFeed/attributes/attribute") do |attribute_element|
+        attr_name = attribute_element.attribute("name").value()
+        data = {:name => attr_name, :values => []}
+        attribute_element.elements.collect("value") do |value_element| 
+          data[:values] << value_element.text()
+        end # end xml values
+        attribute_data << data
+      end #end xml attributes
+      
+      puts "Got data & parsed it ==> #{Time.now}"
+      return attribute_data
+    end #end http session
+    
+  end #end method get_variation_name_attributes(tag)
   
   
   def create_inventory_xml(variations)
@@ -215,7 +252,8 @@ class SearsAPI
                       xml.tag! "standard-price", variation.rounded_retail_price
                       if variation.image.file?
                         xml.tag! "image-url" do 
-                          xml.url variation.image(:large)
+                          xml.url variation.imag
+                          e(:large)
                         end #end image-url
                       else
                         xml.tag! "image-url" do 

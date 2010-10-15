@@ -52,6 +52,10 @@ development: &non_production_settings
         host: partner.channeladvisor.com
         user: dormby:ftpuser@dormbuys.com
         pass: shdormby1!ad
+    bingshopping:
+        host: feeds.adcenter.microsoft.com
+        user: dormbuys
+        pass: AsO37mh|2T
         
 test: 
     <<: *non_production_settings
@@ -100,3 +104,7 @@ production:
         host: partner.channeladvisor.com
         user: dormby:ftpuser@dormbuys.com
         pass: shdormby1!ad
+    bingshopping:
+        host: feeds.adcenter.microsoft.com
+        user: dormbuys
+        pass: AsO37mh|2T

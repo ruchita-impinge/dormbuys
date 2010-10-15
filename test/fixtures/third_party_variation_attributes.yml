@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  third_party_variation_id: 1
+  value: MyString
+
+two:
+  third_party_variation_id: 1
+  value: MyString

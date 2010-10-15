@@ -270,7 +270,8 @@ ActionController::Routing::Routes.draw do |map|
         :images => :get,
         :options => :get,
         :variations => :get,
-        :restricted => :get
+        :restricted => :get, 
+        :sears_name_attributes => :get
       }
     admin.resources :orders
     admin.resources :order_vendors

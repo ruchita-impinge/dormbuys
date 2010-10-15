@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100922131828) do
+ActiveRecord::Schema.define(:version => 20101010201932) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -514,31 +514,33 @@ ActiveRecord::Schema.define(:version => 20100922131828) do
   create_table "product_variations", :force => true do |t|
     t.integer  "product_id"
     t.string   "title"
-    t.integer  "qty_on_hand",                                                      :default => 0
-    t.integer  "qty_on_hold",                                                      :default => 0
-    t.integer  "reorder_qty",                                                      :default => 0
-    t.integer  "int_wholesale_price",                                              :default => 0
-    t.integer  "int_freight_in_price",                                             :default => 0
-    t.integer  "int_drop_ship_fee",                                                :default => 0
-    t.integer  "int_shipping_in_price",                                            :default => 0
-    t.decimal  "markup",                             :precision => 6, :scale => 3
-    t.integer  "int_list_price",                                                   :default => 0
+    t.integer  "qty_on_hand",                                                          :default => 0
+    t.integer  "qty_on_hold",                                                          :default => 0
+    t.integer  "reorder_qty",                                                          :default => 0
+    t.integer  "int_wholesale_price",                                                  :default => 0
+    t.integer  "int_freight_in_price",                                                 :default => 0
+    t.integer  "int_drop_ship_fee",                                                    :default => 0
+    t.integer  "int_shipping_in_price",                                                :default => 0
+    t.decimal  "markup",                                 :precision => 6, :scale => 3
+    t.integer  "int_list_price",                                                       :default => 0
     t.string   "variation_group"
     t.string   "product_number"
     t.string   "manufacturer_number"
-    t.boolean  "visible",                                                          :default => true
-    t.string   "wh_row",                :limit => 5
-    t.string   "wh_bay",                :limit => 5
-    t.string   "wh_shelf",              :limit => 5
-    t.string   "wh_product",            :limit => 5
+    t.boolean  "visible",                                                              :default => true
+    t.string   "wh_row",                    :limit => 5
+    t.string   "wh_bay",                    :limit => 5
+    t.string   "wh_shelf",                  :limit => 5
+    t.string   "wh_product",                :limit => 5
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sold_count",                                                       :default => 0
+    t.integer  "sold_count",                                                           :default => 0
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "upc"
+    t.string   "sears_variation_name"
+    t.string   "sears_variation_attribute"
   end
 
   create_table "product_variations_quantity_discounts", :id => false, :force => true do |t|
@@ -722,6 +724,21 @@ ActiveRecord::Schema.define(:version => 20100922131828) do
   end
 
   add_index "third_party_categories", ["owner"], :name => "index_third_party_categories_on_owner"
+
+  create_table "third_party_variation_attributes", :force => true do |t|
+    t.integer  "third_party_variation_id"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "third_party_variations", :force => true do |t|
+    t.string   "owner"
+    t.integer  "third_party_category_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                     :limit => 100

@@ -8,6 +8,7 @@ class ThirdPartyCategory < ActiveRecord::Base
   
   validates_presence_of :name, :owner
   has_and_belongs_to_many :subcategories
+  has_many :third_party_variations
   
   
   def self.grouped_options(third_party)
@@ -39,6 +40,20 @@ class ThirdPartyCategory < ActiveRecord::Base
     end
     tree.reject{|t| t if t.blank? }.join(" > ")
   end #end method print_tree
+  
+  
+  def sears_populate_name_values
+    tag = self.data
+    api = SearsAPI.new
+    results = api.get_variation_name_attributes(tag)
+    results.each do |data|
+      variation = third_party_variations.build(:name => data[:name], :owner => ThirdPartyCategory::SEARS)
+      data[:values].each do |val|
+        attribute = variation.third_party_variation_attributes.build(:value => val)
+      end
+      variation.save(false)
+    end
+  end #end method sears_populate_name_values
 
   
 end #end class

@@ -4,7 +4,7 @@ require 'open-uri'
 
 
 class ThirdPartySystems
-  
+    
   # Google Products updater.  This method creates and writes a tab-delimited
   # file of product information.  Then using FTP it uploads the file to google
   #
@@ -66,6 +66,76 @@ class ThirdPartySystems
     
   end #end method self.update_google_products
   
+  
+  def self.update_bing_shopping(options={})
+    #headings for tab delimited file
+    headings = [
+      "MPID",                #product_number
+      "Title",               #product_name
+      "BrandorManufacturer", #brand.name
+      "MPN",                 #product_number
+      "UPC",                 # ==> Leave blank
+      "ISBN",                # ==> Leave blank
+      "MerchantSKU",         #product_number
+      "ProductURL",          #product page URL
+      "Price",               #price with tax and shipping 
+      "StockStatus",         # one of: In Stock, Not In Stock
+      "Description",         #product_overview
+      "ImageURL",            #image url
+      "Shipping",            # lowest amnt a customer would pay for shipping the product
+      "MerchantCategory",    # merchant category tree separated by dash
+      "BingCategory",        # bing category, blank if n/a
+      "ShippingWeight",      #shipping weight
+      "Condition"            #always new
+    ]
+    output = "#{headings.join("\t")}\n"
+    
+    #fetch all the products to put into the file
+    if options[:test]
+      @product_variations = ProductVariation.find(:all, :conditions => {:visible => true}, :include => [:product], :limit => 10)
+    else
+      @product_variations = ProductVariation.find(:all, :conditions => {:visible => true}, :include => [:product])
+    end
+    
+    #loop through products and add to file
+    for variation in @product_variations
+      if variation.product
+        
+        mpid              = variation.product_number
+        title             = variation.full_title
+        brand             = variation.product.brands.size > 0 ? variation.product.brands.first.name : "Dormbuys.com"
+        mpn               = variation.product_number
+        upc               = ""
+        isbn              = ""
+        merchant_sku      = variation.product_number
+        product_url       = variation.product.default_front_url
+        price             = (variation.rounded_retail_price + ShippingRatesTable.get_rate(variation.rounded_retail_price)).to_s
+        stock_status      = variation.qty_on_hand > 0 ? "In Stock" : "Not In Stock"
+        description       = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
+        image_url         = variation.image? ? variation.image(:main).split("?").first : variation.product.product_image.url(:main).split("?").first
+        shipping          = ShippingRatesTable.get_rate(variation.rounded_retail_price).to_s
+        merchant_category = "#{variation.product.subcategories.first.category.name} - #{variation.product.subcategories.first.name}"
+        bing_category     = ""
+        shipping_weight   = variation.product_packages.collect.sum {|pp| pp.weight}
+        condition         = "New"
+      
+        #add the line to the output
+        output += "#{mpid}\t#{title}\t#{brand}\t#{mpn}\t#{upc}\t#{isbn}\t#{merchant_sku}\t#{product_url}\t#{price}"
+        output += "#{stock_status}\t#{description}\t#{image_url}\t#{shipping}\t#{merchant_category}\t#{bing_category}"
+        output += "#{shipping_weight}\t#{condition}\n"
+      end
+    end #end for loop
+    
+    
+    #transfer to FTP
+    self.ftp_transfer_content(
+      output, 
+      "bingshopping.txt", 
+      APP_CONFIG['bingshopping']['host'], 
+      APP_CONFIG['bingshopping']['user'], 
+      APP_CONFIG['bingshopping']['pass'])
+    
+  end #end method self.update_bing_shopping
   
   
   def self.latest_db_blog
@@ -860,7 +930,7 @@ class ThirdPartySystems
   
   
   def self.ftp_transfer_content(content, file_name, ftp_host, ftp_user, ftp_pass)
-    
+    puts "\nUploading #{file_name} to: #{ftp_host}\n"
     #write out the output file and save to "ftp_file"
     ftp_file = file_name
     fh = File.new(ftp_file, "w")
@@ -901,7 +971,7 @@ class ThirdPartySystems
     end #end putbinaryfile
 
     #show file listing of ftp dir
-    print ftp.list('all')
+    #print ftp.list('all')
 
     #clost the FTP connection
     ftp.close

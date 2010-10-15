@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  owner: MyString
+  third_party_category_id: 1
+  name: MyString
+
+two:
+  owner: MyString
+  third_party_category_id: 1
+  name: MyString
