@@ -114,7 +114,16 @@ class ThirdPartySystems
         description       = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
         image_url         = variation.image? ? variation.image(:main).split("?").first : variation.product.product_image.url(:main).split("?").first
         shipping          = ShippingRatesTable.get_rate(variation.rounded_retail_price).to_s
-        merchant_category = "#{variation.product.subcategories.first.category.name} - #{variation.product.subcategories.first.name}"
+        
+        if variation.product.subcategories.first.blank?
+          merchant_category = "Dorm Decor"
+        else
+          if variation.product.subcategories.first.category.blank?
+            merchant_category = variation.product.subcategories.first.name
+          else
+            merchant_category = "#{variation.product.subcategories.first.category.name} - #{variation.product.subcategories.first.name}"
+          end
+        end
         bing_category     = ""
         shipping_weight   = variation.product_packages.collect.sum {|pp| pp.weight}
         condition         = "New"
