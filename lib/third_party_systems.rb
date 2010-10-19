@@ -1,7 +1,7 @@
 require "net/ftp"
 require 'net/https'
 require 'open-uri'
-
+require "iconv"
 
 class ThirdPartySystems
     
@@ -88,7 +88,7 @@ class ThirdPartySystems
       "ShippingWeight",      #shipping weight
       "Condition"            #always new
     ]
-    output = "#{headings.join("\t")}\n"
+    output = "#{headings.join("\t")}\r\n"
     
     #fetch all the products to put into the file
     if options[:test]
@@ -131,10 +131,14 @@ class ThirdPartySystems
         #add the line to the output
         output += "#{mpid}\t#{title}\t#{brand}\t#{mpn}\t#{upc}\t#{isbn}\t#{merchant_sku}\t#{product_url}\t#{price}\t"
         output += "#{stock_status}\t#{description}\t#{image_url}\t#{shipping}\t#{merchant_category}\t#{bing_category}\t"
-        output += "#{shipping_weight}\t#{condition}\n"
+        output += "#{shipping_weight}\t#{condition}\r\n"
       end
     end #end for loop
     
+    
+    #fix UTF characters
+    ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+    output = ic.iconv(output + ' ')[0..-2]
     
     #transfer to FTP
     self.ftp_transfer_content(
