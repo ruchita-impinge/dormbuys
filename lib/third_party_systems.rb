@@ -108,9 +108,9 @@ class ThirdPartySystems
         upc               = ""
         isbn              = ""
         merchant_sku      = variation.product_number
-        product_url       = variation.product.default_front_url
+        product_url       = "http://dormbuys.com#{variation.product.default_front_url}"
         price             = (variation.rounded_retail_price + ShippingRatesTable.get_rate(variation.rounded_retail_price)).to_s
-        stock_status      = variation.qty_on_hand > 0 ? "In Stock" : "Not In Stock"
+        stock_status      = variation.qty_on_hand > 0 ? "In Stock" : "Out of Stock"
         description       = variation.product.product_overview.gsub(/(\r\n|\r|\n|\t)/s, "")
         image_url         = variation.image? ? variation.image(:main).split("?").first : variation.product.product_image.url(:main).split("?").first
         shipping          = ShippingRatesTable.get_rate(variation.rounded_retail_price).to_s
@@ -129,8 +129,8 @@ class ThirdPartySystems
         condition         = "New"
       
         #add the line to the output
-        output += "#{mpid}\t#{title}\t#{brand}\t#{mpn}\t#{upc}\t#{isbn}\t#{merchant_sku}\t#{product_url}\t#{price}"
-        output += "#{stock_status}\t#{description}\t#{image_url}\t#{shipping}\t#{merchant_category}\t#{bing_category}"
+        output += "#{mpid}\t#{title}\t#{brand}\t#{mpn}\t#{upc}\t#{isbn}\t#{merchant_sku}\t#{product_url}\t#{price}\t"
+        output += "#{stock_status}\t#{description}\t#{image_url}\t#{shipping}\t#{merchant_category}\t#{bing_category}\t"
         output += "#{shipping_weight}\t#{condition}\n"
       end
     end #end for loop
