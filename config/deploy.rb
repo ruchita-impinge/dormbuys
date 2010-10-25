@@ -40,8 +40,11 @@ namespace :deploy do
   desc "Symlink resource folders"
   task :symlink_resources do 
     
-     sudo "rm -rf #{release_path}/config/database.yml"
+      sudo "rm -rf #{release_path}/config/database.yml"
       run "ln -sf #{shared_path}/database.yml #{release_path}/config/database.yml"
+      
+      sudo "rm -rf #{release_path}/config/appconfig.yml"
+      run "ln -sf #{shared_path}/appconfig.yml #{release_path}/config/appconfig.yml"
 
       sudo "rm -rf #{release_path}/public/content"
       run "ln -sf #{shared_path}/content #{release_path}/public/content"
