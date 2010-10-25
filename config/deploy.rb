@@ -7,6 +7,9 @@ set :scm, "git"
 set :repository,  "ssh://git@git.parkersmithsoftware.com:30000/dormbuys.git"
 set :branch, "master"
 set :ssh_options, {:forward_agent => true}
+on :start do 
+  `ssh-add`
+end
 set :port, 30000
 set :use_sudo, true
 
