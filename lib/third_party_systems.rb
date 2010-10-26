@@ -636,7 +636,7 @@ class ThirdPartySystems
   
   
   
-  def self.update_lnt_inventory(for_generic=nil)
+  def self.update_lnt_inventory
 
     @headings = [] 
     @headings << "Product SKU"
@@ -650,24 +650,26 @@ class ThirdPartySystems
     
     @variations.each do |variation|
       
-      row = []  
+      2.times do |i|
+        row = []  
       
-      if for_generic
-        row << "#{variation.product_number}A"
-      else
-        row << "#{variation.product_number}"
+        if i == 0
+          row << "#{variation.product_number}"
+        else
+          row << "#{variation.product_number}A"
+        end
+      
+        #product price
+        row << "#{ThirdPartySystems.get_lnt_price(variation)}"
+      
+        #handle the comparison price
+        row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
+      
+        #product qty
+        row << "#{variation.qty_on_hand}"
+      
+        @rows << row
       end
-      
-      #product price
-      row << "#{ThirdPartySystems.get_lnt_price(variation)}"
-      
-      #handle the comparison price
-      row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
-      
-      #product qty
-      row << "#{variation.qty_on_hand}"
-      
-      @rows << row
       
     end #end each variation
   
