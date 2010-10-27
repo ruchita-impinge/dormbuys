@@ -196,7 +196,9 @@
 		<div class="field sears_variation_name">
 			<% if product_variation.sears_variation_name.blank? %>
 				<%= link_to_remote "Fetch Sears Variation Names", 
-						:url => sears_name_attributes_admin_product_path(:sears_cat_id => product_variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::SEARS)) %>
+						:url => sears_name_attributes_admin_product_path(
+							:sears_cat_id => (product_variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::SEARS) rescue nil)
+						) %>
 			<% end %>
 		</div>
 
