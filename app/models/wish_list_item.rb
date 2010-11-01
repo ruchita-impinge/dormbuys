@@ -18,7 +18,12 @@ class WishListItem < ActiveRecord::Base
   end #end method product_variation_name
   
   def product_options
-    self.product_option_values ? self.product_option_values.split(FIELD_DIVIDER) : nil
+    if self.product_option_values
+      found = self.product_option_values.split(FIELD_DIVIDER)
+      found = found.collect{|i| i.split("|") if i =~ /|/ }.flatten
+    else
+      nil
+    end
   end #end method product_options
   
   def product_options=(arr)
@@ -28,7 +33,12 @@ class WishListItem < ActiveRecord::Base
   
   
   def product_as_options
-    self.product_as_option_values ? self.product_as_option_values.split(FIELD_DIVIDER) : nil
+    if self.product_as_option_values
+      found = self.product_as_option_values.split(FIELD_DIVIDER)
+      found = found.collect{|i| i.split("|") if i =~ /|/ }.flatten
+    else
+      nil
+    end
   end #end method product_as_options
   
   def product_as_options=(arr)
