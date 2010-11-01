@@ -324,7 +324,7 @@ class FrontController < ApplicationController
     @sort_cats.unshift(["All Categories", 0])
     
     @items = @gift_registry.gift_registry_items
-    @items.reject! {|i| i unless i.valid? }
+    @items.reject! {|i| i unless i.is_valid? }
     
     #detect if sort was run
     unless params[:options].blank?

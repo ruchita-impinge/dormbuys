@@ -122,8 +122,9 @@ class ApplicationController < ActionController::Base
   
   # Track failed login attempts
   def note_failed_signin
-    flash[:error] = "Couldn't log you in as '#{params[:login][:email] rescue "blank"}'"
-    logger.warn "Failed login for '#{params[:login][:email] rescue "blank"}' from #{request.remote_ip} at #{Time.now.utc}"
+    login = params[:login][:email] rescue "blank"
+    flash[:error] = "Couldn't log you in as '#{login}'"
+    logger.warn "Failed login for '#{login}' from #{request.remote_ip} at #{Time.now.utc}"
   end
   
   

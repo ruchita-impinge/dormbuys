@@ -181,14 +181,17 @@ class CartController < ApplicationController
   def submit_login
     @page_title = "Login"
     logout_keeping_session!
-    user = User.authenticate(params[:login][:email], params[:login][:password])
+    login = params[:login][:email] rescue ""
+    pass = params[:login][:password] rescue ""
+    remember = params[:login][:remember] rescue ""
+    user = User.authenticate(login, pass)
     if user
       # Protects against session fixation attacks, causes request forgery
       # protection if user resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
       # reset_session
       self.current_user = user
-      new_cookie_flag = (params[:login][:remember] == "1")
+      new_cookie_flag = (remember == "1")
       handle_remember_cookie! new_cookie_flag
       
       find_cart
@@ -204,8 +207,8 @@ class CartController < ApplicationController
       flash[:notice] = "Logged in successfully"
     else
       note_failed_signin
-      @email       = params[:login][:email]
-      @remember_me = params[:login][:remember]
+      @email       = login
+      @remember_me = pass
       redirect_to cart_login_path
     end
   end #end method submit_login
