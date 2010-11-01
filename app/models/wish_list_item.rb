@@ -90,7 +90,7 @@ class WishListItem < ActiveRecord::Base
 
       unless self.product_options.blank?
         self.product_options.each do |pov_id|
-          pov = ProductOptionValue.find(pov_id)
+          pov = ProductOptionValue.find(pov_id) rescue nil
           if pov
             tmp_price += pov.price_increase
           end
@@ -99,7 +99,7 @@ class WishListItem < ActiveRecord::Base
 
       unless self.product_as_options.blank?
         self.product_as_options.each do |paov_id|
-          paov = ProductAsOptionValue.find(paov_id)
+          paov = ProductAsOptionValue.find(paov_id) rescue nil
           if paov
             tmp_price += (paov.product_variation.rounded_retail_price + paov.price_adjustment)
           end
