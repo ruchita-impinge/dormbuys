@@ -793,6 +793,10 @@ class ThirdPartySystems
   
   def self.update_generic
     
+    clean_for_csv = Proc.new do |str|
+      str.gsub(/(\r\n|\r|\n|\t)/s, " ").gsub(","," ") #.gsub(/"/,"").gsub(/'/, "")
+    end
+    
     @variations = ProductVariation.find(:all, :conditions => {:visible => true}, :include => [:product])
     
     
@@ -821,10 +825,10 @@ class ThirdPartySystems
           row << variation.product_number
     
           #product name
-          row << variation.product.product_name.gsub(",","")
+          row << "#{clean_for_csv.call variation.product.product_name}"
         
           #product overview
-          row << CGI::escapeHTML(variation.product.product_overview)
+          row << "#{clean_for_csv.call variation.product.product_overview}"
     
           #product price
           row << variation.rounded_retail_price
