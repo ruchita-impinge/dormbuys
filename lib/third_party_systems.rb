@@ -304,96 +304,109 @@ class ThirdPartySystems
     
     @variations.each do |variation|
       
-      row = []
+      2.times do |i|
       
-      row << "#{clean_for_csv.call variation.product_number}"
-      row << "#{clean_for_csv.call variation.full_title}"
-      row << "#{clean_for_csv.call variation.product.product_overview}"
+        row = []
+      
+        if i == 0
+          row << "#{clean_for_csv.call variation.product_number}"
+        else
+          row << "#{clean_for_csv.call variation.product_number}A"
+        end
+        
+        row << "#{clean_for_csv.call variation.full_title}"
+        row << "#{clean_for_csv.call variation.product.product_overview}"
       
       
-      #add brand
-      row << "Dormbuys.com"
+        #add brand
+        if i == 0
+          row << "Dormbuys.com"
+        else
+          row << "SpaceItUp"
+        end
       
-      #add LNT category
-      unless variation.product.subcategories.first.blank?
-        lnt_cat_id = variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::LNT)
-        if lnt_cat_id
-          lnt_cat = ThirdPartyCategory.find(lnt_cat_id)
-          row << "#{lnt_cat.name}"
+        #add LNT category
+        unless variation.product.subcategories.first.blank?
+          lnt_cat_id = variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::LNT)
+          if lnt_cat_id
+            lnt_cat = ThirdPartyCategory.find(lnt_cat_id)
+            row << "#{lnt_cat.name}"
+          else
+            row << "UNKNOWN"
+          end
+        
         else
           row << "UNKNOWN"
         end
+      
+      
+      
+        #handle product_size
+        if variation.title != "default"
         
-      else
-        row << "UNKNOWN"
-      end
-      
-      
-      
-      #handle product_size
-      if variation.title != "default"
+          if variation.variation_group.downcase =~ /size/
+            row << "#{clean_for_csv.call variation.title.split("/").first}"
+          else
+            row << ""
+          end
         
-        if variation.variation_group.downcase =~ /size/
-          row << "#{clean_for_csv.call variation.title.split("/").first}"
         else
           row << ""
-        end
+        end #end if-child
+      
+      
+        #handle product name and product description
+        row << "#{clean_for_csv.call variation.full_title}"
+        row << "#{clean_for_csv.call variation.product.product_overview}"
+      
+      
+        #handle 'attribute name'
+        if variation.title != "default"
         
-      else
-        row << ""
-      end #end if-child
-      
-      
-      #handle product name and product description
-      row << "#{clean_for_csv.call variation.full_title}"
-      row << "#{clean_for_csv.call variation.product.product_overview}"
-      
-      
-      #handle 'attribute name'
-      if variation.title != "default"
+          row << "#{clean_for_csv.call variation.title.split("/").last}"
         
-        row << "#{clean_for_csv.call variation.title.split("/").last}"
-        
-      else
-        row << ""
-      end #end if-child
+        else
+          row << ""
+        end #end if-child
       
       
-      #product qty
-      row << "#{variation.qty_on_hand}"
+        #product qty
+        row << "#{variation.qty_on_hand}"
       
       
-      #product price
-      row << "#{ThirdPartySystems.get_lnt_price(variation)}"
+        #product price
+        row << "#{ThirdPartySystems.get_lnt_price(variation)}"
       
-      #handle the comparison price
-      row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
+        #handle the comparison price
+        row << "#{ThirdPartySystems.get_lnt_comparison_price(variation)}"
       
-      #handle product image
-      #row << "http://www.dormbuys.com#{variation.product.main_image}"
+        #handle product image
+        #row << "http://www.dormbuys.com#{variation.product.main_image}"
 =begin
-      unless processed_product_ids.include? variation.product.id
-        processed_product_ids << variation.product.id
+        unless processed_product_ids.include? variation.product.id
+          processed_product_ids << variation.product.id
         
-        #row << variation.product.additional_product_images.collect {|ai| "#{ai.image.url(:main)}"}.join("|")
-        pimgs = []
-        pimgs << variation.product.product_image(:original).split("?").first
-        variation.product.additional_product_images.each {|ai| pimgs << ai.image(:original).split("?").first }
-        row << pimgs.join("|")
-      end
+          #row << variation.product.additional_product_images.collect {|ai| "#{ai.image.url(:main)}"}.join("|")
+          pimgs = []
+          pimgs << variation.product.product_image(:original).split("?").first
+          variation.product.additional_product_images.each {|ai| pimgs << ai.image(:original).split("?").first }
+          row << pimgs.join("|")
+        end
 =end
 
-      if variation.title == "default"
-        row << variation.product.product_image(:original).split("?").first
-      else
-        if variation.image.file?
-          row << variation.image(:original).split("?").first
-        else
+        if variation.title == "default"
           row << variation.product.product_image(:original).split("?").first
+        else
+          if variation.image.file?
+            row << variation.image(:original).split("?").first
+          else
+            row << variation.product.product_image(:original).split("?").first
+          end
         end
-      end
       
-      @rows << row
+        @rows << row
+        
+      end #end 2.times
       
     end #end each variation
   
