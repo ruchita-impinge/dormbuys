@@ -791,6 +791,59 @@ class ThirdPartySystems
   end #end method self.post_orders_to_packstream
   
   
+  def self.update_generic
+    @products = Product.find(:all, :conditions => {:visible => true})
+    
+    xml = %(<?xml version="1.0" encoding="UTF-8"?>\n)
+    xml += %(<products>)
+    
+    for p in @products
+      xml += %(<product>)
+      xml += %(<product_id>#{p.id}</product_id>\n)
+      xml += %(<product_name>#{CGI::escapeHTML(p.product_name)}</product_name>)
+      xml += %(<product_overview>#{CGI::escapeHTML(p.product_overview)}</product_overview>)
+
+      xml += %(<image_url><![CDATA[#{p.product_image.url(:main)}]]></image_url>)
+      xml += %(<price>#{p.retail_price}</price>)
+      xml += %(<msrp>#{p.list_price}</msrp>)
+      xml += %(<url><![CDATA[http://dormbuys.com#{p.default_front_url}]]></url>)
+      
+      xml += %(<variations>)
+        for v in p.product_variations
+          xml += %(<variation>)
+            xml += %(<product_number>#{v.product_number}</product_number>)
+            xml += %(<title>#{CGI::escapeHTML(v.title)}</title>)
+            xml += %(<full_title>#{CGI::escapeHTML(v.full_title)}</full_title>)
+            xml += %(<qty_on_hand>#{v.qty_on_hand}</qty_on_hand>)
+            xml += %(<qty_on_hold>#{v.qty_on_hold}</qty_on_hold>)
+            xml += %(<msrp>#{v.list_price}</msrp>)
+            xml += %(<price>#{v.rounded_retail_price}</price>)
+            xml += %(<visible>#{v.visible}</visible>)
+          xml += %(</variation>)
+        end
+      xml += %(</variations>)
+      
+      xml += %(<categories>)
+        for c in p.subcategories
+          xml += %(<category>)
+            xml += %(<name>#{c.name}</name>)
+            xml += %(<description>#{c.description}</description>)
+          xml += %(</category>)
+        end
+      xml += %(</categories>)
+      
+      xml += %(</product>)
+    end #end for loop
+    
+    xml += %(</products>)
+    
+    
+    ftp_file = "#{RAILS_ROOT}/public/content/files/generic_products.xml"
+    fh = File.new(ftp_file, "w")
+    fh.puts(xml)
+    fh.close
+  end #end update_generic
+  
   
   def self.update_packstream
     
