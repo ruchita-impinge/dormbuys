@@ -817,7 +817,7 @@ class ThirdPartySystems
     
     @variations.each do |variation|
       
-        if variation.product && variation.product.visible
+        if variation.product && variation.product.visible && !variation.product.drop_ship
 
           row = []  
     
