@@ -43,6 +43,11 @@ class ThirdPartyCategory < ActiveRecord::Base
   
   
   def sears_populate_name_values
+    ## before we start kill off any existing varition & attributes
+    self.third_party_variations.each do |v|
+      v.destroy
+    end
+    
     tag = self.data
     api = SearsAPI.new
     results = api.get_variation_name_attributes(tag)
@@ -54,6 +59,16 @@ class ThirdPartyCategory < ActiveRecord::Base
       variation.save(false)
     end
   end #end method sears_populate_name_values
+  
+  
+  def self.populate_subcategory_sears_data
+    subcats = Subcategory.all
+    subcats.each do |sub|
+      if sears_cat = sub.third_party_cat_obj(ThirdPartyCategory::SEARS)
+        sears_cat.sears_populate_name_values
+      end
+    end
+  end #end method self.populate_subcategory_sears_data
 
   
 end #end class

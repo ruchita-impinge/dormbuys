@@ -104,9 +104,6 @@ class SearsAPI
     false
   end #end method is_restricted(product)
   
-  def get_attribute_name(variation_group_name)
-    "ATTR_Name"
-  end #end method get_attribute_name(variation_group_name)
   
   def get_category(subcategory)
     cat = subcategory.third_party_cat_obj(ThirdPartyCategory::SEARS)
@@ -150,6 +147,8 @@ class SearsAPI
   end #end method get_variation_name_attributes(tag)
   
   
+  
+  
   def create_inventory_xml(variations)
     xml = get_builder
     xml.instruct! :xml, :version => "1.0", :encoding => "UTF-8" 
@@ -181,7 +180,7 @@ class SearsAPI
               xml.item("item-id" => product.product_variations.first.product_number) do 
                 xml.title product.product_name
                 xml.tag! "short-desc", product.product_overview
-                xml.upc "00#{product.product_variations.first.product_number}"
+                xml.upc product.product_variations.first.upc
                 xml.tags do 
                   xml.primary get_category(product.subcategories.first)
                 end #end tags
@@ -248,12 +247,11 @@ class SearsAPI
                 xml.tag! "variation-items" do 
                   for variation in product.product_variations
                     xml.tag! "variation-item", "item-id" => variation.product_number do 
-                      xml.upc "00#{variation.product_number}"
+                      xml.upc variation.upc
                       xml.tag! "standard-price", variation.rounded_retail_price
                       if variation.image.file?
                         xml.tag! "image-url" do 
-                          xml.url variation.imag
-                          e(:large)
+                          xml.url variation.image(:large)
                         end #end image-url
                       else
                         xml.tag! "image-url" do 
@@ -262,17 +260,9 @@ class SearsAPI
                       end #end if variation.image
                       xml.tag! "variation-attributes" do 
                         xml.tag! "variation-attribute" do 
-#############
-#############
-#############                      
-if 1 == 2
-                          xml.tag! "attribute", "name" => "#{get_attribute_name(variation.variation_group)}" do 
-                            variation.title
+                          xml.tag! "attribute", "name" => "#{variation.sears_variation_name}" do 
+                            variation.sears_variation_attribute
                           end
-end #end kill-block
-#############
-#############
-#############
                         end #end variation-attribute
                       end #end variation-attributes
                     end #end variation-item

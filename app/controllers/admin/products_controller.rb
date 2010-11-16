@@ -11,16 +11,21 @@ class Admin::ProductsController < Admin::AdminController
   ###########################################################################################
   
   
-  def sears_name_attributes
-    sears_cat = ThirdPartyCategory.find(params[:sears_cat_id])
-    if sears_cat
-      tag = sears_cat.data
-      api = SearsAPI.new
-      result = api.get_variation_name_attributes(tag)
-    else
-      
+  def sears_variation_attributes
+
+    variation_name = ThirdPartyVariation.find(:first, :conditions => {:name => params[:sears_variation_name], :owner => ThirdPartyCategory::SEARS})
+    variation_id = params[:varaition_id]
+    
+    render :update do |page|
+      if variation_name
+        options = variation_name.third_party_variation_attributes.collect {|x| %(<option id="#{x.value}">#{x.value}</option>)}.join("")
+        page << %($("#sears_variation_attribute_#{variation_id} select").html('#{options}');)
+      else
+        page.alert("Couldn't find third party variation with name: #{params[:sears_variation_name]}")
+      end
     end
-  end #end method sears_name_attributes
+    
+  end #end method sears_variation_attributes
   
   
   

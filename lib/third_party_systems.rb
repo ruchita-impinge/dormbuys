@@ -941,10 +941,10 @@ class ThirdPartySystems
     variations = []
     
     if options[:new_only]
-      product_variations = ProductVariation.find(:all, :conditions => ['products.drop_ship = ? AND product_variations.created_at >= ?', false, 7.days.ago.beginning_of_day], :include => [:product])
+      product_variations = ProductVariation.find(:all, :conditions => ['products.include_in_feeds = ? AND product_variations.created_at >= ?', true, 7.days.ago.beginning_of_day], :include => [:product])
       #products = Product.find(:all, :conditions => ['drop_ship = ? AND created_at >= ?', false, 7.days.ago.beginning_of_day], :include => :product_variations)
     else
-      product_variations = ProductVariation.find(:all, :conditions => ['products.drop_ship = ?', false], :include => [:product])
+      product_variations = ProductVariation.find(:all, :conditions => ['products.include_in_feeds = ?', true], :include => [:product])
       #products = Product.find(:all, :conditions => ['drop_ship = ?', false], :include => :product_variations)
     end
     

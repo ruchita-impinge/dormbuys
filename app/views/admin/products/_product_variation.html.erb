@@ -186,28 +186,69 @@
 				 	product_variation.image(:large), :target => "_blank" %>
 			</div>
 		<% end %>
-		
 		<div class="clear"></div>
+		
+		
 		
 		
 		
 		<h4>Sears - Name / Attributes</h4>
-		
-		<div class="field sears_variation_name">
-			<% if 1 == 2 %>
-			<% if product_variation.sears_variation_name.blank? %>
-				<%= link_to_remote "Fetch Sears Variation Names", 
-						:url => sears_name_attributes_admin_product_path(
-							:sears_cat_id => (product_variation.product.subcategories.first.third_party_cat(ThirdPartyCategory::SEARS) rescue 0)
-						) %>
+	
+		<% if product_variation.product && !product_variation.product.subcategories.empty? %>
+			<% if sears_cat = product_variation.product.subcategories.first.third_party_cat_obj(ThirdPartyCategory::SEARS) %>
+			
+				<div class="field long sears_variation_name" id="sears_variation_name_<%= product_variation.id %>">
+					<%= v.select :sears_variation_name, sears_cat.third_party_variations.collect {|x| [x.name, x.name]},
+					 		:include_blank => true %>
+					<%= v.label :sears_variation_name %>
+				</div><!-- end field -->
+				<div class="field waiting"></div>
+				<div class="clear"></div>
+				
+				
+				<div class="field long sears_variation_attribute" id="sears_variation_attribute_<%= product_variation.id %>">
+					<% if product_variation.sears_variation_attribute %>
+						<% val = [[product_variation.sears_variation_attribute, product_variation.sears_variation_attribute]] %>
+					<% else %>
+						<% val =  [] %>
+					<% end %>
+					
+					<%= v.select :sears_variation_attribute, val %>
+					<%= v.label :sears_variation_attribute %>
+				</div><!-- end field -->
+				<div class="clear"></div>
+				
+				<% javascript_tag do %>
+					$(document).ready(function(){
+						$("#sears_variation_name_<%= product_variation.id %> select").change(function(){
+							var val = $(this).val();
+	
+							$.ajax({
+							   type: "GET",
+							   url: "<%= sears_variation_attributes_admin_product_path %>",
+							   data: "sears_variation_name=" + val + "&varaition_id=<%= product_variation.id %>",
+							   dataType: "script",
+							   beforeSend: function(xhr){
+								 $("#sears_variation_attribute_<%= product_variation.id %> select").html('');
+							     $("#sears_variation_name_<%= product_variation.id %>").next(".waiting").text("Please wait...");
+							   },
+							   success: function(data){
+								 $("#sears_variation_name_<%= product_variation.id %>").next(".waiting").text("");
+							   }
+							 });
+							
+						});//end change
+					});//end ready
+				<% end %>
+				
+			<% else %>
+				<p>Sears mapping must be set for subcategory: <%= product_variation.product.subcategories.first.name %></p>
 			<% end %>
-			<% end %>
-		</div>
-
+		<% end %>
 		
-		<div class="clear"></div>
-		
-		
+	
+	
+	
 	<% end %>
 	
 </div>
