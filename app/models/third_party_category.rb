@@ -65,7 +65,7 @@ class ThirdPartyCategory < ActiveRecord::Base
     subcats = Subcategory.all
     subcats.each do |sub|
       if sears_cat = sub.third_party_cat_obj(ThirdPartyCategory::SEARS)
-        sears_cat.sears_populate_name_values
+        sears_cat.sears_populate_name_values if sears_cat.data
       end
     end
   end #end method self.populate_subcategory_sears_data
