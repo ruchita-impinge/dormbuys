@@ -62,11 +62,17 @@ class ThirdPartyCategory < ActiveRecord::Base
   
   
   def self.populate_subcategory_sears_data
-    subcats = Subcategory.all
-    subcats.each do |sub|
-      if sears_cat = sub.third_party_cat_obj(ThirdPartyCategory::SEARS)
-        sears_cat.sears_populate_name_values if sears_cat.data
+    temp_subs = Subcategory.all
+    subcats = temp_subs[57, temp_subs.length]
+    begin
+      subcats.each_with_index do |sub, i|
+        if sears_cat = sub.third_party_cat_obj(ThirdPartyCategory::SEARS)
+          sears_cat.sears_populate_name_values if sears_cat.data
+        end
       end
+    rescue => e
+      puts "\n\n\nCRASHED ON subcat ##{i}"
+      raise "#{e.message}"
     end
   end #end method self.populate_subcategory_sears_data
 
