@@ -1,0 +1,70 @@
+*, html, body {
+	padding: 0px;
+	margin: 0px;
+	font-family: verdana;
+}
+#wrapper {
+	width: 950px;
+	margin: 0 auto;
+}
+.slogan {
+	font-size: 50px;
+	font-weight: bold;
+}
+#box {
+	float: left;
+	width: 550px;
+	text-align: center;
+	padding-top: 10px;
+}
+#message {
+	float: left;
+	width: 400px;
+}
+#message p {
+	padding: 10px;
+	font-weight: bold;
+	font-size: 14px;
+}
+#communities {
+	width: 220px;
+	float: left;
+}
+#form {
+	width: 730px;
+	float: left;
+}
+#form_box {
+	margin: 0 auto;
+	width: 613px;
+	background: url('/images/standalone/wrap_up_america/form_box_bg.jpg') repeat-y;
+	position: relative;
+	text-align: center;
+	padding: 20px 0px 20px 0px;
+}
+#form_box p {
+	margin: 5px;
+}
+	#form_box_header {
+	position: absolute;
+	top: 0px;
+	background: url('/images/standalone/wrap_up_america/form_box_header.jpg') no-repeat;
+	height: 21px;
+	width: 621px;
+}
+#form_box_footer {
+	position: absolute;
+	bottom: 0px;
+	width: 621px;
+	height: 21px;
+	background: url('/images/standalone/wrap_up_america/form_box_footer.jpg') no-repeat;
+}
+table * {
+	text-align: left;
+}
+.submit {
+	background: url('/images/standalone/wrap_up_america/Button2.jpg') no-repeat;
+	width: 200px;
+	height: 75px;
+	border: 0px;
+}

@@ -1,0 +1,141 @@
+<% content_for :head do %>
+
+	<%= javascript_include_tag '/javascripts/standalone/wrap_up_america/swfobject.js' %>
+
+	<% javascript_tag do %>
+	
+		swfobject.embedSWF(
+			'/swf/standalone/wrap_up_america/player.swf', 
+			'player', 
+			'508', 
+			'372', 
+			'8', 
+			'/swf/standalone/wrap_up_america/expressInstall.swf', 
+			{
+				'height':'372', 
+				'width':'508', 
+				'file':'/swf/standalone/wrap_up_america/wrap_up_america.m4v'
+			}, 
+			{
+				'allowscriptaccess':'always', 
+				'allowfullscreen':'true'
+			}, 
+			{}
+		);
+	
+	
+		var none = new Array("No Teams Available");
+		var louisville = new Array("Alpha Omicron Pi","Chi Omega","Delta Zeta","Kappa Delta","Pi Beta Phi","Sigma Kappa","ROTC","UofL Athletics");
+		
+		$(document).ready(function() {
+			$('select.campus_selector').eq(0).change(function() {
+
+				var team;
+				if($('select.campus_selector').eq(0).children('option:selected').text().match(/Louisville/)) {
+					team = louisville;
+				} else {
+					team = none;
+				}
+				var option_html = '';
+				for(var i = 0; i < team.length; i++) {
+					option_html += "<option value='" + team[i] + "'>" + team[i] + "</option>";
+				}
+				$('#team').html(option_html);
+			});
+		});
+	<% end %>
+<% end %>
+
+<div id="wrapper">
+	<div>
+		<a href="http://www.wrapupamerica.org"><img src="/images/standalone/wrap_up_america/wua_logo.jpg" border="0" /></a><a href="http://dormbuys.com/"><img src="/images/standalone/wrap_up_america/dormbuys_logo.jpg" border="0" /></a>
+	</div>
+	<div>
+		<span class="slogan">THE </span><span class="slogan" style="color: red;">POWER</span><span class="slogan"> OF YOUR DONATION</span>
+		
+	</div>
+	<div>
+		<div id="box">
+			<div id="player"></div>
+		</div>
+		<div id="message">
+			<p>The power of a blanket is undeniable. For Wrap Up America, blankets signify warmth, compassion and hope. Warm hearts bring warm bodies.</p>
+			<p>Our goal is to take from those who have to impact those who have not. Through the compassion of DormBuys, we have been able to distribute blankets all across the country at a significantly discounted rate of $3.</p>
+			<p>Your choice to make a donation to a community you support will directly affect a life. Our blankets have a one-to-one impact as we deliver them to homeless shelters and individuals across the country.</p>
+			<p>By donating, you are joining our movement and taking a step forward as we strive to provide every homeless person in the country with a blanketÖwith hope.</p>
+		</div>
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<div>
+		<div id="communities">
+			<img src="/images/standalone/wrap_up_america/communities.jpg" />
+		</div>
+		<div id="form">
+			<div id="form_box">
+				<div id="form_box_header">&nbsp;</div>
+				<span class="slogan">DONATE </span><span class="slogan" style="color: red;">NOW!</span>
+				<p>Your blanket will be shipped to the campus of <u>your</u> choice.</p><p> In the name of a student leader <u>you</u> support.</p><br />
+				
+				<% if RAILS_ENV == "production" %>
+					<% submit_url = "http://dormbuys.com/cart/add" %>
+				<% else %>
+					<% submit_url = "http://localhost:3000/cart/add" %>
+				<% end %>
+				
+				<% form_for :cart_item, :url => submit_url, :html => {:id => 'cart_form', :class => 'option-frm'} do |f| %>	
+				
+					<%= f.hidden_field :variation_id, :value => @product.product_variations.first.id %>
+					<%= f.hidden_field :qty, :id => 'qty', :value => "1" %>
+					<%= f.hidden_field :wrap_up_america_sale, :id => 'qty', :value => "1" %>
+				
+					<table style="margin: 0 auto; width: 200px;">
+						<tbody>
+							<tr>
+								<td>
+									First Name:<br /><input type="text" name="cart_item[first_name]" />
+									<br /><br />
+								</td>
+								<td>
+									Last Name:<br /><input type="text" name="cart_item[last_name]" />
+									<br /><br />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Number of Blankets:
+								</td>
+								<td>
+									<%= select_product_options(@product.product_options.last, "cart_item[product_option_values][][id]", nil, [], false) %>	
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Campus:
+								</td>
+								<td>
+									<%= select_product_options(@product.product_options.first, "cart_item[product_option_values][][id]", nil, ['campus_selector'], false) %>	
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Team:
+								</td>
+								<td>
+									<select id="team" name="cart_item[team]">
+										<option value="No Teams Available">No Teams Available</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="text-align: center">
+									<br /><input type="submit" value="" name="submit" class="submit" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				<% end %>
+				<div id="form_box_footer">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Wrap Up America - Donation Page</title>
+		<%= stylesheet_link_tag "/stylesheets/standalone/wrap_up_america/style.css" %>
+		<%= javascript_include_tag "/javascripts/standalone/wrap_up_america/jquery-1.4.4.min.js" %>
+		
+		<%= yield :head %>
+		
+	</head>
+	<body>
+		
+		<% flash.each do |key, msg| %>
+		    <%= content_tag :p, msg, :class => key %>
+		<% end %>
+	
+		<%= yield %>
+	
+	</body>
+</html>	

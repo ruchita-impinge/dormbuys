@@ -3,6 +3,8 @@ class CartItem < ActiveRecord::Base
   FIELD_DIVIDER = "^v^"
   
   before_save :calculate_totals
+
+  has_many :wrap_up_america_sales, :dependent => :destroy
   
   belongs_to :cart
   belongs_to :product_variation

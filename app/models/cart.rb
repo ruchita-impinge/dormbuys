@@ -154,6 +154,17 @@ class Cart < ActiveRecord::Base
   end #end method set_shipping_address
   
   
+  def finalize_wrap_up_america_sales
+    self.cart_items.each do |item|
+      self.wrap_up_america_sales.each do |wrap|
+        wrap.purchase_confirmed = true
+        wrap.cart_item_id = nil
+        wrap.save(false)
+      end
+    end
+  end #end method finalize_wrap_up_america_sales
+  
+  
   def add(cart_item_attributes)
     
     begin
@@ -180,6 +191,33 @@ class Cart < ActiveRecord::Base
     item.gift_registry_item_id = cart_item_attributes[:gift_registry_item_id] unless cart_item_attributes[:gift_registry_item_id].blank?
     
     item.save!
+    
+    if cart_item_attributes[:wrap_up_america_sale]
+      wrap = item.wrap_up_america_sales.build
+      wrap.first_name = cart_item_attributes[:first_name]
+      wrap.last_name = cart_item_attributes[:last_name]
+      wrap.team = cart_item_attributes[:team]
+
+      if cart_item_attributes[:product_option_values] && cart_item_attributes[:product_option_values][0] && cart_item_attributes[:product_option_values][0][:id]
+        pov_a = ProductOptionValue.find(cart_item_attributes[:product_option_values][0][:id])
+        if pov_a.product_option.option_name =~ /quantity/i
+          wrap.quantity = pov_a.option_value
+        else
+          wrap.campus = pov_a.option_value
+        end
+      end
+
+      if cart_item_attributes[:product_option_values] && cart_item_attributes[:product_option_values][1] && cart_item_attributes[:product_option_values][1][:id]
+        pov_b = ProductOptionValue.find(cart_item_attributes[:product_option_values][1][:id])
+        if pov_b.product_option.option_name =~ /quantity/i
+          wrap.quantity = pov_b.option_value
+        else
+          wrap.campus = pov_b.option_value
+        end
+      end
+      wrap.save!
+    end
+    
     
     return [true, ""]
     

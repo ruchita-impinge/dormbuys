@@ -48,6 +48,14 @@ class CartController < ApplicationController
       end
     end
     
+    #wrap-up-america VALIDATION
+    if request.referrer =~ /wrapup/ || request.referrer =~ /wrapup/
+      if params[:cart_item][:product_option_values].blank? || params[:cart_item][:product_option_values].first[:id].blank?
+        flash[:error] = "Please select a value for all drop down lists"
+        redirect_to request.referrer and return
+      end
+    end
+    
 
     if params[:cart_item][:qty].blank?
       flash[:error] = "You must specify a quantity"
@@ -410,6 +418,7 @@ class CartController < ApplicationController
       session[:order_id] = @order.id
       
       #destroy cart
+      @cart.finalize_wrap_up_america_sales
       @cart.destroy
       session[:cart_id] = nil
       
