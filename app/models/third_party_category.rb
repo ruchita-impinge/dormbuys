@@ -66,12 +66,14 @@ class ThirdPartyCategory < ActiveRecord::Base
     subcats = temp_subs[57, temp_subs.length]
     begin
       subcats.each_with_index do |sub, i|
+        puts "[populate sears] processing #{i} of #{subcats.length}"
         if sears_cat = sub.third_party_cat_obj(ThirdPartyCategory::SEARS)
           sears_cat.sears_populate_name_values if sears_cat.data
         end
+        puts "[populate sears] done with #{i}"
       end
     rescue => e
-      puts "\n\n\nCRASHED ON subcat ##{i}"
+      puts "\n\n\n[populate sears] CRASHED ON subcat ##{i}"
       raise "#{e.message}"
     end
   end #end method self.populate_subcategory_sears_data
