@@ -12,12 +12,12 @@ class Product < ActiveRecord::Base
   has_and_belongs_to_many :warehouses
   has_and_belongs_to_many :subcategories
   has_and_belongs_to_many :brands
-  has_many :additional_product_images
-  has_many :product_options
-  has_many :product_restrictions
-  has_many :product_variations
-  has_many :product_as_options
-  has_many :daily_dorm_deals
+  has_many :additional_product_images, :dependent => :destroy
+  has_many :product_options, :dependent => :destroy
+  has_many :product_restrictions, :dependent => :destroy
+  has_many :product_variations, :dependent => :destroy
+  has_many :product_as_options, :dependent => :destroy
+  has_many :daily_dorm_deals, :dependent => :destroy
   
   validates_presence_of :product_name, :product_overview
   validates_associated :additional_product_images
