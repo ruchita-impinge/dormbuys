@@ -156,7 +156,7 @@ class Cart < ActiveRecord::Base
   
   def finalize_wrap_up_america_sales
     self.cart_items.each do |item|
-      self.wrap_up_america_sales.each do |wrap|
+      item.wrap_up_america_sales.each do |wrap|
         wrap.purchase_confirmed = true
         wrap.cart_item_id = nil
         wrap.save(false)
