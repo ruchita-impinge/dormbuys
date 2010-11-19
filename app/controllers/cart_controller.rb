@@ -49,7 +49,7 @@ class CartController < ApplicationController
     end
     
     #wrap-up-america VALIDATION
-    if request.referrer =~ /wrapup/ || request.referrer =~ /wrapup/
+    if request.referrer =~ /wrapupamerica/ || request.referrer =~ /wrapupamerica/
       if params[:cart_item][:product_option_values].blank? || params[:cart_item][:product_option_values].first[:id].blank?
         flash[:error] = "Please select a value for all drop down lists"
         redirect_to request.referrer and return

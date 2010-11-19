@@ -205,7 +205,7 @@ ActionController::Routing::Routes.draw do |map|
   map.daily_dorm_deal_deal_signup '/deal_signup', :controller => 'daily_dorm_deal', :action => 'deal_signup'
   map.daily_dorm_deal_deal_signup_save '/deal_signup_save', :controller => 'daily_dorm_deal', :action => 'deal_signup_save'
   map.daily_dorm_deal '/dailydeal', :controller => 'daily_dorm_deal', :action => 'index'
-  map.wrap_up_america '/wrapup', :controller => "wrap_up_america", :action => 'index'
+  map.wrap_up_america '/wrapupamerica', :controller => "wrap_up_america", :action => 'index'
   
   #legacy URLs
   map.legacy_product '/shop/product/:old_site_product_id', :controller => "front", :action => "product"
