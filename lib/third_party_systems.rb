@@ -803,11 +803,15 @@ class ThirdPartySystems
     @headings = [] 
     @headings << "Product Number"
     @headings << "Product Name"
+    @headings << "Product Name Full"
     @headings << "Product Overview"
     @headings << "Product Price"
     @headings << "Product MSRP"
     @headings << "Product Image URL"
     @headings << "Product Page URL"
+    @headings << "Variation Group ID"
+    @headings << "Variation Group Description"
+    @headings << "Variation Description"
     @headings << "QTY On Hand"
     @headings << "QTY On Hold"
     @headings << "Categories"
@@ -826,6 +830,9 @@ class ThirdPartySystems
     
           #product name
           row << "#{clean_for_csv.call variation.product.product_name}"
+          
+          #product name full
+          row << "#{clean_for_csv.call variation.full_title}"
         
           #product overview
           row << "#{clean_for_csv.call variation.product.product_overview}"
@@ -849,6 +856,15 @@ class ThirdPartySystems
     
           #product page url
           row << "http://dormbuys.com#{product.default_front_url rescue '/'}"
+          
+          #variation group id
+          row << variation.product_id
+          
+          #variation group description
+          row << variation.variation_group
+          
+          #variation description
+          row << variation.title
     
           row << variation.qty_on_hand
           
