@@ -4,7 +4,7 @@ class CartItem < ActiveRecord::Base
   
   before_save :calculate_totals
 
-  has_many :wrap_up_america_sales, :dependent => :destroy
+  has_many :wrap_up_america_sales, :dependent => :nullify
   
   belongs_to :cart
   belongs_to :product_variation

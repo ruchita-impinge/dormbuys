@@ -287,10 +287,12 @@
 			<div><b>Packstream:</b></div>
 			<div id="packstream">
 
+				<% if 1 == 2 %>
 				<script src="https://api.packstream.com/_scripts/print.aspx" type="text/javascript"></script>
 				<script type="text/javascript">
 					writePackstreamButton(document.getElementById('packstream_button'), 'E5C5A360-4168-4738-A2C4-31B08C45726A', '<%= @order.order_id %>');
 				</script>
+				<% end %>
 
 				<br /><br />
 			</div>
