@@ -142,11 +142,11 @@ class FrontController < ApplicationController
       redirect_to root_path and return
     end
     
-    if @product.available_variations.empty?
+    if @product.visible == false || @product.available_variations.empty?
       flash[:error] = "This product is currently unavailable"
       redirect_to root_path and return
     end
-    
+
     
     log_product_viewed(@product)
     

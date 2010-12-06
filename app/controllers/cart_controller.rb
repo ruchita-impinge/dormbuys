@@ -378,6 +378,7 @@ class CartController < ApplicationController
     @cart_step = "review"
     @page_title = "Review Order"
     find_cart
+    
     if @cart.items.empty?
       flash[:error] = "Your cart is empty"
       redirect_to cart_path and return
@@ -397,6 +398,8 @@ class CartController < ApplicationController
     @cart_step = "confirm"
     @page_title = "Order Confirmation"
     find_cart
+    
+    
     if @cart.items.empty?
       flash[:error] = "Your cart is empty"
       redirect_to cart_path and return

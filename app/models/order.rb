@@ -333,6 +333,12 @@ class Order < ActiveRecord::Base
     pass = true
 
     self.order_line_items.each do |li|
+      
+      if li.variation.product.visible == false || li.variation.visible == false
+        self.errors.add_to_base("Sorry, '#{li.variation.full_title}' is no longer available")
+        pass = false
+      end
+      
       unless li.variation.product.drop_ship
         
         # we call in this way as opposed to li.variation.qty_on_hand

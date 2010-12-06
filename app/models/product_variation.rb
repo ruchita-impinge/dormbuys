@@ -6,11 +6,11 @@ class ProductVariation < ActiveRecord::Base
   before_destroy :skip_validation
   
   belongs_to :product
-  has_many :product_packages
-  has_many :product_as_option_values
-  has_many :gift_registry_items
-  has_many :wish_list_items
-  has_many :daily_dorm_deals
+  has_many :product_packages, :dependent => :destroy
+  has_many :product_as_option_values, :dependent => :destroy
+  has_many :gift_registry_items, :dependent => :destroy
+  has_many :wish_list_items, :dependent => :destroy
+  has_many :daily_dorm_deals, :dependent => :destroy
   has_and_belongs_to_many :quantity_discounts
   
   validates_uniqueness_of :product_number, :unless => :should_skip_validation?
