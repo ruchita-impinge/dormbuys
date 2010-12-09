@@ -225,7 +225,7 @@
 					<% javascript_tag do %>
 						$(document).ready(function(){
 							$("#sears_variation_name_<%= product_variation.id %> select").change(function(){
-								var val = $(this).val();
+								var val = encodeURIComponent($(this).val());
 	
 								$.ajax({
 								   type: "GET",
