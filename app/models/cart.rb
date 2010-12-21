@@ -173,7 +173,7 @@ class Cart < ActiveRecord::Base
             :quantity => wrap.quantity,
             :campus => wrap.campus,
             :team => wrap.team,
-            :purchase_date => wrap.created_at.strftime(:mdY)
+            :purchase_date => wrap.created_at.strftime("%Y-%m-%d")
           }
       
           http_session = Net::HTTP.new(uri.host, uri.port)
