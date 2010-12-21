@@ -1,4 +1,6 @@
 require "digest/sha1"
+require 'net/https'
+require 'open-uri'
 
 class Cart < ActiveRecord::Base
   
@@ -160,6 +162,32 @@ class Cart < ActiveRecord::Base
         wrap.purchase_confirmed = true
         wrap.cart_item_id = nil
         wrap.save(false)
+        
+        begin
+          uri = URI.parse("http://wrapupamerica.org/custom_pages/collection.php")
+      
+          req = Net::HTTP::Post.new(uri.request_uri)
+          req.form_data = {
+            :first_name => wrap.first_name,
+            :last_name => wrap.last_name,
+            :quantity => wrap.quantity,
+            :campus => wrap.campus,
+            :team => wrap.team,
+            :purchase_date => wrap.created_at.strftime(:mdY)
+          }
+      
+          http_session = Net::HTTP.new(uri.host, uri.port)
+          #http_session.use_ssl = true
+          http_session.start { |http| 
+            http.request(req)
+          }
+        rescue => e
+          HoptoadNotifier.notify(
+            :error_class => "Cart",
+            :error_message => "!!! - Error posting to wrap-up: #{e.message}"
+          )
+        end
+         
       end
     end
   end #end method finalize_wrap_up_america_sales
