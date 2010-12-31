@@ -8,7 +8,8 @@ class ShippingNumber < ActiveRecord::Base
   FEDEX_TRACKING_URL = "http://www.fedex.com/Tracking?tracknumbers=#TRACKINGNUMBER#&language=english&action=track&cntry_code=us"
   UPS_TRACKING_URL = "http://wwwapps.ups.com/WebTracking/processInputRequest?sort_by=status&tracknums_displayed=1&TypeOfInquiryNumber=T&loc=en_US&InquiryNumber1=#TRACKINGNUMBER#&track.x=0&track.y=0"
   USPS_TRACKING_URL = "http://trkcnfrm1.smi.usps.com/PTSInternetWeb/InterLabelInquiry.do?origTrackNum=#TRACKINGNUMBER#"
-  DHL_TRACKING_URL =  "http://track.dhl-usa.com/TrackByNbr.asp?ShipmentNumber=#TRACKINGNUMBER#"
+  #DHL_TRACKING_URL =  "http://track.dhl-usa.com/TrackByNbr.asp?ShipmentNumber=#TRACKINGNUMBER#"
+  DHL_TRACKING_URL = "http://webtrack.dhlglobalmail.com/?trackingnumber=#TRACKINGNUMBER#+"
   CANADA_POST_TRACKING_URL = "https://em.canadapost.ca/emo/basicPin.do?trackingId=#TRACKINGNUMBER#&trackingCode=PIN&action=query&language=en&scloc=segment"
 
   
