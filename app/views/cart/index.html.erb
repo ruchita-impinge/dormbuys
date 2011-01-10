@@ -67,7 +67,9 @@
 																				<span class="item-desc">#<%= cart_item.product_number %></span>
 																		
 																				<% cart_item.product_options.group_by(&:product_option).each do |option, values| %>
-																					<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:option_value_display) %></span>
+																					<% if option %>
+																						<span class="item-desc"><%= option.option_name %>: <%= values.collect(&:option_value_display) %></span>
+																					<% end %>
 																				<% end %>
 																	
 																				<% cart_item.product_as_options.group_by(&:product_as_option).each do |option, values| %>
