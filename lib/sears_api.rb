@@ -182,7 +182,7 @@ class SearsAPI
                 xml.tag! "short-desc", product.product_overview
                 xml.upc product.product_variations.first.upc.blank? ? "00#{product.product_variations.first.product_number}" : product.product_variations.first.upc
                 xml.tags do 
-                  xml.primary get_category(product.subcategories.first)
+                  xml.primary get_category(product.primary_subcategory)
                 end #end tags
                 xml.tag! "model-number", product.id
                 xml.tag! "standard-price", product.retail_price
@@ -218,7 +218,7 @@ class SearsAPI
                 xml.title product.product_name
                 xml.tag! "short-desc", product.product_overview
                 xml.tags do 
-                  xml.primary get_category(product.subcategories.first)
+                  xml.primary get_category(product.primary_subcategory)
                 end #end tags
                 xml.tag! "model-number", product.id
                 xml.brand (product.brands.size > 0 ? product.brands.first.name : "Dormbuys.com")
