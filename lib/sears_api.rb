@@ -180,7 +180,7 @@ class SearsAPI
               xml.item("item-id" => product.product_variations.first.product_number) do 
                 xml.title product.product_name
                 xml.tag! "short-desc", product.product_overview
-                xml.upc product.product_variations.first.upc
+                xml.upc product.product_variations.first.upc.blank? ? "00#{product.product_variations.first.product_number}" : product.product_variations.first.upc
                 xml.tags do 
                   xml.primary get_category(product.subcategories.first)
                 end #end tags
@@ -247,7 +247,7 @@ class SearsAPI
                 xml.tag! "variation-items" do 
                   for variation in product.product_variations
                     xml.tag! "variation-item", "item-id" => variation.product_number do 
-                      xml.upc variation.upc
+                      xml.upc variation.upc.blank? ? "00#{variation.product_number}" : variation.upc
                       xml.tag! "standard-price", variation.rounded_retail_price
                       if variation.image.file?
                         xml.tag! "image-url" do 

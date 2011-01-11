@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101118190731) do
+ActiveRecord::Schema.define(:version => 20110111205107) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -570,6 +570,7 @@ ActiveRecord::Schema.define(:version => 20101118190731) do
     t.string   "permalink_handle"
     t.text     "description_general"
     t.boolean  "include_in_feeds",           :default => true
+    t.integer  "primary_subcategory_id"
   end
 
   add_index "products", ["permalink_handle"], :name => "index_products_on_permalink_handle"

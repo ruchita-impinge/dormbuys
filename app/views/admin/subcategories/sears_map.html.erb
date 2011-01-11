@@ -47,7 +47,7 @@
 					{
 						:url => tpc_auto_complete_sears_tree_path
 					} %>
-				<label>Sears</label>
+				<label>Sears <span>(Variations: <%= tpc.third_party_variations.size %>)</span></label>
 				<%= hidden_field_tag 'subcategory[third_party_category_ids][]', id_val, :class => 'tpc_id' %>
 			</div>
 			<div class="clear"></div>

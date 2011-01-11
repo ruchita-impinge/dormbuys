@@ -18,12 +18,14 @@ class Product < ActiveRecord::Base
   has_many :product_variations, :dependent => :destroy
   has_many :product_as_options, :dependent => :destroy
   has_many :daily_dorm_deals, :dependent => :destroy
+  belongs_to :primary_subcategory, :class_name => "Subcategory", :foreign_key => "primary_subcategory_id"
   
   validates_presence_of :product_name, :product_overview
   validates_associated :additional_product_images
   validates_associated :product_options
   validates_associated :product_restrictions
   validates_associated :product_variations
+  validates_presence_of :primary_subcategory_id
   
   has_attached_file :product_image, 
     :styles => {
@@ -67,6 +69,15 @@ class Product < ActiveRecord::Base
     if self.warehouses.empty?
       self.errors.add_to_base "Must have a warehouse"
     end
+    
+    primary_is_in_subs = false
+    self.subcategory_ids.each do |sub_id|
+      if sub_id == self.primary_subcategory_id
+        primary_is_in_subs = true
+      end
+    end
+    
+    self.errors.add_to_base "Subcategories must include primary subcategory" if !primary_is_in_subs
     
   end #end method validate
   
