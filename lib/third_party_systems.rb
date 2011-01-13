@@ -815,7 +815,7 @@ class ThirdPartySystems
     @headings << "QTY On Hand"
     @headings << "QTY On Hold"
     @headings << "Categories"
-    
+    @headings << "Total Weight"
     @rows = []
     
     
@@ -871,6 +871,8 @@ class ThirdPartySystems
           row << variation.qty_on_hold
           
           row << variation.product.subcategories.collect {|s| s.name }.join(" | ")
+    
+          row << variation.product_packages.collect {|p| p.weight }.sum.to_s
     
           @rows << row
           
