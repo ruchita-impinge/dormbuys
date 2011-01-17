@@ -1,7 +1,7 @@
 module ProductHelper
   
-  def subcat_selector(selected)
-    out  = %(<select id="product_subcategory_ids" name="product[subcategory_ids][]">)
+  def subcat_selector(selected, element_name="")
+    out  = %(<select id="product_subcategory_ids" name="#{element_name.blank? ? 'product[subcategory_ids][]' : element_name}">)
     out += %(<option value="">Subcategory...</option>)
     
     #add the categories

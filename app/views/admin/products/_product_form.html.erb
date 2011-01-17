@@ -86,7 +86,7 @@
 	<div class="clear"></div>
 
 	<div class="field">
-		<%= subcat_selector(@product.primary_subcategory) %>
+		<%= subcat_selector(@product.primary_subcategory, "product[primary_subcategory_id]") %>
 		<%= f.label :primary_subcategory_id %>
 	</div>
 	<div class="clear"></div>
