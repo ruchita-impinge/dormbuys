@@ -194,8 +194,8 @@
 		
 		<h4>Sears - Name / Attributes</h4>
 	
-		<% if product_variation.product && !product_variation.product.subcategories.empty? %>
-			<% if sears_cat = product_variation.product.subcategories.first.third_party_cat_obj(ThirdPartyCategory::SEARS) %>
+		<% if product_variation.product && !product_variation.product.primary_subcategory.blank? %>
+			<% if sears_cat = product_variation.product.primary_subcategory.third_party_cat_obj(ThirdPartyCategory::SEARS) %>
 			
 				<% if sears_cat.third_party_variations.size == 0 %>
 					<p>No Sears attributes available for mapping.</p>
@@ -248,7 +248,7 @@
 				<% end %>
 				
 			<% else %>
-				<p>Sears mapping must be set for subcategory: <%= product_variation.product.subcategories.first.name %></p>
+				<p>Sears mapping must be set for subcategory: <%= product_variation.product.primary_subcategory.name %></p>
 			<% end %>
 		<% end %>
 		
