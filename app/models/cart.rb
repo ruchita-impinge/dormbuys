@@ -388,7 +388,7 @@ class Cart < ActiveRecord::Base
           gc_total -= card.current
           card.current_amount = 0
         else
-          card.current -= gc_total
+          card.current_amount -= gc_total
           gc_total = 0
         end
 
