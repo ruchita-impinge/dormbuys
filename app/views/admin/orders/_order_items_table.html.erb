@@ -124,7 +124,12 @@
 	</tr>
 	
 	<tr class="total_row">
-		<td class="left" colspan="6">Gift Cards</td>
+		<td class="left" colspan="6">
+			Gift Cards 
+			<% unless @order.gift_cards.empty? %>
+				(<%= @order.gift_cards.collect{|gc| gc.giftcard_number }.join(", ") %>)
+			<% end %>
+		</td>
 		<td class="right">($<%= @order.total_giftcards %>)</td>
 	</tr>
 	
