@@ -25,6 +25,7 @@ class Order < ActiveRecord::Base
   belongs_to :billing_country, :class_name => "Country", :foreign_key => "billing_country_id"
   belongs_to :shipping_state, :class_name => "State", :foreign_key => "shipping_state_id"
   belongs_to :shipping_country, :class_name => "Country", :foreign_key => "shipping_country_id"
+  belongs_to :cart
   has_many :order_line_items
   has_many :shipping_labels
   has_many :order_drop_ship_emails
@@ -1410,6 +1411,8 @@ class Order < ActiveRecord::Base
     order.order_status_id = Order::ORDER_STATUS_WAITING
     order.order_id        = Order.generate_uniq_order_id
     order.order_vendor_id = OrderVendor::DORMBUYS
+    order.gift_cards      = cart.gift_cards
+    order.cart_id         = cart.id
     
     #remove non-relevant cart attributes
     cart_attributes = cart.attributes

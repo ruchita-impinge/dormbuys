@@ -363,6 +363,45 @@ class Cart < ActiveRecord::Base
   end #end method total_gift_cards
   
   
+  ##
+  # Note this is a hack method copied in from Order.rb to update giftcards used on 
+  # an order.  Order wasn't doing this because order.gift_cards wasn't getting set
+  # prior to 1/19/2011 - bw.
+  ##
+  def track_gift_cards_used
+    
+    #update any gift cards used on the order
+    self.gift_cards.sort! {|x,y| x.current_amount <=> y.current_amount} #sort smallest amount first
+    
+    gc_ids = []
+    gc_total = self.total_giftcards
+
+    #alter the gc balances on used cards
+    self.gift_cards.each do |card|
+      
+      gc_ids << card.id
+
+      if gc_total.cents > 0
+
+        #adjust amount as necessary
+        if gc_total >= card.current
+          gc_total -= card.current
+          card.current_amount = 0
+        else
+          card.current -= gc_total
+          gc_total = 0
+        end
+
+        card.save! #save the adjustments to the current_amount
+
+      end #end if gc_total > 0
+
+    end #end card.gift_cards.each
+
+  end #end method track_gift_cards_used
+  
+  
+  
   def total_before_tax_and_gift_cards
     tmp = (subtotal + shipping) - (total_coupons)
     tmp.cents <= 0 ? Money.new(0) : tmp
