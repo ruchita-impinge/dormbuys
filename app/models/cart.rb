@@ -374,7 +374,7 @@ class Cart < ActiveRecord::Base
     self.gift_cards.sort! {|x,y| x.current_amount <=> y.current_amount} #sort smallest amount first
     
     gc_ids = []
-    gc_total = self.total_giftcards
+    gc_total = self.total_gift_cards
 
     #alter the gc balances on used cards
     self.gift_cards.each do |card|
