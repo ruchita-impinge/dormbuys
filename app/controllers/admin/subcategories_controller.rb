@@ -6,9 +6,10 @@ class Admin::SubcategoriesController < Admin::AdminController
     search_term = params[:third_party_cat_search_term]
 
     @cats = ThirdPartyCategory.find(:all, 
-      :conditions => ["owner = ? AND LOWER(#{params[:method]}) LIKE ?",
-      ThirdPartyCategory::SEARS,
-      '%' + search_term.downcase + '%'], 
+      :conditions => ["owner = ? AND LOWER(#{params[:method]}) LIKE ? AND DATA IS NOT NULL",
+        ThirdPartyCategory::SEARS,
+        '%' + search_term.downcase + '%'
+      ], 
       :order => "#{params[:method]} ASC",
       :limit => 20)
 
