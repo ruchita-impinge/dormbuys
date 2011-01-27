@@ -198,7 +198,12 @@
 			<% if sears_cat = product_variation.product.primary_subcategory.third_party_cat_obj(ThirdPartyCategory::SEARS) %>
 			
 				<% if sears_cat.third_party_variations.size == 0 %>
-					<p>No Sears attributes available for mapping.</p>
+					<p>
+						No Sears attributes available for mapping.
+						<% if sears_cat.data.blank? %>
+						(Sears &quot;tag&quot; is blank)
+						<% end %>
+					</p>
 				<% else %>
 			
 					<div class="field long sears_variation_name" id="sears_variation_name_<%= product_variation.id %>">
