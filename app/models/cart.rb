@@ -267,6 +267,13 @@ class Cart < ActiveRecord::Base
   
   
   
+  def subtotal_for_coupons
+    return Money.new(0) if self.cart_items.size == 0
+    self.cart_items.collect {|i| i.product_variation.product.exclude_from_coupons ? Money.new(0) : i.total_price }.sum
+  end #end method subtotal_for_coupons
+  
+  
+  
   def tax
     return Money.new(0) if self.shipping_state_id.blank?
     
@@ -337,15 +344,15 @@ class Cart < ActiveRecord::Base
       
     elsif self.coupon.coupon_type_id == CouponType::PERCENTAGE
       
-      return self.subtotal * (self.coupon.value / 100.0)
+      return self.subtotal_for_coupons * (self.coupon.value / 100.0)
       
     elsif self.coupon.coupon_type_id == CouponType::TIERED_DOLLAR
       
-      self.coupon.get_tiered_value(subtotal.to_s.to_f.ceil).to_money
+      self.coupon.get_tiered_value(subtotal_for_coupons.to_s.to_f.ceil).to_money
       
     elsif self.coupon.coupon_type_id == CouponType::TIERED_PERCENTAGE
       
-      return self.subtotal * (self.coupon.get_tiered_value(subtotal.to_s.to_f.ceil) / 100.0)
+      return self.subtotal_for_coupons * (self.coupon.get_tiered_value(subtotal_for_coupons.to_s.to_f.ceil) / 100.0)
       
     end
     
