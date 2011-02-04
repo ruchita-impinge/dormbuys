@@ -74,8 +74,8 @@ class Notifier < ActionMailer::Base
     recipients     RAILS_ENV == 'development' ? APP_CONFIG['dev_email'] : APP_CONFIG['warehouse_admin_email']
     from           'Dormbuys.com <support@dormbuys.com>'
     sent_on        Time.now
-    content_type         = "text/html"
-    headers              = {}
+    content_type   = "text/html"
+    headers        = {}
   end #end method zero_inventory(product_variation)
   
 

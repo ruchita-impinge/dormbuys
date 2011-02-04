@@ -986,7 +986,7 @@ class ThirdPartySystems
   def self.get_lnt_price(variation)
     
     weight = variation.product_packages.collect.sum {|pp| pp.weight}
-    starting_price = (variation.rounded_retail_price * 1.10)
+    starting_price = (variation.rounded_retail_price * 1.15)
     ending_price = starting_price
     
     if weight <= 5
