@@ -259,7 +259,8 @@ ActionController::Routing::Routes.draw do |map|
       :member => {
         :lnt_map => :get,
         :lnt2_map => :get,
-        :sears_map => :get
+        :sears_map => :get,
+        :run_sears_name_values => :get
       },
       :collection => {
         :lnt1 => :get,

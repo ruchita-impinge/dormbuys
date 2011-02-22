@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110111205107) do
+ActiveRecord::Schema.define(:version => 20110222180505) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -454,6 +454,7 @@ ActiveRecord::Schema.define(:version => 20110111205107) do
     t.integer  "order_vendor_id"
     t.text     "payment_transaction_data"
     t.boolean  "sent_to_packstream",         :default => false
+    t.integer  "cart_id"
   end
 
   create_table "orders_vendors", :id => false, :force => true do |t|
@@ -720,9 +721,10 @@ ActiveRecord::Schema.define(:version => 20110111205107) do
     t.string   "parent"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "level",      :default => 0
+    t.integer  "level",                    :default => 0
     t.string   "data"
     t.string   "tree"
+    t.datetime "attributes_popuplated_at"
   end
 
   add_index "third_party_categories", ["owner"], :name => "index_third_party_categories_on_owner"

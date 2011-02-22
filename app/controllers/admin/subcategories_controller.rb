@@ -102,6 +102,14 @@ class Admin::SubcategoriesController < Admin::AdminController
   def sears_map
     @subcategory = Subcategory.find(params[:id], :include => [:third_party_categories])
   end #end method sears_map
+  
+  def run_sears_name_values
+    @subcategory = Subcategory.find(params[:id])
+    sears_cat = ThirdPartyCategory.find(params[:sears_cat_id])
+    sears_cat.send_later(:sears_populate_name_values)
+    flash[:notice] = "Success!  The name / value request is being run in the background"
+    redirect_to sears_map_admin_subcategory_path(@subcategory) and return
+  end #end method run_sears_name_values
 
   
   # GET /subcategories

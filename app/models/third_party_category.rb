@@ -58,7 +58,22 @@ class ThirdPartyCategory < ActiveRecord::Base
       end
       variation.save(false)
     end
+    
+    self.attributes_popuplated_at = Time.now
+    self.save(false)
+    
   end #end method sears_populate_name_values
+  
+  
+  def self.seed_attributes_popuplated_at
+    sears_cats = ThirdPartyCategory.all(:conditions => {:owner => ThirdPartyCategory::SEARS}, :include => [:third_party_variations])
+    sears_cats.each do |scat|
+      if scat.third_party_variations.size > 0
+        scat.attributes_popuplated_at = Time.now
+        scat.save(false)
+      end
+    end
+  end #end method self.seed_attributes_popuplated_at
   
   
   def self.populate_subcategory_sears_data
