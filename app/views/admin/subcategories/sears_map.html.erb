@@ -52,7 +52,7 @@
 			</div>
 			<div class="clear"></div>
 
-			<p><label>Name / Value attributes populated at:</label> <%= (tpc.attributes_popuplated_at.blank? ? 'Never' : tpc.attributes_popuplated_at.strftime(:detail)) rescue 'error: no Sears category' %></p>
+			<p><label>Name / Value attributes populated at:</label> <%= (tpc.attributes_popuplated_at.blank? ? 'Never' : tpc.attributes_popuplated_at.to_s(:detail)) rescue 'error: no Sears category' %></p>
 
 			<% unless tpc.blank? %>
 				<p><%= link_to 'Popuplate Name / Value attributes', run_sears_name_values_admin_subcategory_path(@subcategory, :sears_cat_id => tpc.id), :confirm => "This process will be run in the background and may take a while (like a long while)\n\n Just check this page again and look for the 'updated at' date above to be set.  That's how you'll know the process is complete." %></p>
