@@ -28,7 +28,7 @@ class Admin::ProductsController < Admin::AdminController
         page << js_options
         
         js_code = <<-eojs
-          var options_html;
+          var options_html = "";
           js_options#{variation_id}.map(function(opt){
             options_html += '<option id="' + addslashes(opt) + '">' + addslashes(opt) + '</option>';
           });
