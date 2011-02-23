@@ -54,9 +54,12 @@ class ThirdPartyCategory < ActiveRecord::Base
     results.each do |data|
       puts "building variation: #{data[:name]}"
       variation = third_party_variations.build(:name => data[:name], :owner => ThirdPartyCategory::SEARS)
+      variation.save(false)
+      vid = variation.id
       data[:values].each do |val|
         puts "building attribute: #{val}"
-        attribute = variation.third_party_variation_attributes.build(:value => val)
+        attribute = variation.third_party_variation_attributes.build(:value => val, :third_party_variation_id => vid)
+        attribute.save(false)
       end
       ret = variation.save(false)
       puts "variation saved: #{ret}"
