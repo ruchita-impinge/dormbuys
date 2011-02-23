@@ -19,10 +19,10 @@ class Admin::ProductsController < Admin::AdminController
     render :update do |page|
       if variation_name
         options = []
-        variation_name.third_party_variation_attributes.collect {|x| options << %(<option id="#{h(x.value)}">#{h(x.value)}</option>)}
+        variation_name.third_party_variation_attributes.collect {|x| options << %(<option id='#{h(x.value)}'>#{h(x.value)}</option>)}
         options_html = options.join("\n")
         Rails.logger.info(options_html)
-        page << %( $("#sears_variation_attribute_#{variation_id} select").html('#{options_html}'); )
+        page << %( $("#sears_variation_attribute_#{variation_id} select").html("#{options_html}"); )
       else
         page.alert("Couldn't find third party variation with name: #{params[:sears_variation_name]}")
       end
