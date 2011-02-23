@@ -52,11 +52,14 @@ class ThirdPartyCategory < ActiveRecord::Base
     api = SearsAPI.new
     results = api.get_variation_name_attributes(tag)
     results.each do |data|
+      puts "building variation: #{data[:name]}"
       variation = third_party_variations.build(:name => data[:name], :owner => ThirdPartyCategory::SEARS)
       data[:values].each do |val|
+        puts "building attribute: #{val}"
         attribute = variation.third_party_variation_attributes.build(:value => val)
       end
-      variation.save(false)
+      ret = variation.save(false)
+      puts "variation saved: #{ret}"
     end
     
     self.attributes_popuplated_at = Time.now
