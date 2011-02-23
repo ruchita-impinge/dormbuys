@@ -23,7 +23,7 @@ class Admin::ProductsController < Admin::AdminController
         variation_name.third_party_variation_attributes.collect {|x| options << x.value }
         
         options.each_with_index do |opt, i|
-          js_options += %(js_options[#{i}] = "#{opt}";\n)
+          js_options += %(js_options#{variation_id}[#{i}] = "#{opt}";\n)
         end
         page << js_options
         
