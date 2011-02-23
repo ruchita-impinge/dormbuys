@@ -18,7 +18,8 @@ class Admin::ProductsController < Admin::AdminController
     
     render :update do |page|
       if variation_name
-        options = variation_name.third_party_variation_attributes.collect {|x| %(<option id="#{CGI.escape(x.value)}">#{CGI.escape(x.value)}</option>)}.join("")
+        val = sanitize(x.value)
+        options = variation_name.third_party_variation_attributes.collect {|x| %(<option id="#{val}">#{val}</option>)}.join("")
         page << %( $("#sears_variation_attribute_#{variation_id} select").html('#{options}'); )
       else
         page.alert("Couldn't find third party variation with name: #{params[:sears_variation_name]}")
