@@ -30,7 +30,7 @@ class Admin::ProductsController < Admin::AdminController
         js_code = <<-eojs
           var options_html;
           js_options#{variation_id}.map(function(opt){
-            options_html += '<option id="' + addSlashes(opt) + '">' + addSlashes(opt) + '</option>';
+            options_html += '<option id="' + addslashes(opt) + '">' + addslashes(opt) + '</option>';
           });
           $("#sears_variation_attribute_#{variation_id} select").html(options_html);
         eojs
