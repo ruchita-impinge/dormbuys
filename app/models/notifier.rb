@@ -4,7 +4,7 @@ class Notifier < ActionMailer::Base
     subject        "Thanks for your order at Dormbuys.com"
     body           :order => order
     recipients     RAILS_ENV == 'development' ? APP_CONFIG['dev_email'] : order.email
-    bcc            RAILS_ENV == 'production' ? APP_CONFIG['supervisor_email'] : nil
+    bcc            RAILS_ENV == 'production' ? APP_CONFIG['supervisor_email'].split(",") : nil
     from           'Dormbuys.com <support@dormbuys.com>'
     sent_on        Time.now
     content_type   = "text/html"
@@ -38,7 +38,7 @@ class Notifier < ActionMailer::Base
   def contact(name, email, subject, message)
     subject          "Contact message from Dormbuys.com ..."
     body             :name => name, :email => email, :subject => subject, :message => message
-    recipients       RAILS_ENV == 'development' ? APP_CONFIG['dev_email'] : APP_CONFIG['contact_email'].to_s
+    recipients       RAILS_ENV == 'development' ? APP_CONFIG['dev_email'] : APP_CONFIG['contact_email'].split(",")
     from             'Dormbuys.com <support@dormbuys.com>'
     sent_on          Time.now
     content_type     = "text/html"
