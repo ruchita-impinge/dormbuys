@@ -42,7 +42,7 @@ class SearsAPI
     
     temp_products.each do |p|
       if p.primary_subcategory.blank?
-        puts "ERROR: (#{p.id} - #{p.product_name}) has no primary subcategory"
+        puts "WARNING: Can not post product: (#{p.id} - #{p.product_name}) has no primary subcategory"
       else
         products << p
       end
@@ -266,11 +266,11 @@ class SearsAPI
                   xml.tag! "contains-alcohol", false
                   xml.tag! "contains-tobacco", false
                 end #end local-marketplace-flags tag
-                xml.tag! "image-url" do 
+                xml.tag! "feature-image-url" do 
                   xml.url product.product_image(:large).split("?").first
-                end #end image-url                
+                end #end feature-image-url                
                 product.additional_product_images.reject {|x| x unless x.image.file? }.each_with_index do |ai, i|
-                  if i < 6
+                  if i < 5
                     xml.tag! "feature-image-url" do 
                       xml.url ai.image(:large).split("?").first
                     end #end feature-image-url
