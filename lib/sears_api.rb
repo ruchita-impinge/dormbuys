@@ -52,9 +52,8 @@ class SearsAPI
     api_put(items_url, xml)
     
     
-    xml_data = xml.target!
     file = File.new("#{RAILS_ROOT}/public/content/integrations/sears_post_products.xml", "w")
-    file.write(xml_data)
+    file.write(xml)
     file.close
     
     
