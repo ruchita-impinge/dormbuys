@@ -32,7 +32,7 @@ class SearsAPI
     puts "\nAPI - Attempting to post #{products.size} products...\n\n"
     
     api = SearsAPI.new
-    api.post_products(post_products)
+    api.post_products(products)
   end #end method self.post_initial_products
   
   
