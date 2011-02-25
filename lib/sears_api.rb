@@ -24,11 +24,14 @@ class SearsAPI
   end #end method self.test
   
   
-  def post_all_products
-    products = Product.all(:include => [:product_variations, :subcategories])
+  def post_products(products_to_post=nil)
+    products = products_to_post.blank? ? Product.all(:include => [:product_variations, :subcategories]) : products_to_post
     xml = create_xml_for_items(products)
     api_put(items_url, xml)
-  end #end method post_all_products
+    variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
+    sql = %(UPDATE product_variations SET was_posted_to_sears = 1 WHERE id IN (#{variation_ids.join(",")}); )
+    ActiveRecord::Base.connection.execute(sql)
+  end #end method post_products
   
   
   def api_put(url, data)
