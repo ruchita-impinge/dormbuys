@@ -5,7 +5,7 @@ require 'open-uri'
 
 class SearsAPI
   
-  DEBUG = true
+  DEBUG = false
   
   EMAIL = "deryl@dormbuys.com"
   PASSWORD = "xavier01"
@@ -24,8 +24,30 @@ class SearsAPI
   end #end method self.test
   
   
+  def self.post_initial_products
+    variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
+    pids = variations.collect {|v| v.product_id }
+    products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
+    
+    puts "\nAPI - Attempting to post #{products.size} products...\n\n"
+    
+    api = SearsAPI.new
+    api.post_products(post_products)
+  end #end method self.post_initial_products
+  
+  
   def post_products(products_to_post=nil)
-    products = products_to_post.blank? ? Product.all(:include => [:product_variations, :subcategories]) : products_to_post
+    temp_products = products_to_post.blank? ? Product.all(:include => [:product_variations, :subcategories]) : products_to_post
+    products = []
+    
+    temp_products.each do |p|
+      if p.primary_subcategory.blank?
+        puts "ERROR: (#{p.id} - #{p.product_name}) has no primary subcategory"
+      else
+        products << p
+      end
+    end #end each
+    
     xml = create_xml_for_items(products)
     api_put(items_url, xml)
     variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
@@ -60,16 +82,16 @@ class SearsAPI
         puts data
       end
       
-      if doc_id
+      if error
+        puts "\n\n\nError Description:\n"
+        puts "#{'-'*18}\n"
+        puts error
+      elsif doc_id
         puts "\n\n\nProcessing report available @: #{processing_report_url(doc_id)}\n"
         puts "#{'-'*160}\n"
         puts "\n\n\nResponse Data:\n"
         puts "#{'-'*15}\n"
         puts "#{response.body}\n\n"
-      elsif error
-        puts "\n\n\nError Description:\n"
-        puts "#{'-'*18}\n"
-        puts error
       else
         puts "\n\n\nResponse Data:\n"
         puts "#{'-'*15}\n"
