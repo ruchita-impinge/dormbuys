@@ -99,12 +99,13 @@ class SearsAPI
         puts "\n\n\nResponse Data:\n"
         puts "#{'-'*15}\n"
         puts "#{response.body}\n\n"
-      else
-        puts "\n\n\nResponse Data:\n"
-        puts "#{'-'*15}\n"
-        puts "#{response.body}\n\n"
       end
-    end
+      
+      puts "\n\n\nResponse Data:\n"
+      puts "#{'-'*15}\n"
+      puts "#{response.body}\n\n"
+      
+    end #end http session
 
   end #end method api_put(url, data)
   
