@@ -50,6 +50,14 @@ class SearsAPI
     
     xml = create_xml_for_items(products)
     api_put(items_url, xml)
+    
+    
+    xml_data = xml.target!
+    file = File.new("#{RAILS_ROOT}/public/content/integrations/sears_post_products.xml", "w")
+    file.write(xml_data)
+    file.close
+    
+    
     variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
     sql = %(UPDATE product_variations SET was_posted_to_sears = 1 WHERE id IN (#{variation_ids.join(",")}); )
     ActiveRecord::Base.connection.execute(sql)
