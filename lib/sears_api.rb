@@ -28,12 +28,35 @@ class SearsAPI
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
+    products.reject!{|p| p if p.drop_ship == true }
     
     puts "\nAPI - Attempting to post #{products.size} products...\n\n"
     
     api = SearsAPI.new
     api.post_products(products)
   end #end method self.post_initial_products
+  
+  
+  def self.post_initial_inventory
+    variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
+    pids = variations.collect {|v| v.product_id }
+    products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
+    products.reject!{|p| p if p.drop_ship == true }
+    
+    variations_to_post = products.collect{|p| p.product_variations }.flatten
+    api = SearsAPI.new
+    api.post_inventory(variations_to_post)
+  end #end method self.post_initial_inventory
+  
+  
+  def post_inventory(variations)
+    xml = create_inventory_xml(variations)
+    api_put(inventory_url, xml)
+    
+    file = File.new("#{RAILS_ROOT}/public/content/integrations/sears_post_inventory.xml", "w")
+    file.write(xml)
+    file.close
+  end #end method post_inventory(variations)
   
   
   def post_products(products_to_post=nil)
@@ -93,7 +116,9 @@ class SearsAPI
         puts "\n\n\nError Description:\n"
         puts "#{'-'*18}\n"
         puts error
-      elsif doc_id
+      end
+      
+      if doc_id
         puts "\n\n\nProcessing report available @: #{processing_report_url(doc_id)}\n"
         puts "#{'-'*160}\n"
         puts "\n\n\nResponse Data:\n"
