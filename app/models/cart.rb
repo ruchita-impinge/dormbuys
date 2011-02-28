@@ -69,8 +69,8 @@ class Cart < ActiveRecord::Base
   def military_address?
     alert = false
     keywords = ["AFO", "APO", "AFO", "AP", "FPO"]
-    keywords.each {|k| alert = true if self.shipping_address.rindex(k)}
-    keywords.each {|k| alert = true if self.shipping_city.rindex(k)}
+    keywords.each {|k| alert = true if self.shipping_address.rindex(k)} unless self.shipping_address.blank?
+    keywords.each {|k| alert = true if self.shipping_city.rindex(k)} unless self.shipping_city.blank?
     alert
   end #end method military_address?
 
