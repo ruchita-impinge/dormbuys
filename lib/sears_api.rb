@@ -15,31 +15,36 @@ class SearsAPI
   PROCESSING_REPORT_URL = "https://seller.marketplace.sears.com/SellerPortal/api/reports/v1/processing-report/{documentid}?email={emailaddress}&password={password}"
   VARIATION_PAIR_URL = "https://seller.marketplace.sears.com/SellerPortal/api/attribute/v1/{tag}/attributes?email={emailaddress}&password={password}"
   
-
-  def self.post_initial_products
-    sql = %(UPDATE product_variations SET was_posted_to_sears = 0; )
-    ActiveRecord::Base.connection.execute(sql)
-    
+  def self.get_products_to_post
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
     #products = Product.all(:conditions => {:id => [1542]}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
+    return products
+  end #end method self.get_products_to_post
+
+  def self.post_initial_products
+    sql = %(UPDATE product_variations SET was_posted_to_sears = 0; )
+    ActiveRecord::Base.connection.execute(sql)
+    
+    products = self.get_products_to_post
+    
     api = SearsAPI.new
     api.post_products(products)
   end #end method self.post_initial_products
   
   
+  
   def self.post_initial_inventory    
-    variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
-    pids = variations.collect {|v| v.product_id }
-    products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
-    products.reject!{|p| p if p.drop_ship == true || p.visible == false }
+    products = self.get_products_to_post
+    variations_to_post = products.collect {|p| p.product_variations }.flatten
     
     api = SearsAPI.new
     api.post_inventory(variations_to_post)
   end #end method self.post_initial_inventory
+  
   
   
   def post_inventory(variations)
@@ -266,7 +271,7 @@ class SearsAPI
               
               _variations = product.product_variations #.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
               
-              #if _variations.size > 0
+              if _variations.size > 0
               
                 xml.tag! "variation-group", "variation-group-id" => product.id do 
                   xml.title product.product_name
@@ -322,7 +327,7 @@ class SearsAPI
                   end #end variation-items
                 end #end variation-group
               
-              #end #end if _variations.size > 0 
+              end #end if _variations.size > 0 
               
             end #end if default_variation?
           end #end for loop on products
