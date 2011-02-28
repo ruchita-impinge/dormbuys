@@ -63,7 +63,7 @@ class SearsAPI
       end
     end #end each
     
-    #xml = create_xml_for_items(products)
+    xml = create_xml_for_items(products)
     #api_put(items_url, xml)
     
     
