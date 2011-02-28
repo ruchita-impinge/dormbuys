@@ -66,7 +66,13 @@ class Cart < ActiveRecord::Base
     end
   end #end method gift_registry
   
-  
+  def military_address?
+    alert = false
+    keywords = ["AFO", "APO", "AFO", "AP", "FPO"]
+    keywords.each {|k| alert = true if self.shipping_address.rindex(k)}
+    keywords.each {|k| alert = true if self.shipping_city.rindex(k)}
+    alert
+  end #end method military_address?
 
   def validate
     unless self.gc_errors.blank?
@@ -322,7 +328,13 @@ class Cart < ActiveRecord::Base
       state_shipping = Money.new(0)
     end
     
-    return table_rate + state_shipping
+    _initial_shipping = table_rate + state_shipping
+    
+    if military_address?
+      return _initial_shipping + 10.00.to_money
+    else
+      return _initial_shipping
+    end
     
   end #end method shipping
   

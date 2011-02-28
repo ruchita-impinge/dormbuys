@@ -63,18 +63,19 @@ class SearsAPI
       end
     end #end each
     
-    xml = create_xml_for_items(products)
-    api_put(items_url, xml)
+    #xml = create_xml_for_items(products)
+    #api_put(items_url, xml)
     
     
     file = File.new("#{RAILS_ROOT}/public/content/integrations/sears_post_products.xml", "w")
     file.write(xml)
     file.close
+    puts "DONE"
     
     
-    variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
-    sql = %(UPDATE product_variations SET was_posted_to_sears = 1 WHERE id IN (#{variation_ids.join(",")}); )
-    ActiveRecord::Base.connection.execute(sql)
+    #variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
+    #sql = %(UPDATE product_variations SET was_posted_to_sears = 1 WHERE id IN (#{variation_ids.join(",")}); )
+    #ActiveRecord::Base.connection.execute(sql)
   end #end method post_products
   
   
@@ -308,7 +309,7 @@ class SearsAPI
                       xml.tag! "variation-attributes" do 
                         xml.tag! "variation-attribute" do 
                           xml.tag! "attribute", "name" => "#{variation.sears_variation_name}" do 
-                            variation.sears_variation_attribute
+                            "#{variation.sears_variation_attribute}"
                           end
                         end #end variation-attribute
                       end #end variation-attributes

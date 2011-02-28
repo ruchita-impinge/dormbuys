@@ -76,6 +76,9 @@
 												</ul>
 											</div>
 										</div>
+										<% if @cart.military_address? %>
+											<div>* A $10 surcharge will be applied to any APO/FPO shipments</div>
+										<% end %>
 										<div class="total-box">
 											<em>TOTAL: <span>$<%= @cart.grand_total %></span></em>
 										</div>
