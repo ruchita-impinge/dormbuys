@@ -264,9 +264,9 @@ class SearsAPI
               
             else # <= multiple variations ##########################################################################
               
-              _variations = product.product_variations.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
+              _variations = product.product_variations #.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
               
-              if _variations.size > 0
+              #if _variations.size > 0
               
                 xml.tag! "variation-group", "variation-group-id" => product.id do 
                   xml.title product.product_name
@@ -322,7 +322,7 @@ class SearsAPI
                   end #end variation-items
                 end #end variation-group
               
-              end #end if _variations.size > 0 
+              #end #end if _variations.size > 0 
               
             end #end if default_variation?
           end #end for loop on products
