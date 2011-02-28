@@ -270,6 +270,7 @@ class SearsAPI
             else # <= multiple variations ##########################################################################
               
               _variations = product.product_variations.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
+              _variations.reject! {|v| v if(v.product_packages.first.length.ceil == 0 || v.product_packages.first.width.ceil == 0 || v.product_packages.first.depth.ceil == 0 || v.product_packages.first.weight.ceil == 0)}
               
               if _variations.size > 0
               
