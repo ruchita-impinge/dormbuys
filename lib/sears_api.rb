@@ -20,6 +20,7 @@ class SearsAPI
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
+    #products = Product.all(:conditions => {:id => [1542]}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
     puts "\nAPI - Attempting to post #{products.size} products...\n\n"
@@ -317,7 +318,7 @@ class SearsAPI
                       end #end if variation.image
                       xml.tag! "variation-attributes" do 
                         xml.tag! "variation-attribute" do 
-                          xml.tag! "attribute", "name" => "#{variation.sears_variation_name}" do xml.text! "#{variation.sears_variation_attribute}" end #end attribute
+                          xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
                         end #end variation-attribute
                       end #end variation-attributes
                     end #end variation-item
