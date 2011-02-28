@@ -17,23 +17,21 @@ class SearsAPI
   
 
   def self.post_initial_products
+    sql = %(UPDATE product_variations SET was_posted_to_sears = 0; )
+    ActiveRecord::Base.connection.execute(sql)
+    
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
     #products = Product.all(:conditions => {:id => [1542]}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
-    puts "\nAPI - Attempting to post #{products.size} products...\n\n"
-    
     api = SearsAPI.new
     api.post_products(products)
   end #end method self.post_initial_products
   
   
-  def self.post_initial_inventory
-    sql = %(UPDATE product_variations SET was_posted_to_sears = 0; )
-    ActiveRecord::Base.connection.execute(sql)
-    
+  def self.post_initial_inventory    
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
@@ -66,12 +64,6 @@ class SearsAPI
         products << p
       end
     end #end each
-    
-    products.each do |p|
-      unless p.product_variations.size > 1
-        p.product_variations.reject!{|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
-      end
-    end
     
     
     xml = create_xml_for_items(products)
@@ -272,59 +264,65 @@ class SearsAPI
               
             else # <= multiple variations ##########################################################################
               
-              xml.tag! "variation-group", "variation-group-id" => product.id do 
-                xml.title product.product_name
-                xml.tag! "short-desc", product.product_overview
-                xml.tags do 
-                  xml.primary get_category(product.primary_subcategory)
-                end #end tags
-                xml.tag! "model-number", product.id
-                xml.brand (product.brands.size > 0 ? product.brands.first.name : "Dormbuys.com")
-                xml.tag! "shipping-length", product.product_variations.first.product_packages.first.length.ceil
-                xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width.ceil
-                xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth.ceil
-                xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight.ceil
-                xml.tag! "local-marketplace-flags" do
-                  xml.tag! "is-restricted", is_restricted(product)
-                  xml.tag! "perishable", false
-                  xml.tag! "requires-refrigeration", false
-                  xml.tag! "requires-freezing", false
-                  xml.tag! "contains-alcohol", false
-                  xml.tag! "contains-tobacco", false
-                end #end local-marketplace-flags tag
-                xml.tag! "feature-image-url" do 
-                  xml.url product.product_image(:large).split("?").first
-                end #end feature-image-url                
-                product.additional_product_images.reject {|x| x unless x.image.file? }.each_with_index do |ai, i|
-                  if i < 5
-                    xml.tag! "feature-image-url" do 
-                      xml.url ai.image(:large).split("?").first
-                    end #end feature-image-url
-                  end #end if
-                end #end for loop on additional_images
-                xml.tag! "variation-items" do 
-                  for variation in product.product_variations
-                    xml.tag! "variation-item", "item-id" => variation.product_number do 
-                      xml.upc variation.upc.blank? ? "00#{variation.product_number}" : variation.upc.gsub(" ", "")
-                      xml.tag! "standard-price", variation.rounded_retail_price
-                      if variation.image.file?
-                        xml.tag! "image-url" do 
-                          xml.url variation.image(:large)
-                        end #end image-url
-                      else
-                        xml.tag! "image-url" do 
-                          xml.url variation.product.product_image(:large).split("?").first
-                        end #end image-url
-                      end #end if variation.image
-                      xml.tag! "variation-attributes" do 
-                        xml.tag! "variation-attribute" do 
-                          xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
-                        end #end variation-attribute
-                      end #end variation-attributes
-                    end #end variation-item
-                  end #end for loop on product_variations
-                end #end variation-items
-              end #end variation-group
+              _variations = product.product_variations.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
+              
+              if _variations.size > 0
+              
+                xml.tag! "variation-group", "variation-group-id" => product.id do 
+                  xml.title product.product_name
+                  xml.tag! "short-desc", product.product_overview
+                  xml.tags do 
+                    xml.primary get_category(product.primary_subcategory)
+                  end #end tags
+                  xml.tag! "model-number", product.id
+                  xml.brand (product.brands.size > 0 ? product.brands.first.name : "Dormbuys.com")
+                  xml.tag! "shipping-length", product.product_variations.first.product_packages.first.length.ceil
+                  xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width.ceil
+                  xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth.ceil
+                  xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight.ceil
+                  xml.tag! "local-marketplace-flags" do
+                    xml.tag! "is-restricted", is_restricted(product)
+                    xml.tag! "perishable", false
+                    xml.tag! "requires-refrigeration", false
+                    xml.tag! "requires-freezing", false
+                    xml.tag! "contains-alcohol", false
+                    xml.tag! "contains-tobacco", false
+                  end #end local-marketplace-flags tag
+                  xml.tag! "feature-image-url" do 
+                    xml.url product.product_image(:large).split("?").first
+                  end #end feature-image-url                
+                  product.additional_product_images.reject {|x| x unless x.image.file? }.each_with_index do |ai, i|
+                    if i < 5
+                      xml.tag! "feature-image-url" do 
+                        xml.url ai.image(:large).split("?").first
+                      end #end feature-image-url
+                    end #end if
+                  end #end for loop on additional_images
+                  xml.tag! "variation-items" do 
+                    for variation in _variations
+                      xml.tag! "variation-item", "item-id" => variation.product_number do 
+                        xml.upc variation.upc.blank? ? "00#{variation.product_number}" : variation.upc.gsub(" ", "")
+                        xml.tag! "standard-price", variation.rounded_retail_price
+                        if variation.image.file?
+                          xml.tag! "image-url" do 
+                            xml.url variation.image(:large)
+                          end #end image-url
+                        else
+                          xml.tag! "image-url" do 
+                            xml.url variation.product.product_image(:large).split("?").first
+                          end #end image-url
+                        end #end if variation.image
+                        xml.tag! "variation-attributes" do 
+                          xml.tag! "variation-attribute" do 
+                            xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
+                          end #end variation-attribute
+                        end #end variation-attributes
+                      end #end variation-item
+                    end #end for loop on product_variations
+                  end #end variation-items
+                end #end variation-group
+              
+              end #end if _variations.size > 0 
               
             end #end if default_variation?
           end #end for loop on products
