@@ -38,20 +38,6 @@ class SearsAPI
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
-    temp_variations = products.collect{|p| p.product_variations }.flatten
-    variations_to_post = []
-    temp_variations.each do |v|
-      if v.title =~ /default/
-        variations_to_post << v
-      else
-        if !v.sears_variation_name.blank? && !v.sears_variation_attribute.blank?
-          variations_to_post << v
-        else
-          puts "Can't post #{v.id} - #{v.full_title}.  Sears name / attributes are blank"
-        end
-      end
-    end
-
     api = SearsAPI.new
     api.post_inventory(variations_to_post)
   end #end method self.post_initial_inventory
@@ -67,6 +53,7 @@ class SearsAPI
   end #end method post_inventory(variations)
   
   
+  
   def post_products(products_to_post=nil)
     temp_products = products_to_post.blank? ? Product.all(:include => [:product_variations, :subcategories]) : products_to_post
     products = []
@@ -79,6 +66,13 @@ class SearsAPI
       end
     end #end each
     
+    products.each do |p|
+      unless p.product_variations.size > 1
+        p.product_variations.reject!{|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
+      end
+    end
+    
+    
     xml = create_xml_for_items(products)
     api_put(items_url, xml)
     
@@ -86,7 +80,6 @@ class SearsAPI
     file = File.new("#{RAILS_ROOT}/public/content/integrations/sears_post_products.xml", "w")
     file.write(xml)
     file.close
-    puts "DONE"
     
     
     variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
@@ -324,9 +317,7 @@ class SearsAPI
                       end #end if variation.image
                       xml.tag! "variation-attributes" do 
                         xml.tag! "variation-attribute" do 
-                          xml.tag! "attribute", "name" => "#{variation.sears_variation_name}" do
-                            xml.text! "#{variation.sears_variation_attribute}\n"
-                          end #end attribute
+                          xml.tag! "attribute", "name" => "#{variation.sears_variation_name}" do xml.text! "#{variation.sears_variation_attribute}" end #end attribute
                         end #end variation-attribute
                       end #end variation-attributes
                     end #end variation-item
