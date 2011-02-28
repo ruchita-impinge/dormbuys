@@ -15,20 +15,12 @@ class SearsAPI
   PROCESSING_REPORT_URL = "https://seller.marketplace.sears.com/SellerPortal/api/reports/v1/processing-report/{documentid}?email={emailaddress}&password={password}"
   VARIATION_PAIR_URL = "https://seller.marketplace.sears.com/SellerPortal/api/attribute/v1/{tag}/attributes?email={emailaddress}&password={password}"
   
-  def self.test
-    api = SearsAPI.new
-    products = Product.all(:limit => 5)
-    products.reject! {|x| x if x.available_variations.empty? }
-    xml = api.create_xml_for_items(products)
-    api.api_put(api.items_url, xml)
-  end #end method self.test
-  
-  
+
   def self.post_initial_products
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
-    products.reject!{|p| p if p.drop_ship == true }
+    products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
     puts "\nAPI - Attempting to post #{products.size} products...\n\n"
     
@@ -41,7 +33,7 @@ class SearsAPI
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
-    products.reject!{|p| p if p.drop_ship == true }
+    products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
     variations_to_post = products.collect{|p| p.product_variations }.flatten
     api = SearsAPI.new
@@ -121,9 +113,6 @@ class SearsAPI
       if doc_id
         puts "\n\n\nProcessing report available @: #{processing_report_url(doc_id)}\n"
         puts "#{'-'*160}\n"
-        puts "\n\n\nResponse Data:\n"
-        puts "#{'-'*15}\n"
-        puts "#{response.body}\n\n"
       end
       
       puts "\n\n\nResponse Data:\n"
