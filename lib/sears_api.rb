@@ -30,12 +30,28 @@ class SearsAPI
   
   
   def self.post_initial_inventory
+    sql = %(UPDATE product_variations SET was_posted_to_sears = 0; )
+    ActiveRecord::Base.connection.execute(sql)
+    
     variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
     pids = variations.collect {|v| v.product_id }
     products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
-    variations_to_post = products.collect{|p| p.product_variations }.flatten
+    temp_variations = products.collect{|p| p.product_variations }.flatten
+    variations_to_post = []
+    temp_variations.each do |v|
+      if v.title =~ /default/
+        variations_to_post << v
+      else
+        if !v.sears_variation_name.blank? && !v.sears_variation_attribute.blank?
+          variations_to_post << v
+        else
+          puts "Can't post #{v.id} - #{v.full_title}.  Sears name / attributes are blank"
+        end
+      end
+    end
+
     api = SearsAPI.new
     api.post_inventory(variations_to_post)
   end #end method self.post_initial_inventory
@@ -236,10 +252,10 @@ class SearsAPI
                 xml.tag! "standard-price", product.retail_price
                 xml.tag! "map-price-indicator", "strict"
                 xml.brand (product.brands.size > 0 ? product.brands.first.name : "Dormbuys.com")
-                xml.tag! "shipping-length", product.product_variations.first.product_packages.first.length
-                xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width
-                xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth
-                xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight
+                xml.tag! "shipping-length", product.product_variations.first.product_packages.first.length.ceil
+                xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width.ceil
+                xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth.ceil
+                xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight.ceil
                 xml.tag! "local-marketplace-flags" do
                   xml.tag! "is-restricted", is_restricted(product)
                   xml.tag! "perishable", false
@@ -273,7 +289,7 @@ class SearsAPI
                 xml.tag! "shipping-length", product.product_variations.first.product_packages.first.length.ceil
                 xml.tag! "shipping-width", product.product_variations.first.product_packages.first.width.ceil
                 xml.tag! "shipping-height", product.product_variations.first.product_packages.first.depth.ceil
-                xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight.ceil #convert to whole pounds
+                xml.tag! "shipping-weight", product.product_variations.first.product_packages.first.weight.ceil
                 xml.tag! "local-marketplace-flags" do
                   xml.tag! "is-restricted", is_restricted(product)
                   xml.tag! "perishable", false
