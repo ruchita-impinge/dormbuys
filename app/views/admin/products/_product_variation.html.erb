@@ -192,7 +192,14 @@
 		
 		
 		
-		<h4>Sears - Name / Attributes</h4>
+		<h4>
+			Sears - Name / Attributes
+			<% if product_variation.product && product_variation.product.primary_subcategory %>
+			- <%= link_to "edit sears category for: #{product_variation.product.primary_subcategory.name}", 
+					sears_map_admin_subcategory_path(product_variation.product.primary_subcategory),
+					:target => "_blank" %>
+			<% end %>
+		</h4>
 	
 		<% if product_variation.product && !product_variation.product.primary_subcategory.blank? %>
 			<% if sears_cat = product_variation.product.primary_subcategory.third_party_cat_obj(ThirdPartyCategory::SEARS) %>

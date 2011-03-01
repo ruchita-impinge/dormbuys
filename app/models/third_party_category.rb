@@ -71,20 +71,10 @@ class ThirdPartyCategory < ActiveRecord::Base
   end #end method sears_populate_name_values
   
   
-  def self.seed_attributes_popuplated_at
-    sears_cats = ThirdPartyCategory.all(:conditions => {:owner => ThirdPartyCategory::SEARS}, :include => [:third_party_variations])
-    sears_cats.each do |scat|
-      if scat.third_party_variations.size > 0
-        scat.attributes_popuplated_at = Time.now
-        scat.save(false)
-      end
-    end
-  end #end method self.seed_attributes_popuplated_at
-  
   
   def self.populate_subcategory_sears_data
     temp_subs = Subcategory.all
-    subcats = temp_subs[120, temp_subs.length]
+    subcats = temp_subs #[120, temp_subs.length]
     begin
       subcats.each_with_index do |sub, i|
         puts "[populate sears] processing #{i} of #{subcats.length}"

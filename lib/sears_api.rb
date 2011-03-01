@@ -13,22 +13,18 @@ class SearsAPI
   UPDATE_INVENTORY_URL = "https://seller.marketplace.sears.com/SellerPortal/api/inventory/fbm-lmp/v2?email={emailaddress}&password={password}"
   POST_ITEMS_URL = "https://seller.marketplace.sears.com/SellerPortal/api/catalog/fbm/v4?email={emailaddress}&password={password}"
   PROCESSING_REPORT_URL = "https://seller.marketplace.sears.com/SellerPortal/api/reports/v1/processing-report/{documentid}?email={emailaddress}&password={password}"
-  VARIATION_PAIR_URL = "https://seller.marketplace.sears.com/SellerPortal/api/attribute/v1/{tag}/attributes?email={emailaddress}&password={password}"
+  VARIATION_PAIR_URL = "https://seller.marketplace.sears.com/SellerPortal/api/attribute/v1/{tag}/attributes?email={emailaddress}&password={password}&type=av"
   
-  def self.get_products_to_post
-    variations = ProductVariation.all(:conditions => ['qty_on_hand > 0'])
-    pids = variations.collect {|v| v.product_id }
-    products = Product.all(:conditions => {:id => pids}, :include => [:product_variations, :subcategories])
-    #products = Product.all(:conditions => {:id => [1542]}, :include => [:product_variations, :subcategories])
+  def self.get_products_to_post=
+    products = Product.all(:conditions => {:should_list_on_sears => true}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
     return products
   end #end method self.get_products_to_post
 
-  def self.post_initial_products
-    sql = %(UPDATE product_variations SET was_posted_to_sears = 0; )
-    ActiveRecord::Base.connection.execute(sql)
-    
+
+
+  def self.do_post_products
     products = self.get_products_to_post
     
     api = SearsAPI.new
@@ -37,7 +33,7 @@ class SearsAPI
   
   
   
-  def self.post_initial_inventory    
+  def self.do_post_inventory    
     products = self.get_products_to_post
     variations_to_post = products.collect {|p| p.product_variations }.flatten
     
@@ -79,10 +75,13 @@ class SearsAPI
     file.write(xml)
     file.close
     
+    pids = products.collect(&:id)
+    product_sql = %(UPDATE products SET posted_to_sears_at = '#{Time.now.to_s(:db)}' WHERE id IN (#{pids.join(",")}); )
+    ActiveRecord::Base.connection.execute(product_sql)
     
     variation_ids = products.collect {|p| p.product_variations.collect(&:id) }.flatten
-    sql = %(UPDATE product_variations SET was_posted_to_sears = 1 WHERE id IN (#{variation_ids.join(",")}); )
-    ActiveRecord::Base.connection.execute(sql)
+    variation_sql = %(UPDATE product_variations SET was_posted_to_sears = 1 WHERE id IN (#{variation_ids.join(",")}); )
+    ActiveRecord::Base.connection.execute(variation_sql)
   end #end method post_products
   
   

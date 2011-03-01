@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110222180505) do
+ActiveRecord::Schema.define(:version => 20110301113804) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -542,6 +542,7 @@ ActiveRecord::Schema.define(:version => 20110222180505) do
     t.string   "upc"
     t.string   "sears_variation_name"
     t.string   "sears_variation_attribute"
+    t.boolean  "was_posted_to_sears",                                                  :default => false
   end
 
   create_table "product_variations_quantity_discounts", :id => false, :force => true do |t|
@@ -572,6 +573,8 @@ ActiveRecord::Schema.define(:version => 20110222180505) do
     t.text     "description_general"
     t.boolean  "include_in_feeds",           :default => true
     t.integer  "primary_subcategory_id"
+    t.boolean  "should_list_on_sears",       :default => false
+    t.datetime "posted_to_sears_at"
   end
 
   add_index "products", ["permalink_handle"], :name => "index_products_on_permalink_handle"

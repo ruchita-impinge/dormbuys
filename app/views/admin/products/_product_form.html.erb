@@ -83,6 +83,11 @@
 	    <%= f.check_box :allow_in_gift_registry, :class => 'check' %>
 	    <%= f.label :allow_in_gift_registry %>
 	  </div>
+	
+	  <div class="field long check">
+	    <%= f.check_box :should_list_on_sears, :class => 'check' %>
+	    <%= f.label :should_list_on_sears, "List on Sears #{('<br><span>Posted At: ' + @product.posted_to_sears_at.to_s(:full_short) + '</span>').gsub(" ", "&nbsp;") unless @product.posted_to_sears_at.blank?}" %>
+	  </div>
 	<div class="clear"></div>
 
 	<div class="field">
