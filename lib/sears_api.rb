@@ -319,7 +319,7 @@ class SearsAPI
                           end #end image-url
                         end #end if variation.image
                         
-                        unless variation.sears_variation_name.blank? || variation.sears_variation_attribute.blank?
+                        if !variation.sears_variation_name.blank? && !variation.sears_variation_attribute.blank?
                         
                           xml.tag! "variation-attributes" do 
                             xml.tag! "variation-attribute" do 
@@ -327,7 +327,7 @@ class SearsAPI
                             end #end variation-attribute
                           end #end variation-attributes
                         
-                        end #end if name or attribute on variation is blank
+                        end #end if name or attribute on variation is NOT blank
                         
                       end #end variation-item
                     end #end for loop on product_variations
