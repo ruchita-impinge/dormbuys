@@ -320,9 +320,7 @@ class SearsAPI
                         end #end if variation.image
                         xml.tag! "variation-attributes" do 
                           xml.tag! "variation-attribute" do 
-                            if !variation.sears_variation_name.blank? && !variation.sears_variation_attribute.blank?
-                              xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
-                            end
+                            xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
                           end #end variation-attribute
                         end #end variation-attributesk
                       end #end variation-item

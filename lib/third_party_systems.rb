@@ -395,12 +395,12 @@ class ThirdPartySystems
 =end
 
         if variation.title == "default"
-          row << variation.product.product_image(:original).split("?").first
+          row << variation.product.product_image(:large).split("?").first
         else
           if variation.image.file?
-            row << variation.image(:original).split("?").first
+            row << variation.image(:large).split("?").first
           else
-            row << variation.product.product_image(:original).split("?").first
+            row << variation.product.product_image(:large).split("?").first
           end
         end
       
@@ -565,12 +565,12 @@ class ThirdPartySystems
 
       #handle product image
       if variation.title == "default"
-        row << variation.product.product_image(:original).split("?").first
+        row << variation.product.product_image(:large).split("?").first
       else
         if variation.image.file?
-          row << variation.image(:original).split("?").first
+          row << variation.image(:large).split("?").first
         else
-          row << variation.product.product_image(:original).split("?").first
+          row << variation.product.product_image(:large).split("?").first
         end
       end
       
