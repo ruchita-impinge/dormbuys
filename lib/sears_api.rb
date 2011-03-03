@@ -318,17 +318,11 @@ class SearsAPI
                             xml.url variation.product.product_image(:large).split("?").first
                           end #end image-url
                         end #end if variation.image
-                        
-                        if !variation.sears_variation_name.blank? && !variation.sears_variation_attribute.blank?
-                        
-                          xml.tag! "variation-attributes" do 
-                            xml.tag! "variation-attribute" do 
-                              xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
-                            end #end variation-attribute
-                          end #end variation-attributes
-                        
-                        end #end if name or attribute on variation is NOT blank
-                        
+                        xml.tag! "variation-attributes" do 
+                          xml.tag! "variation-attribute" do 
+                            xml.attribute("#{variation.sears_variation_attribute}", "name" => "#{variation.sears_variation_name}")
+                          end #end variation-attribute
+                        end #end variation-attributesk
                       end #end variation-item
                     end #end for loop on product_variations
                   end #end variation-items
