@@ -347,6 +347,9 @@ class Product < ActiveRecord::Base
   end #end method self.random_featured_products()
   
   
+  def sears_variations_are_blank?
+    self.product_variations.collect(&:sears_variation_name).compact.empty? && self.product_variations.collect(&:sears_variation_attribute).compact.empty?
+  end #end method sears_variations_are_blank?
   
   
   def touch_subcategories
