@@ -15,7 +15,7 @@ class SearsAPI
   PROCESSING_REPORT_URL = "https://seller.marketplace.sears.com/SellerPortal/api/reports/v1/processing-report/{documentid}?email={emailaddress}&password={password}"
   VARIATION_PAIR_URL = "https://seller.marketplace.sears.com/SellerPortal/api/attribute/v1/{tag}/attributes?email={emailaddress}&password={password}&type=av"
   
-  def self.get_products_to_post=
+  def self.get_products_to_post
     products = Product.all(:conditions => {:should_list_on_sears => true}, :include => [:product_variations, :subcategories])
     products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
@@ -268,8 +268,9 @@ class SearsAPI
               
             else # <= multiple variations ##########################################################################
               
-              _variations = product.product_variations.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
-              _variations.reject! {|v| v if(v.product_packages.first.length.ceil == 0 || v.product_packages.first.width.ceil == 0 || v.product_packages.first.depth.ceil == 0 || v.product_packages.first.weight.ceil == 0)}
+              _variations = product.product_variations
+              #_variations = product.product_variations.reject {|v| v if v.sears_variation_name.blank? || v.sears_variation_attribute.blank?}
+              #_variations.reject! {|v| v if(v.product_packages.first.length.ceil == 0 || v.product_packages.first.width.ceil == 0 || v.product_packages.first.depth.ceil == 0 || v.product_packages.first.weight.ceil == 0)}
               
               if _variations.size > 0
               
