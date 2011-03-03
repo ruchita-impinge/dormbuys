@@ -293,7 +293,7 @@ class SearsAPI
                       xml.tag! "shipping-length", variation.product_packages.first.length.ceil
                       xml.tag! "shipping-width", variation.product_packages.first.width.ceil
                       xml.tag! "shipping-height", variation.product_packages.first.depth.ceil
-                      xml.tag! "shipping-weight", variation.first.product_packages.first.weight.ceil
+                      xml.tag! "shipping-weight", variation.product_packages.first.weight.ceil
                       xml.tag! "local-marketplace-flags" do
                         xml.tag! "is-restricted", is_restricted(product)
                         xml.tag! "perishable", false
