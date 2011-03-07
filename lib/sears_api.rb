@@ -233,7 +233,7 @@ class SearsAPI
               
               xml.item("item-id" => product.product_variations.first.product_number) do 
                 xml.title product.product_name
-                xml.tag! "short-desc", product.product_overview
+                xml.tag! "short-desc", product.description_general.blank? ? product.product_overview : product.description_general
                 xml.upc product.product_variations.first.upc.blank? ? "00#{product.product_variations.first.product_number}" : product.product_variations.first.upc.gsub(" ", "")
                 xml.tags do 
                   xml.primary get_category(product.primary_subcategory)
@@ -281,7 +281,7 @@ class SearsAPI
                     
                     xml.item("item-id" => variation.product_number) do 
                       xml.title variation.full_title
-                      xml.tag! "short-desc", product.product_overview
+                      xml.tag! "short-desc", product.description_general.blank? ? product.product_overview : product.description_general
                       xml.upc variation.upc.blank? ? "00#{variation.product_number}" : variation.upc.gsub(" ", "")
                       xml.tags do 
                         xml.primary get_category(product.primary_subcategory)
@@ -320,7 +320,7 @@ class SearsAPI
                   
                   xml.tag! "variation-group", "variation-group-id" => product.id do 
                     xml.title product.product_name
-                    xml.tag! "short-desc", product.product_overview
+                    xml.tag! "short-desc", product.description_general.blank? ? product.product_overview : product.description_general
                     xml.tags do 
                       xml.primary get_category(product.primary_subcategory)
                     end #end tags
