@@ -73,7 +73,7 @@ class ThirdPartyCategory < ActiveRecord::Base
   
   
   def self.populate_subcategory_sears_data
-    temp_subs = Subcategory.all
+    temp_subs = Subcategory.all(:conditions => {:id => [49,89,88]})
     subcats = temp_subs #[120, temp_subs.length]
     begin
       subcats.each_with_index do |sub, i|
