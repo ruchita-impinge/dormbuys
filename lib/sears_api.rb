@@ -211,7 +211,7 @@ class SearsAPI
         xml.tag! "item", "item-id" => variation.product_number do 
           xml.locations do 
             xml.tag! "location", "location-id" => "825738839" do #DB warehouse ID w/ Sears
-              xml.quantity variation.qty_on_hand
+              xml.quantity variation.qty_on_hand < 0 ? 0 : variation.qty_on_hand
               xml.tag! "pick-up-now-eligible", false
             end #end location tag
           end #end locations tag
