@@ -25,7 +25,8 @@ class SearsAPI
 
 
   def self.do_post_products
-    products = self.get_products_to_post
+    products = Product.all(:conditions => ["should_list_on_sears = ? AND posted_to_sears_at IS NULL", true], :include => [:product_variations, :subcategories])
+    products.reject!{|p| p if p.drop_ship == true || p.visible == false }
     
     api = SearsAPI.new
     api.post_products(products)

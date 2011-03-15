@@ -20,7 +20,30 @@ class Admin::ProductsController < Admin::AdminController
       if variation_name
         js_options = "var js_options#{variation_id} = [];\n"
         options = []
-        variation_name.third_party_variation_attributes.collect {|x| options << x.value }
+        
+        if [9,10].include?(variation_name.id)
+          
+          sql = %(SELECT * FROM third_party_variation_attributes WHERE third_party_variation_id = 9 AND
+          (value LIKE "Red:Red" OR
+          value LIKE "Yellow:Yellow" OR
+          value LIKE "Blue:Blue" OR
+          value LIKE "Green:Green" OR
+          value LIKE "Orange:Orange" OR
+          value LIKE "Purple:Purple" OR
+          value LIKE "Black:Black" OR
+          value LIKE "Brown:Brown" OR
+          value LIKE "Clear:Clear" OR
+          value LIKE "Beige:Beige" OR
+          value LIKE "Grey:Grey" OR
+          value LIKE "Multi-color:Multi-color" OR
+          value LIKE "Pink:Pink");)
+          
+          _attributes = ThirdPartyVariationAttribute.find_by_sql(sql)
+          _attributes.each {|x| options << x.value }
+          
+        else
+          variation_name.third_party_variation_attributes.collect {|x| options << x.value }
+        end
         
         options.each_with_index do |opt, i|
           js_options += %(js_options#{variation_id}[#{i}] = "#{opt}";\n)
