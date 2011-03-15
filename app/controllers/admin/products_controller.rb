@@ -35,6 +35,7 @@ class Admin::ProductsController < Admin::AdminController
           value LIKE "Clear:Clear" OR
           value LIKE "Beige:Beige" OR
           value LIKE "Grey:Grey" OR
+          value LIKE "White:White" OR
           value LIKE "Multi-color:Multi-color" OR
           value LIKE "Pink:Pink");)
           
