@@ -21,7 +21,7 @@ class Admin::ProductsController < Admin::AdminController
         js_options = "var js_options#{variation_id} = [];\n"
         options = []
         
-        if [4,6,9,10].include?(variation_name.id)
+        if [4,6,9,10,13,15,16,18,19,21,22,23,25,27,29,31,33].include?(variation_name.id)
           
           sql = %(SELECT * FROM third_party_variation_attributes WHERE third_party_variation_id = #{variation_name.id} AND
           (value LIKE "Red:Red" OR
@@ -34,7 +34,7 @@ class Admin::ProductsController < Admin::AdminController
           value LIKE "Brown:Brown" OR
           value LIKE "Clear:Clear" OR
           value LIKE "Beige:Beige" OR
-          value LIKE "Grey:Grey" OR
+          value LIKE "Grey:Gray" OR
           value LIKE "White:White" OR
           value LIKE "Multi-color:Multi-color" OR
           value LIKE "Pink:Pink");)
