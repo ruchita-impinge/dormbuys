@@ -21,7 +21,7 @@ class Admin::ProductsController < Admin::AdminController
         js_options = "var js_options#{variation_id} = [];\n"
         options = []
         
-        if [4,6,9,10,13,15,16,18,19,21,22,23,25,27,29,31,33].include?(variation_name.id)
+        if [4,6,9,10,13,15,16,18,19,21,22,23,25,27,29,31,33,36,37,44,48,52,57,58,59,61,70].include?(variation_name.id)
           
           sql = %(SELECT * FROM third_party_variation_attributes WHERE third_party_variation_id = #{variation_name.id} AND
           (value LIKE "Red:Red" OR
