@@ -967,11 +967,14 @@ class ThirdPartySystems
     end
     
     
+    
     product_variations.each do |variation|
       
       #product cost is greater than 2.98 and weight is less than 25 lbs
       if variation.rounded_retail_price > (2.98).to_money && variation.product_packages.collect.sum {|pp| pp.weight } < 25
-        variations << variation
+        unless variation.product.drop_ship
+          variations << variation
+        end
       end #end if
       
     end #end each variation
@@ -986,7 +989,7 @@ class ThirdPartySystems
   def self.get_lnt_price(variation)
     
     weight = variation.product_packages.collect.sum {|pp| pp.weight}
-    starting_price = (variation.rounded_retail_price * 1.15)
+    starting_price = (variation.rounded_retail_price * 0.70)
     ending_price = starting_price
     
     if weight <= 5
