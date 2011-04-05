@@ -816,6 +816,8 @@ class ThirdPartySystems
     @headings << "QTY On Hold"
     @headings << "Categories"
     @headings << "Total Weight"
+    @headings << "Vendor Name"
+    @headings << "UPC"
     @rows = []
     
     
@@ -873,6 +875,16 @@ class ThirdPartySystems
           row << variation.product.subcategories.collect {|s| s.name }.join(" | ")
     
           row << variation.product_packages.collect {|p| p.weight }.sum.to_s
+          
+          #vendor name
+          if variation.product.vendors.size > 0
+            row << variation.product.vendors.first.company_name
+          else
+            row << " "
+          end
+          
+          #upc
+          row << variation.upc.blank? ? " " : variation.upc
     
           @rows << row
           
