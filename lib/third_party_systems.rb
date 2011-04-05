@@ -884,7 +884,11 @@ class ThirdPartySystems
           end
           
           #upc
-          row << variation.upc.blank? ? " " : variation.upc
+          if variation.upc.blank?
+            row << " "
+          else
+            row << variation.upc
+          end
     
           @rows << row
           
