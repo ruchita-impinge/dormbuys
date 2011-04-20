@@ -169,7 +169,8 @@
 							
 							
 									<div class="form-box">
-										<em>our price: <span>$<%= @product.retail_price %></span></em>
+										<em>regular price: <span>$<%= (@product.retail_price * 1.38) %></span></em>
+										<em class="red_em">sale price: <span>$<%= @product.retail_price %></span></em>
 										<% form_for :cart_item, :url => add_to_cart_path, :html => {:id => 'cart_form'} do |f| %>
 											<fieldset>
 										

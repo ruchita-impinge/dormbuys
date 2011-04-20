@@ -39,10 +39,10 @@ development: &non_production_settings
         account_number: 510087526
         meter_number: 1223651
     ups:
-        origin_number: A64V28 # (new acct num is: 1Y6809)
-        login: dormbuysdotcom
-        password: xavier01
-        key: 9C60A235E9C53978
+        origin_number: A64V28 #1Y6809
+        login: dormbuysdotcom #qmilouisville
+        password: xavier01 #password
+        key: 9C60A235E9C53978 #8C79BD531775B808
         testing: 1
     googleproducts:
         host: uploads.google.com
