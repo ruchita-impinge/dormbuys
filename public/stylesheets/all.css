@@ -5267,6 +5267,7 @@ a.registry_continue_link{
 	width: 130px;
 	height: 132px;
 }
-em.red_em{
+.detail .form-box em.red_em,
+.detail .form-box em.red_em span{
 	color: #ba0000;
 }
