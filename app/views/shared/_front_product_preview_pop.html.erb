@@ -11,7 +11,7 @@
 					<%= link_to 'more details', product.default_front_url %>
 				</div>
 				<div class="form-box">
-					<em>our price: <span>$<%= product.retail_price %></span></em>
+					<em class="red_em">sale price: <span>$<%= product.retail_price %></span></em>
 					<% form_for :cart_item, :url => add_to_cart_path, :html => {:id => "cart_form_popup_#{product.id}"} do |f| %>
 						<fieldset>
 							

@@ -6,7 +6,7 @@
 		<%= link_to image_tag(product.product_image(:list), :alt => product.product_name), 
 				product.default_front_url, :title => product.product_name %>
 		<p><%= truncate(product.product_overview, :length => 140) %></p>
-		<em>our price: <span>$<%= product.retail_price %></span></em>
+		<em class="red_em">sale price: <span>$<%= product.retail_price %></span></em>
 		<a href="#lightbox<%= product.id %>" class="btn open">Quick View</a>
 	</div>
 </li>
