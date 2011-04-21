@@ -5268,6 +5268,10 @@ a.registry_continue_link{
 	height: 132px;
 }
 .detail .form-box em.red_em,
-.detail .form-box em.red_em span{
+.detail .form-box em.red_em span,
+#main .gallery-box ul li .text em.red_em,
+#main .gallery-box ul li .text em.red_em span,
+.quick-popup .form-box em.red_em,
+.quick-popup .form-box em.red_em span{
 	color: #ba0000;
 }
