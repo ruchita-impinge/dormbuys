@@ -67,7 +67,11 @@ class Category < ActiveRecord::Base
     subs = primary_subcategories.reject {|s| s if !s.visible }
     
     if limit == -1
-      return subs.sort{|x,y| x.display_order <=> y.display_order }
+      begin
+        return subs.sort{|x,y| x.display_order <=> y.display_order }
+      rescue
+        return subs
+      end
     else
       limited_subs = []
       (0..(limit-1)).each {|index| limited_subs << subs[index] }
