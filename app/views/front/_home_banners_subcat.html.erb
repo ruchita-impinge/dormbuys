@@ -90,8 +90,10 @@
 		<strong><span><%= cat7.name %></span><em>&nbsp;</em></strong>
 		<ul>
 			<% cat7.visible_primary_subcategories(13).each_with_index do |sub,i| %>
-				<% css_class = (i == 0 ? 'first' : (i == cat7.visible_primary_subcategories(13).size-1 ? 'last' : '')) %>
-				<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+				<% unless sub.blank? %>
+					<% css_class = (i == 0 ? 'first' : (i == cat7.visible_primary_subcategories(13).size-1 ? 'last' : '')) %>
+					<li class="<%= css_class %>"><%= link_to truncate(sub.name, :length => 18), sub.default_front_url %><span class="line"></span></li>
+				<% end %>
 			<% end %>
 		</ul>
 	</div>
