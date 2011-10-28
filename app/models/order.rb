@@ -210,10 +210,10 @@ class Order < ActiveRecord::Base
       end
       ifs.find_or_create_then_p_to_c(fname, lname, email, whoami)
     rescue => e
-      HoptoadNotifier.notify(
-        :error_class => "Order(#{self.id})",
-        :error_message => "!!! - Error sending to Infusionsoft (#{self.id}): #{e.message}"
-      )
+#      HoptoadNotifier.notify(
+#        :error_class => "Order(#{self.id})",
+#        :error_message => "!!! - Error sending to Infusionsoft (#{self.id}): #{e.message}"
+#      )
     end
   end #end method send_to_infusionsoft
 
