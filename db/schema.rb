@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120109154424) do
+ActiveRecord::Schema.define(:version => 20120109181339) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -811,6 +811,7 @@ ActiveRecord::Schema.define(:version => 20120109154424) do
     t.integer "billing_country_id"
     t.string  "contact_name"
     t.text    "notes"
+    t.string  "contact_email"
   end
 
   add_index "vendors", ["account_number"], :name => "index_vendors_on_account_number"
