@@ -24,8 +24,8 @@ development: &non_production_settings
         shipping_price_buffer: 0.00
         drop_ship_alone: 15
     authorize_net:
-        login_id: 8wd65QSj
-        transaction_key: 8CP6zJ7uD875J6tY
+        login_id: 3bbS2x8UZDU
+        transaction_key: 38v7Y92U2BmqRdzh
     filesystem:
         local_files_path: /public/content/files/products
         web_files_path: /content/files/products
