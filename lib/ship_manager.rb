@@ -303,13 +303,13 @@ class ShipManager
     #setup destination and origin
     options = {
       :origin => {
-        :address_line1 => "1110 Avoca Station Court", 
+        :address_line1 => SITE_ADDRESS, 
         #:address_line2 => "", 
         :country => 'US', 
-        :state => 'KY',
-        :city => 'Louisville',
-        :zip => '40245', 
-        :phone => "(502) 254-4324", 
+        :state => SITE_STATE,
+        :city => SITE_CITY,
+        :zip => SITE_ZIP, 
+        :phone => SITE_PHONE_LOCAL, 
         :name => "Dormbuys.com", 
         :attention_name => "Ship & Rec.", 
         :origin_number => ups_origin_number

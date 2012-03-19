@@ -115,19 +115,19 @@
 														
 														<div class="tab-content" id="tab2">
 															<strong class="title">HOW LONG WILL IT TAKE FOR ME TO RECEIVE MY ORDER?</strong>
-															<p>We do our best to process all orders within 24 hours and have your order on your doorstep within 7-10 business days. Some items, such as large furniture, refrigerators, trunks/footlockers, or custom bedding can take up to two weeks for delivery. If you have a question about the shipping time on a particular item, please contact our Customer Experience Staff at 1-866-502-DORM (3676) or at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>. </p>
+															<p>We do our best to process all orders within 24 hours and have your order on your doorstep within 7-10 business days. Some items, such as large furniture, refrigerators, trunks/footlockers, or custom bedding can take up to two weeks for delivery. If you have a question about the shipping time on a particular item, please contact our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %> or at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>. </p>
 														</div>
 														
 														
 														<div class="tab-content" id="tab3">
 															<strong class="title">WHAT WILL IT COST TO SHIP MY ORDER?</strong>
-															<p>The cost for shipping is directly tied in to real time FedEx shipping rates, so your shipping cost will vary based on the item(s) you order and where you live. Your shipping rates are quickly determined once you enter your zip code in our “Shipping Cost Calculator” in the shopping cart—you don't have to enter any  personal information to determine your shipping costs. Additionally, our Customer Experience Staff is always happy to help you determine your shipping costs. You can reach them at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %> or 1-866-502-DORM (3676).</p>
+															<p>The cost for shipping is directly tied in to real time FedEx shipping rates, so your shipping cost will vary based on the item(s) you order and where you live. Your shipping rates are quickly determined once you enter your zip code in our “Shipping Cost Calculator” in the shopping cart—you don't have to enter any  personal information to determine your shipping costs. Additionally, our Customer Experience Staff is always happy to help you determine your shipping costs. You can reach them at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %> or <%= SITE_PHONE_TOLLFREE %>.</p>
 														</div>
 														
 														
 														<div class="tab-content" id="tab4">
 															<strong class="title">I NEED MY ORDER FAST, CAN YOU EXPEDITE MY SHIPPING?</strong>
-															<p>Yes! We are more than happy to offer expedited shipping services for your order. Just contact our Customer Experience Staff at 1-866-502-DORM (3676).</p>
+															<p>Yes! We are more than happy to offer expedited shipping services for your order. Just contact our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %>.</p>
 														</div>
 														
 														
@@ -145,7 +145,7 @@
 														
 														<div class="tab-content" id="tab7">
 															<strong class="title">DO YOU SHIP TO PO BOXES OR APO/AE ADDRESSES?</strong>
-															<p>For the fastest and most efficient delivery, all of our orders are shipped via Fed-Ex and UPS and thus we are currently unable to ship to PO Boxes or APO/AE addresses. We can however ship to college post boxes, which are commonly assigned to students living in dorms. It is important to include not only the college box number, but also the street address for your college's post office to ensure on time delivery. If you have questions about how to enter your address for you order, please call our Customer Experience Staff at 1-866-502-DORM (3676) or email us at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>.</p>
+															<p>For the fastest and most efficient delivery, all of our orders are shipped via Fed-Ex and UPS and thus we are currently unable to ship to PO Boxes or APO/AE addresses. We can however ship to college post boxes, which are commonly assigned to students living in dorms. It is important to include not only the college box number, but also the street address for your college's post office to ensure on time delivery. If you have questions about how to enter your address for you order, please call our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %> or email us at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>.</p>
 														</div>
 														
 										
@@ -163,7 +163,7 @@
 														
 														<div class="tab-content" id="tab10">
 															<strong class="title">HOW DO I CHANGE OR CANCEL MY ORDER?</strong>
-															<p>If you find that you need to make a change to or cancel your order, please contact our Customer Experience Staff at 1-866-502-DORM (3676) as soon as possible. Please be advised that some items ship soon after placement and it may not be possible to cancel. </p>
+															<p>If you find that you need to make a change to or cancel your order, please contact our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %> as soon as possible. Please be advised that some items ship soon after placement and it may not be possible to cancel. </p>
 														</div>
 														
 														
@@ -181,11 +181,11 @@
 															
 															<p>
 															ATTN: Returns Department<br />
-															1110 Avoca Station Court<br />
-															Louisville, KY 40245
+															<%= SITE_ADDRESS %><br />
+															<%= SITE_CITY %>, <%= SITE_STATE %> <%= SITE_ZIP %>
 															</p>
 
-															<p>We do not pay for return shipping, but you are welcome to ship your return to us with the carrier of your choosing—USPS, Fed-EX, or UPS. If you need assistance with your return, please contact our customer experience staff at 1-866-502-DORM (3676) or <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>.</p>
+															<p>We do not pay for return shipping, but you are welcome to ship your return to us with the carrier of your choosing—USPS, Fed-EX, or UPS. If you need assistance with your return, please contact our customer experience staff at <%= SITE_PHONE_TOLLFREE %> or <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>.</p>
 														</div>
 														
 														
@@ -198,7 +198,7 @@
 														
 														<div class="tab-content" id="tab14">
 															<strong class="title">HOW LONG DOES IT TAKE FOR ME TO GET A REFUND?</strong>
-															<p>Once we receive your order at our return center, we will inspect and process your return within 2 business days and apply your refund back to the original card the order was purchased with. Your refund should show up on your credit card statement within 2-4 days. If you you have questions about the returns process, please contact our Customer Expereince Staff at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %> or 1-866-502-DORM (3676) and they will be happy to assist you. </p>
+															<p>Once we receive your order at our return center, we will inspect and process your return within 2 business days and apply your refund back to the original card the order was purchased with. Your refund should show up on your credit card statement within 2-4 days. If you you have questions about the returns process, please contact our Customer Expereince Staff at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %> or <%= SITE_PHONE_TOLLFREE %> and they will be happy to assist you. </p>
 														</div>
 														
 														
@@ -214,7 +214,7 @@
 																</ol>
 															</p>
 
-															<p>Pretty simple way to get the stuff you want, huh? If you need any assistance in creating your registry, just call our Customer Experience Staff at 1-866-502-DORM (3676).</p>
+															<p>Pretty simple way to get the stuff you want, huh? If you need any assistance in creating your registry, just call our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %>.</p>
 															
 														</div>
 														
@@ -232,20 +232,20 @@
 															<li>Choose the items you wish to purchase for the student and proceed to checkout.</li>
 															<li>We'll send the items you bought straight to the address the student provided for the registry. </li>
 															</ol>
-															<p>If you need any assistance in ordering from a student's registry, just call our Customer Experience Staff at 1-866-502-DORM (3676).</p>
+															<p>If you need any assistance in ordering from a student's registry, just call our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %>.</p>
 															
 														</div>
 														
 														
 														<div class="tab-content" id="tab17">
 															<strong class="title">WHAT IS A WISHLIST AND HOW DO I GET ONE?</strong>
-															<p>As a college student, we recognize that you're on a budget and can't get everything you want for your room right away. That's why we created our Wishlist. If you find an item on our site that you want to save for later, just click on "Add to Wishlist" and we'll remember that item for you. You can access your Wishlist at anytime by logging into "My Account." If you don't have an account, the Dormbuys site will give you prompts that will help you set one up for you. If you need assistance setting up or accessing your Wishlist, please contact our Customer Experience Staff at 1-866-502-DORM (3676) or at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>. </p>
+															<p>As a college student, we recognize that you're on a budget and can't get everything you want for your room right away. That's why we created our Wishlist. If you find an item on our site that you want to save for later, just click on "Add to Wishlist" and we'll remember that item for you. You can access your Wishlist at anytime by logging into "My Account." If you don't have an account, the Dormbuys site will give you prompts that will help you set one up for you. If you need assistance setting up or accessing your Wishlist, please contact our Customer Experience Staff at <%= SITE_PHONE_TOLLFREE %> or at <%= link_to "help@dormbuys.com", "mailto:help@dormbuys.com" %>. </p>
 														</div>
 														
 														
 														<div class="tab-content" id="tab18">
 															<strong class="title">DO YOU HAVE A PRINT CATALOG YOU CAN MAIL ME?</strong>
-															<p>Currently, Dormbuys.com does not have a physical catalog that we can mail. We are constantly bringing in new and exciting products—our  inventory changes so frequently that a print catalog would be out of date almost as fast as we could send it! We are always happy to assist you with any product questions; you can reach us at 1-866-502-DORM (3676). You can also enjoy our online catalog anytime at <%= link_to "www.dormbuys.com", "http://www.dormbuys.com" %>.</p>
+															<p>Currently, Dormbuys.com does not have a physical catalog that we can mail. We are constantly bringing in new and exciting products—our  inventory changes so frequently that a print catalog would be out of date almost as fast as we could send it! We are always happy to assist you with any product questions; you can reach us at <%= SITE_PHONE_TOLLFREE %>. You can also enjoy our online catalog anytime at <%= link_to "www.dormbuys.com", "http://www.dormbuys.com" %>.</p>
 														</div>
 														
 														
@@ -258,7 +258,7 @@
 														
 														<div class="tab-content" id="tab20">
 															<strong class="title">WHAT IF I WANT TO ORDER SEVERAL OF THE SAME PRODUCT? ARE THERE ANY PRODUCT OR SHIPPING DISCOUNTS?</strong>
-															<p>If you are interested in ordering several of the SAME product you may be eligible for a BULK discount. Please e-mail <%= link_to "bulk@dormbuys.com", "mailto:bulk@dormbuys.com" %> or call 1.866.502.3676 to inquire about shipping and/or product discounts. This inquiry is ONLY an option if you are purchasing the same product in larger than normal quantities. Larger than normal quantities is defined as greater than 50 units of any one given item priced under $25 or more than 20 units of items retailing over $25. We can also offer screen printing services for certain bulk order items to include an imprint, logo or image of your choice to help create a super cool and unique product for your university club, high school group, or marketing project. If you are interested in our screen printing services, please include that information in your bulk order request at <%= link_to "bulk@dormbuys.com", "mailto:bulk@dormbuys.com" %>.</p>
+															<p>If you are interested in ordering several of the SAME product you may be eligible for a BULK discount. Please e-mail <%= link_to "bulk@dormbuys.com", "mailto:bulk@dormbuys.com" %> or call <%= SITE_PHONE_TOLLFREE %> to inquire about shipping and/or product discounts. This inquiry is ONLY an option if you are purchasing the same product in larger than normal quantities. Larger than normal quantities is defined as greater than 50 units of any one given item priced under $25 or more than 20 units of items retailing over $25. We can also offer screen printing services for certain bulk order items to include an imprint, logo or image of your choice to help create a super cool and unique product for your university club, high school group, or marketing project. If you are interested in our screen printing services, please include that information in your bulk order request at <%= link_to "bulk@dormbuys.com", "mailto:bulk@dormbuys.com" %>.</p>
 														</div>
 														
 														
