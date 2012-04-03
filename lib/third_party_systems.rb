@@ -235,7 +235,7 @@ class ThirdPartySystems
   
   
   
-  def self.update_lnt(update_options={:new_only => true})
+  def self.update_lnt(options = {:new_only => true})
     
     processed_product_ids = []
     
@@ -300,7 +300,7 @@ class ThirdPartySystems
     
     @rows = []
   
-    @variations = ThirdPartySystems.get_lnt_product_variations(update_options[:new_only])
+    @variations = ThirdPartySystems.get_lnt_product_variations( :new_only => options[:new_only] )
     
     @variations.each do |variation|
       
