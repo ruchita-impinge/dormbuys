@@ -49,6 +49,9 @@ module SslRequirement
   
   
     def ensure_proper_protocol
+      
+      return false if RAILS_ENV == 'development'
+      
       return true if ssl_allowed?
 
       if ssl_required? && !request.ssl?

@@ -1,4 +1,6 @@
 class CartController < ApplicationController
+
+  before_filter :check_site_banner
   
   #protect_from_forgery :except => :add
   skip_before_filter :verify_authenticity_token
@@ -8,6 +10,22 @@ class CartController < ApplicationController
     :save_billing_shipping, :review, :confirm
   
   layout "front_short_banner"
+  
+  
+  def check_site_banner
+    if sb = SiteBanner.active.first
+      if !sb.allow_purchase?
+        
+        #OK, user is trying to purchase and no purchases are allowed
+        if request.path != cart_path
+          session[:confirm_site_banner] = nil
+          redirect_to cart_path and return 
+        end
+        
+      end #end !allow_purchase?
+    end #end if site banner
+  end #end method check_site_banner
+  
   
   #view cart
   def index

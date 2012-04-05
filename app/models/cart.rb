@@ -204,10 +204,10 @@ class Cart < ActiveRecord::Base
     begin
       variation = ProductVariation.find(cart_item_attributes[:variation_id])
       if cart_item_attributes[:qty].to_i > variation.qty_on_hand
-        return [false, "Maximum available quantity of #{variation.full_title} is #{variation.qty_on_hand}, please call 1-866-502-DORM for special orders."]
+        return [false, "Maximum available quantity of #{variation.full_title} is #{variation.qty_on_hand}, please call #{SITE_PHONE_TOLLFREE} for special orders."]
       end
     rescue
-      return [false, "Item could not be found, please call 1-866-502-DORM for help."]
+      return [false, "Item could not be found, please call #{SITE_PHONE_TOLLFREE} for help."]
     end
     
     item = self.cart_items.build

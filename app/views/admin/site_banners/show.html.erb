@@ -1,0 +1,58 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Viewing Site Banner</h3>
+	
+	<div class="std_box_content">
+		
+		<div class="std_box_content_wrapper">
+		
+						<p>
+			  <b>Title:</b>
+			  <%=h @site_banner.title %>
+			</p>
+
+						<p>
+			  <b>Message:</b>
+			  <%=h @site_banner.message %>
+			</p>
+
+						<p>
+			  <b>Start at:</b>
+			  <%=h @site_banner.start_at %>
+			</p>
+
+						<p>
+			  <b>End at:</b>
+			  <%=h @site_banner.end_at %>
+			</p>
+
+						<p>
+			  <b>Require confirmation:</b>
+			  <%=h @site_banner.require_confirmation %>
+			</p>
+
+						<p>
+			  <b>Allow purchase:</b>
+			  <%=h @site_banner.allow_purchase %>
+			</p>
+
+					
+		</div><!-- end .std_box_content_wrapper -->
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+<%= link_to '<span>Back</span>', admin_site_banners_path, :class => 'button' %>
+<%= link_to '<span>Edit</span>', edit_admin_site_banner_path(@site_banner), :class => 'button' %>

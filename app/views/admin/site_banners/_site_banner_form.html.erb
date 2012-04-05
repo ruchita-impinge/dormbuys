@@ -1,0 +1,46 @@
+
+  <div class="field long">
+    <%= f.text_field :title, :class => 'textfield' %>
+    <%= f.label :title %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field long">
+    <%= f.text_area :message %>
+    <%= f.label :message %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field shorter">
+    <%= f.datetime_select :start_at, :order => [:month, :day, :year], 
+			:use_month_numbers => false,
+			:default => Time.now %>
+    <%= f.label :start_at %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field shorter">
+    <%= f.datetime_select :end_at, :order => [:month, :day, :year], 
+			:use_month_numbers => false,
+			:default => 1.week.from_now %>
+    <%= f.label :end_at %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field check">
+    <%= f.check_box :require_confirmation, :class => 'check' %>
+    <%= f.label :require_confirmation, 'Require user confirmation (banner is hidden after confirmation)' %>
+  </div>
+  <div class="clear"></div>
+
+
+  <div class="field check">
+    <%= f.check_box :allow_purchase, :class => 'check' %>
+    <%= f.label :allow_purchase, 'Allow user to make purchases' %>
+  </div>
+  <div class="clear"></div>
+

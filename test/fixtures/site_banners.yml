@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  message: MyText
+  start_at: 2012-04-05 11:46:25
+  end_at: 2012-04-05 11:46:25
+  require_confirmation: false
+  allow_purchase: false
+
+two:
+  title: MyString
+  message: MyText
+  start_at: 2012-04-05 11:46:25
+  end_at: 2012-04-05 11:46:25
+  require_confirmation: false
+  allow_purchase: false

@@ -1,0 +1,63 @@
+<% content_for :full_width_top do %>
+	<%= render "shared/admin_main_nav" %>
+<% end %>
+
+<%= will_paginate(@site_banners) %>
+
+<div class="std_box">
+	
+	<h3 class="std_box_heading">Site Banners</h3>
+	
+	<div class="std_box_content">
+		
+		<% if @site_banners.empty? %>
+			
+			<h3>No site banners were found</h3>
+		
+		<% else %>
+
+			<table class="std_box_table">
+				<thead>
+			  		<tr>
+					                        <th>Title</th>
+					                        <th>Message</th>
+					                        <th class="center">Start at</th>
+					                        <th class="center">End at</th>
+					                        <th class="center">Require confirmation</th>
+					                        <th class="center">Allow purchase</th>
+					                        <th colspan="2" class="center">Manage</th>
+			  		</tr>
+				</thead>
+				<tbody>
+
+				<% for site_banner in @site_banners %>
+			  		<tr class="<%= site_banner.is_active? ? 'bold' : '' %>">
+					                        <td><%=h site_banner.title %></td>
+					                        <td><%=h truncate site_banner.message, :length => 100 %></td>
+					                        <td class="center"><%=h site_banner.start_at.to_s(:detail) %></td>
+					                        <td class="center"><%=h site_banner.end_at.to_s(:detail) %></td>
+					                        <td class="center"><%=h site_banner.require_confirmation ? 'YES' : 'NO' %></td>
+					                        <td class="center"><%=h site_banner.allow_purchase ? 'YES' : 'NO' %></td>
+					                        <!-- <td class="center"><%= link_to 'View', admin_site_banner_path(site_banner), :class => "tbl_lnk_show" %></td> -->
+                        <td class="center"><%= link_to 'Edit', edit_admin_site_banner_path(site_banner), :class => "tbl_lnk_edit" %></td>
+                        <td class="center"><%= link_to 'Delete', admin_site_banner_path(site_banner), :confirm => 'Are you sure?', :method => :delete, :class => "tbl_lnk_destroy" %></td>
+			  		</tr>
+			<% end %>
+
+				</tbody>
+			</table>
+		
+		<% end %>
+		
+	</div><!-- end .std_box_content -->
+	
+	
+	<div class="std_box_header_left"></div>
+	<div class="std_box_header_right"></div>
+	<div class="std_box_footer_left"></div>
+	<div class="std_box_footer_right"></div>
+	
+</div><!-- end .std_box -->
+
+
+<%= link_to '<span>New Site Banner</span>', new_admin_site_banner_path, :class => 'button positive' %>

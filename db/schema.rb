@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120109181339) do
+ActiveRecord::Schema.define(:version => 20120405154625) do
 
   create_table "additional_product_images", :force => true do |t|
     t.string   "description"
@@ -678,6 +678,17 @@ ActiveRecord::Schema.define(:version => 20120109181339) do
 
   create_table "shipping_rates_tables", :force => true do |t|
     t.boolean "enabled", :default => false
+  end
+
+  create_table "site_banners", :force => true do |t|
+    t.string   "title"
+    t.text     "message"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean  "require_confirmation", :default => false
+    t.boolean  "allow_purchase",       :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "state_shipping_rates", :force => true do |t|

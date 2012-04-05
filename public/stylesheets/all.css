@@ -5039,14 +5039,19 @@ dl.links-list dd {
 	font-weight: bold;
 	text-transform: uppercase;
 }
-.error, .notice, .success {padding:.8em;border:2px solid #ddd;margin:0px;}
+.error, .notice, .success, .site_banner {padding:.8em;border:2px solid #ddd;margin:0px;}
 .error {background:#FF5F5F;color:#fff;border-color:#ba0000;}
-.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.notice, .site_banner {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 .success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
 .error a {color:#8a1f11; background:none; padding:0; margin:0; }
 .notice a {color:#514721; background:none; padding:0; margin:0; }
 .success a {color:#264409; background:none; padding:0; margin:0; }
 .field_error {color: #ba0000;}
+
+.site_banner{
+	margin: 25px 0px;
+}
+
 #shipping_fieldset{
 	margin-bottom: 45px;
 }

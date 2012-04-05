@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   
   
 
-  before_filter :set_current_user, :check_standalone
+  before_filter :set_current_user, :check_standalone, :set_site_banner
 
 
   helper :all # include all helpers, all the time
@@ -26,6 +26,38 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation, :vcode, :card_number,
     #:name_on_card, :exp_date, :card_type
   
+  
+  def set_site_banner
+    
+    if params[:confirm_site_banner].to_i == 1
+      session[:confirm_site_banner] = 1
+    end
+      
+      
+    unless self.class.to_s =~ /Admin/
+      
+      if sb = SiteBanner.active.first
+        
+        banner = "<b>#{sb.title} - #{self.class}</b><br /><br />#{sb.message}"
+        
+        if sb.confirmation_required? && !site_banner_confirmed?
+          banner += %(<br /><br /><input type='button' value='OK' onclick='window.location.href="?confirm_site_banner=1"' />)
+        end
+        
+        return if site_banner_confirmed? # && allow_purchase?
+        
+        flash[:site_banner] = banner
+        flash.discard
+        
+      end #end if sb
+      
+    end #end unless
+  end #end method set_site_banner
+  
+  
+  def site_banner_confirmed?
+    session[:confirm_site_banner].to_i == 1
+  end #end method site_banner_confirmed?
   
   
   def set_current_user
