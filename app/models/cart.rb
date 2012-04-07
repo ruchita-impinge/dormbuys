@@ -282,22 +282,22 @@ class Cart < ActiveRecord::Base
   
   def tax
     return Money.new(0) if self.shipping_state_id.blank?
-    
-    if self.shipping_state_id == 18 #KY is 18
-      
+
+    if self.shipping_state_id == 33 #NY is 33
+
       taxable_total = Money.new(0)
       self.cart_items.each do |item|
         if item.product_variation.product.charge_tax
           taxable_total += item.total_price
         end
       end
-      
-      return (taxable_total * 0.06)
-      
+
+      return (taxable_total * 0.08)
+
     else
       return Money.new(0)
     end
-    
+
   end #end method tax
   
   

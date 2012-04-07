@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
       
       if sb = SiteBanner.active.first
         
-        banner = "<b>#{sb.title} - #{self.class}</b><br /><br />#{sb.message}"
+        banner = "<b>#{sb.title}</b><br /><br />#{sb.message}"
         
         if sb.confirmation_required? && !site_banner_confirmed?
           banner += %(<br /><br /><input type='button' value='OK' onclick='window.location.href="?confirm_site_banner=1"' />)

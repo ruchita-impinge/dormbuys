@@ -194,24 +194,24 @@ function updateCoupons()
 
 function calculateTax()
 {
-	var KY = 18;
-	var state;
-	if(jQuery("#user_profile_type_id").val() == 1){
-		state = Number(jQuery("#order_shipping_state_id").val());
-	}else{
-		state = Number(jQuery("#order_billing_state_id").val())
-	}
-	
-	if( state == KY){
-		
-		var sub = Number(jQuery("#order_subtotal").val()) - Number(jQuery("#order_total_coupon").val());
-		
-		//FORMAT THIS SET
-		jQuery("#order_tax").val(formatCurrency((sub * 0.06)));
-		
-	}//end if
+        var NY = 33;
+        var state;
+        if(jQuery("#user_profile_type_id").val() == 1){
+                state = Number(jQuery("#order_shipping_state_id").val());
+        }else{
+                state = Number(jQuery("#order_billing_state_id").val())
+        }
 
-	
+        if( state == NY){
+
+                var sub = Number(jQuery("#order_subtotal").val()) - Number(jQuery("#order_total_coupon").val());
+
+                //FORMAT THIS SET
+                jQuery("#order_tax").val(formatCurrency((sub * 0.08)));
+
+        }//end if
+
+
 }//end function
 
 
