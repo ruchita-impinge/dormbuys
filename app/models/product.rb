@@ -120,6 +120,12 @@ class Product < ActiveRecord::Base
     vendors.first
   end #end method vendor
   
+  
+  def total_sold
+    self.product_variations.collect(&:sold_count).sum
+  end #end method total_sold
+  
+  
   def warehouse
     warehouses.first
   end #end method warehouse

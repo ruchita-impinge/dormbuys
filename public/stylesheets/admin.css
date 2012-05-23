@@ -857,3 +857,18 @@ ul#admin_shipping_labels_list{
 #coupon_export_check{
 	margin-top: 5px;
 }
+.vendor_product{
+
+}
+.vendor_product img{
+	display: block;
+	float: left;
+	margin-right: 10px;
+}
+.vendor_product p{
+	padding: 0px;
+	margin: 0px;
+}
+.vendor_product p.info{
+	margin-top: 20px;
+}

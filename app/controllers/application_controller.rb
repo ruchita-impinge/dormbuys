@@ -30,7 +30,9 @@ class ApplicationController < ActionController::Base
   def set_site_banner
     
     if params[:confirm_site_banner].to_i == 1
-      session[:confirm_site_banner] = 1
+      if sb = SiteBanner.active.first
+        session[:confirm_site_banner] = sb.id
+      end
     end
       
       
@@ -56,7 +58,10 @@ class ApplicationController < ActionController::Base
   
   
   def site_banner_confirmed?
-    session[:confirm_site_banner].to_i == 1
+    if sb = SiteBanner.active.first
+      return session[:confirm_site_banner].to_i == sb.id
+    end
+    return false
   end #end method site_banner_confirmed?
   
   

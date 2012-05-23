@@ -180,13 +180,25 @@
 	<div class="std_box_content">
 		
 		<div class="std_box_content_wrapper">
-			<ul>
-				<% for product in @vendor.products %>
-					<li>
-						<%= link_to product.product_name, admin_product_path(product) %>
-					</li>
-				<% end %>
-			</ul>
+			<% for product in @vendor.products %>
+				<div class="vendor_product">
+					<%= image_tag product.product_image(:home_thumb) %>
+					
+					<p class="info">
+						<%= product.product_name %> &nbsp;--&nbsp; Total Sold: <%= product.total_sold %>
+					</p>
+					<p>
+						<%= product.product_variations.collect {|v| "&nbsp;&nbsp;Variation: #{v.title}, MFG#: #{v.manufacturer_number}, Sold: #{v.sold_count}"}.join("<br />") %>
+							
+					</p>
+					<p>
+						&nbsp;&nbsp;<%= link_to 'view', admin_product_path(product) %> &nbsp;&nbsp;
+						<%= link_to 'edit', edit_admin_product_path(product) %>
+					</p>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			<% end %>
 		</div>
 		
 	</div><!-- end .std_box_content -->
