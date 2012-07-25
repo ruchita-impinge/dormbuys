@@ -60,9 +60,11 @@ class CartController < ApplicationController
 
     #DAILY DEAL VALIDATION
     if request.referrer =~ /dailydeal/ || request.referrer =~ /dailydormdeal/
-      if params[:cart_item][:product_option_values].blank? || params[:cart_item][:product_option_values].first[:id].blank?
-        flash[:error] = "Please select a value for all drop down lists"
-        redirect_to request.referrer and return
+      if params[:cart_item][:product_option_values]
+        if params[:cart_item][:product_option_values].blank? || params[:cart_item][:product_option_values].first[:id].blank?
+          flash[:error] = "Please select a value for all drop down lists"
+          redirect_to request.referrer and return
+        end
       end
     end
     
